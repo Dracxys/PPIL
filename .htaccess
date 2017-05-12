@@ -1,0 +1,12 @@
+<Files ~ "\.(inc|class|sql|ini|conf|exe|dll|bin|tpl|bkp|dat|c|h|py|spd|theme|db|module)$">
+deny from all
+</Files>
+
+
+RewriteEngine On
+
+# sur webetu : décommenter la directive RewriteBase
+#RewriteBase /www/canals5/s3web/test/
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*) index.php [QSA,L]
