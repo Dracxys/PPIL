@@ -10,3 +10,6 @@ vendor/
 composer.lock
 
 db.ppil.conf.ini
+
+#*
+*~
