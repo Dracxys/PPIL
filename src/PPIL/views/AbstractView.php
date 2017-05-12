@@ -15,7 +15,7 @@ class AbstractView {
     <meta name="description" content="PPIL">
     <meta name="author" content="">
     <title>PPIL </title>
-    <link href="/web/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 END;

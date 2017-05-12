@@ -9,5 +9,11 @@
 		"psr-0": {
 			"PPIL" : "src"
 		}
+	},
+	"scripts": {
+		"post-install-cmd": "PPIL\\utils\\BootstrapHandler::postInstall"
+	},
+	"extra": {
+		"assets_dir": "assets"
 	}
 }
