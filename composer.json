@@ -1,4 +1,5 @@
 {
+	"name": "PPIL/PPIL"
     "require": {
         "slim/slim": "^3.5",
         "illuminate/database": "~5.1",
@@ -6,7 +7,7 @@
     },
 	"autoload": {
 		"psr-0": {
-			"" : "src"
+			"PPIL" : "src"
 		}
 	}
 }
