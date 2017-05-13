@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Sam 13 Mai 2017 à 12:05
+-- Généré le :  Sam 13 Mai 2017 à 18:13
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -83,17 +83,10 @@ CREATE TABLE `Notification` (
   `message` varchar(64) NOT NULL,
   `besoin_validation` tinyint(1) NOT NULL,
   `validation` tinyint(1) NOT NULL,
-  `nomUE` varchar(32) DEFAULT NULL,
-  `type_notification` enum('PPIL\\models\\NotificationChgtUE','PPIL\\models\\NotificationInscription','PPIL\\models\\Notification') NOT NULL DEFAULT 'PPIL\\models\\Notification'
+  `type_notification` enum('PPIL\\models\\NotificationChgtUE','PPIL\\models\\NotificationInscription','PPIL\\models\\Notification') NOT NULL DEFAULT 'PPIL\\models\\Notification',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `Notification`
---
-
-INSERT INTO `Notification` (`id_notification`, `message`, `besoin_validation`, `validation`, `nomUE`, `type_notification`) VALUES
-(0, 'plop', 1, 0, 'a', 'PPIL\\models\\NotificationInscription'),
-(1, '1', 1, 0, 'a', 'PPIL\\models\\NotificationInscription');
 
 -- --------------------------------------------------------
 
@@ -127,14 +120,6 @@ CREATE TABLE `NotificationInscription` (
   `mail` varchar(32) NOT NULL,
   `mot_de_passe` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `NotificationInscription`
---
-
-INSERT INTO `NotificationInscription` (`id_notification`, `nom`, `prenom`, `statut`, `mail`, `mot_de_passe`) VALUES
-(0, 'c', 'c', 'Enseignant-chercheur permanent', 'c', 'o'),
-(1, 'b', 'b', 'Enseignant-chercheur permanent', 'b', 'b');
 
 -- --------------------------------------------------------
 
@@ -174,13 +159,6 @@ CREATE TABLE `UE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `UE`
---
-
-INSERT INTO `UE` (`nom_UE`, `heuresTD`, `heuresTP`, `heuresCM`, `heuresEI`, `prevision_heuresTD`, `prevision_heuresTP`, `prevision_heuresCM`, `prevision_heuresEI`, `groupeTD`, `groupeTP`, `groupeEI`, `prevision_groupeTD`, `prevision_groupeTP`, `prevision_groupeEI`) VALUES
-('a', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-
---
 -- Index pour les tables exportées
 --
 
@@ -210,8 +188,7 @@ ALTER TABLE `Intervention`
 -- Index pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  ADD PRIMARY KEY (`id_notification`),
-  ADD KEY `nomUE` (`nomUE`);
+  ADD PRIMARY KEY (`id_notification`);
 
 --
 -- Index pour la table `NotificationChgtUE`
@@ -258,12 +235,6 @@ ALTER TABLE `Enseignant`
 ALTER TABLE `Intervention`
   ADD CONSTRAINT `intervention_ibfk_1` FOREIGN KEY (`nomUE`) REFERENCES `UE` (`nom_UE`),
   ADD CONSTRAINT `intervention_ibfk_2` FOREIGN KEY (`mail_enseignant`) REFERENCES `Enseignant` (`mail`);
-
---
--- Contraintes pour la table `Notification`
---
-ALTER TABLE `Notification`
-  ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`nomUE`) REFERENCES `UE` (`nom_UE`);
 
 --
 -- Contraintes pour la table `NotificationChgtUE`
