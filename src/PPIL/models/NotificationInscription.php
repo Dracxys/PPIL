@@ -17,7 +17,6 @@ exemple d'utilisation :
     $n->message = "plop";
     $n->besoin_validation = 1;
     $n->validation = 0;
-    $n->nomUE = "a";
     $n->type_notification = 'PPIL\models\NotificationInscription';
     $n->save();
 
