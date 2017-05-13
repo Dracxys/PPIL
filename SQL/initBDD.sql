@@ -1,14 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
--- Client :  localhost:8889
--- Généré le :  Ven 12 Mai 2017 à 14:11
--- Version du serveur :  5.6.33
--- Version de PHP :  7.0.12
+-- Client :  localhost
+-- Généré le :  Sam 13 Mai 2017 à 12:05
+-- Version du serveur :  10.1.21-MariaDB
+-- Version de PHP :  7.0.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de données :  `bdd2folie`
@@ -77,8 +83,17 @@ CREATE TABLE `Notification` (
   `message` varchar(64) NOT NULL,
   `besoin_validation` tinyint(1) NOT NULL,
   `validation` tinyint(1) NOT NULL,
-  `nomUE` varchar(32) DEFAULT NULL
+  `nomUE` varchar(32) DEFAULT NULL,
+  `type_notification` enum('PPIL\\models\\NotificationChgtUE','PPIL\\models\\NotificationInscription','PPIL\\models\\Notification') NOT NULL DEFAULT 'PPIL\\models\\Notification'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `Notification`
+--
+
+INSERT INTO `Notification` (`id_notification`, `message`, `besoin_validation`, `validation`, `nomUE`, `type_notification`) VALUES
+(0, 'plop', 1, 0, 'a', 'PPIL\\models\\NotificationInscription'),
+(1, '1', 1, 0, 'a', 'PPIL\\models\\NotificationInscription');
 
 -- --------------------------------------------------------
 
@@ -112,6 +127,14 @@ CREATE TABLE `NotificationInscription` (
   `mail` varchar(32) NOT NULL,
   `mot_de_passe` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `NotificationInscription`
+--
+
+INSERT INTO `NotificationInscription` (`id_notification`, `nom`, `prenom`, `statut`, `mail`, `mot_de_passe`) VALUES
+(0, 'c', 'c', 'Enseignant-chercheur permanent', 'c', 'o'),
+(1, 'b', 'b', 'Enseignant-chercheur permanent', 'b', 'b');
 
 -- --------------------------------------------------------
 
@@ -149,6 +172,13 @@ CREATE TABLE `UE` (
   `prevision_groupeTP` int(4) NOT NULL DEFAULT '0',
   `prevision_groupeEI` int(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `UE`
+--
+
+INSERT INTO `UE` (`nom_UE`, `heuresTD`, `heuresTP`, `heuresCM`, `heuresEI`, `prevision_heuresTD`, `prevision_heuresTP`, `prevision_heuresCM`, `prevision_heuresEI`, `groupeTD`, `groupeTP`, `groupeEI`, `prevision_groupeTD`, `prevision_groupeTP`, `prevision_groupeEI`) VALUES
+('a', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 --
 -- Index pour les tables exportées
@@ -254,3 +284,7 @@ ALTER TABLE `NotificationInscription`
 ALTER TABLE `Responsabilite`
   ADD CONSTRAINT `fk_form` FOREIGN KEY (`nomFormation`) REFERENCES `Formation` (`nomFormation`),
   ADD CONSTRAINT `fk_ue` FOREIGN KEY (`nomUE`) REFERENCES `UE` (`nom_UE`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
