@@ -6,6 +6,7 @@ require 'vendor/autoload.php';
 
 
 use \PPIL\controlers\HomeControler as HomeControler;
+use PPIL\controlers\UtilisateurControler;
 
 $app = new \Slim\Slim();
 
@@ -19,11 +20,13 @@ $app->get('/', function () use ($app) {
 
 
 $app->post('/login', function () use ($app){
-    $request = $app->request();
-    $email = $request->post('email');
-    echo $email;
-    //    $c = new HomeControler();
-    //$c->connection();
+    $c = new HomeControler();
+    $c->connection();
 })->name('login');
+
+$app->get('/home', function (){
+    $c = new UtilisateurControler();
+    $c->home();
+})->name('homeUtilisateur');
 
 $app->run();

@@ -1,13 +1,14 @@
 <?php
 namespace  PPIL\controlers;
 
-use PPIL\views\AbstractView as AbstractView;
+use PPIL\models\Enseignant;
 use PPIL\views\VueHome;
 use PPIL\views\VueUtilisateur;
 
 
 use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
+use Slim\Slim;
 
 class HomeControler{
 
@@ -17,8 +18,21 @@ class HomeControler{
     }
 
     public function connection() {
-        #TODO
+        $val = Slim::getInstance()->request->post();
+        $email = filter_var($val['email'], FILTER_SANITIZE_STRING);
+        $pass = filter_var($val['password'], FILTER_SANITIZE_STRING);
 
+
+        $u = Enseignant::where("mail", "like", $email)->first();
+        if($u != null){
+            $hash = $u->mdp;
+            if (password_verify($pass, $hash)) {
+                $_SESSION['mail'] = $u->mail;
+            } else {
+            }
+        }else{
+
+        }
 
 
         #si tout se passe bien
@@ -41,8 +55,7 @@ class HomeControler{
         $n2->notification()->save($n);
         */
 
-        $v  = new VueUtilisateur();
-        echo $v->home();
+
     }
 
 

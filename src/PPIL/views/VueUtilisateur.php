@@ -14,14 +14,10 @@ use Slim\Slim;
 
 class VueUtilisateur extends AbstractView
 {
-    public static function home(){
+    public static function home($e){
         $html = self::headHTML();
         $html = $html . self::navHTML();
-        $lien = Slim::getInstance()->urlFor("login");
-        $lien_oublie = "";
-        $lien_inscription = "";
-        $html = $html . <<< END
-END;
+        $html = $html . "Bonjour " . $e->prenom . " " . $e->nom;
         return $html;
 
     }

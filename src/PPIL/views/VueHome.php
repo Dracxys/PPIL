@@ -27,7 +27,7 @@ class VueHome extends AbstractView
               <div class="form-group">
 				<label class="control-label col-sm-4" for="email">Adresse Email :</label>
 				<div class="col-sm-4">
-				  <input type="text" id="email" name="email" class="form-control" placeholder="Adresse Mail" required="true"/>
+				  <input type="email" id="email" name="email" class="form-control" placeholder="Adresse Mail" required="true"/>
 				</div>
 			  </div>
               <div class="form-group">
