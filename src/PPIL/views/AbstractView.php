@@ -62,6 +62,7 @@ END;
 				<li><a href="#">Annuaire</a></li>
 			  </ul>
 			  <ul class="nav navbar-nav navbar-right">
+				<p class="navbar-text hidden-xs">#Nom d'utilisateur#</p>
 				<li><a href="#">Se déconnecter</a></li>
 			  </ul>
 			</div>
