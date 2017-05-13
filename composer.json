@@ -1,7 +1,7 @@
 {
 	"name": "PPIL/PPIL",
     "require": {
-        "slim/slim": "^3.5",
+        "slim/slim": "2.*",
         "illuminate/database": "~5.1",
         "twbs/bootstrap": "^3.3"
     },
