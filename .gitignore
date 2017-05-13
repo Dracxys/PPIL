@@ -9,7 +9,7 @@ vendor/
 
 composer.lock
 
-db.ppil.conf.ini
+*db.ppil.conf.ini*
 
 #*
 *~
