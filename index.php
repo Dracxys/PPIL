@@ -13,13 +13,14 @@ $app = new \Slim\Slim();
 \PPIL\utils\ConnectionFactory::makeConnection();
 
 $app->get('/', function () {
-    $ctest = new HomeControler();
-    $ctest->accueil();
+    $c = new HomeControler();
+    $c->accueil();
 });
 
 
 $app->post('/login', function (){
-    echo "vide";
+    $c = new HomeControler();
+    $c->connection();
 })->name('login');
 
 $app->run();

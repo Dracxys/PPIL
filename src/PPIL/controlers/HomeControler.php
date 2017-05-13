@@ -11,4 +11,9 @@ class HomeControler{
         echo $v->home();
     }
 
+    public function connection() {
+        #TODO
+    }
+
+
 }
