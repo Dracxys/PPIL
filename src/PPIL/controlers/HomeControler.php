@@ -19,7 +19,7 @@ class HomeControler{
 
     public function connection() {
         $val = Slim::getInstance()->request->post();
-        $email = filter_var($val['email'], FILTER_SANITIZE_STRING);
+        $email = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
         $pass = filter_var($val['password'], FILTER_SANITIZE_STRING);
 
 
@@ -28,6 +28,8 @@ class HomeControler{
             $hash = $u->mdp;
             if (password_verify($pass, $hash)) {
                 $_SESSION['mail'] = $u->mail;
+                $v = new VueUtilisateur();
+                echo $v->home();
             } else {
                 $v = new VueHome();
                 echo $v->home(1);

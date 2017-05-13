@@ -18,8 +18,7 @@ class UtilisateurControler
     public function home(){
         $v = new VueUtilisateur();
         if(isset($_SESSION['mail'])){
-            $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
-            echo $v->home($e);
+            echo $v->home();
         }
     }
 }

@@ -14,10 +14,9 @@ use Slim\Slim;
 
 class VueUtilisateur extends AbstractView
 {
-    public static function home($e){
+    public static function home(){
         $html = self::headHTML();
         $html = $html . self::navHTML();
-        $html = $html . "Bonjour " . $e->prenom . " " . $e->nom;
         return $html;
 
     }

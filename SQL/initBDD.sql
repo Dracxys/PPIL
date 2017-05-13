@@ -30,7 +30,7 @@ CREATE TABLE `Enseignant` (
   `mail` varchar(64) NOT NULL DEFAULT '',
   `nom` varchar(32) NOT NULL,
   `prenom` varchar(32) NOT NULL,
-  `mdp` varchar(32) NOT NULL,
+  `mdp` varchar(200) NOT NULL,
   `statut` enum('Enseignant-chercheur permanent','ATER','PRAG','Doctorant','Vacataire') DEFAULT NULL,
   `volumeCourant` int(4) DEFAULT NULL,
   `volumeMin` int(4) DEFAULT NULL,
