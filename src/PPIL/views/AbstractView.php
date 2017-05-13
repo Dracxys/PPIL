@@ -16,6 +16,9 @@ class AbstractView {
     <meta name="author" content="">
     <title>PPIL </title>
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
 </head>
 <body>
   <div class="jumbotron">
@@ -38,6 +41,32 @@ END;
     }
     public static function navHTML() {
         $HTML= <<<END
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+			<div class="navbar-header">
+			  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand" href="http://www.univ-lorraine.fr/">Univ-lorraine</a>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar">
+			  <ul class="nav navbar-nav">
+				<li class="active"><a href="#">Profil</a></li>
+				<li><a href="#">Enseignement</a></li>
+				<li><a href="#">UE</a></li>
+				<li><a href="#">Formation</a></li>
+				<li><a href="#">Enseignants</a></li>
+				<li><a href="#">Journal</a></li>
+				<li><a href="#">Annuaire</a></li>
+			  </ul>
+			  <ul class="nav navbar-nav navbar-right">
+				<li><a href="#">Se déconnecter</a></li>
+			  </ul>
+			</div>
+          </div>
+        </nav>
 END;
         return $HTML;
     }
