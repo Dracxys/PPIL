@@ -6,9 +6,7 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 	protected $primaryKey = "mail";
 	public $timestamps = false;
 
-	public function inscription($mail, $nom, $prenom, $statut, $mdp) {
-	$utilisateur = Enseignant::where('mail', 'like' , $mail) -> first();
-	if (empty($utilisateur)){
+	public static function inscription($mail, $nom, $prenom, $statut, $mdp) {
 		$new_notification_inscription = new NotificationInscription();
 		$new_notification_inscription->nom = $nom;
 		$new_notification_inscription->prenom = $prenom;
@@ -20,9 +18,6 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 		$new_notification_inscription->destinataire = $ens_respDI->mail;
 		$new_notification_inscription->save();
 		$new_notification_inscription->notification()->save($new_notification_inscription);
-		return true;
-	}
-	return false;
 }
 
 
