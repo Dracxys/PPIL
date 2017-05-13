@@ -17,19 +17,36 @@ class VueHome extends AbstractView
     public static function home(){
         $html = self::headHTML();
         $lien = Slim::getInstance()->urlFor("login");
+        $lien_oublie = "";
+        $lien_inscription = "";
         $html = $html . <<< END
-        <div class="container">
-          <form method="post" action="$lien" id="connexion">
-            <div class="form-group">
-              <label for="email">Adresse Email :</label>
-              <input type="email" id="fieldEmail" class="form-control" placeholder="Adresse Mail" />
-            </div>
-            <div class="form-group">
-              <label for="password">Mot de passe :</label>
-              <input type="password" id="fieldPassword" class="form-control" placeholder="Mot de passe" />
-            </div>
-            <button type="submit" class="btn btn-default">Connexion</button>
-          </form>
+		<div class="container panel panel-default text-center">
+		  <div class="panel-body">
+			<form class="form-signin form-horizontal" method="post" action="$lien" id="connexion">
+			  <h2 class="form-signin-heading ">Bienvenue</h2>
+              <div class="form-group">
+				<label class="control-label col-sm-2" for="email">Adresse Email :</label>
+				<div class="col-sm-10">
+				  <input type="email" id="email" class="form-control" placeholder="Adresse Mail" required="true"/>
+				</div>
+			  </div>
+              <div class="form-group">
+				<label class="control-label col-sm-2" for="password">Mot de passe :</label>
+				<div class="col-sm-10">
+				  <input type="password" id="password" class="form-control" placeholder="Mot de passe" />
+				</div>
+			  </div>
+			  <div class="form-group">
+							  <button type="submit" class="btn btn-default" formaction="$lien_oublie">Mot de passe oublié ?</button>
+			  </div>
+			  <div class="form-group">
+				<button type="submit" class="btn btn-primary">Connexion</button>
+              </div>
+			  <div class="form-group">
+				<button type="submit" class="btn btn-default" formaction="$lien_inscription">Inscription</button>
+				</div>
+			</form>
+		  </div>
         </div>
 END;
         return $html;
