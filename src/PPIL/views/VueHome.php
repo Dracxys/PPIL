@@ -18,12 +18,19 @@ class VueHome extends AbstractView
         $html = self::headHTML();
         $lien = Slim::getInstance()->urlFor("login");
         $html = $html . <<< END
-        <div class="connexion">
-            <form method="post" action="$lien">
-                <input type="text" name="field1" placeholder="Adresse Mail" />
-                <input type="password" name="field2" placeholder="Mot de passe" />
-                <input  type="submit" value="Connexion" class="envoyer"/>
+        <div class="container">
+        <form method="post" action="$lien" id="connexion">
+            <div class="form-group">
+                <label for="email">Adresse Email :</label>
+                <input type="email" id="fieldEmail" class="form-control" placeholder="Adresse Mail" />
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="fieldPassword" class="form-control" placeholder="Mot de passe" />
+            </div>
+                <button type="submit" class="btn btn-default">Connexion</button>
             </form>
+        </div>
         </div>
 END;
         return $html;
