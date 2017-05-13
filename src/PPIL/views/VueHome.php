@@ -14,7 +14,7 @@ use Slim\Slim;
 
 class VueHome extends AbstractView
 {
-    public static function home(){
+    public static function home($num){
         $html = self::headHTML();
         $lien = Slim::getInstance()->urlFor("login");
         $lien_oublie = "";
@@ -36,6 +36,16 @@ class VueHome extends AbstractView
 				  <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" />
 				</div>
 			  </div>
+END;
+        if($num == 1){
+            $html = $html . <<< END
+            <div class="alert alert-warning">
+                Votre adresse mail ou mot de passe est incorrect. 
+            </div>
+END;
+        }
+
+        $html = $html . <<< END
 			  <div class="form-group">
 							  <button type="submit" class="btn btn-default" formaction="$lien_oublie">Mot de passe oublié ?</button>
 			  </div>
@@ -49,6 +59,9 @@ class VueHome extends AbstractView
 		  </div>
         </div>
 END;
+
+
+
         return $html;
 
     }

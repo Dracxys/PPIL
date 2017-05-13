@@ -14,7 +14,7 @@ class HomeControler{
 
     public function accueil() {
         $v  = new VueHome();
-        echo $v->home();
+        echo $v->home(0);
     }
 
     public function connection() {
@@ -29,9 +29,12 @@ class HomeControler{
             if (password_verify($pass, $hash)) {
                 $_SESSION['mail'] = $u->mail;
             } else {
+                $v = new VueHome();
+                echo $v->home(1);
             }
         }else{
-
+            $v = new VueHome();
+            echo $v->home(1);
         }
 
 

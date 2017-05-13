@@ -16,7 +16,7 @@ $app = new \Slim\Slim();
 $app->get('/', function () use ($app) {
     $c = new HomeControler();
     $c->accueil();
-});
+})->name('home');
 
 
 $app->post('/login', function () use ($app){
