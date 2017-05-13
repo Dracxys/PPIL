@@ -25,14 +25,14 @@ class VueHome extends AbstractView
 			<form class="form-signin form-horizontal" method="post" action="$lien" id="connexion">
 			  <h2 class="form-signin-heading ">Bienvenue</h2>
               <div class="form-group">
-				<label class="control-label col-sm-2" for="email">Adresse Email :</label>
-				<div class="col-sm-10">
+				<label class="control-label col-sm-4" for="email">Adresse Email :</label>
+				<div class="col-sm-4">
 				  <input type="email" id="email" class="form-control" placeholder="Adresse Mail" required="true"/>
 				</div>
 			  </div>
               <div class="form-group">
-				<label class="control-label col-sm-2" for="password">Mot de passe :</label>
-				<div class="col-sm-10">
+				<label class="control-label col-sm-4" for="password">Mot de passe :</label>
+				<div class="col-sm-4">
 				  <input type="password" id="password" class="form-control" placeholder="Mot de passe" />
 				</div>
 			  </div>
