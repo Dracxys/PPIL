@@ -21,12 +21,12 @@ class AbstractView {
   <div class="jumbotron">
 	<div class="container">
 	  <div class="row">
-		<div class="hidden-xs col-sm-2">
+		<div class="hidden-sm hidden-xs col-md-2">
           <div class="logo-univ">
             <img width="100" height="100" src="assets/images/logo-univ.png" />
           </div>
         </div>
-        <div class="col-sm-10">
+        <div class="text-center col-md-8">
 		  <h1>Service enseignant</h1>
         </div>
       </div>
