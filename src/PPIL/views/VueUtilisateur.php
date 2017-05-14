@@ -77,8 +77,8 @@ END;
 				   <form class="form-inline" method="post" action="$lien" >
 					 <div class="form-group">
 					   <input type="hidden" name="id" value="$notification->id_notification" />
-					   <button  name="valider" value="false" type="submit">Refuser</button>
-					   <button  name="valider" value="true" type="submit">Accepter</button>
+					   <button  name="valider" class="btn btn-default" value="false" type="submit">Refuser</button>
+					   <button  name="valider" class="btn btn-primary" value="true" type="submit">Accepter</button>
 					 </div>
 				   </form>
 				 </td>
