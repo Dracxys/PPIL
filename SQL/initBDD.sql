@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Sam 13 Mai 2017 à 18:13
+-- Généré le :  Dim 14 Mai 2017 à 07:39
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -80,6 +80,7 @@ CREATE TABLE `Intervention` (
 
 CREATE TABLE `Notification` (
   `id_notification` int(4) NOT NULL,
+  `nom_destinataire` varchar(32) NOT NULL,
   `message` varchar(64) NOT NULL,
   `besoin_validation` tinyint(1) NOT NULL,
   `validation` tinyint(1) NOT NULL,
