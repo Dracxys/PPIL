@@ -27,13 +27,12 @@ class HomeControler{
         $email = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
         $pass = filter_var($val['password'], FILTER_SANITIZE_STRING);
 
+
         $u = Enseignant::where("mail", "like", $email)->first();
         if($u != null){
             $hash = $u->mdp;
             if (password_verify($pass, $hash)) {
                 $_SESSION['mail'] = $u->mail;
-                $_SESSION['nom'] = $u->nom;
-                $_SESSION['prenom'] = $u->prenom;
                 $v = new VueUtilisateur();
                 echo $v->home();
             } else {
