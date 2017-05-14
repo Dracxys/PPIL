@@ -10,6 +10,7 @@ namespace PPIL\controlers;
 
 
 use PPIL\models\Enseignant;
+use PPIL\views\VueHome;
 use PPIL\views\VueUtilisateur;
 use Slim\Slim;
 
@@ -20,13 +21,19 @@ class UtilisateurControler
         $v = new VueUtilisateur();
         if(isset($_SESSION['mail'])){
             echo $v->home();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
 
 
     public function journal(){
-        $v = new VueUtilisateur();
-        echo $v->journal();
+        if(isset($_SESSION['mail'])) {
+            $v = new VueUtilisateur();
+            echo $v->journal();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
     }
 
     public function inscription(){
@@ -50,5 +57,10 @@ class UtilisateurControler
         } else {
             /********************************** LOAD ERREUR : E-MAIL DEJA UTILISE ******************************/
         }
+    }
+
+    public function deconnexion(){
+        session_destroy();
+        Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
     }
 }
