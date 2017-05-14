@@ -32,7 +32,7 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 
 	public static function reinitialiserMDP($utilisateur, $nveauMDP_hash){
 		$utilisateur->mdp = $nveauMDP_hash;
-		$utilisateur_>save();
+		$utilisateur->save();
 	}
 
 

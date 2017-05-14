@@ -107,13 +107,14 @@ class UtilisateurControler
 	
 	public static function reinitialiserMDP(){
 		if(isset($_SESSION['mail'])) {
+		    $val = Slim::getInstance()->request->post();
 			$ancienMDP = filter_var($val['ancien'], FILTER_SANITIZE_STRING);
 			$nveauMDP = filter_var($val['password'], FILTER_SANITIZE_STRING);
 			$confirmMDP = filter_var($val['password2'], FILTER_SANITIZE_STRING);
 			
 			$ancien_hash = password_hash($ancienMDP, PASSWORD_DEFAULT);
 						
-			$utilisateur::Enseignant::where('mail', 'like', $_SESSION['mail']);
+			$utilisateur = Enseignant::where('mail', 'like', $_SESSION['mail'])->first();
 			if ($ancien_hash == $utilisateur->mdp && $nveauMDP == $confirmMDP) {
 				
 				$nveauMDP_hash = password_hash($nveauMDP, PASSWORD_DEFAULT);
