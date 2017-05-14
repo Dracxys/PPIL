@@ -24,19 +24,24 @@ class HomeControler{
 
 
         $u = Enseignant::where("mail", "like", $email)->first();
-        if($u != null){
-            $hash = $u->mdp;
-            if (password_verify($pass, $hash)) {
-                $_SESSION['mail'] = $u->mail;
-                $v = new VueUtilisateur();
-                echo $v->home();
-            } else {
+        if(isset($_SESSION['mail'])){
+            $v = new VueUtilisateur();
+            echo $v->home();
+        }else {
+            if($u != null){
+                $hash = $u->mdp;
+                if (password_verify($pass, $hash)) {
+                    $_SESSION['mail'] = $u->mail;
+                    $v = new VueUtilisateur();
+                    echo $v->home();
+                } else {
+                    $v = new VueHome();
+                    echo $v->home(1);
+                }
+            }else{
                 $v = new VueHome();
                 echo $v->home(1);
             }
-        }else{
-            $v = new VueHome();
-            echo $v->home(1);
         }
 
 
