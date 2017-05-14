@@ -41,7 +41,8 @@ $app->get('/home/journal', function (){
 })->name('journalUtilisateur');
 
 $app->post('/home/journal/actionNotification', function (){
-    echo "plop";
+    $c = new UtilisateurControler();
+    $c->journal_action_notification();
 })->name('JournalUtilisateur.actionNotification');
 
 
@@ -49,6 +50,11 @@ $app->post('/inscription', function (){
     $c = new HomeControler();
     $c->inscription();
 })->name('inscription');
+
+$app->get('/inscription', function (){
+    $c = new HomeControler();
+    $c->inscription();
+});
 
 $app->post('/home/inscription', function (){
     $c = new UtilisateurControler();
@@ -64,5 +70,15 @@ $app->get('/test', function (){
     $c = new ModifProfilControler();
     $c->home();
 })->name('testmodif');
+
+$app->post('/oubliMDP', function (){
+    $c = new HomeControler();
+    $c->oubliMDP();
+})->name('oubliMDP');
+
+$app->get('/oubliMDP', function (){
+    $c = new HomeControler();
+    $c->oubliMDP();
+});
 
 $app->run();

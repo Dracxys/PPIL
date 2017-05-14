@@ -31,10 +31,14 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
     }
 	
 	public static function getInfosEnseignant($mail) {
-		
-		
+		$utilisateur = Enseignant::where('mail', = , $mail) -> get();
+		return $utilisateur;		
 	}
 
+	public static function reinitialiserMDP($utilisateur, $nveauMDP_hash){
+		$utilisateur->mdp = $nveauMDP_hash;
+		$utilisateur->save();
+	}
 
 
 }

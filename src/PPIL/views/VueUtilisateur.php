@@ -48,8 +48,6 @@ END;
         if(isset($_SESSION["mail"])){
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
             $notifications = Notification::where('mail_destinataire', '=', $e->mail)
-                           ->where('besoin_validation', '=', true)
-                           ->where('validation', '=', false)
                            ->get();
 
             foreach($notifications as $notification){
@@ -87,17 +85,32 @@ END;
 				  </td>
 				  <td>$date</td>
                   <td>
+END;
+                if($notification->besoin_validation == true){
+                    $html .= <<< END
 					<form class="form-inline" method="post" action="$lien" >
 					  <div class="form-group">
 						<input type="hidden" name="id" value="$notification->id_notification" />
+						<input type="hidden" name="annuler" value="false" />
 						<button  name="valider" class="btn btn-default" value="false" type="submit">Refuser</button>
 						<button  name="valider" class="btn btn-primary" value="true" type="submit">Accepter</button>
 					  </div>
 					</form>
 				  </td>
 				</tr>
-
 END;
+                } else {
+                    $html .= <<< END
+   					<form class="form-inline" method="post" action="$lien" >
+   					  <div class="form-group">
+                        <p>Votre action a été prise en compte</p>
+						<input type="hidden" name="id" value="$notification->id_notification" />
+						<input type="hidden" name="valider" value="false" />
+						<button  name="annuler" class="btn btn-primary"  value="true" type="submit">Annuler</button>
+				  </td>
+				</tr>
+END;
+                }
             }
         }
 
