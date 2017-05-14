@@ -35,6 +35,10 @@ $app->get('/home', function (){
     $c->home();
 })->name('homeUtilisateur');
 
+$app->get('/home/journal', function (){
+    $c = new UtilisateurControler();
+    $c->journal();
+})->name('journalUtilisateur');
 
 $app->post('/inscription', function (){
     $c = new HomeControler();
