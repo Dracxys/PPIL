@@ -68,7 +68,7 @@ END;
 
     }
 
-    public static function inscription(){
+    public static function inscription($num = 0){
         $html = self::headHTML();
         $valider = Slim::getInstance()->urlFor("home");
         $annuler = Slim::getInstance()->urlFor("home");
@@ -119,7 +119,22 @@ END;
 				  <input type="password" id="password" name="paswword2" class="form-control" placeholder="Mot de passe" required="true"/>
 				</div>
 			  </div>
-              <div class="form-group">
+END;
+        if($num == 1){
+            $html = $html . <<< END
+            <div class="alert alert-warning">
+                La confirmation de votre mot de passe est erronée.
+            </div>
+END;
+        }elseif ($num == 2){
+            $html = $html . <<< END
+            <div class="alert alert-warning">
+                Adresse mail déjà utilisée.
+            </div>
+END;
+        }
+           $html = $html . <<< END
+           <div class="form-group">
 				<button type="submit" class="btn btn-primary">Valider</button>
 				<button type="submit" class="btn btn-default" formaction="$annuler" formnovalidate="false">Annuler</input>
               </div>

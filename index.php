@@ -53,4 +53,9 @@ $app->post('/inscription', function (){
     $c->inscription();
 })->name('inscription');
 
+$app->get('/home/deconnexion', function (){
+    $c = new UtilisateurControler();
+    $c->deconnexion();
+})->name('deconnexion');
+
 $app->run();

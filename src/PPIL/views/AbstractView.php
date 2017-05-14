@@ -51,6 +51,7 @@ END;
             "Journal" => Slim::getInstance()->urlFor("journalUtilisateur"),
             "Annuaire" => "#"
         );
+        $deco = Slim::getInstance()->urlFor("deconnexion");
         $HTML= <<<END
         <nav class="navbar navbar-default">
           <div class="container-fluid">
@@ -81,7 +82,7 @@ END;
             $HTML .= $e->nom ." ". $e->prenom ."</p>";
         }
         $HTML .= <<<END
-				<li><a href="#">Se déconnecter</a></li>
+				<li><a href="$deco">Se déconnecter</a></li>
 			  </ul>
 			</div>
           </div>
