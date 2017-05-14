@@ -134,7 +134,7 @@ CREATE TABLE `NotificationInscription` (
   `prenom` varchar(32) NOT NULL,
   `statut` enum('Enseignant-chercheur permanent','ATER','PRAG','Doctorant','Vacataire') NOT NULL,
   `mail` varchar(32) NOT NULL,
-  `mot_de_passe` varchar(32) NOT NULL
+  `mot_de_passe` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
