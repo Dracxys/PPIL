@@ -14,26 +14,10 @@ use Slim\Slim;
 
 class VueUtilisateur extends AbstractView
 {
-    public function home(){
+    public static function home(){
         $html = self::headHTML();
-        $html = $html . self::navHTML("Profil");
+        $html = $html . self::navHTML();
         return $html;
-    }
 
-    public function journal(){
-        $html = self::headHTML();
-        $html = $html . self::navHTML("Journal");
-        $html .= <<< END
-	    <div class="container">
-		  <div class="panel panel-default text-center">
-			<div class="panel-heading">Journal des modifications</div>
-			<div class="panel-body">
-
-			</div>
-          </div>
-		</div>
-
-END;
-        return $html;
     }
 }
