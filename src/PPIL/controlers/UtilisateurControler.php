@@ -44,18 +44,27 @@ class UtilisateurControler
         $utilisateur = Enseignant::where('mail', 'like' , $mail) -> first();
         if (empty($utilisateur)){ //l'utilisateur n'existe pas dans la BDD
             $mdp = filter_var($val['password'], FILTER_SANITIZE_STRING);
-            $mdp_hash = password_hash($mdp, PASSWORD_DEFAULT);
+            $mdpConfirm = filter_var($val['password2'], FILTER_SANITIZE_STRING);
 
-            $nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
-            $prenom = filter_var($val['prenom'], FILTER_SANITIZE_STRING);
-            $statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
+            if($mdp == $mdpConfirm){
+                $mdp_hash = password_hash($mdp, PASSWORD_DEFAULT);
 
-            Enseignant::inscription($mail, $nom, $prenom, $statut, $mdp_hash);
+                $nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
+                $prenom = filter_var($val['prenom'], FILTER_SANITIZE_STRING);
+                $statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
 
-            /********************************** MESSAGE A L'UTILISATEUR L'INFORMANT QUE SA DEMANDE A ETE PRISE EN COMPTE ******************************/
+                Enseignant::inscription($mail, $nom, $prenom, $statut, $mdp_hash);
+
+                /********************************** MESSAGE A L'UTILISATEUR L'INFORMANT QUE SA DEMANDE A ETE PRISE EN COMPTE ******************************/
+
+            }else{
+                $v = new VueHome();
+                echo $v->inscription(1);
+            }
 
         } else {
-            /********************************** LOAD ERREUR : E-MAIL DEJA UTILISE ******************************/
+            $v = new VueHome();
+            echo $v->inscription(2);
         }
     }
 
