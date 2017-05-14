@@ -7,9 +7,6 @@ require 'vendor/autoload.php';
 
 use \PPIL\controlers\HomeControler as HomeControler;
 use PPIL\controlers\UtilisateurControler;
-use PPIL\models\Enseignant;
-use PPIL\models\Notification;
-use PPIL\models\NotificationInscription;
 
 $app = new \Slim\Slim();
 
@@ -40,7 +37,6 @@ $app->get('/home', function (){
 $app->get('/home/journal', function (){
     $c = new UtilisateurControler();
     $c->journal();
-
 })->name('journalUtilisateur');
 
 $app->post('/home/journal/actionNotification', function (){
