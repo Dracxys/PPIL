@@ -55,9 +55,11 @@ END;
 
                 switch($notification->type_notification){
                 case "PPIL\models\NotificationInscription":
-                    $notificationinscription = Notificationinscription::where('id_notification', '=', $notification->id_notification)->get()->first();
-                    $nom_source = $notificationinscription->nom;
-                    $prenom_source = $notificationinscription->prenom;
+                    $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)->first();
+                    if(!empty($notificationinscription)){
+                        $nom_source = $notificationinscription->nom;
+                        $prenom_source = $notificationinscription->prenom;
+                    }
                     break;
                 default:
                     $enseignant_source = Enseignant::where('mail', '=',$notification->mail_source)->first();
