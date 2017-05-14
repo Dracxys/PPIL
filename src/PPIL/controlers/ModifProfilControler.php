@@ -15,6 +15,7 @@ class ModifProfilControler{
 
     public function home() {
             $v = new VueModifProfil();
+			
             echo $v->home();
     }
 }

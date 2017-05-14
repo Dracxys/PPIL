@@ -19,7 +19,7 @@ class VueModifProfil extends AbstractView
 			  <div class="form-group">
 				<label class="control-label col-sm-4" for="nom">Nom </label>
 				<div class="col-sm-4">
-				  <input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" required="true"/>
+				  <input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" required="true" value="jean"/>
 				</div>
 			  </div>
 			  <div class="form-group">
