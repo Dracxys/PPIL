@@ -33,7 +33,8 @@ class VueUtilisateur extends AbstractView
 		  <div class="panel panel-default text-center">
 			<div class="panel-heading">Journal des modifications</div>
 			<div class="panel-body">
-			  <table class="table table-bordered table-responsive">
+			<div class="table-responsive">
+			  <table class="table table-bordered">
 				<thead>
 				  <tr>
 					<th class="text-center">Enseignant</th>
@@ -73,32 +74,41 @@ END;
                     $prenom_source = $enseignant_source->prenom;
                     break;
                 }
-                $html .= "<tr><td>" . $nom_source . " " . $prenom_source . "</td><td>";
+
+                $html .= <<< END
+				<tr>
+				  <td>$nom_source $prenom_source</td>
+				  <td>
+END;
                 foreach($description as $item){
                     $html .= "<p>" . $item ."</p>";
                 }
-                $html .= "</td><td>" . $date ."</td>";
                 $html .= <<< END
-				 <td>
-				   <form class="form-inline" method="post" action="$lien" >
-					 <div class="form-group">
-					   <input type="hidden" name="id" value="$notification->id_notification" />
-					   <button  name="valider" class="btn btn-default" value="false" type="submit">Refuser</button>
-					   <button  name="valider" class="btn btn-primary" value="true" type="submit">Accepter</button>
-					 </div>
-				   </form>
-				 </td>
-               </tr>
+				  </td>
+				  <td>$date</td>
+                  <td>
+					<form class="form-inline" method="post" action="$lien" >
+					  <div class="form-group">
+						<input type="hidden" name="id" value="$notification->id_notification" />
+						<button  name="valider" class="btn btn-default" value="false" type="submit">Refuser</button>
+						<button  name="valider" class="btn btn-primary" value="true" type="submit">Accepter</button>
+					  </div>
+					</form>
+				  </td>
+				</tr>
+
 END;
             }
         }
 
         $html .= <<< END
-				</tbody>
-			  </table>
-			</div>
-          </div>
-		</div>
+		    </tbody>
+          </table>
+        </div>
+      </div>
+  </div>
+</div>
+
 END;
 
         $html = $html . self::footerHTML();
