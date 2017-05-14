@@ -17,8 +17,8 @@ class HomeControler{
             $v = new VueUtilisateur();
             echo $v->home();
         }else {
-            $v  = new VueHome();
-            echo $v->home(0);
+            $v  = new VueUtilisateur();
+            echo $v->home();
         }
     }
 
@@ -76,6 +76,11 @@ class HomeControler{
             $v  = new VueHome();
             echo $v->inscription();
         }
+    }
+
+    public function oubliMDP(){
+        $v  = new VueHome();
+        echo $v->oubliMDP();
     }
 
 
