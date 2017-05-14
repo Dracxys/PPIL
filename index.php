@@ -34,10 +34,4 @@ $app->get('/home', function (){
     $c->home();
 })->name('homeUtilisateur');
 
-
-$app->post('/inscription', function (){
-    $c = new HomeControler();
-    $c->inscription();
-})->name('inscription');
-
 $app->run();

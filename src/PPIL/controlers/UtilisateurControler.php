@@ -23,6 +23,11 @@ class UtilisateurControler
         }
     }
 
+    public function journal(){
+        $v = new VueUtilisateur();
+        echo $v->journal();
+    }
+
     public function inscription(){
         $val = Slim::getInstance()->request->post();
 
