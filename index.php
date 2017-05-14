@@ -18,6 +18,11 @@ $app->get('/', function () use ($app) {
     $c->accueil();
 })->name('home');
 
+$app->post('/',function (){
+    $c = new HomeControler();
+    $c->accueil();
+});
+
 
 $app->post('/login', function () use ($app){
     $c = new HomeControler();
@@ -28,5 +33,11 @@ $app->get('/home', function (){
     $c = new UtilisateurControler();
     $c->home();
 })->name('homeUtilisateur');
+
+
+$app->post('/inscription', function (){
+    $c = new HomeControler();
+    $c->inscription();
+})->name('inscription');
 
 $app->run();

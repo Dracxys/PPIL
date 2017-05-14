@@ -68,5 +68,15 @@ class HomeControler{
 
     }
 
+    public function inscription(){
+        if(isset($_SESSION['mail'])){
+            $v = new VueUtilisateur();
+            echo $v->home();
+        }else {
+            $v  = new VueHome();
+            echo $v->inscription();
+        }
+    }
+
 
 }
