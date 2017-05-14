@@ -45,7 +45,11 @@ class VueUtilisateur extends AbstractView
 END;
         if(isset($_SESSION["mail"])){
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
-            $notifications = Notification::where('mail_destinataire', '=', $e->mail)->get();
+            $notifications = Notification::where('mail_destinataire', '=', $e->mail)
+                           ->where('besoin_validation', '=', true)
+                           ->where('validation', '=', false)
+                           ->get();
+
             foreach($notifications as $notification){
                 $date = date('d/m/Y', strtotime($notification->created_at));
                 $description = array($notification->message);
@@ -55,7 +59,8 @@ END;
 
                 switch($notification->type_notification){
                 case "PPIL\models\NotificationInscription":
-                    $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)->first();
+                    $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
+                                             ->first();
                     if(!empty($notificationinscription)){
                         $nom_source = $notificationinscription->nom;
                         $prenom_source = $notificationinscription->prenom;
