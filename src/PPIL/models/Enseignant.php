@@ -10,7 +10,7 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 	public static function inscription($mail, $nom, $prenom, $statut, $mdp) {
 
         $n = new Notification();
-        $n->message = "Inscription";
+        $n->message = "Demande d'inscription";
         $n->besoin_validation = 1;
         $n->validation = 0;
         $n->type_notification = 'PPIL\models\NotificationInscription';
