@@ -13,8 +13,13 @@ use Slim\Slim;
 class HomeControler{
 
     public function accueil() {
-        $v  = new VueHome();
-        echo $v->home(0);
+        if(isset($_SESSION['mail'])){
+            $v = new VueUtilisateur();
+            echo $v->home();
+        }else {
+            $v  = new VueHome();
+            echo $v->home(0);
+        }
     }
 
     public function connection() {
@@ -24,24 +29,19 @@ class HomeControler{
 
 
         $u = Enseignant::where("mail", "like", $email)->first();
-        if(isset($_SESSION['mail'])){
-            $v = new VueUtilisateur();
-            echo $v->home();
-        }else {
-            if($u != null){
-                $hash = $u->mdp;
-                if (password_verify($pass, $hash)) {
-                    $_SESSION['mail'] = $u->mail;
-                    $v = new VueUtilisateur();
-                    echo $v->home();
-                } else {
-                    $v = new VueHome();
-                    echo $v->home(1);
-                }
-            }else{
+        if($u != null){
+            $hash = $u->mdp;
+            if (password_verify($pass, $hash)) {
+                $_SESSION['mail'] = $u->mail;
+                $v = new VueUtilisateur();
+                echo $v->home();
+            } else {
                 $v = new VueHome();
                 echo $v->home(1);
             }
+        }else{
+            $v = new VueHome();
+            echo $v->home(1);
         }
 
 

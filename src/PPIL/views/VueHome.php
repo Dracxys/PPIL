@@ -40,21 +40,23 @@ END;
         if($num == 1){
             $html = $html . <<< END
             <div class="alert alert-warning">
-                Votre adresse mail ou mot de passe est incorrect. 
+                Votre adresse mail ou mot de passe est incorrect.
             </div>
 END;
         }
 
         $html = $html . <<< END
-			  <div class="form-group">
-							  <button type="submit" class="btn btn-default" formaction="$lien_oublie">Mot de passe oublié ?</button>
-			  </div>
-			  <div class="form-group">
+              <div class="form-group">
 				<button type="submit" class="btn btn-primary">Connexion</button>
               </div>
+
 			  <div class="form-group">
 				<button type="submit" class="btn btn-default" formaction="$lien_inscription">Inscription</button>
-				</div>
+   			  </div>
+
+              <div class="form-group">
+				  <button type="submit" class="btn btn-default" formaction="$lien_oublie">Mot de passe oublié ?</button>
+			  </div>
 			</form>
 		  </div>
         </div>
