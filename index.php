@@ -44,7 +44,6 @@ $app->post('/home/journal/actionNotification', function (){
     $c->journal_action_notification();
 })->name('JournalUtilisateur.actionNotification');
 
-
 $app->post('/inscription', function (){
     $c = new HomeControler();
     $c->inscription();

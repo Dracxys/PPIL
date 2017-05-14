@@ -142,7 +142,7 @@ END;
         </div>
 END;
 
-        $html = $html . self::footerHTML();
+$html = $html . self::footerHTML();
 
         return $html;
 

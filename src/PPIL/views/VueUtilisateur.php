@@ -30,9 +30,14 @@ class VueUtilisateur extends AbstractView
         $html = $html . self::navHTML("Journal");
         $html .= <<< END
 	    <div class="container">
-		  <div class="panel panel-default text-center">
-			<div class="panel-heading">Journal des modifications</div>
-			<div class="panel-body">
+		  <div class="panel panel-default">
+			<div class="panel-heading clearfix text-center">
+			  <div class="btn-group pull-right">
+				<button type="button" class="btn btn-default" disabled="true" id="appliquer">Appliquer</button>
+			  </div>
+			  <h4>Journal des modifications</h4>
+			</div>
+			<div class="panel-body text-center">
 			<div class="table-responsive">
 			  <table class="table table-bordered">
 				<thead>
@@ -56,7 +61,6 @@ END;
                 $nom_source = "";
                 $prenom_source = "";
                 $lien = Slim::getInstance()->urlFor("JournalUtilisateur.actionNotification");
-
                 switch($notification->type_notification){
                 case "PPIL\models\NotificationInscription":
                     $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
@@ -66,15 +70,20 @@ END;
                         $prenom_source = $notificationinscription->prenom;
                     }
                     break;
+                case "PPIL\models\Notification":
+                    $nom_source = $notification->mail_source;
+                    break;
                 default:
                     $enseignant_source = Enseignant::where('mail', '=',$notification->mail_source)->first();
-                    $nom_source = $enseignant_source->nom;
-                    $prenom_source = $enseignant_source->prenom;
+                    if(!empty($enseignant_source)){
+                        $nom_source = $enseignant_source->nom;
+                        $prenom_source = $enseignant_source->prenom;
+                    }
                     break;
                 }
 
                 $html .= <<< END
-				<tr>
+				<tr id="$notification->id_notification">
 				  <td>$nom_source $prenom_source</td>
 				  <td>
 END;
@@ -86,31 +95,31 @@ END;
 				  <td>$date</td>
                   <td>
 END;
+                $hide_annule = "";
+                $hide_valide = "hidden";
                 if($notification->besoin_validation == true){
-                    $html .= <<< END
-					<form class="form-inline" method="post" action="$lien" >
+                    $hide_annule = 'hidden';
+                    $hide_valide = "";
+                }
+                $html .= <<< END
+					<form class="form-inline" method="post" action="" id="form_actions">
 					  <div class="form-group">
-						<input type="hidden" name="id" value="$notification->id_notification" />
-						<input type="hidden" name="annuler" value="false" />
-						<button  name="valider" class="btn btn-default" value="false" type="submit">Refuser</button>
-						<button  name="valider" class="btn btn-primary" value="true" type="submit">Accepter</button>
+						<div id="annulation" class="$hide_annule">
+						  <p>Votre demande a été prise en compte.</p>
+						  <button  name="annuler" class="btn btn-primary" id="annule" value="true" type="submit">Annuler</button>
+						</div>
+						<div id="validation" class="$hide_valide">
+						  <button  name="valider" class="btn btn-default" id="refuse" value="false" type="submit">Refuser</button>
+						  <button  name="valider" class="btn btn-primary" id="valide" value="false" type="submit">Accepter</button>
+						</div>
+
+						<input type="hidden" id="id" name="id" value="$notification->id_notification" />
+
 					  </div>
 					</form>
 				  </td>
 				</tr>
 END;
-                } else {
-                    $html .= <<< END
-   					<form class="form-inline" method="post" action="$lien" >
-   					  <div class="form-group">
-                        <p>Votre action a été prise en compte</p>
-						<input type="hidden" name="id" value="$notification->id_notification" />
-						<input type="hidden" name="valider" value="false" />
-						<button  name="annuler" class="btn btn-primary"  value="true" type="submit">Annuler</button>
-				  </td>
-				</tr>
-END;
-                }
             }
         }
 
@@ -121,6 +130,8 @@ END;
       </div>
   </div>
 </div>
+        <button type="button" class="btn" id="bbb">Basic</button>
+        <script type="text/javascript" src="/PPIL/assets/js/cleanup.js"></script>
 
 END;
 
