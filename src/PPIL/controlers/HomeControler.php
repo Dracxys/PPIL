@@ -78,5 +78,10 @@ class HomeControler{
         }
     }
 
+    public function oubliMDP(){
+        $v  = new VueHome();
+        echo $v->oubliMDP();
+    }
+
 
 }

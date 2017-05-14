@@ -50,6 +50,11 @@ $app->post('/inscription', function (){
     $c->inscription();
 })->name('inscription');
 
+$app->get('/inscription', function (){
+    $c = new HomeControler();
+    $c->inscription();
+});
+
 $app->post('/home/inscription', function (){
     $c = new UtilisateurControler();
     $c->inscription();
@@ -59,5 +64,17 @@ $app->get('/home/deconnexion', function (){
     $c = new UtilisateurControler();
     $c->deconnexion();
 })->name('deconnexion');
+
+$app->post('/oubliMDP', function (){
+    $c = new HomeControler();
+    $c->oubliMDP();
+})->name('oubliMDP');
+
+$app->get('/oubliMDP', function (){
+    $c = new HomeControler();
+    $c->oubliMDP();
+});
+
+
 
 $app->run();
