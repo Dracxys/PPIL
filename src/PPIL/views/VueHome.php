@@ -70,7 +70,7 @@ END;
 
     public static function inscription($num = 0){
         $html = self::headHTML();
-        $valider = Slim::getInstance()->urlFor("home");
+        $valider = Slim::getInstance()->urlFor("validerInscription");
         $annuler = Slim::getInstance()->urlFor("home");
         $html = $html . <<< END
 		<div class="container panel panel-default text-center">
@@ -116,7 +116,7 @@ END;
 			  <div class="form-group">
 				<label class="control-label col-sm-4" for="password">Confirmer mot de passe </label>
 				<div class="col-sm-4">
-				  <input type="password" id="password" name="paswword2" class="form-control" placeholder="Mot de passe" required="true"/>
+				  <input type="password" id="password" name="password2" class="form-control" placeholder="Mot de passe" required="true"/>
 				</div>
 			  </div>
 END;

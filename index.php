@@ -49,6 +49,11 @@ $app->post('/inscription', function (){
     $c->inscription();
 })->name('inscription');
 
+$app->post('/home/inscription', function (){
+    $c = new UtilisateurControler();
+    $c->inscription();
+})->name('validerInscription');
+
 $app->get('/home/deconnexion', function (){
     $c = new UtilisateurControler();
     $c->deconnexion();
