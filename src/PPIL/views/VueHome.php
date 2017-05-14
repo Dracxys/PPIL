@@ -62,8 +62,7 @@ END;
         </div>
 END;
 
-
-
+        $html = $html . self::footerHTML();
         return $html;
 
     }
@@ -104,7 +103,7 @@ END;
 				    <option value="PRAG">PRAG</option>
 				    <option value="Doctorant">Doctorant</option>
 				    <option value="Vacataire">Vacataire</option>
-				  </select>  
+				  </select>
 				</div>
 			  </div>
               <div class="form-group">
@@ -142,6 +141,9 @@ END;
 		  </div>
         </div>
 END;
+
+        $html = $html . self::footerHTML();
+
         return $html;
 
 

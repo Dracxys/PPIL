@@ -93,6 +93,8 @@ END;
 
     public static function footerHTML() {
         $HTML= <<<END
+  </body>
+</html>
 END;
         return $HTML;
     }

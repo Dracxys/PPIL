@@ -21,6 +21,7 @@ class VueUtilisateur extends AbstractView
     public static function home(){
         $html = self::headHTML();
         $html = $html . self::navHTML("Profil");
+        $html = $html . self::footerHTML();
         return $html;
     }
 
@@ -32,7 +33,7 @@ class VueUtilisateur extends AbstractView
 		  <div class="panel panel-default text-center">
 			<div class="panel-heading">Journal des modifications</div>
 			<div class="panel-body">
-			  <table class="table table-bordered">
+			  <table class="table table-bordered table-responsive">
 				<thead>
 				  <tr>
 					<th class="text-center">Enseignant</th>
@@ -99,6 +100,9 @@ END;
           </div>
 		</div>
 END;
+
+        $html = $html . self::footerHTML();
+
         return $html;
     }
 }
