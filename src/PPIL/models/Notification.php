@@ -6,7 +6,4 @@ class Notification extends \Illuminate\Database\Eloquent\Model{
 	protected $primaryKey = "id_notification";
 	public $timestamps = true;
 
-    public function notification_specialisee(){
-        return $this->morphTo();
-    }
 }

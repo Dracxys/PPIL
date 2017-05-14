@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Dim 14 Mai 2017 à 07:39
+-- Généré le :  Dim 14 Mai 2017 à 10:12
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Enseignant` (
-  `mail` varchar(64) NOT NULL DEFAULT '',
+  `mail` varchar(64) NOT NULL,
   `nom` varchar(32) NOT NULL,
   `prenom` varchar(32) NOT NULL,
   `mdp` varchar(200) NOT NULL,
@@ -36,9 +36,15 @@ CREATE TABLE `Enseignant` (
   `volumeMin` int(4) DEFAULT NULL,
   `volumeMax` int(4) DEFAULT NULL,
   `photo` varchar(2048) DEFAULT NULL,
-  `id_notification` int(4) DEFAULT NULL,
   `id_responsabilite` int(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `Enseignant`
+--
+
+INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `id_responsabilite`) VALUES
+('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Enseignant-chercheur permanent', NULL, NULL, NULL, NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -80,7 +86,7 @@ CREATE TABLE `Intervention` (
 
 CREATE TABLE `Notification` (
   `id_notification` int(4) NOT NULL,
-  `nom_destinataire` varchar(32) NOT NULL,
+  `mail_destinataire` varchar(64) NOT NULL,
   `message` varchar(64) NOT NULL,
   `besoin_validation` tinyint(1) NOT NULL,
   `validation` tinyint(1) NOT NULL,
@@ -88,6 +94,15 @@ CREATE TABLE `Notification` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `Notification`
+--
+
+INSERT INTO `Notification` (`id_notification`, `mail_destinataire`, `message`, `besoin_validation`, `validation`, `type_notification`, `created_at`, `updated_at`) VALUES
+(33, 'root@root', 'Inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-14 08:11:15', '2017-05-14 08:11:15'),
+(34, 'root@root', 'Inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-14 08:11:16', '2017-05-14 08:11:16'),
+(35, 'root@root', 'Inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-14 08:11:17', '2017-05-14 08:11:17');
 
 -- --------------------------------------------------------
 
@@ -135,6 +150,13 @@ CREATE TABLE `Responsabilite` (
   `nomUE` varchar(32) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `Responsabilite`
+--
+
+INSERT INTO `Responsabilite` (`id_resp`, `intituleResp`, `nomFormation`, `nomUE`) VALUES
+(3, 'Responsable du departement informatique', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -168,7 +190,6 @@ CREATE TABLE `UE` (
 --
 ALTER TABLE `Enseignant`
   ADD PRIMARY KEY (`mail`),
-  ADD KEY `id_notification` (`id_notification`),
   ADD KEY `id_responsabilite` (`id_responsabilite`);
 
 --
@@ -219,6 +240,25 @@ ALTER TABLE `UE`
   ADD PRIMARY KEY (`nom_UE`);
 
 --
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `Intervention`
+--
+ALTER TABLE `Intervention`
+  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `Notification`
+--
+ALTER TABLE `Notification`
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+--
+-- AUTO_INCREMENT pour la table `Responsabilite`
+--
+ALTER TABLE `Responsabilite`
+  MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
 -- Contraintes pour les tables exportées
 --
 
@@ -226,9 +266,7 @@ ALTER TABLE `UE`
 -- Contraintes pour la table `Enseignant`
 --
 ALTER TABLE `Enseignant`
-  ADD CONSTRAINT `enseignant_ibfk_1` FOREIGN KEY (`id_notification`) REFERENCES `Notification` (`id_notification`),
-  ADD CONSTRAINT `enseignant_ibfk_2` FOREIGN KEY (`id_responsabilite`) REFERENCES `Responsabilite` (`id_resp`),
-  ADD CONSTRAINT `enseignant_ibfk_3` FOREIGN KEY (`id_responsabilite`) REFERENCES `Responsabilite` (`id_resp`);
+  ADD CONSTRAINT `enseignant_ibfk_2` FOREIGN KEY (`id_responsabilite`) REFERENCES `Responsabilite` (`id_resp`);
 
 --
 -- Contraintes pour la table `Intervention`
@@ -241,14 +279,14 @@ ALTER TABLE `Intervention`
 -- Contraintes pour la table `NotificationChgtUE`
 --
 ALTER TABLE `NotificationChgtUE`
-  ADD CONSTRAINT `fk_nomUE` FOREIGN KEY (`nomUE`) REFERENCES `UE` (`nom_UE`),
-  ADD CONSTRAINT `notificationchgtue_ibfk_1` FOREIGN KEY (`id_notification`) REFERENCES `Notification` (`id_notification`);
+  ADD CONSTRAINT `fk_id_notificationChgt` FOREIGN KEY (`id_notification`) REFERENCES `Notification` (`id_notification`),
+  ADD CONSTRAINT `fk_nomUE` FOREIGN KEY (`nomUE`) REFERENCES `UE` (`nom_UE`);
 
 --
 -- Contraintes pour la table `NotificationInscription`
 --
 ALTER TABLE `NotificationInscription`
-  ADD CONSTRAINT `fk_notif` FOREIGN KEY (`id_notification`) REFERENCES `Notification` (`id_notification`);
+  ADD CONSTRAINT `fk_id_notificationIns` FOREIGN KEY (`id_notification`) REFERENCES `Notification` (`id_notification`);
 
 --
 -- Contraintes pour la table `Responsabilite`

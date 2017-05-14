@@ -7,18 +7,19 @@ require 'vendor/autoload.php';
 
 use \PPIL\controlers\HomeControler as HomeControler;
 use PPIL\controlers\UtilisateurControler;
+use PPIL\models\Enseignant;
 
 $app = new \Slim\Slim();
 
 \PPIL\utils\ConnectionFactory::setConfig('db.ppil.conf.ini');
 \PPIL\utils\ConnectionFactory::makeConnection();
 
-$app->get('/', function () use ($app) {
+$app->get('/', function () {
     $c = new HomeControler();
     $c->accueil();
 })->name('home');
 
-$app->post('/login', function () use ($app){
+$app->post('/login', function (){
     $c = new HomeControler();
     $c->connection();
 })->name('login');

@@ -5,32 +5,27 @@ class NotificationInscription extends Notification{
 	protected $table = "NotificationInscription";
 	protected $primaryKey = "id_notification";
 	public $timestamps = false;
-
-    public function notification(){
-        return $this->morphOne('PPIL\models\Notification', 'notification', 'type_notification', 'id_notification');
-    }
 }
 
 /*
 exemple d'utilisation :
-    $n = new Notification();
-    $n->message = "plop";
-    $n->besoin_validation = 1;
-    $n->validation = 0;
-    $n->type_notification = 'PPIL\models\NotificationInscription';
-    $n->save();
+        $n = new Notification();
+        $n->message = "Inscription";
+        $n->besoin_validation = 1;
+        $n->validation = 0;
+        $n->type_notification = 'PPIL\models\NotificationInscription';
 
+        $resp = Responsabilite::where('intituleResp', '=', 'Responsable du departement informatique')->first();
+		$ens_respDI = Enseignant::where('id_responsabilite', '=', $resp->id_resp)->first();
+        $n->mail_destinataire = $ens_respDI->mail;
+        $n->save();
 
-    $n2 = new NotificationInscription();
-    $n2->nom = "c";
-    $n2->prenom="c";
-    $n2->statut="Enseignant-chercheur permanent";
-    $n2->mail = "c";
-    $n2->mot_de_passe = "o";
-    $n2->save();
-    $n2->notification()->save($n);
-
-
-    $ni = NotificationInscription::find(1);
-    echo $ni->notification->message;
+        $new_notification_inscription = new NotificationInscription();
+		$new_notification_inscription->id_notification = $n->id_notification;
+		$new_notification_inscription->nom = $nom;
+		$new_notification_inscription->prenom = $prenom;
+		$new_notification_inscription->statut = $statut;
+		$new_notification_inscription->mail = $mail;
+		$new_notification_inscription->mot_de_passe = $mdp;
+        $new_notification_inscription->save();
  */
