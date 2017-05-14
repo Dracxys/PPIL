@@ -21,4 +21,9 @@ class UtilisateurControler
             echo $v->home();
         }
     }
+
+    public function journal(){
+        $v = new VueUtilisateur();
+        echo $v->journal();
+    }
 }

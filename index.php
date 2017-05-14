@@ -18,7 +18,6 @@ $app->get('/', function () use ($app) {
     $c->accueil();
 })->name('home');
 
-
 $app->post('/login', function () use ($app){
     $c = new HomeControler();
     $c->connection();
@@ -28,5 +27,10 @@ $app->get('/home', function (){
     $c = new UtilisateurControler();
     $c->home();
 })->name('homeUtilisateur');
+
+$app->get('/home/journal', function (){
+    $c = new UtilisateurControler();
+    $c->journal();
+})->name('journalUtilisateur');
 
 $app->run();
