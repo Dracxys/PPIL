@@ -129,6 +129,7 @@ class UtilisateurControler
 		}
 		
 	}
+	
 
     public function deconnexion(){
         session_destroy();
