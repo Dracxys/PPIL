@@ -12,7 +12,9 @@ namespace PPIL\controlers;
 use PPIL\models\Enseignant;
 use PPIL\views\VueHome;
 use PPIL\views\VueUtilisateur;
+use PPIL\models\Notification;
 use Slim\Slim;
+
 
 class UtilisateurControler
 {
@@ -35,6 +37,41 @@ class UtilisateurControler
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
+
+    public function journal_action_notification(){
+        if(isset($_SESSION['mail'])) {
+            $val = Slim::getInstance()->request->post();
+            # quand false, fait une variable vide..... http://stackoverflow.com/questions/9132274/php-validation-booleans-using-filter-var
+            $valider = filter_var($val['valider'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            $annuler = filter_var($val['annuler'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
+            $notification = Notification::where('id_notification', '=', $id)
+                          ->first();
+            if($valider == null){
+                $valider == false;
+            }
+            if($annuler == null){
+                $annuler == false;
+            }
+
+            if(!empty($notification)){
+                #beaucoup de vérifications pour éviter les cas particuliers
+                if($annuler == false && $notification->besoin_validation == true ){
+                    $notification->besoin_validation = false;
+                    $notification->validation = $valider;
+                } elseif($valider == false && $annuler == true && $notification->besoin_validation == false) {
+                    $notification->besoin_validation = true;
+                    $notification->validation = true;
+                }
+                $notification->save();
+                $v = new VueUtilisateur();
+                echo $v->journal();
+            }
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
 
     public function inscription(){
         $val = Slim::getInstance()->request->post();

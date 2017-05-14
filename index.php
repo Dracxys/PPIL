@@ -40,7 +40,8 @@ $app->get('/home/journal', function (){
 })->name('journalUtilisateur');
 
 $app->post('/home/journal/actionNotification', function (){
-    echo "plop";
+    $c = new UtilisateurControler();
+    $c->journal_action_notification();
 })->name('JournalUtilisateur.actionNotification');
 
 
