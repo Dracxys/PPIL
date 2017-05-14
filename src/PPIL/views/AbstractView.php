@@ -78,7 +78,13 @@ END;
         $HTML .= <<<END
 			  </ul>
 			  <ul class="nav navbar-nav navbar-right">
-				<p class="navbar-text hidden-xs">#Nom d'utilisateur#</p>
+				<p class="navbar-text hidden-xs hidden-sm">
+END;
+        if(isset($_SESSION["nom"]) && isset($_SESSION["prenom"])){
+            $HTML .= $_SESSION["nom"] ." ". $_SESSION["prenom"] ."</p>";
+        }
+
+        $HTML .= <<<END
 				<li><a href="#">Se déconnecter</a></li>
 			  </ul>
 			</div>
