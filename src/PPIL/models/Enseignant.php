@@ -29,6 +29,11 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 		$new_notification_inscription->mot_de_passe = $mdp;
         $new_notification_inscription->save();
     }
+	
+	public static function getInfosEnseignant($mail) {
+		
+		
+	}
 
 
 

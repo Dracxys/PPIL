@@ -7,6 +7,7 @@ require 'vendor/autoload.php';
 
 use \PPIL\controlers\HomeControler as HomeControler;
 use PPIL\controlers\UtilisateurControler;
+use PPIL\controlers\ModifProfilControler;
 
 $app = new \Slim\Slim();
 
@@ -58,5 +59,10 @@ $app->get('/home/deconnexion', function (){
     $c = new UtilisateurControler();
     $c->deconnexion();
 })->name('deconnexion');
+
+$app->get('/test', function (){
+    $c = new ModifProfilControler();
+    $c->home();
+})->name('testmodif');
 
 $app->run();

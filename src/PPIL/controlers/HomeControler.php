@@ -17,8 +17,8 @@ class HomeControler{
             $v = new VueUtilisateur();
             echo $v->home();
         }else {
-            $v  = new VueHome();
-            echo $v->home(0);
+            $v  = new VueUtilisateur();
+            echo $v->home();
         }
     }
 
