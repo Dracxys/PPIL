@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Dim 14 Mai 2017 à 10:12
+-- Généré le :  Lun 15 Mai 2017 à 09:01
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -87,6 +87,7 @@ CREATE TABLE `Intervention` (
 CREATE TABLE `Notification` (
   `id_notification` int(4) NOT NULL,
   `mail_destinataire` varchar(64) NOT NULL,
+  `mail_source` varchar(64) DEFAULT NULL,
   `message` varchar(64) NOT NULL,
   `besoin_validation` tinyint(1) NOT NULL,
   `validation` tinyint(1) NOT NULL,
@@ -94,15 +95,6 @@ CREATE TABLE `Notification` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `Notification`
---
-
-INSERT INTO `Notification` (`id_notification`, `mail_destinataire`, `message`, `besoin_validation`, `validation`, `type_notification`, `created_at`, `updated_at`) VALUES
-(33, 'root@root', 'Inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-14 08:11:15', '2017-05-14 08:11:15'),
-(34, 'root@root', 'Inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-14 08:11:16', '2017-05-14 08:11:16'),
-(35, 'root@root', 'Inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-14 08:11:17', '2017-05-14 08:11:17');
 
 -- --------------------------------------------------------
 
@@ -252,7 +244,7 @@ ALTER TABLE `Intervention`
 -- AUTO_INCREMENT pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `Responsabilite`
 --
