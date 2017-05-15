@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Enseignant` (
-  `mail` varchar(64) NOT NULL,
+  `mail` varchar(128) NOT NULL,
   `nom` varchar(32) NOT NULL,
   `prenom` varchar(32) NOT NULL,
   `mdp` varchar(200) NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE `Intervention` (
   `groupeTP` int(4) DEFAULT NULL,
   `groupeTD` int(4) DEFAULT NULL,
   `groupeEI` int(4) DEFAULT NULL,
-  `mail_enseignant` varchar(64) NOT NULL,
+  `mail_enseignant` varchar(128) NOT NULL,
   `nomUE` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -86,9 +86,9 @@ CREATE TABLE `Intervention` (
 
 CREATE TABLE `Notification` (
   `id_notification` int(4) NOT NULL,
-  `mail_destinataire` varchar(64) NOT NULL,
-  `mail_source` varchar(64) DEFAULT NULL,
-  `message` varchar(64) NOT NULL,
+  `mail_destinataire` varchar(128) NOT NULL,
+  `mail_source` varchar(128) DEFAULT NULL,
+  `message` varchar(300) NOT NULL,
   `besoin_validation` tinyint(1) NOT NULL,
   `validation` tinyint(1) NOT NULL,
   `type_notification` enum('PPIL\\models\\NotificationChgtUE','PPIL\\models\\NotificationInscription','PPIL\\models\\Notification') NOT NULL DEFAULT 'PPIL\\models\\Notification',
@@ -125,7 +125,7 @@ CREATE TABLE `NotificationInscription` (
   `nom` varchar(32) NOT NULL,
   `prenom` varchar(32) NOT NULL,
   `statut` enum('Professeur des universités','Maître de conférences','PRAG','ATER','1/2 ATER','Doctorant','Vacataire') NOT NULL,
-  `mail` varchar(32) NOT NULL,
+  `mail` varchar(128) NOT NULL,
   `mot_de_passe` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
