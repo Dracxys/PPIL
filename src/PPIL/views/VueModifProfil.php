@@ -8,7 +8,7 @@ use Slim\Slim;
 
 class VueModifProfil extends AbstractView
 {
-    public static function home(){
+    public function home(){
         $html = self::headHTML();
         $lien_valider_annuler = Slim::getInstance()->urlFor("home");
         $html = $html . self::navHTML("Profil");
@@ -49,13 +49,13 @@ class VueModifProfil extends AbstractView
 				  </select>
 				</div>
 			  </div>
-			  
+
 			  <div class="form-group">
 				<button type="submit" class="btn btn-primary">Valider</button>
 				<button type="submit" class="btn btn-default" formnovalidate="false">Annuler</input>
               </div>
-			</form>	
-              
+			</form>
+
 END;
  $html = $html . self::footerHTML();
 

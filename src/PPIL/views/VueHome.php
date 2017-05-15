@@ -183,7 +183,7 @@ $html = $html . self::footerHTML();
         return $html;
     }
 
-    public static function oubliMDP(){
+    public function oubliMDP(){
         $html = self::headHTML();
         $valider = Slim::getInstance()->urlFor("home");
         $annuler = Slim::getInstance()->urlFor("home");

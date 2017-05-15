@@ -7,7 +7,7 @@ use Slim\App;
 use Slim\Slim;
 
 class AbstractView {
-    public static function headHTML() {
+    public function headHTML() {
         $HTML= <<<END
 <!DOCTYPE html>
 <html lang="fr">
@@ -41,7 +41,8 @@ class AbstractView {
 END;
         return $HTML;
     }
-    public static function navHTML($focus) {
+
+    public function navHTML($focus) {
         $options = array(
             "Profil" => Slim::getInstance()->urlFor("profilUtilisateur"),
             "Enseignement" => "#",
@@ -91,7 +92,7 @@ END;
         return $HTML;
     }
 
-    public static function footerHTML() {
+    public function footerHTML() {
         $HTML= <<<END
   </body>
 </html>
