@@ -11,6 +11,7 @@ class VueModifProfil extends AbstractView
     public static function home(){
         $html = self::headHTML();
         $lien_valider_annuler = Slim::getInstance()->urlFor("home");
+        $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
 		<div class="container panel panel-default text-center">
 		  <div class="panel-body">

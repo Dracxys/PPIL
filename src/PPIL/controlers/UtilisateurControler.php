@@ -11,6 +11,7 @@ namespace PPIL\controlers;
 
 use PPIL\models\Enseignant;
 use PPIL\views\VueHome;
+use PPIL\views\VueModifProfil;
 use PPIL\views\VueUtilisateur;
 use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
@@ -21,7 +22,7 @@ class UtilisateurControler
 {
 
     public function home(){
-        $v = new VueUtilisateur();
+        $v = new VueModifProfil();
         if(isset($_SESSION['mail'])){
             echo $v->home();
         }else{
