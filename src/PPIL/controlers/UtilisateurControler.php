@@ -147,6 +147,8 @@ class UtilisateurControler
                 $statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
 
                 Enseignant::inscription($mail, $nom, $prenom, $statut, $mdp_hash);
+                $v = new VueHome();
+                echo $v->inscription(3);
             }else{
                 $v = new VueHome();
                 echo $v->inscription(1);

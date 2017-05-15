@@ -74,7 +74,7 @@ END;
         $html = $html . <<< END
 		<div class="container panel panel-default text-center">
 		  <div class="panel-body">
-			<form class="form-signin form-horizontal" method="post" id="valider">
+			<form class="form-signin form-horizontal" method="post" action="$valider" id="valider">
 			  <h2 class="form-signin-heading ">Inscription</h2>
 			  <div class="form-group">
 				<label class="control-label col-sm-4" for="nom">Nom </label>
@@ -134,12 +134,15 @@ END;
             </div>
 END;
         }
-           $html = $html . <<< END
-           <div class="form-group">
+        $html = $html . <<< END
+        <div class="form-group">
 				<button type="submit" class="btn btn-primary" id="button_valider">Valider</button>
 				<button type="submit" class="btn btn-default" formaction="$annuler" formnovalidate="false">Annuler</input>
               </div>
-			</form>
+		</form>
+END;
+        if ($num == 3){
+            $html = $html . <<< END
 
             <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
 			  <div class="modal-dialog">
@@ -163,10 +166,17 @@ END;
 		<script type="text/javascript" src="/PPIL/assets/js/inscription.js">     </script>
         <script type="text/javascript">
            $(function(){
-               valider("$valider");
+               valider();
 			});
         </script>
 END;
+        }else{
+            $html = $html . <<< END
+                </div>
+            </div>
+END;
+        }
+
 
 $html = $html . self::footerHTML();
 
