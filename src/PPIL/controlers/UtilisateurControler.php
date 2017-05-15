@@ -11,6 +11,7 @@ namespace PPIL\controlers;
 
 use PPIL\models\Enseignant;
 use PPIL\views\VueHome;
+use PPIL\views\VueModifProfil;
 use PPIL\views\VueUtilisateur;
 use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
@@ -21,7 +22,7 @@ class UtilisateurControler
 {
 
     public function home(){
-        $v = new VueUtilisateur();
+        $v = new VueModifProfil();
         if(isset($_SESSION['mail'])){
             echo $v->home();
         }else{
@@ -133,7 +134,8 @@ class UtilisateurControler
         $mail = filter_var($val['email'], FILTER_SANITIZE_STRING);
 
         $utilisateur = Enseignant::where('mail', 'like' , $mail) -> first();
-        if (empty($utilisateur)){ //l'utilisateur n'existe pas dans la BDD
+        $newUtilisateur = NotificationInscription::where('mail','like',$mail)->first();
+        if (empty($utilisateur) && empty($newUtilisateur)){ //l'utilisateur n'existe pas dans la BDD
             $mdp = filter_var($val['password'], FILTER_SANITIZE_STRING);
             $mdpConfirm = filter_var($val['password2'], FILTER_SANITIZE_STRING);
 
@@ -145,6 +147,8 @@ class UtilisateurControler
                 $statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
 
                 Enseignant::inscription($mail, $nom, $prenom, $statut, $mdp_hash);
+                $v = new VueHome();
+                echo $v->inscription(3);
             }else{
                 $v = new VueHome();
                 echo $v->inscription(1);

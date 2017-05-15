@@ -45,6 +45,11 @@ $app->post('/home/journal/actionNotification', function (){
     $c->journal_action_notification();
 })->name('JournalUtilisateur.actionNotification');
 
+$app->get('/home/profil', function (){
+    $c = new ModifProfilControler();
+    $c->home();
+})->name('profilUtilisateur');
+
 $app->post('/inscription', function (){
     $c = new HomeControler();
     $c->inscription();
@@ -64,11 +69,6 @@ $app->get('/home/deconnexion', function (){
     $c = new UtilisateurControler();
     $c->deconnexion();
 })->name('deconnexion');
-
-$app->get('/test', function (){
-    $c = new ModifProfilControler();
-    $c->home();
-})->name('testmodif');
 
 $app->post('/oubliMDP', function (){
     $c = new HomeControler();
