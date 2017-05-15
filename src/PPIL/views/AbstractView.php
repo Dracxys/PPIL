@@ -43,7 +43,7 @@ END;
     }
     public static function navHTML($focus) {
         $options = array(
-            "Profil" => "#",
+            "Profil" => Slim::getInstance()->urlFor("profilUtilisateur"),
             "Enseignement" => "#",
             "UE" => "#",
             "Formation" => "#",
