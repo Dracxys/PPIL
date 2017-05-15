@@ -74,7 +74,7 @@ END;
         $html = $html . <<< END
 		<div class="container panel panel-default text-center">
 		  <div class="panel-body">
-			<form class="form-signin form-horizontal" method="post" action="$valider" id="valider">
+			<form class="form-signin form-horizontal" method="post" action="$valider" id="inscription">
 			  <h2 class="form-signin-heading ">Inscription</h2>
 			  <div class="form-group">
 				<label class="control-label col-sm-4" for="nom">Nom </label>
@@ -190,7 +190,7 @@ $html = $html . self::footerHTML();
         $html = $html . <<< END
         <div class="container panel panel-default text-center">
 		  <div class="panel-body">
-			<form class="form-signin form-horizontal" method="post" action="$valider" id="valider">
+			<form class="form-signin form-horizontal" method="post" action="$valider" id="mdp">
 			  <h2 class="form-signin-heading ">Oubli mot de passe</h2>
               <div class="form-group">
 				<label class="control-label col-sm-4" for="email">Adresse Mail </label>
