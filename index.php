@@ -82,10 +82,12 @@ $app->post('/oublieMDP/nouveau', function (){
 
 $app->post("/home/modificationProfil", function (){
     $c = new ModifProfilControler();
+    $c->modificationProfil();
 })->name('modificationProfil');
 
 $app->post("/home/modifPassword", function (){
     $c = new ModifProfilControler();
+    $c->modificationPassword();
 })->name('modificationPassword');
 
 
