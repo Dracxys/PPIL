@@ -80,6 +80,13 @@ $app->post('/oublieMDP/nouveau', function (){
     $c->changeMDP();
 })->name('changementMDPValider');
 
+$app->post("/home/modificationProfil", function (){
+    $c = new ModifProfilControler();
+})->name('modificationProfil');
+
+$app->post("/home/modifPassword", function (){
+    $c = new ModifProfilControler();
+})->name('modificationPassword');
 
 
 /* ===================== liens dans la barre de navigation ==================*/
