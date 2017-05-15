@@ -3,6 +3,7 @@ namespace  PPIL\controlers;
 
 use PPIL\models\Enseignant;
 use PPIL\views\VueHome;
+use PPIL\views\VueModifProfil;
 use PPIL\views\VueUtilisateur;
 
 
@@ -33,7 +34,7 @@ class HomeControler{
             $hash = $u->mdp;
             if (password_verify($pass, $hash)) {
                 $_SESSION['mail'] = $u->mail;
-                $v = new VueUtilisateur();
+                $v = new VueModifProfil();
                 echo $v->home();
             } else {
                 $v = new VueHome();

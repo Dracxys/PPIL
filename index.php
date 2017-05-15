@@ -7,6 +7,7 @@ require 'vendor/autoload.php';
 
 use \PPIL\controlers\HomeControler as HomeControler;
 use PPIL\controlers\UtilisateurControler;
+use PPIL\controlers\ModifProfilControler;
 
 $app = new \Slim\Slim();
 
@@ -44,6 +45,10 @@ $app->post('/home/journal/actionNotification', function (){
     $c->journal_action_notification();
 })->name('JournalUtilisateur.actionNotification');
 
+$app->get('/home/profil', function (){
+    $c = new ModifProfilControler();
+    $c->home();
+})->name('profilUtilisateur');
 
 $app->post('/inscription', function (){
     $c = new HomeControler();
@@ -74,7 +79,5 @@ $app->get('/oubliMDP', function (){
     $c = new HomeControler();
     $c->oubliMDP();
 });
-
-
 
 $app->run();

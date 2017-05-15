@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Dim 14 Mai 2017 à 10:12
+-- Généré le :  Lun 15 Mai 2017 à 09:01
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -27,11 +27,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Enseignant` (
-  `mail` varchar(64) NOT NULL,
+  `mail` varchar(128) NOT NULL,
   `nom` varchar(32) NOT NULL,
   `prenom` varchar(32) NOT NULL,
   `mdp` varchar(200) NOT NULL,
-  `statut` enum('Enseignant-chercheur permanent','ATER','PRAG','Doctorant','Vacataire') DEFAULT NULL,
+  `statut` enum('Professeur des universités','Maître de conférences','PRAG','ATER','1/2 ATER','Doctorant','Vacataire') DEFAULT NULL,
   `volumeCourant` int(4) DEFAULT NULL,
   `volumeMin` int(4) DEFAULT NULL,
   `volumeMax` int(4) DEFAULT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `Enseignant` (
 --
 
 INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `id_responsabilite`) VALUES
-('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Enseignant-chercheur permanent', NULL, NULL, NULL, NULL, 3);
+('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE `Intervention` (
   `groupeTP` int(4) DEFAULT NULL,
   `groupeTD` int(4) DEFAULT NULL,
   `groupeEI` int(4) DEFAULT NULL,
-  `mail_enseignant` varchar(64) NOT NULL,
+  `mail_enseignant` varchar(128) NOT NULL,
   `nomUE` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -86,23 +86,15 @@ CREATE TABLE `Intervention` (
 
 CREATE TABLE `Notification` (
   `id_notification` int(4) NOT NULL,
-  `mail_destinataire` varchar(64) NOT NULL,
-  `message` varchar(64) NOT NULL,
+  `mail_destinataire` varchar(128) NOT NULL,
+  `mail_source` varchar(128) DEFAULT NULL,
+  `message` varchar(300) NOT NULL,
   `besoin_validation` tinyint(1) NOT NULL,
   `validation` tinyint(1) NOT NULL,
   `type_notification` enum('PPIL\\models\\NotificationChgtUE','PPIL\\models\\NotificationInscription','PPIL\\models\\Notification') NOT NULL DEFAULT 'PPIL\\models\\Notification',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `Notification`
---
-
-INSERT INTO `Notification` (`id_notification`, `mail_destinataire`, `message`, `besoin_validation`, `validation`, `type_notification`, `created_at`, `updated_at`) VALUES
-(33, 'root@root', 'Inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-14 08:11:15', '2017-05-14 08:11:15'),
-(34, 'root@root', 'Inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-14 08:11:16', '2017-05-14 08:11:16'),
-(35, 'root@root', 'Inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-14 08:11:17', '2017-05-14 08:11:17');
 
 -- --------------------------------------------------------
 
@@ -132,8 +124,8 @@ CREATE TABLE `NotificationInscription` (
   `id_notification` int(4) NOT NULL,
   `nom` varchar(32) NOT NULL,
   `prenom` varchar(32) NOT NULL,
-  `statut` enum('Enseignant-chercheur permanent','ATER','PRAG','Doctorant','Vacataire') NOT NULL,
-  `mail` varchar(32) NOT NULL,
+  `statut` enum('Professeur des universités','Maître de conférences','PRAG','ATER','1/2 ATER','Doctorant','Vacataire') NOT NULL,
+  `mail` varchar(128) NOT NULL,
   `mot_de_passe` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -252,7 +244,7 @@ ALTER TABLE `Intervention`
 -- AUTO_INCREMENT pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `Responsabilite`
 --

@@ -14,7 +14,7 @@ use Slim\Slim;
 
 class VueHome extends AbstractView
 {
-    public static function home($num){
+    public function home($num){
         $html = self::headHTML();
         $lien = Slim::getInstance()->urlFor("login");
         $lien_oublie = Slim::getInstance()->urlFor("oubliMDP");
@@ -67,7 +67,7 @@ END;
 
     }
 
-    public static function inscription($num = 0){
+    public function inscription($num = 0){
         $html = self::headHTML();
         $valider = Slim::getInstance()->urlFor("validerInscription");
         $annuler = Slim::getInstance()->urlFor("home");
@@ -98,9 +98,11 @@ END;
 				<label class="control-label col-sm-4" for="statut">Statut </label>
 				<div class="col-sm-4">
 				  <select class="form-control" name="statut">
-				    <option value="Enseignant-chercheur permanent">Enseignant-Chercheur permanent</option>
-				    <option value="ATER">ATER</option>
+				    <option value="Professeur des universités">Professeur des universités</option>
+				    <option value="Maître de conférences">Maître de conférences</option>
 				    <option value="PRAG">PRAG</option>
+				    <option value="ATER">ATER</option>
+				    <option value="1/2 ATER">1/2 ATER</option>
 				    <option value="Doctorant">Doctorant</option>
 				    <option value="Vacataire">Vacataire</option>
 				  </select>
@@ -132,25 +134,56 @@ END;
             </div>
 END;
         }
-           $html = $html . <<< END
-           <div class="form-group">
-				<button type="submit" class="btn btn-primary">Valider</button>
+        $html = $html . <<< END
+        <div class="form-group">
+				<button type="submit" class="btn btn-primary" id="button_valider">Valider</button>
 				<button type="submit" class="btn btn-default" formaction="$annuler" formnovalidate="false">Annuler</input>
               </div>
-			</form>
+		</form>
+END;
+        if ($num == 3){
+            $html = $html . <<< END
+
+            <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<h4 class="modal-title">Votre demande a été prise en compte.</h4>
+				  </div>
+				  <div class="modal-body">
+					<p>Un mail vous sera envoyé quand le responsable aura validé ou refusé votre demande.</p>
+				  </div>
+				  <div class="modal-footer">
+
+					<button type="button" class="btn btn-default" onclick="location.href='$annuler'" data-dismiss="modal">Ok</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+
 		  </div>
         </div>
+		<script type="text/javascript" src="/PPIL/assets/js/inscription.js">     </script>
+        <script type="text/javascript">
+           $(function(){
+               valider();
+			});
+        </script>
 END;
+        }else{
+            $html = $html . <<< END
+                </div>
+            </div>
+END;
+        }
 
-        $html = $html . self::footerHTML();
+
+$html = $html . self::footerHTML();
 
         return $html;
-
-
     }
 
-
-    public static function oubliMDP(){
+    public function oubliMDP(){
         $html = self::headHTML();
         $valider = Slim::getInstance()->urlFor("home");
         $annuler = Slim::getInstance()->urlFor("home");
