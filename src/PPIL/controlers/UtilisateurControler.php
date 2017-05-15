@@ -134,7 +134,8 @@ class UtilisateurControler
         $mail = filter_var($val['email'], FILTER_SANITIZE_STRING);
 
         $utilisateur = Enseignant::where('mail', 'like' , $mail) -> first();
-        if (empty($utilisateur)){ //l'utilisateur n'existe pas dans la BDD
+        $newUtilisateur = NotificationInscription::where('mail','like',$mail)->first();
+        if (empty($utilisateur) && empty($newUtilisateur)){ //l'utilisateur n'existe pas dans la BDD
             $mdp = filter_var($val['password'], FILTER_SANITIZE_STRING);
             $mdpConfirm = filter_var($val['password2'], FILTER_SANITIZE_STRING);
 
