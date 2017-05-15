@@ -35,21 +35,6 @@ $app->get('/home', function (){
     $c->home();
 })->name('homeUtilisateur');
 
-$app->get('/home/journal', function (){
-    $c = new UtilisateurControler();
-    $c->journal();
-})->name('journalUtilisateur');
-
-$app->post('/home/journal/actionNotification', function (){
-    $c = new UtilisateurControler();
-    $c->journal_action_notification();
-})->name('JournalUtilisateur.actionNotification');
-
-$app->get('/home/profil', function (){
-    $c = new ModifProfilControler();
-    $c->home();
-})->name('profilUtilisateur');
-
 $app->post('/inscription', function (){
     $c = new HomeControler();
     $c->inscription();
@@ -79,5 +64,49 @@ $app->get('/oubliMDP', function (){
     $c = new HomeControler();
     $c->oubliMDP();
 });
+
+
+
+/* ===================== liens dans la barre de navigation ==================*/
+$app->get('/home/profil', function (){
+    $c = new ModifProfilControler();
+    $c->home();
+})->name('profilUtilisateur');
+
+$app->get('/home/enseignement', function (){
+    $c = new UtilisateurControler();
+    $c->enseignement();
+})->name('enseignementUtilisateur');
+
+$app->get('/home/ue', function (){
+    $c = new UtilisateurControler();
+    $c->ue();
+})->name('ueUtilisateur');
+
+$app->get('/home/formation', function (){
+    $c = new UtilisateurControler();
+    $c->formation();
+})->name('formationUtilisateur');
+
+$app->get('/home/enseignant', function (){
+    $c = new UtilisateurControler();
+    $c->enseignant();
+})->name('enseignantUtilisateur');
+
+$app->get('/home/journal', function (){
+    $c = new UtilisateurControler();
+    $c->journal();
+})->name('journalUtilisateur');
+
+$app->post('/home/journal/actionNotification', function (){
+    $c = new UtilisateurControler();
+    $c->journal_action_notification();
+})->name('JournalUtilisateur.actionNotification');
+
+$app->get('/home/annuaire', function (){
+    $c = new UtilisateurControler();
+    $c->annuaire();
+})->name('annuaireUtilisateur');
+/* ===================== liens dans la barre de navigation ==================*/
 
 $app->run();
