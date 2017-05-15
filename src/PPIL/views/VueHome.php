@@ -14,7 +14,7 @@ use Slim\Slim;
 
 class VueHome extends AbstractView
 {
-    public static function home($num){
+    public function home($num){
         $html = self::headHTML();
         $lien = Slim::getInstance()->urlFor("login");
         $lien_oublie = Slim::getInstance()->urlFor("oubliMDP");
@@ -67,14 +67,14 @@ END;
 
     }
 
-    public static function inscription($num = 0){
+    public function inscription($num = 0){
         $html = self::headHTML();
         $valider = Slim::getInstance()->urlFor("validerInscription");
         $annuler = Slim::getInstance()->urlFor("home");
         $html = $html . <<< END
 		<div class="container panel panel-default text-center">
 		  <div class="panel-body">
-			<form class="form-signin form-horizontal" method="post" action="$valider" id="valider">
+			<form class="form-signin form-horizontal" method="post" id="valider">
 			  <h2 class="form-signin-heading ">Inscription</h2>
 			  <div class="form-group">
 				<label class="control-label col-sm-4" for="nom">Nom </label>
@@ -134,21 +134,42 @@ END;
         }
            $html = $html . <<< END
            <div class="form-group">
-				<button type="submit" class="btn btn-primary">Valider</button>
+				<button type="submit" class="btn btn-primary" id="button_valider">Valider</button>
 				<button type="submit" class="btn btn-default" formaction="$annuler" formnovalidate="false">Annuler</input>
               </div>
 			</form>
+
+            <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<h4 class="modal-title">Votre demande a été prise en compte.</h4>
+				  </div>
+				  <div class="modal-body">
+					<p>Un mail vous sera envoyé quand le responsable aura validé ou refusé votre demande.</p>
+				  </div>
+				  <div class="modal-footer">
+
+					<button type="button" class="btn btn-default" onclick="location.href='$annuler'" data-dismiss="modal">Ok</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+
 		  </div>
         </div>
+		<script type="text/javascript" src="/PPIL/assets/js/inscription.js">     </script>
+        <script type="text/javascript">
+           $(function(){
+               valider("$valider");
+			});
+        </script>
 END;
 
 $html = $html . self::footerHTML();
 
         return $html;
-
-
     }
-
 
     public static function oubliMDP(){
         $html = self::headHTML();

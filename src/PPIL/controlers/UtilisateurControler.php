@@ -76,8 +76,7 @@ class UtilisateurControler
                             $e->prenom = $notificationinscription->prenom;
                             $e->mail = $notificationinscription->mail;
                             $e->mdp = $notificationinscription->mot_de_passe;
-                            $nom_source = $notificationinscription->nom;
-                            $prenom_source = $notificationinscription->prenom;
+                            $e->statut = $notificationinscription->statut;
                             $e->save();
                         }
                         break;
@@ -114,9 +113,6 @@ class UtilisateurControler
                 $statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
 
                 Enseignant::inscription($mail, $nom, $prenom, $statut, $mdp_hash);
-
-                /********************************** MESSAGE A L'UTILISATEUR L'INFORMANT QUE SA DEMANDE A ETE PRISE EN COMPTE ******************************/
-
             }else{
                 $v = new VueHome();
                 echo $v->inscription(1);
@@ -127,31 +123,31 @@ class UtilisateurControler
             echo $v->inscription(2);
         }
     }
-	
-	public static function reinitialiserMDP(){
+
+	public function reinitialiserMDP(){
 		if(isset($_SESSION['mail'])) {
 		    $val = Slim::getInstance()->request->post();
 			$ancienMDP = filter_var($val['ancien'], FILTER_SANITIZE_STRING);
 			$nveauMDP = filter_var($val['password'], FILTER_SANITIZE_STRING);
 			$confirmMDP = filter_var($val['password2'], FILTER_SANITIZE_STRING);
-			
+
 			$ancien_hash = password_hash($ancienMDP, PASSWORD_DEFAULT);
-						
+
 			$utilisateur = Enseignant::where('mail', 'like', $_SESSION['mail'])->first();
 			if ($ancien_hash == $utilisateur->mdp && $nveauMDP == $confirmMDP) {
-				
+
 				$nveauMDP_hash = password_hash($nveauMDP, PASSWORD_DEFAULT);
-				
+
 				Enseignant::reinitialiserMDP($utilisateur, $nveauMDP_hash);
-				
+
 				/********************************** MESSAGE A L'UTILISATEUR L'INFORMANT QUE DU CHANGEMENT DE MOT DE PASSE ******************************/
 
 			}
-			
+
 			/********************************** MESSAGE D'ERREUR ******************************/
-				
+
 		}
-		
+
 	}
 
     public function deconnexion(){
