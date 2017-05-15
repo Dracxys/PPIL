@@ -36,15 +36,17 @@ CREATE TABLE `Enseignant` (
   `volumeMin` int(4) DEFAULT NULL,
   `volumeMax` int(4) DEFAULT NULL,
   `photo` varchar(2048) DEFAULT NULL,
-  `id_responsabilite` int(4) DEFAULT NULL
+  `id_responsabilite` int(4) DEFAULT NULL,
+  `rand` int(9) NOT NULL
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Enseignant`
 --
 
-INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `id_responsabilite`) VALUES
-('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 3);
+INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `id_responsabilite`, `rand`) VALUES
+('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 3, 589347120);
 
 -- --------------------------------------------------------
 

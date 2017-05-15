@@ -65,6 +65,21 @@ $app->get('/oubliMDP', function (){
     $c->oubliMDP();
 });
 
+$app->post('/oublieMDP/validation',function (){
+    $c = new HomeControler();
+    $c->changementMDP();
+})->name('changementMDP');
+
+$app->get('/oublieMDP/suppression/:id', function ($id){
+    $c = new HomeControler();
+    $c->changementMDPForm($id);
+});
+
+$app->post('/oublieMDP/nouveau', function (){
+    $c = new HomeControler();
+    $c->changeMDP();
+})->name('changementMDPValider');
+
 
 
 /* ===================== liens dans la barre de navigation ==================*/

@@ -138,7 +138,7 @@ END;
         <div class="form-group">
 				<button type="submit" class="btn btn-primary" id="button_valider">Valider</button>
 				<button type="submit" class="btn btn-default" formaction="$annuler" formnovalidate="false">Annuler</input>
-              </div>
+        </div>
 		</form>
 END;
         if ($num == 3){
@@ -183,9 +183,9 @@ $html = $html . self::footerHTML();
         return $html;
     }
 
-    public function oubliMDP(){
+    public function oubliMDP($num = 0){
         $html = self::headHTML();
-        $valider = Slim::getInstance()->urlFor("home");
+        $valider = Slim::getInstance()->urlFor("changementMDP");
         $annuler = Slim::getInstance()->urlFor("home");
         $html = $html . <<< END
         <div class="container panel panel-default text-center">
@@ -198,6 +198,15 @@ $html = $html . self::footerHTML();
 				  <input type="email" id="email" name="email" class="form-control" placeholder="Adresse Mail" required="true"/>
 				</div>
 			  </div>
+END;
+        if($num == 1){
+            $html = $html . <<< END
+            <div class="alert alert-warning">
+                Votre adresse mail est erronée.
+            </div>
+END;
+        }
+        $html = $html . <<< END
               <div class="form-group">
 				<button type="submit" class="btn btn-primary">Réinitialiser mot de passe</button>
               </div>
@@ -205,11 +214,157 @@ $html = $html . self::footerHTML();
 				  <button type="submit" class="btn btn-default" formaction="$annuler" formnovalidate="false">Annuler</button>
 			  </div>
 			</form>
+END;
+        if ($num == 2){
+            $html = $html . <<< END
+
+            <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<h4 class="modal-title">Votre demande a été prise en compte.</h4>
+				  </div>
+				  <div class="modal-body">
+					<p>Un mail vous sera envoyé avec lien pour réinitialiser son mot de passe.</p>
+				  </div>
+				  <div class="modal-footer">
+
+					<button type="button" class="btn btn-default" onclick="location.href='$annuler'" data-dismiss="modal">Ok</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+
+		  </div>
+        </div>
+		<script type="text/javascript" src="/PPIL/assets/js/inscription.js">     </script>
+        <script type="text/javascript">
+           $(function(){
+               valider();
+			});
+        </script>
+END;
+    }else{
+$html = $html . <<< END
+                </div>
+            </div>
+END;
+}
+
+
+        $html = $html . self::footerHTML();
+        return $html;
+    }
+
+    public function changementMDP($e, $num = 0){
+        $html = self::headHTML();
+        $valider = Slim::getInstance()->urlFor("changementMDPValider");
+        $annuler = Slim::getInstance()->urlFor("home");
+        $html = $html . <<< END
+        <div class="container panel panel-default text-center">
+		  <div class="panel-body">
+			<form class="form-signin form-horizontal" method="post" action="$valider" id="valider">
+			  <h2 class="form-signin-heading ">Réinitilisation du mot de passe de $e->prenom $e->nom</h2>
+              <div class="form-group">
+				<label class="control-label col-sm-4" for="password">Mot de passe </label>
+				<div class="col-sm-4">
+				  <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" required="true"/>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label class="control-label col-sm-4" for="password">Confirmer mot de passe </label>
+				<div class="col-sm-4">
+				  <input type="password" id="password" name="password2" class="form-control" placeholder="Mot de passe" required="true"/>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<div class="col-sm-4">
+				  <input type="hidden" id="id" name="id" class="form-control" value="$e->rand" required="true"/>
+				</div>
+			  </div>
+END;
+        if($num == 1){
+            $html = $html . <<< END
+            <div class="alert alert-warning">
+                La confirmation de votre mot de passe est erronée.
+            </div>
+END;
+    }
+        $html = $html . <<< END
+        <div class="form-group">
+				<button type="submit" class="btn btn-primary" id="button_valider">Valider</button>
+				<button type="submit" class="btn btn-default" formaction="$annuler" formnovalidate="false">Annuler</input>
+        </div>
+			</form>
 		  </div>
         </div>
 END;
 
         $html = $html . self::footerHTML();
         return $html;
+    }
+
+    public function oubliMDPErreur($num = 0){
+        $html = self::headHTML();
+        $annuler = Slim::getInstance()->urlFor('home');
+        if($num == 0) {
+            $html = $html . <<< END
+        <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<h4 class="modal-title">Votre demande a été prise en compte.</h4>
+				  </div>
+				  <div class="modal-body">
+					<p>Votre mot de passe a été changé.</p>
+				  </div>
+				  <div class="modal-footer">
+
+					<button type="button" class="btn btn-default" onclick="location.href='$annuler'" data-dismiss="modal">Ok</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+
+		  </div>
+        </div>
+		<script type="text/javascript" src="/PPIL/assets/js/inscription.js">     </script>
+        <script type="text/javascript">
+            $(function(){
+                valider();
+            });
+        </script>
+END;
+        }elseif($num == 1){
+            $html = $html . <<< END
+        <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<h4 class="modal-title">Une erreur c'est produite</h4>
+				  </div>
+				  <div class="modal-body">
+					<p>Aucun compte n'a été trouvé.</p>
+				  </div>
+				  <div class="modal-footer">
+
+					<button type="button" class="btn btn-default" onclick="location.href='$annuler'" data-dismiss="modal">Ok</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+
+		  </div>
+        </div>
+		<script type="text/javascript" src="/PPIL/assets/js/inscription.js">     </script>
+        <script type="text/javascript">
+            $(function(){
+                valider();
+            });
+        </script>
+END;
+        }
+
+        return $html . $this->footerHTML();
     }
 }

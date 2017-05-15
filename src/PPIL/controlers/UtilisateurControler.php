@@ -146,6 +146,11 @@ class UtilisateurControler
                             }
                             $nom_source = $notificationinscription->nom;
                             $prenom_source = $notificationinscription->prenom;
+                            $tmp = rand(0,9);
+                            for($i = 0; $i < 8 ; $i++){
+                                $tmp = $tmp . rand(0,9);
+                            }
+                            $e->rand = $tmp;
                             $e->save();
                             $mail = new MailControler();
                             $mail->sendMaid($e->mail,'Inscription','Votre inscription a été validé par le responsable du département informatique.');
