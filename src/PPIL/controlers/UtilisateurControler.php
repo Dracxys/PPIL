@@ -76,6 +76,7 @@ class UtilisateurControler
                             $e->prenom = $notificationinscription->prenom;
                             $e->mail = $notificationinscription->mail;
                             $e->mdp = $notificationinscription->mot_de_passe;
+                            $e->statut = $notificationinscription->statut;
                             $nom_source = $notificationinscription->nom;
                             $prenom_source = $notificationinscription->prenom;
                             $e->save();
