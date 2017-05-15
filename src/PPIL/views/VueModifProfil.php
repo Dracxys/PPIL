@@ -3,7 +3,6 @@
 namespace PPIL\views;
 
 
-use Slim\App;
 use Slim\Slim;
 
 class VueModifProfil extends AbstractView
