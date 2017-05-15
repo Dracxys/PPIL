@@ -38,9 +38,11 @@ class VueModifProfil extends AbstractView
 				<label class="control-label col-sm-4" for="statut">Statut </label>
 				<div class="col-sm-4">
 				  <select class="form-control" name="statut">
-				    <option value="Enseignant-chercheur permanent">Enseignant-Chercheur permanent</option>
-				    <option value="ATER">ATER</option>
+				    <option value="Professeur des universités">Professeur des universités</option>
+				    <option value="Maître de conférences">Maître de conférences</option>
 				    <option value="PRAG">PRAG</option>
+				    <option value="ATER">ATER</option>
+				    <option value="1/2 ATER">1/2 ATER</option>
 				    <option value="Doctorant">Doctorant</option>
 				    <option value="Vacataire">Vacataire</option>
 				  </select>
