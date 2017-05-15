@@ -23,8 +23,9 @@ class UtilisateurControler
 
     public function home(){
         if(isset($_SESSION['mail'])){
-            $v = new VueUtilisateur();
-            echo $v->home();
+            $v = new VueModifProfil();
+            $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+            echo $v->home($e,-1);
         }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
