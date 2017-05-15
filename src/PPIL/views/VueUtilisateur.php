@@ -18,7 +18,7 @@ use PPIL\models\NotificationInscription;
 
 class VueUtilisateur extends AbstractView
 {
-    public static function home(){
+    public function home(){
         $html = self::headHTML();
         $html = $html . self::navHTML("Profil");
         $html = $html . self::footerHTML();
