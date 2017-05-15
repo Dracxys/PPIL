@@ -1,3 +1,6 @@
 function valider(){
-		$('#modalDemandeEffectuee').modal();
+		$('#modalDemandeEffectuee').modal({
+			backdrop: 'static',
+			keyboard: false
+		});
 }
