@@ -77,6 +77,38 @@ class UtilisateurControler
                             $e->mail = $notificationinscription->mail;
                             $e->mdp = $notificationinscription->mot_de_passe;
                             $e->statut = $notificationinscription->statut;
+                            switch ($notificationinscription->statut){
+                                case "Professeur des universités" :
+                                    $e->volumeMin = 192;
+                                    $e->volumeMax = 384;
+                                    break;
+                                case "Maître de conférences" :
+                                    $e->volumeMin = 192;
+                                    $e->volumeMax = 384;
+                                    break;
+                                case "PRAG" :
+                                    $e->volumeMin = 384;
+                                    $e->volumeMax = 768;
+                                    break;
+                                case "ATER" :
+                                    $e->volumeMin = 192;
+                                    $e->volumeMax = 192;
+                                    break;
+                                case "1/2 ATER" :
+                                    $e->volumeMin = 96;
+                                    $e->volumeMax = 96;
+                                    break;
+                                case "Doctorant" :
+                                    $e->volumeMin = 64;
+                                    $e->volumeMax = 64;
+                                    break;
+                                case "Vacataire" :
+                                    $e->volumeMin = 0;
+                                    $e->volumeMax = 96;
+                                    break;
+                            }
+                            $nom_source = $notificationinscription->nom;
+                            $prenom_source = $notificationinscription->prenom;
                             $e->save();
                         }
                         break;

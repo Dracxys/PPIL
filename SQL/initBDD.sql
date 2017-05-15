@@ -31,7 +31,7 @@ CREATE TABLE `Enseignant` (
   `nom` varchar(32) NOT NULL,
   `prenom` varchar(32) NOT NULL,
   `mdp` varchar(200) NOT NULL,
-  `statut` enum('Enseignant-chercheur permanent','ATER','PRAG','Doctorant','Vacataire') DEFAULT NULL,
+  `statut` enum('Professeur des universités','Maître de conférences','PRAG','ATER','1/2 ATER','Doctorant','Vacataire') DEFAULT NULL,
   `volumeCourant` int(4) DEFAULT NULL,
   `volumeMin` int(4) DEFAULT NULL,
   `volumeMax` int(4) DEFAULT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `Enseignant` (
 --
 
 INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `id_responsabilite`) VALUES
-('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Enseignant-chercheur permanent', NULL, NULL, NULL, NULL, 3);
+('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -124,7 +124,7 @@ CREATE TABLE `NotificationInscription` (
   `id_notification` int(4) NOT NULL,
   `nom` varchar(32) NOT NULL,
   `prenom` varchar(32) NOT NULL,
-  `statut` enum('Enseignant-chercheur permanent','ATER','PRAG','Doctorant','Vacataire') NOT NULL,
+  `statut` enum('Professeur des universités','Maître de conférences','PRAG','ATER','1/2 ATER','Doctorant','Vacataire') NOT NULL,
   `mail` varchar(32) NOT NULL,
   `mot_de_passe` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
