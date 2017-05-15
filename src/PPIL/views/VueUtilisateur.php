@@ -25,6 +25,34 @@ class VueUtilisateur extends AbstractView
         return $html;
     }
 
+    public function enseignement(){
+        $html = self::headHTML();
+        $html = $html . self::navHTML("Enseignement");
+        $html = $html . self::footerHTML();
+        return $html;
+    }
+
+    public function ue(){
+        $html = self::headHTML();
+        $html = $html . self::navHTML("UE");
+        $html = $html . self::footerHTML();
+        return $html;
+    }
+
+    public function formation(){
+        $html = self::headHTML();
+        $html = $html . self::navHTML("Formation");
+        $html = $html . self::footerHTML();
+        return $html;
+    }
+
+    public function enseignant(){
+        $html = self::headHTML();
+        $html = $html . self::navHTML("Enseignant");
+        $html = $html . self::footerHTML();
+        return $html;
+    }
+
     public function journal(){
         $html = self::headHTML();
         $html = $html . self::navHTML("Journal");
@@ -137,4 +165,12 @@ END;
 
         return $html;
     }
+
+    public function annuaire(){
+        $html = self::headHTML();
+        $html = $html . self::navHTML("Annuaire");
+        $html = $html . self::footerHTML();
+        return $html;
+    }
+
 }

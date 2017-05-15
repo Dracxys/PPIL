@@ -45,12 +45,12 @@ END;
     public function navHTML($focus) {
         $options = array(
             "Profil" => Slim::getInstance()->urlFor("profilUtilisateur"),
-            "Enseignement" => "#",
-            "UE" => "#",
-            "Formation" => "#",
-            "Enseignant" => "#",
+            "Enseignement" => Slim::getInstance()->urlFor("enseignementUtilisateur"),
+            "UE" => Slim::getInstance()->urlFor("ueUtilisateur"),
+            "Formation" => Slim::getInstance()->urlFor("formationUtilisateur"),
+            "Enseignant" => Slim::getInstance()->urlFor("enseignantUtilisateur"),
             "Journal" => Slim::getInstance()->urlFor("journalUtilisateur"),
-            "Annuaire" => "#"
+            "Annuaire" => Slim::getInstance()->urlFor("annuaireUtilisateur")
         );
         $deco = Slim::getInstance()->urlFor("deconnexion");
         $HTML= <<<END

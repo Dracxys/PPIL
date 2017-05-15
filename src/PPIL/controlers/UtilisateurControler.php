@@ -22,16 +22,51 @@ class UtilisateurControler
 {
 
     public function home(){
-        $v = new VueModifProfil();
         if(isset($_SESSION['mail'])){
+            $v = new VueUtilisateur();
             echo $v->home();
         }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
 
+    public function enseignement(){
+        if(isset($_SESSION['mail'])){
+            $v = new VueUtilisateur();
+            echo $v->enseignement();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
 
-    public function journal(){
+    public function ue(){
+        if(isset($_SESSION['mail'])){
+            $v = new VueUtilisateur();
+            echo $v->ue();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+    public function formation(){
+        if(isset($_SESSION['mail'])) {
+            $v = new VueUtilisateur();
+            echo $v->formation();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+    public function enseignant(){
+        if(isset($_SESSION['mail'])) {
+            $v = new VueUtilisateur();
+            echo $v->enseignant();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+     public function journal(){
         if(isset($_SESSION['mail'])) {
             $v = new VueUtilisateur();
             echo $v->journal();
@@ -125,6 +160,16 @@ class UtilisateurControler
                     $notification->delete();
                 }
             }
+        }
+    }
+
+
+    public function annuaire(){
+        if(isset($_SESSION['mail'])) {
+            $v = new VueUtilisateur();
+            echo $v->annuaire();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
 
