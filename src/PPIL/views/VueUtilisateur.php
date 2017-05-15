@@ -105,7 +105,6 @@ END;
 					<form class="form-inline" method="post" action="" id="form_actions">
 					  <div class="form-group">
 						<div id="annulation" class="$hide_annule">
-						  <p>Votre demande a été prise en compte.</p>
 						  <button  name="annuler" class="btn btn-primary" id="annule" value="true" type="submit">Annuler</button>
 						</div>
 						<div id="validation" class="$hide_valide">
@@ -130,8 +129,7 @@ END;
       </div>
   </div>
 </div>
-        <button type="button" class="btn" id="bbb">Basic</button>
-        <script type="text/javascript" src="/PPIL/assets/js/cleanup.js"></script>
+<script type="text/javascript" src="/PPIL/assets/js/cleanup.js"></script>
 
 END;
 
