@@ -78,12 +78,6 @@ END;
         return $html;
     }
 
-    public function formation(){
-        $html = self::headHTML(4);
-        $html = $html . self::navHTML("Formation");
-        $html = $html . self::footerHTML();
-        return $html;
-    }
 
     public function enseignant(){
         $html = self::headHTML(5);
