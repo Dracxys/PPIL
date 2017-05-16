@@ -24,7 +24,7 @@ class AbstractView {
 	<script src="/PPIL/assets/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <div class="jumbotron">
+  <div class="jumbotron" style="background-color:#E124C1">
 	<div class="container">
 	  <div class="row">
 		<div class="hidden-sm hidden-xs col-md-2">
@@ -32,7 +32,7 @@ class AbstractView {
             <img width="100" height="100" src="/PPIL/assets/images/logo-univ.png" />
           </div>
         </div>
-        <div class="text-center col-md-8">
+        <div class="text-center col-md-8" style="color:#FFFFFF">
 		  <h1>Service enseignant</h1>
         </div>
       </div>

@@ -14,7 +14,7 @@ class VueModifProfil extends AbstractView
         $html = self::headHTML();
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
-		<div class="container panel-default text-center ">
+		<div class="container panel-default text-center">
 		<div class="container">
 		 <div class="list-group">
         <a href="#" id="boutonInfo" class="list-group-item active">Informations personnelles</a>
