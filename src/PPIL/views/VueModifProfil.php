@@ -14,13 +14,14 @@ class VueModifProfil extends AbstractView
         $html = self::headHTML();
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
-		<div class="container panel panel-default text-center ">
+		<div class="container panel-default text-center ">
 		<div class="container">
 		 <div class="list-group">
         <a href="#" id="boutonInfo" class="list-group-item active">Informations personnelles</a>
         <a href="#" id="boutonResp" class="list-group-item">Responsabilités</a>
          <a href="#" id="boutonPhoto" class="list-group-item">Photo</a>
           <a href="#" id="boutonPassword" class="list-group-item">Mot de passe</a>
+        </div>
 END;
         if ($num == 0) {
             $html .= <<< END
@@ -58,7 +59,7 @@ END;
 
         $html .= <<<END
            </div>
-
+        </div>
 END;
         $html = $html . self::footerHTML();
         $html .= "		<script type=\"text/javascript\" src=\"/PPIL/assets/js/modifprofil.js\">     </script>";
