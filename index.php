@@ -105,6 +105,11 @@ $app->post('/home/formation/ue/',function () use ($app){
     $c->infoForm();
 })->name('infoForm');
 
+$app->post('/home/formation/ue/infos', function (){
+    $c = new \PPIL\controlers\FormationControler();
+    $c->infoUE();
+});
+
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){

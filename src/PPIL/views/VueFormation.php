@@ -17,6 +17,7 @@ class VueFormation extends AbstractView
         $html  = self::headHTML(4);
         $html .= self::navHTML("Formation");
         $select = self::selectStatut($u);
+        $valider = Slim::getInstance()->urlFor('home');
         $lienInfoForm = Slim::getInstance()->urlFor('infoForm');
         $html .= <<< END
         <div id="formation" class="panel-body panel-default container">
@@ -34,7 +35,7 @@ class VueFormation extends AbstractView
             </div>
             <div class="container panel col-sm-6 ">
                  <div class="container">
-                    <label id="ue" class="control-label">Sélectionner Formation</label>
+                    <label id="nomUE" class="control-label">Sélectionner un UE</label>
                  </div>   
                  <div class="panel">
                     <ul class="nav nav-pills">
@@ -45,11 +46,74 @@ class VueFormation extends AbstractView
                    
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="tab1">Vous pouvez consulter le détail du programme</div>
-                        <div class="tab-pane" id="tab2">Vous pouvez consulter le détail sur le public</div>
-                        <div class="tab-pane" id="tab3">Vous pouvez consulter le détail des objectifs pédagogiques</div>
-                        <div class="tab-pane" id="tab4">Vous pouvez consulter le détail des compléments</div>
-                    
+                        <div class="tab-pane active" id="tab1">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Volume attendu</th>
+                                        <th class="text-center">Volume affecté</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduCM"  value="30" /> </th>
+                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteCM"  value="10" /> </th>
+                                    </tr>
+                                </thead>
+                            </table>    
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Nombre de groupes attendus</th>
+                                        <th class="text-center">Nombre de groupes affectés</th>
+                                        <th class="text-center">Volume attendu</th>
+                                        <th class="text-center">Volume affecté</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAttenduTD"  value="3" /> </th>
+                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAffecteTD"  value="3" /> </th>
+                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduTD"  value="30" /> </th>
+                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteTD"  value="10" /> </th>
+                                    </tr>
+                                </thead>
+                            </table> 
+                        </div>
+                        <div class="tab-pane" id="tab3">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Nombre de groupes attendus</th>
+                                        <th class="text-center">Nombre de groupes affectés</th>
+                                        <th class="text-center">Volume attendu</th>
+                                        <th class="text-center">Volume affecté</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAttenduTP"  value="3" /> </th>
+                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAffecteTP"  value="3" /> </th>
+                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduTP"  value="30" /> </th>
+                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteTP"  value="10" /> </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="tab4">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Nombre de groupes attendus</th>
+                                        <th class="text-center">Nombre de groupes affectés</th>
+                                        <th class="text-center">Volume attendu</th>
+                                        <th class="text-center">Volume affecté</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAttenduEI"  value="3" /> </th>
+                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAffecteEI"  value="3" /> </th>
+                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduEI"  value="30" /> </th>
+                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteEI"  value="10" /> </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>                        
                     </div>
                 </div>    
             </div>

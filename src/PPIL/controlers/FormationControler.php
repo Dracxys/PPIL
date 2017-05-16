@@ -44,5 +44,20 @@ class FormationControler
         echo json_encode($res);
     }
 
+    public function infoUE(){
+        $app = Slim::getInstance();
+        $val = $app->request->post();
+        $nom = filter_var($val['nom'],FILTER_SANITIZE_STRING);
+        $ue = UE::where('nom_UE','=',$nom)->first();
+        $app->response->headers->set('Content-Type', 'application/json');
+        if(empty($ue)){
+            $res = array();
+            echo json_encode($res);
+        }else{
+            echo json_encode($ue);
+        }
+
+    }
+
 
 }
