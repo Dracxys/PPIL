@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Mar 16 Mai 2017 à 15:44
+-- Généré le :  Mar 16 Mai 2017 à 16:02
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -56,6 +56,14 @@ CREATE TABLE `Formation` (
   `id_formation` int(11) NOT NULL,
   `nomFormation` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `Formation`
+--
+
+INSERT INTO `Formation` (`id_formation`, `nomFormation`) VALUES
+(1, 'Licence informatique'),
+(2, 'Master Informatique');
 
 -- --------------------------------------------------------
 
@@ -164,7 +172,7 @@ CREATE TABLE `Responsabilite` (
 
 INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_formation`, `id_UE`, `privilege`) VALUES
 (4, 'root@root', 'Responsable du departement informatique', NULL, NULL, 2),
-(5, 'root@root', 'Responsable formation', NULL, NULL, 1);
+(5, 'root@root', 'Responsable UE', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -175,6 +183,7 @@ INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_forma
 CREATE TABLE `UE` (
   `id_UE` int(11) NOT NULL,
   `nom_UE` varchar(32) NOT NULL,
+  `composante` varchar(128) NOT NULL,
   `id_formation` int(11) NOT NULL,
   `heuresTD` int(4) NOT NULL DEFAULT '0',
   `heuresTP` int(4) NOT NULL DEFAULT '0',
@@ -191,6 +200,16 @@ CREATE TABLE `UE` (
   `prevision_groupeTP` int(4) NOT NULL DEFAULT '0',
   `prevision_groupeEI` int(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `UE`
+--
+
+INSERT INTO `UE` (`id_UE`, `nom_UE`, `composante`, `id_formation`, `heuresTD`, `heuresTP`, `heuresCM`, `heuresEI`, `prevision_heuresTD`, `prevision_heuresTP`, `prevision_heuresCM`, `prevision_heuresEI`, `groupeTD`, `groupeTP`, `groupeEI`, `prevision_groupeTD`, `prevision_groupeTP`, `prevision_groupeEI`) VALUES
+(3, 'Modélisation', 'fst', 1, 0, 0, 0, 0, 10, 12, 16, 0, 0, 0, 0, 2, 3, 1),
+(4, 'bdd', 'fst', 1, 0, 0, 0, 0, 10, 12, 16, 0, 0, 0, 0, 2, 3, 1),
+(5, 'UE de Master - 1', 'fst', 2, 0, 0, 0, 0, 10, 10, 79, 3, 0, 0, 0, 0, 8, 1),
+(6, 'UE de Master - 2', 'fst', 2, 0, 0, 0, 0, 3, 5, 10, 51, 0, 0, 0, 1, 42, 42);
 
 --
 -- Index pour les tables exportées
@@ -259,7 +278,7 @@ ALTER TABLE `UE`
 -- AUTO_INCREMENT pour la table `Formation`
 --
 ALTER TABLE `Formation`
-  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `Intervention`
 --
@@ -279,7 +298,7 @@ ALTER TABLE `Responsabilite`
 -- AUTO_INCREMENT pour la table `UE`
 --
 ALTER TABLE `UE`
-  MODIFY `id_UE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_UE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- Contraintes pour les tables exportées
 --
