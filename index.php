@@ -122,9 +122,14 @@ $app->get('/home/enseignement', function (){
     $c->enseignement();
 })->name('enseignementUtilisateur');
 
-$app->get('/home/ue', function (){
+$app->post('/home/enseignement/actionEnseignement', function (){
     $c = new UtilisateurControler();
-    $c->ue();
+    $c->enseignement_action();
+})->name('enseignementUtilisateur.actionEnseignement');
+
+$app->get('/home/ue', function (){
+    $c = new \PPIL\controlers\UEControler();
+    $c->home();
 })->name('ueUtilisateur');
 
 $app->get('/home/formation', function (){

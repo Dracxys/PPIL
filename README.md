@@ -15,7 +15,7 @@ composer install
 
 Pour importer la base de données, créez une bdd avec le nom que vous voulez puis importez SQL/initBDD.sql dans cette base.
 
-Il faut ensuite à modifier le fichier db.ppil.conf.ini :
+Il faut ensuite créer le fichier db.ppil.conf.ini :
 ```
 driver=mysql
 username=nom

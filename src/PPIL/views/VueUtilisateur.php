@@ -12,6 +12,9 @@ namespace PPIL\views;
 use Slim\App;
 use Slim\Slim;
 use PPIL\models\Enseignant;
+use PPIL\models\UE;
+use PPIL\models\Formation;
+use PPIL\models\Intervention;
 use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
 
@@ -25,45 +28,111 @@ class VueUtilisateur extends AbstractView
         return $html;
     }
 
-    public function enseignement(){
-        $html = self::headHTML(2);
-        $html = $html . self::navHTML("Enseignement");
-        $html .= <<< END
+
+  public function enseignement(){
+      $lien = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignement");
+      $html = self::headHTML(2);
+      $html = $html . self::navHTML("Enseignement");
+      $html .= <<< END
         <div class="container">
 		  <div class="panel panel-default">
 			<div class="panel-heading clearfix text-center">
 
 			  <div class="btn-group pull-right">
-			    <form class="navbar-form navbar-left">
-                    <button type="submit" class="btn btn-default">Exporter</button>
-                </form>
+				  <button type="button" class="btn btn-default">Exporter</button>
+				  <button type="button" class="btn btn-primary"  id="appliquer">Appliquer</button>
 			  </div>
 			 <h4>Fiche prévisionnelle Des enseignements</h4>
             </div>
 
             <div class="panel-body text-center">
 			    <div class="table-responsive">
-                  <table class="table table-bordered">
+                  <table class="table table-bordered ">
                     <thead>
                       <tr>
                         <th class="text-center">Composante</th>
                         <th class="text-center">Formation</th>
-                        <th class="text-center">Année</th>
-                        <th class="text-center">UE</th>
-                        <th class="text-center">Ref</th>
-                        <th class="text-center">CM</th>
-                        <th class="text-center">TD</th>
-                        <th class="text-center">Groupes TD</th>
-                        <th class="text-center">TP</th>
-                        <th class="text-center">Groupes TP</th>
-                        <th class="text-center">UE</th>
-                        <th class="text-center">Groupes UE</th>
+                        <th class="text-center">Heures UE</th>
+                        <th class="text-center">Heures CM</th>
+                        <th class="text-center">Heures TD</th>
+                        <th class="text-center">Groupe TD</th>
+                        <th class="text-center">Heures TP</th>
+                        <th class="text-center">Groupe TP</th>
+                        <th class="text-center">Heures EI</th>
+                        <th class="text-center">Groupe EI</th>
+						<th class="text-center">Actions</th>
                       </tr>
                     </thead>
-                    </table>
-			  </div>
-            </div>
+                    <tbody>
+END;
+        if(isset($_SESSION["mail"])){
+            $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
+            $interventions = Intervention::where('mail_enseignant', '=', $e->mail)
+                             ->get();
+
+            foreach($interventions as $intervention){
+                $composante = $intervention->fst==true ? 'FST' : 'Hors FST';
+                $ue = UE::where("id_UE", "=", $intervention->id_UE)
+                    ->first();
+                $formation = Formation::where("id_formation", "=", $ue->id_formation)
+                           ->first();
+                $html .= <<< END
+					<tr id="$intervention->id_intervention">
+
+					  <td>$composante</td>
+					  <td>$ue->nom_UE</td>
+   					  <td>$formation->nomFormation</td>
+                      <td >
+						<input type="number" name="heuresCM" id="heuresCM" min="0" value="$intervention->heuresCM" class="form-control"/>
+					  </td>
+                      <td>
+  						<input type="number" name="heuresTD" id="heuresTD" min="0" value="$intervention->heuresTD" class="form-control"/>
+					  </td>
+                      <td>
+  						<input type="number" name="groupeTD" id="groupeTD" min="0" value="$intervention->groupeTD" class="form-control"/>
+					  </td>
+                      <td>
+  						<input type="number" name="heuresTP" id="heuresTP" min="0" value="$intervention->heuresTP" class="form-control"/>
+					  </td>
+                      <td>
+  						<input type="number" name="groupeTP" id="groupeTP" min="0" value="$intervention->groupeTP" class="form-control"/>
+					  </td>
+                      <td>
+						<input type="number" name="heuresEI" id="heuresEI" min="0" value="$intervention->heuresEI" class="form-control"/>
+					  </td>
+                      <td>
+						<input type="number" name="groupeEI" id="groupeEI" min="0" value="$intervention->groupeEI" class="form-control"/>
+					  </td>
+					  <td>
+						<form class="form-inline" method="post" action="" id="form_interventions">
+						  <div class="form-group">
+							<button  name="annuler" class="btn btn-primary hidden" id="annuler" value="true" type="submit">Annuler</button>
+							<button  name="supprimer" class="btn btn-default" id="supprimer" value="false" type="submit">Supprimer</button>
+							<input type="hidden" id="id" name="id" value="$intervention->id_intervention" />
+						  </div>
+						</form>
+
+					  </td>
+
+</tr>
+END;
+
+            }
+        }
+        $html .= <<< END
+             </tbody>
+        </table>
         </div>
+        </div>
+        </div>
+        </div>
+        <script type="text/javascript" src="/PPIL/assets/js/interventions.js"></script>
+        <script type="text/javascript">
+           $(function(){
+               valider("$lien");
+			});
+        </script>
+
 
 END;
         $html = $html . self::footerHTML();
