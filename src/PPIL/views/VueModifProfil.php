@@ -9,7 +9,7 @@ use Slim\Slim;
 
 class VueModifProfil extends AbstractView
 {
-    public static function home($user, $num)
+    public function home($user, $num)
     {
         $html = self::headHTML(1);
         $html = $html . self::navHTML("Profil");
@@ -94,7 +94,7 @@ END;
         return $html;
     }
 
-    public static function infoperso($user)
+    public function infoperso($user)
     {
         $modifprofil = Slim::getInstance()->urlFor("modificationProfil");
         $select = self::selectStatut($user);
@@ -139,7 +139,7 @@ END;
         return $html;
     }
 
-    public static function responsabilite($user)
+    public function responsabilite($user)
     {
         $html = <<<END
                  <div id="responsabilite" style="display: none;">
@@ -149,7 +149,7 @@ END;
         return $html;
     }
 
-    public static function photo($user)
+    public function photo($user)
     {
         $modifphoto = Slim::getInstance()->urlFor("modificationPhoto");
         $html = <<<END
@@ -167,11 +167,11 @@ END;
                     }
                         $html .= <<<END
                         </div>
-                    </div>    
-                    
+                    </div>
+
                     <div class="form-group">
                     	<div class="btn btn-file">
-                        <input type="file" name="file" /> 
+                        <input type="file" name="file" />
                         </div>
                     </div>
                     <div class="form-group">

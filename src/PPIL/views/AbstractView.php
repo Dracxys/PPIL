@@ -83,17 +83,16 @@ END;
         $responsable_formation = false;
         if(isset($_SESSION["mail"])){
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
-            $responsabilite = Responsabilite::where('id_resp', '=', $e->id_responsabilite)
-                            ->first();
+            $responsabilite = Enseignant::get_privilege($e);
             $notifications_count = Notification::where('mail_destinataire', '=', $e->mail)
-                             ->count();
+                                 ->count();
 
             if(isset($responsabilite)){
-                if($responsabilite->intituleResp == 'Responsable du departement informatique'){
+                if($responsabilite == 2){
                     $responsable_enseignants = true;
                     $responsable_formation = true;
                 }
-                if($responsabilite->intituleResp == 'Responsable formation'){
+                if($responsabilite == 1){
                     $responsable_formation = true;
                 }
             }

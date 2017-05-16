@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Mar 16 Mai 2017 à 11:53
+-- Généré le :  Mar 16 Mai 2017 à 15:17
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -36,7 +36,6 @@ CREATE TABLE `Enseignant` (
   `volumeMin` int(4) DEFAULT NULL,
   `volumeMax` int(4) DEFAULT NULL,
   `photo` varchar(2048) DEFAULT NULL,
-  `id_responsabilite` int(4) DEFAULT NULL,
   `rand` int(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -44,8 +43,8 @@ CREATE TABLE `Enseignant` (
 -- Contenu de la table `Enseignant`
 --
 
-INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `id_responsabilite`, `rand`) VALUES
-('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 3, 589347120);
+INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `rand`) VALUES
+('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 589347120);
 
 -- --------------------------------------------------------
 
@@ -98,6 +97,13 @@ CREATE TABLE `Notification` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `Notification`
+--
+
+INSERT INTO `Notification` (`id_notification`, `mail_destinataire`, `mail_source`, `message`, `besoin_validation`, `validation`, `type_notification`, `created_at`, `updated_at`) VALUES
+(7, 'root@root', NULL, 'Demande d\'inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-16 13:13:11', '2017-05-16 13:13:11');
+
 -- --------------------------------------------------------
 
 --
@@ -131,6 +137,13 @@ CREATE TABLE `NotificationInscription` (
   `mot_de_passe` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `NotificationInscription`
+--
+
+INSERT INTO `NotificationInscription` (`id_notification`, `nom`, `prenom`, `statut`, `mail`, `mot_de_passe`) VALUES
+(7, 'z', 'z', 'Professeur des universités', 'z@z', '$2y$10$DkJg/HxwWYn3do3LGq2aVuKy90VAMAI12E9Ke4RkqrqlL8R4l1D8a');
+
 -- --------------------------------------------------------
 
 --
@@ -139,17 +152,20 @@ CREATE TABLE `NotificationInscription` (
 
 CREATE TABLE `Responsabilite` (
   `id_resp` int(4) NOT NULL,
+  `enseignant` varchar(128) DEFAULT NULL,
   `intituleResp` enum('Responsable UE','Responsable formation','Responsable du departement informatique') DEFAULT NULL,
   `id_formation` int(11) DEFAULT NULL,
-  `id_UE` int(11) DEFAULT NULL
+  `id_UE` int(11) DEFAULT NULL,
+  `privilege` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Responsabilite`
 --
 
-INSERT INTO `Responsabilite` (`id_resp`, `intituleResp`, `id_formation`, `id_UE`) VALUES
-(3, 'Responsable du departement informatique', NULL, NULL);
+INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_formation`, `id_UE`, `privilege`) VALUES
+(4, 'root@root', 'Responsable du departement informatique', NULL, NULL, 2),
+(5, 'root@root', 'Responsable formation', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -184,8 +200,7 @@ CREATE TABLE `UE` (
 -- Index pour la table `Enseignant`
 --
 ALTER TABLE `Enseignant`
-  ADD PRIMARY KEY (`mail`),
-  ADD KEY `id_responsabilite` (`id_responsabilite`);
+  ADD PRIMARY KEY (`mail`);
 
 --
 -- Index pour la table `Formation`
@@ -227,7 +242,8 @@ ALTER TABLE `NotificationInscription`
 ALTER TABLE `Responsabilite`
   ADD PRIMARY KEY (`id_resp`),
   ADD KEY `fk_form` (`id_formation`),
-  ADD KEY `fk_ue` (`id_UE`);
+  ADD KEY `fk_ue` (`id_UE`),
+  ADD KEY `fk_responsabilite_mail_enseignant` (`enseignant`);
 
 --
 -- Index pour la table `UE`
@@ -253,12 +269,12 @@ ALTER TABLE `Intervention`
 -- AUTO_INCREMENT pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `Responsabilite`
 --
 ALTER TABLE `Responsabilite`
-  MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `UE`
 --
@@ -267,12 +283,6 @@ ALTER TABLE `UE`
 --
 -- Contraintes pour les tables exportées
 --
-
---
--- Contraintes pour la table `Enseignant`
---
-ALTER TABLE `Enseignant`
-  ADD CONSTRAINT `enseignant_ibfk_2` FOREIGN KEY (`id_responsabilite`) REFERENCES `Responsabilite` (`id_resp`);
 
 --
 -- Contraintes pour la table `Formation`
@@ -304,7 +314,8 @@ ALTER TABLE `NotificationInscription`
 -- Contraintes pour la table `Responsabilite`
 --
 ALTER TABLE `Responsabilite`
-  ADD CONSTRAINT `fk_responsabilite_id_UE` FOREIGN KEY (`id_UE`) REFERENCES `UE` (`id_UE`);
+  ADD CONSTRAINT `fk_responsabilite_id_UE` FOREIGN KEY (`id_UE`) REFERENCES `UE` (`id_UE`),
+  ADD CONSTRAINT `fk_responsabilite_mail_enseignant` FOREIGN KEY (`enseignant`) REFERENCES `Enseignant` (`mail`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -1,6 +1,8 @@
 <?php
 namespace PPIL\models;
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 class Enseignant extends \Illuminate\Database\Eloquent\Model{
 	protected $table = "Enseignant";
 	protected $primaryKey = "mail";
@@ -16,8 +18,7 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
         $n->type_notification = 'PPIL\models\NotificationInscription';
 
         $resp = Responsabilite::where('intituleResp', '=', 'Responsable du departement informatique')->first();
-		$ens_respDI = Enseignant::where('id_responsabilite', '=', $resp->id_resp)->first();
-        $n->mail_destinataire = $ens_respDI->mail;
+        $n->mail_destinataire = Enseignant::get_responsableDI()->mail;
         $n->save();
 
         $new_notification_inscription = new NotificationInscription();
@@ -35,5 +36,21 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 		$utilisateur->save();
 	}
 
+    public static function get_privilege($utilisateur){
+        return $max = DB::table('Responsabilite')
+                      ->where('enseignant', '=', $utilisateur->mail)
+                      ->max('privilege');
+    }
+
+    public static function get_responsableDI(){
+        $max = DB::table('Responsabilite')
+             ->max('privilege');
+        $mail_responsable = Responsabilite::where("privilege", "=", $max)
+                          ->first()
+                          ->enseignant;
+        $responsable = Enseignant::where('mail', '=', $mail_responsable)
+                     ->first();
+        return $responsable;
+    }
 
 }
