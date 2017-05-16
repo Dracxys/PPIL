@@ -19,6 +19,10 @@ $app->get('/', function () {
     $c->accueil();
 })->name('home');
 
+$app->get('/test', function () use ($app){
+
+});
+
 $app->post('/',function (){
     $c = new HomeControler();
     $c->accueil();
@@ -117,10 +121,10 @@ $app->get('/home/formation', function (){
     $c->formation();
 })->name('formationUtilisateur');
 
-$app->get('/home/enseignant', function (){
+$app->get('/home/enseignants', function (){
     $c = new UtilisateurControler();
-    $c->enseignant();
-})->name('enseignantUtilisateur');
+    $c->enseignants();
+})->name('enseignantsUtilisateur');
 
 $app->get('/home/journal', function (){
     $c = new UtilisateurControler();
