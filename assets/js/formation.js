@@ -7,7 +7,6 @@ function recupererUE(lien) {
         data: { 'nom' : value} ,
         dataType: 'json',
         success: function (tab) {
-            console.log(tab);
             if(tab.length > 0){
                 var html="";
                 for(var i = 0; i < tab.length ; i++){
