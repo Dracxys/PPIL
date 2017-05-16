@@ -175,5 +175,16 @@ END;
         return $html;
     }
 
-
+    public static function selectStatut($user){
+    $array = array('Professeur des universités','Maître de conférences','PRAG','ATER','1/2 ATER','Doctorant','Vacataire');
+        $html = '<select class="form-control" name="statut">';
+        foreach ($array as $value){
+            if($value == $user->statut){
+                $html .= '<option selected value=' .'"' . $value  .'"' .'>' . $value . '</option>';
+            }else{
+                $html .= '<option value='.'"' . $value .'"' .'>' . $value . '</option>';
+            }
+        }
+        $html .= "</select>";
+        return $html;
     }

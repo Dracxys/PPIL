@@ -35,8 +35,9 @@ class HomeControler{
             $hash = $u->mdp;
             if (password_verify($pass, $hash)) {
                 $_SESSION['mail'] = $u->mail;
+                $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
                 $v = new VueModifProfil();
-                echo $v->home();
+                echo $v->home($e,-1);
             } else {
                 $v = new VueHome();
                 echo $v->home(1);
