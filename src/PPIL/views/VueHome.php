@@ -68,7 +68,7 @@ END;
     }
 
     public function inscription($num = 0){
-        $html = self::headHTML();
+        $html = self::headHTML(0);
         $valider = Slim::getInstance()->urlFor("validerInscription");
         $annuler = Slim::getInstance()->urlFor("home");
         $html = $html . <<< END
@@ -184,7 +184,7 @@ $html = $html . self::footerHTML();
     }
 
     public function oubliMDP($num = 0){
-        $html = self::headHTML();
+        $html = self::headHTML(0);
         $valider = Slim::getInstance()->urlFor("changementMDP");
         $annuler = Slim::getInstance()->urlFor("home");
         $html = $html . <<< END
@@ -257,7 +257,7 @@ END;
     }
 
     public function changementMDP($e, $num = 0){
-        $html = self::headHTML();
+        $html = self::headHTML(0);
         $valider = Slim::getInstance()->urlFor("changementMDPValider");
         $annuler = Slim::getInstance()->urlFor("home");
         $html = $html . <<< END
@@ -305,7 +305,7 @@ END;
     }
 
     public function oubliMDPErreur($num = 0){
-        $html = self::headHTML();
+        $html = self::headHTML(0);
         $annuler = Slim::getInstance()->urlFor('home');
         if($num == 0) {
             $html = $html . <<< END

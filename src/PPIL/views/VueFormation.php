@@ -14,7 +14,7 @@ use Slim\Slim;
 class VueFormation extends AbstractView
 {
     public function home($u){
-        $html  = self::headHTML("Formation");
+        $html  = self::headHTML(4);
         $html .= self::navHTML("Formation");
         $select = self::selectStatut($u);
         $lienInfoForm = Slim::getInstance()->urlFor('infoForm');

@@ -38,7 +38,6 @@ class VueUtilisateur extends AbstractView
                     <button type="submit" class="btn btn-default">Exporter</button>
                 </form>
 			  </div>
-
 			 <h4>Fiche prévisionnelle Des enseignements</h4>
             </div>
 
@@ -199,7 +198,7 @@ END;
         return $html;
     }
 
-    public function annuaire(){
+    public function annuaire($users){
         $html = self::headHTML(7);
         $html = $html . self::navHTML("Annuaire");
         $html .= <<< END
@@ -228,6 +227,20 @@ END;
                         <th class="text-center">Adresse Mail</th>
                         <th class="text-center">Photo</th>
                       </tr>
+
+END;
+        foreach ($users as $user) {
+            if ($user->prenom!="admin" && $user->nom!="admin" && $_SESSION['mail']!=$user->mail) {
+                $html .= "<tr>" .
+                        "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
+                        "<th class=\"text-center\">" . $user->statut . "</th>" .
+                        "<th class=\"text-center\">" . $user->mail . "</th>" .
+                        "</tr>";
+            }
+        }
+
+
+        $html .= <<<END
                     </thead>
                     </table>
 			  </div>
