@@ -100,6 +100,12 @@ $app->post("/home/modificationPhoto", function (){
 })->name('modificationPhoto');
 
 
+$app->post('/home/formation/ue/',function () use ($app){
+    $c = new \PPIL\controlers\FormationControler();
+    $c->infoForm();
+})->name('infoForm');
+
+
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
     $c = new ModifProfilControler();
