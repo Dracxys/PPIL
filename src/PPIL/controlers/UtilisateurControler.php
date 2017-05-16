@@ -189,8 +189,10 @@ class UtilisateurControler
 
     public function annuaire(){
         if(isset($_SESSION['mail'])) {
+            $users = Enseignant::distinct()->get();
+
             $v = new VueUtilisateur();
-            echo $v->annuaire();
+            echo $v->annuaire($users);
         }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }

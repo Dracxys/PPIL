@@ -29,28 +29,28 @@ class AbstractView {
 END;
 
     switch ($idFocus) {
-        case 0:
+        case 0: // Login, inscription ou mdp oublié
             $HTML .= "#B2B2B2\"";
-            break;        
-        case 1:
+            break;
+        case 1: // Profil
             $HTML .= "#83BAD9\"";
             break;
-        case 2:
+        case 2: // Enseignement
             $HTML .= "#DD797A\"";
             break;
-        case 3:
+        case 3: // UE
             $HTML .= "#60E06B\"";
             break;
-        case 4:
+        case 4: // Formation
             $HTML .= "#F8F63F\"";
             break;
-        case 5:
+        case 5: // Enseignant
             $HTML .= "#B06FE4\"";
             break;
-        case 6:
+        case 6: // Journal
             $HTML .= "#6FE49C\"";
             break;
-        case 7:
+        case 7: // Annuaire
             $HTML .= "#EBB745\"";
     }
 
