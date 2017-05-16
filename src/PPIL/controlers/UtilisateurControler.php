@@ -58,7 +58,7 @@ class UtilisateurControler
         }
     }
 
-    public function enseignant(){
+    public function enseignants(){
         if(isset($_SESSION['mail'])) {
             $v = new VueUtilisateur();
             echo $v->enseignant();
