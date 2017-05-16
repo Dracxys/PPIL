@@ -154,7 +154,7 @@ class UtilisateurControler
                             $e->rand = $tmp;
                             $e->save();
                             $mail = new MailControler();
-                            $mail->sendMaid($e->mail,'Inscription','Votre inscription a été validée par le responsable du dÃ©partement informatique.');
+                            $mail->sendMaid($e->mail,'Inscription','Votre inscription a ï¿½tï¿½ validï¿½e par le responsable du dÃ©partement informatique.');
                         }
                         break;
                     default:
@@ -243,16 +243,43 @@ class UtilisateurControler
 				$nveauMDP_hash = password_hash($nveauMDP, PASSWORD_DEFAULT);
 
 				Enseignant::reinitialiserMDP($utilisateur, $nveauMDP_hash);
-
-				/********************************** MESSAGE A L'UTILISATEUR L'INFORMANT QUE DU CHANGEMENT DE MOT DE PASSE ******************************/
-
 			}
-
-			/********************************** MESSAGE D'ERREUR ******************************/
 
 		}
 
 	}
+	
+	public function creerUE(){
+		if(isset($_SESSION['mail'])) {
+			$val = Slim::getInstance()->request->post();
+			$nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
+			
+			$heuresCM = filter_var($val['heuresCM'], FILTER_SANITIZE_STRING);
+			$heuresTP = filter_var($val['heuresTP'], FILTER_SANITIZE_STRING);
+			$heuresTD = filter_var($val['heuresTD'], FILTER_SANITIZE_STRING);
+			$heuresEI = filter_var($val['heuresEI'], FILTER_SANITIZE_STRING);
+			
+			$groupeTP = filter_var($val['groupeTP'], FILTER_SANITIZE_STRING);
+			$groupeTD = filter_var($val['groupeTD'], FILTER_SANITIZE_STRING);
+			$groupeEI = filter_var($val['groupeEI'], FILTER_SANITIZE_STRING);
+			
+			$nom_responsable = filter_var($val['nom_responsable'], FILTER_SANITIZE_STRING);
+			
+			UE::creerUE($nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI);
+			
+			if (!empty($nom_responsable)){
+				$responsable = Enseignant::where('nom', 'like', $nom_responsable)->first();
+				if(empty(responsable)){
+					// *************************** ERREUR : L'ENSIGNANT N'EXISTE PAS
+				} else {
+					$nouvUE = UE::where('nom_UE', 'like', $nom)->first();
+					ajoutResponsabilite($responsable->mail, 'responsable ue', null, $nouvUE->id_UE);
+				}
+			}
+			
+		}
+	}
+	
 	
 
     public function deconnexion(){
