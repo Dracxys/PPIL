@@ -14,5 +14,5 @@ db.ppil.conf.ini
 #*
 *~
 
-assets/
+assets/bootstrap/
 /db.ppil.conf.ini

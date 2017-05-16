@@ -108,8 +108,8 @@ $app->get('/home/ue', function (){
 })->name('ueUtilisateur');
 
 $app->get('/home/formation', function (){
-    $c = new UtilisateurControler();
-    $c->formation();
+    $c = new \PPIL\controlers\FormationControler();
+    $c->home();
 })->name('formationUtilisateur');
 
 $app->get('/home/enseignant', function (){
