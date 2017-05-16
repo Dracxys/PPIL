@@ -29,7 +29,6 @@ $(function(){
 			var selection = $("form#form_actions div#validation").filter(function(){
 				return $(this).hasClass('hidden');
 			});
-			console.log(selection);
 			if(selection.length <= 0){
 				$('button#appliquer').prop('disabled', true);
 				$('button#appliquer').removeClass('btn-primary')
@@ -48,9 +47,16 @@ $(function(){
 				data: { 'valider': (valide == 'true'), 'refuser': (refuse == 'true'), 'id': id},
 				success: function(){
 					$('tr#'+id).remove();
+					var notifications_count = $("form").length;
+					var text = $('a#notifications_count');
+					if(notifications_count > 0){
+						text.text('Journal');
+						$('font#notifications_count_font').text('(' + notifications_count + ')' );
+					} else {
+						text.text('Journal');
+					}
 				}
 			});
-
 		});
 	});
 });

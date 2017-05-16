@@ -3,11 +3,13 @@
 
 namespace PPIL\views;
 use PPIL\models\Enseignant;
+use PPIL\models\Responsabilite;
+use PPIL\models\Notification;
 use Slim\App;
 use Slim\Slim;
 
 class AbstractView {
-    public function headHTML() {
+    public static function headHTML($idFocus) {
         $HTML= <<<END
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,7 +25,37 @@ class AbstractView {
 	<script src="/PPIL/assets/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <div class="jumbotron">
+  <div class="jumbotron" style="background-color:
+END;
+
+    switch ($idFocus) {
+        case 0:
+            $HTML .= "#D8DEE0\"";
+            break;        
+        case 1:
+            $HTML .= "#83BAD9\"";
+            break;
+        case 2:
+            $HTML .= "#DD797A\"";
+            break;
+        case 3:
+            $HTML .= "#60E06B\"";
+            break;
+        case 4:
+            $HTML .= "#F8F63F\"";
+            break;
+        case 5:
+            $HTML .= "#B06FE4\"";
+            break;
+        case 6:
+            $HTML .= "#6FE49C\"";
+            break;
+        case 7:
+            $HTML .= "#EBB745\"";
+    }
+
+
+    $HTML .= ">" . <<<END
 	<div class="container">
 	  <div class="row">
 		<div class="hidden-sm hidden-xs col-md-2">
@@ -31,7 +63,7 @@ class AbstractView {
             <img width="100" height="100" src="/PPIL/assets/images/logo-univ.png" />
           </div>
         </div>
-        <div class="text-center col-md-8">
+        <div class="text-center col-md-8" style="color:#FFFFFF">
 		  <h1>Service enseignant</h1>
         </div>
       </div>
@@ -42,18 +74,37 @@ END;
         return $HTML;
     }
 
-    public function navHTML($focus) {
+    public static function navHTML($focus) {
+        $responsable_enseignants = false;
+        $responsable_formation = false;
+        if(isset($_SESSION["mail"])){
+            $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
+            $responsabilite = Responsabilite::where('id_resp', '=', $e->id_responsabilite)
+                            ->first();
+            $notifications_count = Notification::where('mail_destinataire', '=', $e->mail)
+                             ->count();
+
+            if(isset($responsabilite)){
+                if($responsabilite->intituleResp == 'Responsable du departement informatique'){
+                    $responsable_enseignants = true;
+                    $responsable_formation = true;
+                }
+                if($responsabilite->intituleResp == 'Responsable formation'){
+                    $responsable_formation = true;
+                }
+            }
+        }
         $options = array(
             "Profil" => Slim::getInstance()->urlFor("profilUtilisateur"),
-            "Enseignement" => "#",
-            "UE" => "#",
-            "Formation" => "#",
-            "Enseignant" => "#",
+            "Enseignement" => Slim::getInstance()->urlFor("enseignementUtilisateur"),
+            "UE" => Slim::getInstance()->urlFor("ueUtilisateur"),
+            "Formation" => Slim::getInstance()->urlFor("formationUtilisateur"),
+            "Enseignants" => Slim::getInstance()->urlFor("enseignantsUtilisateur"),
             "Journal" => Slim::getInstance()->urlFor("journalUtilisateur"),
-            "Annuaire" => "#"
+            "Annuaire" => Slim::getInstance()->urlFor("annuaireUtilisateur")
         );
         $deco = Slim::getInstance()->urlFor("deconnexion");
-        $HTML= <<<END
+        $HTML= <<< END
         <nav class="navbar navbar-default">
           <div class="container-fluid">
 			<div class="navbar-header">
@@ -67,22 +118,43 @@ END;
 			  <ul class="nav navbar-nav">
 END;
         foreach($options as $option => $link){
+            $class = "";
             if($option == $focus){
-                $HTML .= '<li class="active" ><a href="'. $link .'">'. $option .'</a></li>';
-            } else {
-                $HTML .= '<li><a href="'. $link .'">'. $option .'</a></li>';
+                $class = 'class="active"';
+            }
+            switch($option){
+            case 'Enseignants' :
+                if($responsable_enseignants){
+                    $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
+                }
+                break;
+            case 'Formation' :
+                if($responsable_formation){
+                    $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
+                }
+                break;
+            case 'Journal' :
+                if($notifications_count > 0){
+                    $HTML .= '<li ' . $class . '  ><a href="'. $link .'" id="notifications_count">'. $option . " <font color='red' id='notifications_count_font'>(" .  $notifications_count . ')</font></a></li>';
+                }else{
+                    $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option . '</a></li>';
+                }
+                break;
+            default :
+                $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
+                break;
             }
         }
-        $HTML .= <<<END
+        $HTML .= <<< END
 			  </ul>
 			  <ul class="nav navbar-nav navbar-right">
 				<p class="navbar-text hidden-xs hidden-sm">
 END;
         if(isset($_SESSION["mail"])){
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
-            $HTML .= $e->nom ." ". $e->prenom ."</p>";
+            $HTML .= $e->prenom ." ". $e->nom ."</p>";
         }
-        $HTML .= <<<END
+        $HTML .= <<< END
 				<li><a href="$deco">Se déconnecter</a></li>
 			  </ul>
 			</div>
@@ -92,8 +164,8 @@ END;
         return $HTML;
     }
 
-    public function footerHTML() {
-        $HTML= <<<END
+    public static function footerHTML() {
+        $HTML= <<< END
   </body>
 </html>
 END;

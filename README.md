@@ -27,3 +27,9 @@ collation=utf8_unicode_ci
 ```
 
 avec vos identifiants mysql et le nom que vous avez choisi pour que l'application puisse se connecter à la base de données.
+
+Compte gmail de la messagerie :
+```
+Email : ppil.email1@gmail.com
+MDP : L3INFORMATIQUE
+```

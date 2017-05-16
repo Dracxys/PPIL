@@ -19,14 +19,75 @@ use PPIL\models\NotificationInscription;
 class VueUtilisateur extends AbstractView
 {
     public function home(){
-        $html = self::headHTML();
+        $html = self::headHTML(1);
         $html = $html . self::navHTML("Profil");
         $html = $html . self::footerHTML();
         return $html;
     }
 
+    public function enseignement(){
+        $html = self::headHTML(2);
+        $html = $html . self::navHTML("Enseignement");
+        $html .= <<< END
+        <div class="container">
+		  <div class="panel panel-default">
+			<div class="panel-heading clearfix text-center">
+
+			  <div class="btn-group pull-right">
+			    <form class="navbar-form navbar-left">
+                    <button type="submit" class="btn btn-default">Exporter</button>
+                </form>
+			  </div>
+
+			 <h4>Fiche prévisionnelle Des enseignements</h4>
+            </div>
+
+            <div class="panel-body text-center">
+			    <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Composante</th>
+                        <th class="text-center">Formation</th>
+                        <th class="text-center">Année</th>
+                        <th class="text-center">UE</th>
+                        <th class="text-center">Ref</th>
+                        <th class="text-center">CM</th>
+                        <th class="text-center">TD</th>
+                        <th class="text-center">Groupes TD</th>
+                        <th class="text-center">TP</th>
+                        <th class="text-center">Groupes TP</th>
+                        <th class="text-center">UE</th>
+                        <th class="text-center">Groupes UE</th>
+                      </tr>
+                    </thead>
+                    </table>
+			  </div>
+            </div>
+        </div>
+
+END;
+        $html = $html . self::footerHTML();
+        return $html;
+    }
+
+    public function ue(){
+        $html = self::headHTML(3);
+        $html = $html . self::navHTML("UE");
+        $html = $html . self::footerHTML();
+        return $html;
+    }
+
+
+    public function enseignant(){
+        $html = self::headHTML(5);
+        $html = $html . self::navHTML("Enseignant");
+        $html = $html . self::footerHTML();
+        return $html;
+    }
+
     public function journal(){
-        $html = self::headHTML();
+        $html = self::headHTML(6);
         $html = $html . self::navHTML("Journal");
         $html .= <<< END
 	    <div class="container">
@@ -137,4 +198,46 @@ END;
 
         return $html;
     }
+
+    public function annuaire(){
+        $html = self::headHTML(7);
+        $html = $html . self::navHTML("Annuaire");
+        $html .= <<< END
+        <div class="container">
+		  <div class="panel panel-default">
+			<div class="panel-heading clearfix text-center">
+
+
+			  <div class="btn-group pull-right">
+			    <form class="navbar-form navbar-left">
+                    <input type="text" class="form-control" placeholder="Recherche">
+                    <button type="submit" class="btn btn-default">Valider</button>
+                </form>
+			  </div>
+
+			 <h4>Annuaire</h4>
+            </div>
+
+            <div class="panel-body text-center">
+			    <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Enseignant</th>
+                        <th class="text-center">Statut</th>
+                        <th class="text-center">Adresse Mail</th>
+                        <th class="text-center">Photo</th>
+                      </tr>
+                    </thead>
+                    </table>
+			  </div>
+            </div>
+        </div>
+
+END;
+
+        $html = $html . self::footerHTML();
+        return $html;
+    }
+
 }

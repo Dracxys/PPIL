@@ -22,16 +22,52 @@ class UtilisateurControler
 {
 
     public function home(){
-        $v = new VueModifProfil();
         if(isset($_SESSION['mail'])){
-            echo $v->home();
+            $v = new VueModifProfil();
+            $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+            echo $v->home($e,-1);
         }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
 
+    public function enseignement(){
+        if(isset($_SESSION['mail'])){
+            $v = new VueUtilisateur();
+            echo $v->enseignement();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
 
-    public function journal(){
+    public function ue(){
+        if(isset($_SESSION['mail'])){
+            $v = new VueUtilisateur();
+            echo $v->ue();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+    public function formation(){
+        if(isset($_SESSION['mail'])) {
+            $v = new VueUtilisateur();
+            echo $v->formation();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+    public function enseignants(){
+        if(isset($_SESSION['mail'])) {
+            $v = new VueUtilisateur();
+            echo $v->enseignant();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+     public function journal(){
         if(isset($_SESSION['mail'])) {
             $v = new VueUtilisateur();
             echo $v->journal();
@@ -58,6 +94,7 @@ class UtilisateurControler
                     $notification->besoin_validation = false;
                     $notification->validation = false;
                     $notification->save();
+
                 }elseif($valider && !$refuser && $notification->besoin_validation) {
                     echo $notification->id_notification . " valide";
                     $notification->besoin_validation = false;
@@ -110,11 +147,32 @@ class UtilisateurControler
                             }
                             $nom_source = $notificationinscription->nom;
                             $prenom_source = $notificationinscription->prenom;
+                            $tmp = rand(0,9);
+                            for($i = 0; $i < 8 ; $i++){
+                                $tmp = $tmp . rand(0,9);
+                            }
+                            $e->rand = $tmp;
                             $e->save();
+                            $mail = new MailControler();
+                            $mail->sendMaid($e->mail,'Inscription','Votre inscription a été validée par le responsable du dÃ©partement informatique.');
                         }
                         break;
                     default:
                         break;
+                    }
+                }else{
+                    switch($notification->type_notification){
+                        case "PPIL\models\NotificationInscription":
+                            $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
+                                ->first();
+
+                            if(!empty($notificationinscription)){
+                                $mail = new MailControler();
+                                $mail->sendMaid($notificationinscription->mail,'Inscription','Votre inscription a Ã©tÃ© refusÃ© par le responsable du dÃ©partement informatique.');
+                            }
+                            break;
+                        default:
+                            break;
                     }
                 }
 
@@ -125,6 +183,16 @@ class UtilisateurControler
                     $notification->delete();
                 }
             }
+        }
+    }
+
+
+    public function annuaire(){
+        if(isset($_SESSION['mail'])) {
+            $v = new VueUtilisateur();
+            echo $v->annuaire();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
 

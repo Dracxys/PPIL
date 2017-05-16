@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Lun 15 Mai 2017 à 09:01
+-- Généré le :  Mar 16 Mai 2017 à 11:53
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -36,15 +36,16 @@ CREATE TABLE `Enseignant` (
   `volumeMin` int(4) DEFAULT NULL,
   `volumeMax` int(4) DEFAULT NULL,
   `photo` varchar(2048) DEFAULT NULL,
-  `id_responsabilite` int(4) DEFAULT NULL
+  `id_responsabilite` int(4) DEFAULT NULL,
+  `rand` int(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Enseignant`
 --
 
-INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `id_responsabilite`) VALUES
-('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 3);
+INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `id_responsabilite`, `rand`) VALUES
+('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 3, 589347120);
 
 -- --------------------------------------------------------
 
@@ -53,8 +54,9 @@ INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCoura
 --
 
 CREATE TABLE `Formation` (
+  `id_formation` int(11) NOT NULL,
   `nomFormation` varchar(32) NOT NULL,
-  `nomUE` varchar(32) NOT NULL
+  `id_UE` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -75,7 +77,7 @@ CREATE TABLE `Intervention` (
   `groupeTD` int(4) DEFAULT NULL,
   `groupeEI` int(4) DEFAULT NULL,
   `mail_enseignant` varchar(128) NOT NULL,
-  `nomUE` varchar(32) NOT NULL
+  `id_UE` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -111,7 +113,7 @@ CREATE TABLE `NotificationChgtUE` (
   `groupeTP` int(4) NOT NULL,
   `groupeTD` int(4) NOT NULL,
   `groupeEI` int(4) NOT NULL,
-  `nomUE` varchar(32) NOT NULL
+  `id_UE` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -138,15 +140,15 @@ CREATE TABLE `NotificationInscription` (
 CREATE TABLE `Responsabilite` (
   `id_resp` int(4) NOT NULL,
   `intituleResp` enum('Responsable UE','Responsable formation','Responsable du departement informatique') DEFAULT NULL,
-  `nomFormation` varchar(32) DEFAULT NULL,
-  `nomUE` varchar(32) DEFAULT NULL
+  `id_formation` int(11) DEFAULT NULL,
+  `id_UE` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Responsabilite`
 --
 
-INSERT INTO `Responsabilite` (`id_resp`, `intituleResp`, `nomFormation`, `nomUE`) VALUES
+INSERT INTO `Responsabilite` (`id_resp`, `intituleResp`, `id_formation`, `id_UE`) VALUES
 (3, 'Responsable du departement informatique', NULL, NULL);
 
 -- --------------------------------------------------------
@@ -156,6 +158,7 @@ INSERT INTO `Responsabilite` (`id_resp`, `intituleResp`, `nomFormation`, `nomUE`
 --
 
 CREATE TABLE `UE` (
+  `id_UE` int(11) NOT NULL,
   `nom_UE` varchar(32) NOT NULL,
   `heuresTD` int(4) NOT NULL DEFAULT '0',
   `heuresTP` int(4) NOT NULL DEFAULT '0',
@@ -188,14 +191,15 @@ ALTER TABLE `Enseignant`
 -- Index pour la table `Formation`
 --
 ALTER TABLE `Formation`
-  ADD PRIMARY KEY (`nomFormation`);
+  ADD PRIMARY KEY (`id_formation`),
+  ADD KEY `fk_formation_id_UE` (`id_UE`);
 
 --
 -- Index pour la table `Intervention`
 --
 ALTER TABLE `Intervention`
   ADD PRIMARY KEY (`id_intervention`),
-  ADD KEY `nomUE` (`nomUE`),
+  ADD KEY `nomUE` (`id_UE`),
   ADD KEY `mail_enseignant` (`mail_enseignant`);
 
 --
@@ -209,7 +213,7 @@ ALTER TABLE `Notification`
 --
 ALTER TABLE `NotificationChgtUE`
   ADD PRIMARY KEY (`id_notification`),
-  ADD KEY `fk_nomUE` (`nomUE`);
+  ADD KEY `fk_nomUE` (`id_UE`);
 
 --
 -- Index pour la table `NotificationInscription`
@@ -222,19 +226,24 @@ ALTER TABLE `NotificationInscription`
 --
 ALTER TABLE `Responsabilite`
   ADD PRIMARY KEY (`id_resp`),
-  ADD KEY `fk_form` (`nomFormation`),
-  ADD KEY `fk_ue` (`nomUE`);
+  ADD KEY `fk_form` (`id_formation`),
+  ADD KEY `fk_ue` (`id_UE`);
 
 --
 -- Index pour la table `UE`
 --
 ALTER TABLE `UE`
-  ADD PRIMARY KEY (`nom_UE`);
+  ADD PRIMARY KEY (`id_UE`);
 
 --
 -- AUTO_INCREMENT pour les tables exportées
 --
 
+--
+-- AUTO_INCREMENT pour la table `Formation`
+--
+ALTER TABLE `Formation`
+  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `Intervention`
 --
@@ -244,12 +253,17 @@ ALTER TABLE `Intervention`
 -- AUTO_INCREMENT pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pour la table `Responsabilite`
 --
 ALTER TABLE `Responsabilite`
   MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT pour la table `UE`
+--
+ALTER TABLE `UE`
+  MODIFY `id_UE` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Contraintes pour les tables exportées
 --
@@ -261,18 +275,24 @@ ALTER TABLE `Enseignant`
   ADD CONSTRAINT `enseignant_ibfk_2` FOREIGN KEY (`id_responsabilite`) REFERENCES `Responsabilite` (`id_resp`);
 
 --
+-- Contraintes pour la table `Formation`
+--
+ALTER TABLE `Formation`
+  ADD CONSTRAINT `fk_formation_id_UE` FOREIGN KEY (`id_UE`) REFERENCES `UE` (`id_UE`);
+
+--
 -- Contraintes pour la table `Intervention`
 --
 ALTER TABLE `Intervention`
-  ADD CONSTRAINT `intervention_ibfk_1` FOREIGN KEY (`nomUE`) REFERENCES `UE` (`nom_UE`),
-  ADD CONSTRAINT `intervention_ibfk_2` FOREIGN KEY (`mail_enseignant`) REFERENCES `Enseignant` (`mail`);
+  ADD CONSTRAINT `intervention_ibfk_2` FOREIGN KEY (`mail_enseignant`) REFERENCES `Enseignant` (`mail`),
+  ADD CONSTRAINT `intervention_id_UE` FOREIGN KEY (`id_UE`) REFERENCES `UE` (`id_UE`);
 
 --
 -- Contraintes pour la table `NotificationChgtUE`
 --
 ALTER TABLE `NotificationChgtUE`
   ADD CONSTRAINT `fk_id_notificationChgt` FOREIGN KEY (`id_notification`) REFERENCES `Notification` (`id_notification`),
-  ADD CONSTRAINT `fk_nomUE` FOREIGN KEY (`nomUE`) REFERENCES `UE` (`nom_UE`);
+  ADD CONSTRAINT `fk_notification_id_UE` FOREIGN KEY (`id_UE`) REFERENCES `UE` (`id_UE`);
 
 --
 -- Contraintes pour la table `NotificationInscription`
@@ -284,8 +304,7 @@ ALTER TABLE `NotificationInscription`
 -- Contraintes pour la table `Responsabilite`
 --
 ALTER TABLE `Responsabilite`
-  ADD CONSTRAINT `fk_form` FOREIGN KEY (`nomFormation`) REFERENCES `Formation` (`nomFormation`),
-  ADD CONSTRAINT `fk_ue` FOREIGN KEY (`nomUE`) REFERENCES `UE` (`nom_UE`);
+  ADD CONSTRAINT `fk_responsabilite_id_UE` FOREIGN KEY (`id_UE`) REFERENCES `UE` (`id_UE`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
