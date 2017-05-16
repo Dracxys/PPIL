@@ -15,7 +15,7 @@ use Slim\Slim;
 class VueHome extends AbstractView
 {
     public function home($num){
-        $html = self::headHTML();
+        $html = self::headHTML(0);
         $lien = Slim::getInstance()->urlFor("login");
         $lien_oublie = Slim::getInstance()->urlFor("oubliMDP");
         $lien_inscription = Slim::getInstance()->urlFor("inscription");

@@ -94,6 +94,11 @@ $app->post("/home/modifPassword", function (){
     $c->modificationPassword();
 })->name('modificationPassword');
 
+$app->post("/home/modificationPhoto", function (){
+    $c = new ModifProfilControler();
+    $c->modifPhoto();
+})->name('modificationPhoto');
+
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
@@ -112,8 +117,8 @@ $app->get('/home/ue', function (){
 })->name('ueUtilisateur');
 
 $app->get('/home/formation', function (){
-    $c = new UtilisateurControler();
-    $c->formation();
+    $c = new \PPIL\controlers\FormationControler();
+    $c->home();
 })->name('formationUtilisateur');
 
 $app->get('/home/enseignants', function (){

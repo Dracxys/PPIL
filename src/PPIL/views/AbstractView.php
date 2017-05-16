@@ -9,7 +9,7 @@ use Slim\App;
 use Slim\Slim;
 
 class AbstractView {
-    public static function headHTML() {
+    public static function headHTML($idFocus) {
         $HTML= <<<END
 <!DOCTYPE html>
 <html lang="fr">
@@ -25,7 +25,37 @@ class AbstractView {
 	<script src="/PPIL/assets/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <div class="jumbotron" style="background-color:#E124C1">
+  <div class="jumbotron" style="background-color:
+END;
+
+    switch ($idFocus) {
+        case 0:
+            $HTML .= "#D8DEE0\"";
+            break;        
+        case 1:
+            $HTML .= "#83BAD9\"";
+            break;
+        case 2:
+            $HTML .= "#DD797A\"";
+            break;
+        case 3:
+            $HTML .= "#60E06B\"";
+            break;
+        case 4:
+            $HTML .= "#F8F63F\"";
+            break;
+        case 5:
+            $HTML .= "#B06FE4\"";
+            break;
+        case 6:
+            $HTML .= "#6FE49C\"";
+            break;
+        case 7:
+            $HTML .= "#EBB745\"";
+    }
+
+
+    $HTML .= ">" . <<<END
 	<div class="container">
 	  <div class="row">
 		<div class="hidden-sm hidden-xs col-md-2">
