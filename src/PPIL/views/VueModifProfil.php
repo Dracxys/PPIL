@@ -51,6 +51,34 @@ END;
             </div>
 END;
         }
+        if ($num == 4) {
+            $html .= <<< END
+            <div class="alert alert-danger" role="alert">
+                <strong>Echec!</strong> Erreur de transfert.
+            </div>
+END;
+        }
+        if ($num == 5) {
+            $html .= <<< END
+            <div class="alert alert-danger" role="alert">
+                <strong>Echec!</strong> Le fichier est trop gros.
+            </div>
+END;
+        }
+        if ($num == 6) {
+            $html .= <<< END
+            <div class="alert alert-danger" role="alert">
+                <strong>Echec!</strong> Extension du fichier non valide.
+            </div>
+END;
+        }
+        if ($num == 7) {
+            $html .= <<< END
+            <div class="alert alert-success" role="alert">
+                <strong>Succès</strong> Photo de profil changée.
+            </div>
+END;
+        }
         $html .= self::infoperso($user);
         $html .= self::responsabilite($user);
         $html .= self::photo($user);
@@ -115,7 +143,7 @@ END;
     {
         $html = <<<END
                  <div id="responsabilite" style="display: none;">
-                    <p>Responsabilités</p>
+                    <h2 class="form-signin-heading ">Modification des responsabilités</h2>
                  </div>
 END;
         return $html;
@@ -123,11 +151,38 @@ END;
 
     public static function photo($user)
     {
+        $modifphoto = Slim::getInstance()->urlFor("modificationPhoto");
         $html = <<<END
                 <div id="photo" style="display: none;">
-                    <p>Photo</p>
-                </div>
+                    <form class="form-horizontal" method="post" action="$modifphoto" enctype="multipart/form-data">
+			        <h2 class="form-signin-heading ">Modification de la photo du profil</h2>
+                    <div class="form-group">
+                    	<div class="col-2">
 END;
+                    if($user->photo == null){
+                        $default = "/PPIL/assets/images/profil_pictures/default.jpg";
+                        $html .= '<img src=' . $default  .' class="img-thumbnail" alt="Photo de profil" width="304" height="236">';
+                    }else{
+                        $html .= '<img src=' . "/PPIL/" . $user->photo  .' class="img-thumbnail" alt="Photo de profil" width="304" height="236">';
+                    }
+                        $html .= <<<END
+                        </div>
+                    </div>    
+                    
+                    <div class="form-group">
+                    	<div class="btn btn-file">
+                        <input type="file" name="file" /> 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                            <div class="col-2">
+                                <input type="submit" class="btn btn-primary" </input>
+                            </div>
+                    </div>
+                    </form>
+                    </div>
+END;
+
         return $html;
     }
 
