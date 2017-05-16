@@ -58,7 +58,7 @@ class UtilisateurControler
         }
     }
 
-    public function enseignant(){
+    public function enseignants(){
         if(isset($_SESSION['mail'])) {
             $v = new VueUtilisateur();
             echo $v->enseignant();
@@ -154,7 +154,7 @@ class UtilisateurControler
                             $e->rand = $tmp;
                             $e->save();
                             $mail = new MailControler();
-                            $mail->sendMaid($e->mail,'Inscription','Votre inscription a Ã©tÃ© validÃ© par le responsable du dÃ©partement informatique.');
+                            $mail->sendMaid($e->mail,'Inscription','Votre inscription a été validée par le responsable du dÃ©partement informatique.');
                         }
                         break;
                     default:

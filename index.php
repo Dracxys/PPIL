@@ -19,6 +19,10 @@ $app->get('/', function () {
     $c->accueil();
 })->name('home');
 
+$app->get('/test', function () use ($app){
+
+});
+
 $app->post('/',function (){
     $c = new HomeControler();
     $c->accueil();
@@ -90,6 +94,11 @@ $app->post("/home/modifPassword", function (){
     $c->modificationPassword();
 })->name('modificationPassword');
 
+$app->post("/home/modificationPhoto", function (){
+    $c = new ModifProfilControler();
+    $c->modifPhoto();
+})->name('modificationPhoto');
+
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
@@ -112,10 +121,10 @@ $app->get('/home/formation', function (){
     $c->home();
 })->name('formationUtilisateur');
 
-$app->get('/home/enseignant', function (){
+$app->get('/home/enseignants', function (){
     $c = new UtilisateurControler();
-    $c->enseignant();
-})->name('enseignantUtilisateur');
+    $c->enseignants();
+})->name('enseignantsUtilisateur');
 
 $app->get('/home/journal', function (){
     $c = new UtilisateurControler();
