@@ -90,6 +90,11 @@ $app->post("/home/modifPassword", function (){
     $c->modificationPassword();
 })->name('modificationPassword');
 
+$app->post("/home/modificationPhoto", function (){
+    $c = new ModifProfilControler();
+    $c->modifPhoto();
+})->name('modificationPhoto');
+
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
