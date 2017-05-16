@@ -91,7 +91,7 @@ class ModifProfilControler
 
             $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
             if ($_FILES['file']['size'] > 0) {
-                $chemin = "/PPIL/assets/images/profil_pictures/";
+                $chemin = "assets/images/profil_pictures/";
                 $root = Slim::getInstance()->root() . "assets/images/profil_pictures/";
                 $num = 7;
                 $extensions_valides = array('jpg', 'jpeg', 'gif', 'png');
@@ -108,10 +108,11 @@ class ModifProfilControler
                 } else {
                     move_uploaded_file($_FILES['file']['tmp_name'],  $root . $namePic . "." . $extension_upload);
                     if ($user->photo != null) {
-                        $nom = $this->chemin . $user->photo;
+                        $nom = Slim::getInstance()->root(). $user->photo;
                         unlink($nom);
                     }
                     $user->photo = $chemin . $namePic . "." . $extension_upload;
+                    $user->save();
                 }
             }
             $v = new VueModifProfil();

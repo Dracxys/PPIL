@@ -163,7 +163,7 @@ END;
                         $default = "/PPIL/assets/images/profil_pictures/default.jpg";
                         $html .= '<img src=' . $default  .' class="img-thumbnail" alt="Photo de profil" width="304" height="236">';
                     }else{
-                        $html .= '<img src=' . $user->photo  .' class="img-thumbnail" alt="Photo de profil" width="304" height="236">';
+                        $html .= '<img src=' . "/PPIL/" . $user->photo  .' class="img-thumbnail" alt="Photo de profil" width="304" height="236">';
                     }
                         $html .= <<<END
                         </div>
