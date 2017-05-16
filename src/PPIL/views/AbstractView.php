@@ -4,6 +4,7 @@
 namespace PPIL\views;
 use PPIL\models\Enseignant;
 use PPIL\models\Responsabilite;
+use PPIL\models\Notification;
 use Slim\App;
 use Slim\Slim;
 
@@ -48,14 +49,17 @@ END;
         $responsable_formation = false;
         if(isset($_SESSION["mail"])){
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
-            $responsabilite = Responsabilite::where('id_resp', '=', 'id_responsabilite')
+            $responsabilite = Responsabilite::where('id_resp', '=', $e->id_responsabilite)
                             ->first();
+            $notifications_count = Notification::where('mail_destinataire', '=', $e->mail)
+                             ->count();
+
             if(isset($responsabilite)){
                 if($responsabilite->intituleResp == 'Responsable du departement informatique'){
                     $responsable_enseignants = true;
+                    $responsable_formation = true;
                 }
-                if($responsabilite->intituleResp == 'Responsable du departement informatique' ||
-                   $responsabilite->intituleResp == 'Responsable formation'){
+                if($responsabilite->intituleResp == 'Responsable formation'){
                     $responsable_formation = true;
                 }
             }
@@ -70,7 +74,7 @@ END;
             "Annuaire" => Slim::getInstance()->urlFor("annuaireUtilisateur")
         );
         $deco = Slim::getInstance()->urlFor("deconnexion");
-        $HTML= <<<END
+        $HTML= <<< END
         <nav class="navbar navbar-default">
           <div class="container-fluid">
 			<div class="navbar-header">
@@ -94,9 +98,16 @@ END;
                     $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
                 }
                 break;
-            case 'Enseignants' :
+            case 'Formation' :
                 if($responsable_formation){
                     $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
+                }
+                break;
+            case 'Journal' :
+                if($notifications_count > 0){
+                    $HTML .= '<li ' . $class . '  ><a href="'. $link .'" id="notifications_count">'. $option . " <font color='red' id='notifications_count_font'>(" .  $notifications_count . ')</font></a></li>';
+                }else{
+                    $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option . '</a></li>';
                 }
                 break;
             default :
@@ -104,7 +115,7 @@ END;
                 break;
             }
         }
-        $HTML .= <<<END
+        $HTML .= <<< END
 			  </ul>
 			  <ul class="nav navbar-nav navbar-right">
 				<p class="navbar-text hidden-xs hidden-sm">
@@ -113,7 +124,7 @@ END;
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
             $HTML .= $e->prenom ." ". $e->nom ."</p>";
         }
-        $HTML .= <<<END
+        $HTML .= <<< END
 				<li><a href="$deco">Se déconnecter</a></li>
 			  </ul>
 			</div>
@@ -124,7 +135,7 @@ END;
     }
 
     public static function footerHTML() {
-        $HTML= <<<END
+        $HTML= <<< END
   </body>
 </html>
 END;
