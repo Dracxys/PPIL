@@ -80,7 +80,7 @@ END;
 END;
         if(isset($_SESSION["mail"])){
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
-            $HTML .= $e->nom ." ". $e->prenom ."</p>";
+            $HTML .= $e->prenom ." ". $e->nom ."</p>";
         }
         $HTML .= <<<END
 				<li><a href="$deco">Se déconnecter</a></li>
