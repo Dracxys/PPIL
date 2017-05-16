@@ -16,8 +16,14 @@ class FormationControler
 {
     public function home(){
         $f = Formation::all();
+        $val = array();
+        foreach ($f as $value){
+            if(!in_array($value->nomFormation,$val)){
+                $val[] = $value->nomFormation;
+            }
+        }
         $v = new VueFormation();
-        echo $v->home($f);
+        echo $v->home($val);
     }
 
 
