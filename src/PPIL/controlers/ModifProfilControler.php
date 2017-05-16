@@ -16,9 +16,15 @@ class ModifProfilControler
 
     public function home()
     {
-        $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
-        $v = new VueModifProfil();
-        echo $v->home($user, -1);
+        if(isset($_SESSION['mail'])){
+            $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
+            $v = new VueModifProfil();
+            echo $v->home($user, -1);
+        }else{
+            $v = new VueHome();
+            echo $v->home(0);
+        }
+
     }
 
     public function modificationProfil()
