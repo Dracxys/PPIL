@@ -19,42 +19,42 @@ use PPIL\models\NotificationInscription;
 class VueUtilisateur extends AbstractView
 {
     public function home(){
-        $html = self::headHTML();
+        $html = self::headHTML(1);
         $html = $html . self::navHTML("Profil");
         $html = $html . self::footerHTML();
         return $html;
     }
 
     public function enseignement(){
-        $html = self::headHTML();
+        $html = self::headHTML(2);
         $html = $html . self::navHTML("Enseignement");
         $html = $html . self::footerHTML();
         return $html;
     }
 
     public function ue(){
-        $html = self::headHTML();
+        $html = self::headHTML(3);
         $html = $html . self::navHTML("UE");
         $html = $html . self::footerHTML();
         return $html;
     }
 
     public function formation(){
-        $html = self::headHTML();
+        $html = self::headHTML(4);
         $html = $html . self::navHTML("Formation");
         $html = $html . self::footerHTML();
         return $html;
     }
 
     public function enseignant(){
-        $html = self::headHTML();
+        $html = self::headHTML(5);
         $html = $html . self::navHTML("Enseignant");
         $html = $html . self::footerHTML();
         return $html;
     }
 
     public function journal(){
-        $html = self::headHTML();
+        $html = self::headHTML(6);
         $html = $html . self::navHTML("Journal");
         $html .= <<< END
 	    <div class="container">
@@ -167,7 +167,7 @@ END;
     }
 
     public function annuaire(){
-        $html = self::headHTML();
+        $html = self::headHTML(7);
         $html = $html . self::navHTML("Annuaire");
         $html .= <<< END
         <div class="container">

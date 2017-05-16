@@ -11,7 +11,7 @@ class VueModifProfil extends AbstractView
 {
     public static function home($user, $num)
     {
-        $html = self::headHTML();
+        $html = self::headHTML(1);
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
 		<div class="container panel-default text-center">
