@@ -3,6 +3,7 @@
 
 namespace PPIL\views;
 use PPIL\models\Enseignant;
+use PPIL\models\Responsabilite;
 use Slim\App;
 use Slim\Slim;
 
@@ -43,12 +44,28 @@ END;
     }
 
     public static function navHTML($focus) {
+        $responsable_enseignants = false;
+        $responsable_formation = false;
+        if(isset($_SESSION["mail"])){
+            $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
+            $responsabilite = Responsabilite::where('id_resp', '=', 'id_responsabilite')
+                            ->first();
+            if(isset($responsabilite)){
+                if($responsabilite->intituleResp == 'Responsable du departement informatique'){
+                    $responsable_enseignants = true;
+                }
+                if($responsabilite->intituleResp == 'Responsable du departement informatique' ||
+                   $responsabilite->intituleResp == 'Responsable formation'){
+                    $responsable_formation = true;
+                }
+            }
+        }
         $options = array(
             "Profil" => Slim::getInstance()->urlFor("profilUtilisateur"),
             "Enseignement" => Slim::getInstance()->urlFor("enseignementUtilisateur"),
             "UE" => Slim::getInstance()->urlFor("ueUtilisateur"),
             "Formation" => Slim::getInstance()->urlFor("formationUtilisateur"),
-            "Enseignant" => Slim::getInstance()->urlFor("enseignantUtilisateur"),
+            "Enseignants" => Slim::getInstance()->urlFor("enseignantsUtilisateur"),
             "Journal" => Slim::getInstance()->urlFor("journalUtilisateur"),
             "Annuaire" => Slim::getInstance()->urlFor("annuaireUtilisateur")
         );
@@ -67,10 +84,24 @@ END;
 			  <ul class="nav navbar-nav">
 END;
         foreach($options as $option => $link){
+            $class = "";
             if($option == $focus){
-                $HTML .= '<li class="active" ><a href="'. $link .'">'. $option .'</a></li>';
-            } else {
-                $HTML .= '<li><a href="'. $link .'">'. $option .'</a></li>';
+                $class = 'class="active"';
+            }
+            switch($option){
+            case 'Enseignants' :
+                if($responsable_enseignants){
+                    $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
+                }
+                break;
+            case 'Enseignants' :
+                if($responsable_formation){
+                    $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
+                }
+                break;
+            default :
+                $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
+                break;
             }
         }
         $HTML .= <<<END
