@@ -15,6 +15,7 @@ use PPIL\views\VueModifProfil;
 use PPIL\views\VueUtilisateur;
 use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
+use PPIL\models\Intervention;
 use Slim\Slim;
 
 
@@ -35,6 +36,42 @@ class UtilisateurControler
         if(isset($_SESSION['mail'])){
             $v = new VueUtilisateur();
             echo $v->enseignement();
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+
+    public function enseignement_action(){
+        if(isset($_SESSION['mail'])){
+            $val = Slim::getInstance()->request->post();
+            $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
+            $heuresCM = filter_var($val['heuresCM'], FILTER_SANITIZE_NUMBER_INT);
+			$heuresTD = filter_var($val['heuresTD'], FILTER_SANITIZE_NUMBER_INT);
+			$heuresTP = filter_var($val['heuresTP'], FILTER_SANITIZE_NUMBER_INT);
+			$heuresEI = filter_var($val['heuresEI'], FILTER_SANITIZE_NUMBER_INT);
+			$groupeTD = filter_var($val['groupeTD'], FILTER_SANITIZE_NUMBER_INT);
+			$groupeTP = filter_var($val['groupeTP'], FILTER_SANITIZE_NUMBER_INT);
+			$groupeEI = filter_var($val['groupeEI'], FILTER_SANITIZE_NUMBER_INT);
+            $supprime = $val['supprime']==false ? false : filter_var($val['supprime'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+
+            $intervention = Intervention::where('id_intervention', '=', $id)
+                          ->first();
+            if(!empty($intervention)){
+                if($supprime){
+                    $intervention->delete();
+                } else {
+                    $intervention->heuresCM = $heuresCM;
+                    $intervention->heuresTD = $heuresTD;
+                    $intervention->heuresTP = $heuresTP;
+                    $intervention->heuresEI = $heuresEI;
+                    $intervention->groupeTD = $groupeTD;
+                    $intervention->groupeTP = $groupeTP;
+                    $intervention->groupeEI = $groupeEI;
+                    $intervention->save();
+                }
+            }
+
         }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
@@ -250,25 +287,25 @@ class UtilisateurControler
 		}
 
 	}
-	
+
 	public function creerUE(){
 		if(isset($_SESSION['mail'])) {
 			$val = Slim::getInstance()->request->post();
 			$nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
-			
+
 			$heuresCM = filter_var($val['heuresCM'], FILTER_SANITIZE_STRING);
 			$heuresTP = filter_var($val['heuresTP'], FILTER_SANITIZE_STRING);
 			$heuresTD = filter_var($val['heuresTD'], FILTER_SANITIZE_STRING);
 			$heuresEI = filter_var($val['heuresEI'], FILTER_SANITIZE_STRING);
-			
+
 			$groupeTP = filter_var($val['groupeTP'], FILTER_SANITIZE_STRING);
 			$groupeTD = filter_var($val['groupeTD'], FILTER_SANITIZE_STRING);
 			$groupeEI = filter_var($val['groupeEI'], FILTER_SANITIZE_STRING);
-			
+
 			$nom_responsable = filter_var($val['nom_responsable'], FILTER_SANITIZE_STRING);
-			
+
 			UE::creerUE($nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI);
-			
+
 			if (!empty($nom_responsable)){
 				$responsable = Enseignant::where('nom', 'like', $nom_responsable)->first();
 				if(empty(responsable)){
@@ -278,11 +315,11 @@ class UtilisateurControler
 					ajoutResponsabilite($responsable->mail, 'responsable ue', null, $nouvUE->id_UE);
 				}
 			}
-			
+
 		}
 	}
-	
-	
+
+
 
     public function deconnexion(){
         session_destroy();

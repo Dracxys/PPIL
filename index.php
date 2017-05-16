@@ -117,6 +117,11 @@ $app->get('/home/enseignement', function (){
     $c->enseignement();
 })->name('enseignementUtilisateur');
 
+$app->post('/home/enseignement/actionEnseignement', function (){
+    $c = new UtilisateurControler();
+    $c->enseignement_action();
+})->name('enseignementUtilisateur.actionEnseignement');
+
 $app->get('/home/ue', function (){
     $c = new UtilisateurControler();
     $c->ue();
