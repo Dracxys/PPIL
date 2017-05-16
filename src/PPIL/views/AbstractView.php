@@ -30,7 +30,7 @@ END;
 
     switch ($idFocus) {
         case 0:
-            $HTML .= "#D8DEE0\"";
+            $HTML .= "#B2B2B2\"";
             break;        
         case 1:
             $HTML .= "#83BAD9\"";
