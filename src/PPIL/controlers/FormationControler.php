@@ -36,7 +36,7 @@ class FormationControler
         $res = array();
         if(!empty($for)){
             foreach ($for as $value){
-                $ue = UE::where('id_UE','=',$value->id_UE)->first();
+                $ue = UE::where('id_formation','=',$value->id_formation)->first();
                 $res[] = $ue->nom_UE;
             }
         }
