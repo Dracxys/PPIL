@@ -28,6 +28,45 @@ class VueUtilisateur extends AbstractView
     public function enseignement(){
         $html = self::headHTML();
         $html = $html . self::navHTML("Enseignement");
+        $html .= <<< END
+        <div class="container">
+		  <div class="panel panel-default">
+			<div class="panel-heading clearfix text-center">
+
+			  <div class="btn-group pull-right">
+			    <form class="navbar-form navbar-left">
+                    <button type="submit" class="btn btn-default">Exporter</button>
+                </form>
+			  </div>
+
+			 <h4>Fiche prévisionnelle Des enseignements</h4>
+            </div>
+
+            <div class="panel-body text-center">
+			    <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Composante</th>
+                        <th class="text-center">Formation</th>
+                        <th class="text-center">Année</th>
+                        <th class="text-center">UE</th>
+                        <th class="text-center">Ref</th>
+                        <th class="text-center">CM</th>
+                        <th class="text-center">TD</th>
+                        <th class="text-center">Groupes TD</th>
+                        <th class="text-center">TP</th>
+                        <th class="text-center">Groupes TP</th>
+                        <th class="text-center">UE</th>
+                        <th class="text-center">Groupes UE</th>
+                      </tr>
+                    </thead>
+                    </table>
+			  </div>
+            </div>
+        </div>
+
+END;
         $html = $html . self::footerHTML();
         return $html;
     }
@@ -173,18 +212,18 @@ END;
         <div class="container">
 		  <div class="panel panel-default">
 			<div class="panel-heading clearfix text-center">
-			
-			 
+
+
 			  <div class="btn-group pull-right">
 			    <form class="navbar-form navbar-left">
                     <input type="text" class="form-control" placeholder="Recherche">
                     <button type="submit" class="btn btn-default">Valider</button>
                 </form>
 			  </div>
-			  
-			 <h4>Annuaire</h4> 
+
+			 <h4>Annuaire</h4>
             </div>
-            
+
             <div class="panel-body text-center">
 			    <div class="table-responsive">
                   <table class="table table-bordered">

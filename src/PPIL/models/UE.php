@@ -3,7 +3,6 @@ namespace PPIL\models;
 
 class UE extends \Illuminate\Database\Eloquent\Model{
 	protected $table = "UE";
-	protected $primaryKey = "nom_UE";
-	public $timestamps = false;
+	protected $primaryKey = "id_UE";
     public $incrementing = false;
 }
