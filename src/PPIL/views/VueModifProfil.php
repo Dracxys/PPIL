@@ -10,10 +10,7 @@ use Slim\Slim;
 class VueModifProfil extends AbstractView
 {
     public static function home($user, $num){
-        $select = self::selectStatut($user);
         $html = self::headHTML();
-        $modifprofil = Slim::getInstance()->urlFor("modificationProfil");
-        $modifpassword = Slim::getInstance()->urlFor("modificationPassword");
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
 		<div class="container panel panel-default text-center ">
@@ -52,8 +49,41 @@ END;
             </div>
 END;
         }
+        echo self::infoperso($user);
+        echo self::responsabilite($user);
+        echo self::photo($user);
+        echo self::password($user);
 
-		$html.= <<< END
+
+
+
+         $html .= <<<END
+           </div>
+
+END;
+ $html = $html . self::footerHTML();
+        $html .= "		<script type=\"text/javascript\" src=\"/PPIL/assets/js/modifprofil.js\">     </script>";
+        return $html;
+    }
+
+    public static function selectStatut($user){
+    $array = array("Professeur des universités","Maître de conférences","PRAG","1/2 ATER","Doctorant","Vacataire");
+        $html = '<select class="form-control" name="statut">';
+        foreach ($array as $value){
+            if($value == $user->statut){
+                $html .= '<option selected value=' . $value .'>' . $value . '</option>';
+            }else{
+                $html .= '<option value=' . $value .'>' . $value . '</option>';
+            }
+        }
+        $html .= "</select>";
+        return $html;
+    }
+
+    public static function infoperso($user){
+        $modifprofil = Slim::getInstance()->urlFor("modificationProfil");
+        $select = self::selectStatut($user);
+        $html = <<< END
         <div id="infoperso" class="panel-body">
 			<form class="form-signin form-horizontal" method="post" action="$modifprofil"  id="valider">
 			  <h2 class="form-signin-heading ">Modification du profil</h2>
@@ -79,8 +109,8 @@ END;
 				<label class="control-label col-sm-4" for="statut">Statut </label>
 				<div class="col-sm-4">
 END;
-            $html .= $select;
-            $html .= <<< END
+        $html .= $select;
+        $html .= <<< END
 				</div>
 			  </div>
 
@@ -90,13 +120,32 @@ END;
               </div>
 			</form>
             </div>
-            <div id="responsabilite" style="display: none;">
-                <p>Responsabilités</p>
-            </div>
-            <div id="photo" style="display: none;">
-                <p>Photo</p>
-            </div>
-            <div id="motdepasse" style="display: none;">
+END;
+        return $html;
+    }
+
+    public static function responsabilite($user){
+        $html = <<<END
+                 <div id="responsabilite" style="display: none;">
+                    <p>Responsabilités</p>
+                 </div>
+END;
+        return $html;
+    }
+
+    public static function photo($user){
+        $html = <<<END
+                <div id="photo" style="display: none;">
+                    <p>Photo</p>
+                </div>
+END;
+        return $html;
+    }
+
+    public static function password($user){
+        $modifpassword = Slim::getInstance()->urlFor("modificationPassword");
+        $html = <<<END
+                <div id="motdepasse" style="display: none;">
                 <form class="form-signin form-horizontal" method="post" action="$modifpassword"  id="valider">
 			  <h2 class="form-signin-heading ">Modification du mot de passe</h2>
 			  <div class="form-group">
@@ -122,25 +171,9 @@ END;
               </div>
 			</form>
             </div>
-            </div>
-
 END;
- $html = $html . self::footerHTML();
-        $html .= "		<script type=\"text/javascript\" src=\"/PPIL/assets/js/modifprofil.js\">     </script>";
         return $html;
     }
 
-    public static function selectStatut($user){
-    $array = array("Professeur des universités","Maître de conférences","PRAG","1/2 ATER","Doctorant","Vacataire");
-        $html = '<select class="form-control" name="statut">';
-        foreach ($array as $value){
-            if($value == $user->statut){
-                $html .= '<option selected value=' . $value .'>' . $value . '</option>';
-            }else{
-                $html .= '<option value=' . $value .'>' . $value . '</option>';
-            }
-        }
-        $html .= "</select>";
-        return $html;
+
     }
-}
