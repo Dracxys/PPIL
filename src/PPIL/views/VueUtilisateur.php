@@ -38,7 +38,6 @@ class VueUtilisateur extends AbstractView
                     <button type="submit" class="btn btn-default">Exporter</button>
                 </form>
 			  </div>
-
 			 <h4>Fiche prévisionnelle Des enseignements</h4>
             </div>
 

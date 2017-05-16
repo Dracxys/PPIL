@@ -12,7 +12,7 @@ namespace PPIL\views;
 class VueFormation extends AbstractView
 {
     public function home($u){
-        $html  = self::headHTML();
+        $html  = self::headHTML(4);
         $html .= self::navHTML("Formation");
         $select = self::selectStatut($u);
         $html .= <<< END
@@ -21,7 +21,7 @@ class VueFormation extends AbstractView
             <div id="selectForm" class="panel-group">
                 $select
             </div>
-            
+
         </div>
 END;
         return $html;
