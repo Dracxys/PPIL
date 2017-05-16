@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Mar 16 Mai 2017 à 15:17
+-- Généré le :  Mar 16 Mai 2017 à 15:44
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -54,8 +54,7 @@ INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCoura
 
 CREATE TABLE `Formation` (
   `id_formation` int(11) NOT NULL,
-  `nomFormation` varchar(32) NOT NULL,
-  `id_UE` int(11) NOT NULL
+  `nomFormation` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -176,6 +175,7 @@ INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_forma
 CREATE TABLE `UE` (
   `id_UE` int(11) NOT NULL,
   `nom_UE` varchar(32) NOT NULL,
+  `id_formation` int(11) NOT NULL,
   `heuresTD` int(4) NOT NULL DEFAULT '0',
   `heuresTP` int(4) NOT NULL DEFAULT '0',
   `heuresCM` int(4) NOT NULL DEFAULT '0',
@@ -206,8 +206,7 @@ ALTER TABLE `Enseignant`
 -- Index pour la table `Formation`
 --
 ALTER TABLE `Formation`
-  ADD PRIMARY KEY (`id_formation`),
-  ADD KEY `fk_formation_id_UE` (`id_UE`);
+  ADD PRIMARY KEY (`id_formation`);
 
 --
 -- Index pour la table `Intervention`
@@ -249,7 +248,8 @@ ALTER TABLE `Responsabilite`
 -- Index pour la table `UE`
 --
 ALTER TABLE `UE`
-  ADD PRIMARY KEY (`id_UE`);
+  ADD PRIMARY KEY (`id_UE`),
+  ADD KEY `fk_id_formation` (`id_formation`);
 
 --
 -- AUTO_INCREMENT pour les tables exportées
@@ -279,16 +279,10 @@ ALTER TABLE `Responsabilite`
 -- AUTO_INCREMENT pour la table `UE`
 --
 ALTER TABLE `UE`
-  MODIFY `id_UE` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_UE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Contraintes pour les tables exportées
 --
-
---
--- Contraintes pour la table `Formation`
---
-ALTER TABLE `Formation`
-  ADD CONSTRAINT `fk_formation_id_UE` FOREIGN KEY (`id_UE`) REFERENCES `UE` (`id_UE`);
 
 --
 -- Contraintes pour la table `Intervention`
@@ -316,6 +310,12 @@ ALTER TABLE `NotificationInscription`
 ALTER TABLE `Responsabilite`
   ADD CONSTRAINT `fk_responsabilite_id_UE` FOREIGN KEY (`id_UE`) REFERENCES `UE` (`id_UE`),
   ADD CONSTRAINT `fk_responsabilite_mail_enseignant` FOREIGN KEY (`enseignant`) REFERENCES `Enseignant` (`mail`);
+
+--
+-- Contraintes pour la table `UE`
+--
+ALTER TABLE `UE`
+  ADD CONSTRAINT `fk_id_formation` FOREIGN KEY (`id_formation`) REFERENCES `Formation` (`id_formation`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
