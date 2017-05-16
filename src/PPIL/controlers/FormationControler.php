@@ -32,12 +32,12 @@ class FormationControler
         $app = Slim::getInstance();
         $nom = $app->request->post();
         $nom = filter_var($nom['nom'],FILTER_SANITIZE_STRING);
-        $for = \PPIL\models\Formation::where('nomFormation','like',$nom)->get();
+        $for = \PPIL\models\Formation::where('nomFormation','like',$nom)->first();
+        $ue = UE::where('id_formation','=',$for->id_formation)->get();
         $res = array();
-        if(!empty($for)){
-            foreach ($for as $value){
-                $ue = UE::where('id_UE','=',$value->id_UE)->first();
-                $res[] = $ue->nom_UE;
+        if(!empty($ue)){
+            foreach ($ue as $value){
+                $res[] = $value->nom_UE;
             }
         }
         $app->response->headers->set('Content-Type', 'application/json');

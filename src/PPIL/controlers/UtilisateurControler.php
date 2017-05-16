@@ -320,7 +320,6 @@ class UtilisateurControler
 	}
 
 
-
     public function deconnexion(){
         session_destroy();
         Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));

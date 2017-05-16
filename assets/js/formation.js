@@ -10,7 +10,7 @@ function recupererUE(lien) {
             if(tab.length > 0){
                 var html="";
                 for(var i = 0; i < tab.length ; i++){
-                    html = html + "<span class='container'>" + tab[i] + "</span>";
+                    html = html + "<span id='ue' class='container'>" + tab[i] + "</span>";
                 }
                 $('#tableUE').html(html);
             }

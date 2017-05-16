@@ -123,8 +123,8 @@ $app->post('/home/enseignement/actionEnseignement', function (){
 })->name('enseignementUtilisateur.actionEnseignement');
 
 $app->get('/home/ue', function (){
-    $c = new UtilisateurControler();
-    $c->ue();
+    $c = new \PPIL\controlers\UEControler();
+    $c->home();
 })->name('ueUtilisateur');
 
 $app->get('/home/formation', function (){

@@ -32,8 +32,26 @@ class VueFormation extends AbstractView
                   
 			    </div>
             </div>
-            <div class="col-sm-6 ">
-                <label id="ue" class="control-label col-sm-4">Sélectionner Formation</label>
+            <div class="container panel col-sm-6 ">
+                 <div class="container">
+                    <label id="ue" class="control-label">Sélectionner Formation</label>
+                 </div>   
+                 <div class="panel">
+                    <ul class="nav nav-pills">
+                        <li class="active"><a href="#tab1" data-toggle="tab">CM</a></li>
+                        <li><a href="#tab2" data-toggle="tab">TD</a></li>
+                        <li><a href="#tab3" data-toggle="tab">TP</a></li>
+                        <li><a href="#tab4" data-toggle="tab">EI</a></li>
+                   
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">Vous pouvez consulter le détail du programme</div>
+                        <div class="tab-pane" id="tab2">Vous pouvez consulter le détail sur le public</div>
+                        <div class="tab-pane" id="tab3">Vous pouvez consulter le détail des objectifs pédagogiques</div>
+                        <div class="tab-pane" id="tab4">Vous pouvez consulter le détail des compléments</div>
+                    
+                    </div>
+                </div>    
             </div>
         </div>
         <script type="text/javascript" src="/PPIL/assets/js/formation.js">     </script>
