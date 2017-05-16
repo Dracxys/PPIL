@@ -39,7 +39,7 @@ class VueHome extends AbstractView
 END;
         if($num == 1){
             $html = $html . <<< END
-            <div class="alert alert-warning">
+            <div class="alert alert-danger">
                 Votre adresse mail ou mot de passe est incorrect.
             </div>
 END;
@@ -123,13 +123,13 @@ END;
 END;
         if($num == 1){
             $html = $html . <<< END
-            <div class="alert alert-warning">
+            <div class="alert alert-danger">
                 La confirmation de votre mot de passe est erronée.
             </div>
 END;
         }elseif ($num == 2){
             $html = $html . <<< END
-            <div class="alert alert-warning">
+            <div class="alert alert-danger">
                 Adresse mail déjà utilisée.
             </div>
 END;
@@ -201,7 +201,7 @@ $html = $html . self::footerHTML();
 END;
         if($num == 1){
             $html = $html . <<< END
-            <div class="alert alert-warning">
+            <div class="alert alert-danger">
                 Votre adresse mail est erronée.
             </div>
 END;
@@ -285,7 +285,7 @@ END;
 END;
         if($num == 1){
             $html = $html . <<< END
-            <div class="alert alert-warning">
+            <div class="alert alert-danger">
                 La confirmation de votre mot de passe est erronée.
             </div>
 END;

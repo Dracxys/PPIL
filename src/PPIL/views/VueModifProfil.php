@@ -9,7 +9,8 @@ use Slim\Slim;
 
 class VueModifProfil extends AbstractView
 {
-    public static function home($user, $num){
+    public static function home($user, $num)
+    {
         $html = self::headHTML();
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
@@ -21,66 +22,51 @@ class VueModifProfil extends AbstractView
          <a href="#" id="boutonPhoto" class="list-group-item">Photo</a>
           <a href="#" id="boutonPassword" class="list-group-item">Mot de passe</a>
 END;
-        if($num == 0){
+        if ($num == 0) {
             $html .= <<< END
             <div class="alert alert-success" role="alert">
                 <strong>Succès!</strong> Modification de profil validé.
             </div>
 END;
         }
-        if($num == 1){
+        if ($num == 1) {
             $html .= <<< END
             <div class="alert alert-success" role="alert">
                 <strong>Succès!</strong> Modification du mot de passe validé.
             </div>
 END;
         }
-        if($num == 2){
+        if ($num == 2) {
             $html .= <<< END
-            <div class="alert alert-warning" role="alert">
+            <div class="alert alert-danger" role="alert">
                 <strong>Echec!</strong> Ancien mot de passe non valide.
             </div>
 END;
         }
-        if($num == 3){
+        if ($num == 3) {
             $html .= <<< END
-            <div class="alert alert-warning" role="alert">
+            <div class="alert alert-danger" role="alert">
                 <strong>Echec!</strong> Nouveau mot de passe et la confirmation sont différents.
             </div>
 END;
         }
-        echo self::infoperso($user);
-        echo self::responsabilite($user);
-        echo self::photo($user);
-        echo self::password($user);
+        $html .= self::infoperso($user);
+        $html .= self::responsabilite($user);
+        $html .= self::photo($user);
+        $html .= self::password($user);
 
 
-
-
-         $html .= <<<END
+        $html .= <<<END
            </div>
 
 END;
- $html = $html . self::footerHTML();
+        $html = $html . self::footerHTML();
         $html .= "		<script type=\"text/javascript\" src=\"/PPIL/assets/js/modifprofil.js\">     </script>";
         return $html;
     }
 
-    public static function selectStatut($user){
-    $array = array("Professeur des universités","Maître de conférences","PRAG","1/2 ATER","Doctorant","Vacataire");
-        $html = '<select class="form-control" name="statut">';
-        foreach ($array as $value){
-            if($value == $user->statut){
-                $html .= '<option selected value=' . $value .'>' . $value . '</option>';
-            }else{
-                $html .= '<option value=' . $value .'>' . $value . '</option>';
-            }
-        }
-        $html .= "</select>";
-        return $html;
-    }
-
-    public static function infoperso($user){
+    public static function infoperso($user)
+    {
         $modifprofil = Slim::getInstance()->urlFor("modificationProfil");
         $select = self::selectStatut($user);
         $html = <<< END
@@ -124,7 +110,8 @@ END;
         return $html;
     }
 
-    public static function responsabilite($user){
+    public static function responsabilite($user)
+    {
         $html = <<<END
                  <div id="responsabilite" style="display: none;">
                     <p>Responsabilités</p>
@@ -133,7 +120,8 @@ END;
         return $html;
     }
 
-    public static function photo($user){
+    public static function photo($user)
+    {
         $html = <<<END
                 <div id="photo" style="display: none;">
                     <p>Photo</p>
@@ -142,7 +130,8 @@ END;
         return $html;
     }
 
-    public static function password($user){
+    public static function password($user)
+    {
         $modifpassword = Slim::getInstance()->urlFor("modificationPassword");
         $html = <<<END
                 <div id="motdepasse" style="display: none;">
@@ -175,16 +164,18 @@ END;
         return $html;
     }
 
-    public static function selectStatut($user){
-    $array = array('Professeur des universités','Maître de conférences','PRAG','ATER','1/2 ATER','Doctorant','Vacataire');
+    public static function selectStatut($user)
+    {
+        $array = array('Professeur des universités', 'Maître de conférences', 'PRAG', 'ATER', '1/2 ATER', 'Doctorant', 'Vacataire');
         $html = '<select class="form-control" name="statut">';
-        foreach ($array as $value){
-            if($value == $user->statut){
-                $html .= '<option selected value=' .'"' . $value  .'"' .'>' . $value . '</option>';
-            }else{
-                $html .= '<option value='.'"' . $value .'"' .'>' . $value . '</option>';
+        foreach ($array as $value) {
+            if ($value == $user->statut) {
+                $html .= '<option selected value=' . '"' . $value . '"' . '>' . $value . '</option>';
+            } else {
+                $html .= '<option value=' . '"' . $value . '"' . '>' . $value . '</option>';
             }
         }
         $html .= "</select>";
         return $html;
     }
+}
