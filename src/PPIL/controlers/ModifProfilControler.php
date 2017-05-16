@@ -27,6 +27,36 @@ class ModifProfilControler{
             $user->prenom = filter_var($val['prenom'], FILTER_SANITIZE_STRING);
             $user->mail = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
             $user->statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
+            switch (filter_var($val['statut'], FILTER_SANITIZE_STRING)){
+                case "Professeur des universités" :
+                    $user->volumeMin = 192;
+                    $user->volumeMax = 384;
+                    break;
+                case "Maître de conférences" :
+                    $user->volumeMin = 192;
+                    $user->volumeMax = 384;
+                    break;
+                case "PRAG" :
+                    $user->volumeMin = 384;
+                    $user->volumeMax = 768;
+                    break;
+                case "ATER" :
+                    $user->volumeMin = 192;
+                    $user->volumeMax = 192;
+                    break;
+                case "1/2 ATER" :
+                    $user->volumeMin = 96;
+                    $user->volumeMax = 96;
+                    break;
+                case "Doctorant" :
+                    $user->volumeMin = 64;
+                    $user->volumeMax = 64;
+                    break;
+                case "Vacataire" :
+                    $user->volumeMin = 0;
+                    $user->volumeMax = 96;
+                    break;
+            }
             $user->save();
 
             $v = new VueModifProfil();
