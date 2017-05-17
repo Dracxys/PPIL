@@ -70,23 +70,39 @@ END;
     private function compositionUE($u) {
         $compoUE = Slim::getInstance()->urlFor("compoUE");
         $html = <<<END
+<<<<<<< HEAD
             <div id="compoUE" style="display: none;">
                 <form class="form-horizontal" method="post" action="$compoUE" enctype="multipart/form-data">
 			        <h2 class="form-signin-heading ">Composition de l'UE</h2>
 			        </form>
 			        </div>
+=======
+            <div id="compoUE" class="panel-body">
+
+            </div>
+>>>>>>> 4f54cf9e4b3c21a72bd493aa9daa78524c88cdfd
 END;
+
+        return $html;
     }
 
     private function listeIntervenants($u) {
         $intervenantsUE = Slim::getInstance()->urlFor("intervenantsUE");
         $html = <<<END
+<<<<<<< HEAD
                 <div id="intervenantsUE" style="display: none;">
                 <form class="form-horizontal" method="post" action="$intervenantsUE" enctype="multipart/form-data">
 			        <h2 class="form-signin-heading ">Intervenants de l'UE</h2>
 			        </form>
 			        </div>
+=======
+            <div id="intervenants" class="panel-body">
+
+            </div>
+>>>>>>> 4f54cf9e4b3c21a72bd493aa9daa78524c88cdfd
 END;
+
+        return $html;
     }
 
     public static function selectUE($ue)
