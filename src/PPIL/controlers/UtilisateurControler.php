@@ -232,9 +232,31 @@ class UtilisateurControler
                             $e->rand = $tmp;
                             $e->save();
                             $mail = new MailControler();
-                            $mail->sendMaid($e->mail,'Inscription','Votre inscription a �t� valid�e par le responsable du département informatique.');
+                            $mail->sendMaid($e->mail,'Inscription','Votre inscription a été validée par le responsable du département informatique.');
                         }
                         break;
+                    case "PPIL\models\NotificationIntervention":
+                        $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
+                                                   ->first();
+                        if(!empty($notificationinscription)){
+                            $intervention = Intervention::where('id_intervention', '=', $notificationinscription->id_intervention)
+                                          ->get();
+
+                            $ue = UE::where('id_UE', '=', $notificationinscription->id_UE)
+                                          ->get();
+
+                            if(!empty($notificationinscription) && !empty($ue)){
+                                $intervention->heuresCM == $notification_intervention->heuresCM;
+                                $intervention->heuresTP == $notification_intervention->heuresTP;
+                                $intervention->heuresTD == $notification_intervention->heuresTD;
+                                $intervention->heuresEI == $notification_intervention->heuresEI;
+                                $intervention->groupeTP == $notification_intervention->groupeTP;
+                                $intervention->groupeTD == $notification_intervention->groupeTD;
+                                $intervention->groupeEI == $notification_intervention->groupeEI;
+                                $intervention->save();
+                                UE::recalculer($ue);
+                            }
+                        }
                     default:
                         break;
                     }
@@ -246,7 +268,7 @@ class UtilisateurControler
 
                             if(!empty($notificationinscription)){
                                 $mail = new MailControler();
-                                $mail->sendMaid($notificationinscription->mail,'Inscription','Votre inscription a été refusé par le responsable du département informatique.');
+                                $mail->sendMaid($notificationinscription->mail,'Inscription','Votre inscription a été refusée par le responsable du département informatique.');
                             }
                             break;
                         default:

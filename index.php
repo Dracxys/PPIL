@@ -21,10 +21,6 @@ $app->get('/', function () {
     $c->accueil();
 })->name('home');
 
-$app->get('/test', function () use ($app){
-
-});
-
 $app->post('/',function (){
     $c = new HomeControler();
     $c->accueil();
