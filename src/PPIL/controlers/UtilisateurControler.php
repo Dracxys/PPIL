@@ -46,13 +46,16 @@ class UtilisateurControler
         if(isset($_SESSION['mail'])){
             $val = Slim::getInstance()->request->post();
             $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
-            $heuresCM = filter_var($val['heuresCM'], FILTER_SANITIZE_NUMBER_INT);
-			$heuresTD = filter_var($val['heuresTD'], FILTER_SANITIZE_NUMBER_INT);
-			$heuresTP = filter_var($val['heuresTP'], FILTER_SANITIZE_NUMBER_INT);
-			$heuresEI = filter_var($val['heuresEI'], FILTER_SANITIZE_NUMBER_INT);
-			$groupeTD = filter_var($val['groupeTD'], FILTER_SANITIZE_NUMBER_INT);
-			$groupeTP = filter_var($val['groupeTP'], FILTER_SANITIZE_NUMBER_INT);
-			$groupeEI = filter_var($val['groupeEI'], FILTER_SANITIZE_NUMBER_INT);
+            $error = false;
+            $infos = array(
+                'heuresCM' => filter_var($val['heuresCM'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE),
+                'heuresTD' => filter_var($val['heuresTD'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE),
+                'heuresTP' => filter_var($val['heuresTP'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE),
+                'heuresEI' => filter_var($val['heuresEI'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE),
+                'groupeTD' => filter_var($val['groupeTD'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE),
+                'groupeTP' => filter_var($val['groupeTP'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE),
+                'groupeEI' => filter_var($val['groupeEI'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE)
+            );
             $supprime = $val['supprime']==false ? false : filter_var($val['supprime'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
             $intervention = Intervention::where('id_intervention', '=', $id)
@@ -60,18 +63,27 @@ class UtilisateurControler
             if(!empty($intervention)){
                 if($supprime){
                     $intervention->delete();
-                } else {
-                    $intervention->heuresCM = $heuresCM;
-                    $intervention->heuresTD = $heuresTD;
-                    $intervention->heuresTP = $heuresTP;
+                } else{
+                    foreach($infos as $nom => $data){
+                        if($data != null && $data >= 0){
+                            $intervention->$nom= $data;
+                        }else{
+                            $error = true;
+                        }
+                    }
+                    if(!$error){
+                        $intervention->save();
+                    }
+                        /*                    $intervention->heuresTD = $heuresTD;
+                                          $intervention->heuresTP = $heuresTP;
                     $intervention->heuresEI = $heuresEI;
                     $intervention->groupeTD = $groupeTD;
                     $intervention->groupeTP = $groupeTP;
                     $intervention->groupeEI = $groupeEI;
-                    $intervention->save();
+                    */
                 }
             }
-
+            echo $error;
         }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }

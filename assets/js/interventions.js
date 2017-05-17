@@ -23,18 +23,26 @@ function valider(lien){
 			var supprime = $(this).find('button#supprimer').val();
 			var id = $(this).find('input#id').val();
 			var tr = $("tr#"+id);
-			var heuresCM = tr.find('input#heuresCM').val();
-			var heuresTD = tr.find('input#heuresTD').val();
-			var heuresTP = tr.find('input#heuresTP').val();
-			var heuresEI = tr.find('input#heuresEI').val();
-			var groupeTD = tr.find('input#groupeTD').val();
-			var groupeTP = tr.find('input#groupeTP').val();
-			var groupeEI = tr.find('input#groupeEI').val();
+			var infos = [
+				tr.find('input#heuresCM').val(),
+				tr.find('input#heuresTD').val(),
+				tr.find('input#heuresTP').val(),
+				tr.find('input#heuresEI').val(),
+				tr.find('input#groupeTD').val(),
+				tr.find('input#groupeTP').val(),
+				tr.find('input#groupeEI').val()
+			];
 			$.ajax({
 				url : lien,
 				type: 'post',
-				data: { 'id': id, 'heuresCM': heuresCM, 'heuresTD': heuresTD, 'heuresTP': heuresTP, 'heuresEI': heuresEI, 'groupeTD': groupeTD, 'groupeTP': groupeTP, 'groupeEI' : groupeEI, 'supprime' : supprime},
-				success: function(e){
+				data: { 'id': id, 'heuresCM': infos[0], 'heuresTD': infos[1], 'heuresTP': infos[2], 'heuresEI': infos[3], 'groupeTD': infos[4], 'groupeTP': infos[5], 'groupeEI' : infos[6], 'supprime' : supprime},
+				success: function(error){
+					if(error){
+						//$("div#erreur").removeClass('hidden');
+						tr.addClass("danger");
+					} else {
+						tr.removeClass("danger");
+					}
 					if(supprime == 'true'){
 						tr.remove();
 					}

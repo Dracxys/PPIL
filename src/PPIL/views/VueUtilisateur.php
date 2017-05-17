@@ -47,6 +47,10 @@ class VueUtilisateur extends AbstractView
 
             <div class="panel-body text-center">
 			    <div class="table-responsive">
+      <div class="alert alert-danger hidden" role="alert" id="erreur">
+      <strong>Echec!</strong> Vos données ne sont pas valides, vérifiez que vous n'avez pas de nombres négatifs.
+      </div>
+
                   <table class="table table-bordered ">
                     <thead>
                       <tr>
