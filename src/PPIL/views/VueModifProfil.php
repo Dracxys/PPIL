@@ -17,10 +17,10 @@ class VueModifProfil extends AbstractView
 		<div class="container panel-default text-center">
 		<div class="container">
 		 <div class="list-group">
-        <a href="#" id="boutonInfo" class="list-group-item active">Informations personnelles</a>
-        <a href="#" id="boutonResp" class="list-group-item">Responsabilités</a>
-         <a href="#" id="boutonPhoto" class="list-group-item">Photo</a>
-          <a href="#" id="boutonPassword" class="list-group-item">Mot de passe</a>
+            <a href="#" id="boutonInfo" class="list-group-item active">Informations personnelles</a>
+            <a href="#" id="boutonResp" class="list-group-item">Responsabilités</a>
+            <a href="#" id="boutonPhoto" class="list-group-item">Photo</a>
+            <a href="#" id="boutonPassword" class="list-group-item">Mot de passe</a>
         </div>
 END;
         if ($num == 0) {

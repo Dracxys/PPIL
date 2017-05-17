@@ -9,8 +9,10 @@
 
 namespace PPIL\views;
 
-
+use PPIL\models\UE;
+use Slim\App;
 use Slim\Slim;
+
 
 class VueUe extends AbstractView
 {
@@ -24,7 +26,7 @@ class VueUe extends AbstractView
         
         <div class="panel panel-default">
             <div class="panel-heading clearfix text-left">
-                <h4 class="panel-heading text-center">UE</h4>
+                <h4 class="panel-heading text-center"></h4>
                 
                 <div id="selectUE" class="col-sm-10">
                     <label class="control-label col-sm-6" for="ue">Sélectionner UE</label>
@@ -42,10 +44,54 @@ class VueUe extends AbstractView
             
                 
             </div>
+
+            <div class="container text-center">
+                 <div class="list-group">
+                    <a href="#" id="boutonCompo" class="list-group-item active">Composition de l'UE</a>
+                    <a href="#" id="boutonInterv" class="list-group-item">Liste des intervenants</a>
+                </div>
+            </div>
+
+END;
+        $html .= self::compositionUE($u);
+        $html .= self::listeIntervenants($u);
+
+
+        $html .= <<<END
         </div>
 END;
+        $html .= self::footerHTML();
+        $html .= "      <script type=\"text/javascript\" src=\"/PPIL/assets/js/ue.js\">     </script>";
+
         return $html;
 
+    }
+
+    private function compositionUE($u) {
+        $compoUE = Slim::getInstance()->urlFor("compoUE");
+        $html = <<<END
+            <div id="compoUE" style="display: none;">
+                <form class="form-horizontal" method="post" action="$compoUE" enctype="multipart/form-data">
+			        <h2 class="form-signin-heading ">Composition de l'UE</h2>
+			        </form>
+			        </div>
+
+END;
+
+        return $html;
+    }
+
+    private function listeIntervenants($u) {
+        $intervenantsUE = Slim::getInstance()->urlFor("intervenantsUE");
+        $html = <<<END
+                <div id="intervenantsUE" style="display: none;">
+                <form class="form-horizontal" method="post" action="$intervenantsUE" enctype="multipart/form-data">
+			        <h2 class="form-signin-heading ">Intervenants de l'UE</h2>
+			        </form>
+			        </div>
+END;
+
+        return $html;
     }
 
     public static function selectUE($ue)
