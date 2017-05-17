@@ -23,6 +23,25 @@ class UE extends \Illuminate\Database\Eloquent\Model{
 		$n->save();
 	}
 
+	
+	public static function modifierUE($nom, $nouv_nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI){
+		$n = UE::where('$nom_UE', 'like', $nom);
+		$n->nom_UE = $nouv_nom;
+		
+		$n->prevision_heuresTD = $heuresTD;
+		$n->prevision_heuresTP = $heuresTP;
+		$n->prevision_heuresCM = $heuresCM;
+		$n->prevision_heuresEI = $heuresEI;
+		
+		$n->prevision_groupeTD = $groupeTD;
+		$n->prevision_groupeTP = $groupeTP;
+		$n->prevision_groupeEI = $groupeEI;
+		
+		$n->save();
+	}
+	
+	
+
     public static function recalculer($e){
         $interventions = Intervention::where('id_UE', '=', $e->id_UE)
                        ->get();
@@ -81,7 +100,6 @@ class UE extends \Illuminate\Database\Eloquent\Model{
         $e->save();
 
     }
-
 
 
 }

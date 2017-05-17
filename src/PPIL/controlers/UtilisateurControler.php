@@ -385,7 +385,7 @@ class UtilisateurControler
 					// *************************** ERREUR : L'ENSIGNANT N'EXISTE PAS
 				} else {
 					$nouvUE = UE::where('nom_UE', 'like', $nom)->first();
-					ajoutResponsabilite($responsable->mail, 'responsable ue', null, $nouvUE->id_UE);
+					Responsabilite::ajoutResponsabilite($responsable->mail, 'responsable ue', null, $nouvUE->id_UE);
 				}
 			}
 
