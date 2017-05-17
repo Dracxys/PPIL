@@ -122,7 +122,10 @@ class UtilisateurControler
 
     public function enseignement_action_ajouter(){
         if(isset($_SESSION['mail'])){
-            echo "plop";
+            $error = false;
+            echo json_encode([
+                'error' => $error,
+            ]);
         }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }

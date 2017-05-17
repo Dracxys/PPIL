@@ -69,6 +69,7 @@ function ajouter(lien){
 		});
 	});
 
+	$('button#modal_demande').prop('disabled', true);
 
 	$("form#form_ajout_ue").each(function() {
 		$(this).submit(function(e){
@@ -100,4 +101,24 @@ function ajouter(lien){
 		});
 	});
 
+	$("button#modal_demande").click(function() {
+		$("form#form_ajout_ue").each(function() {
+			var id_UE = $(this).find('input#id_UE').val();
+			var selectionner = $(this).find('button#selectionner').val();
+			selectionner = (selectionner == 'true');
+			var tr = $(this).parent().parent();
+
+			if(selectionner){
+				$.ajax({
+					url : lien,
+					type: 'post',
+					data: { 'id_UE' : id_UE },
+					dataType: 'json',
+					success: function(json){
+						tr.remove();
+					}
+				});
+			}
+		});
+	});
 }

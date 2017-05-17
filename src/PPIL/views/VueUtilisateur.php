@@ -243,7 +243,7 @@ END;
 			  </div>
 			  <div class="modal-footer">
 
-        <button type="button" class="btn btn-default" onclick="location.href=''" data-dismiss="modal" id="modal_demande">Effectuer la demande</button>
+        <button type="button" class="btn btn-default"  id="modal_demande">Effectuer la demande</button>
 			  </div>
 			</div>
 		  </div>
