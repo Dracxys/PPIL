@@ -9,23 +9,46 @@
 namespace PPIL\controlers;
 
 
+use PPIL\models\Enseignant;
 use PPIL\models\Formation;
+use PPIL\models\Responsabilite;
 use PPIL\models\UE;
 use PPIL\views\VueFormation;
+use PPIL\views\VueHome;
 use Slim\Slim;
 
 class FormationControler
 {
     public function home(){
-        $f = Formation::all();
-        $val = array();
-        foreach ($f as $value){
-            if(!in_array($value->nomFormation,$val)){
-                $val[] = $value->nomFormation;
+        if(isset($_SESSION['mail'])){
+            $e = Enseignant::find($_SESSION['mail']);
+            $privi = Enseignant::get_privilege($e);
+            if($privi == 2){
+                $f = Formation::all();
+                $val = array();
+                foreach ($f as $value){
+                    if(!in_array($value->nomFormation,$val)){
+                        $val[] = $value->nomFormation;
+                    }
+                }
+                $v = new VueFormation();
+                echo $v->home($val);
+            }elseif($privi == 1){
+                $resp = Responsabilite::where('enseignant','like',$e->mail)->get();
+                $val = array();
+                foreach ($resp as $value){
+                    $f = Formation::find($value->id_formation);
+                    $val[] = $f->nomFormation;
+                }
+                $v = new VueFormation();
+                echo $v->home($val);
             }
+
+
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
-        $v = new VueFormation();
-        echo $v->home($val);
+
     }
 
     public function infoForm(){
