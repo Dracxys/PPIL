@@ -37,6 +37,7 @@ class FormationControler
         $res = array();
         if(!empty($ue)){
             foreach ($ue as $value){
+                $res[] = $value->id_UE;
                 $res[] = $value->nom_UE;
             }
         }
@@ -47,8 +48,8 @@ class FormationControler
     public function infoUE(){
         $app = Slim::getInstance();
         $val = $app->request->post();
-        $nom = filter_var($val['nom'],FILTER_SANITIZE_STRING);
-        $ue = UE::where('nom_UE','=',$nom)->first();
+        $id = filter_var($val['id'],FILTER_SANITIZE_STRING);
+        $ue = UE::where('id_UE','=',$id)->first();
         $app->response->headers->set('Content-Type', 'application/json');
         if(empty($ue)){
             $res = array();

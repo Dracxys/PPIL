@@ -54,8 +54,8 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
                                     <tr>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduCM"  value="30" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteCM"  value="10" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAttenduCM"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAffecteCM"  value="0" readonly/> </th>
                                     </tr>
                                 </thead>
                             </table>    
@@ -70,10 +70,10 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
                                     <tr>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAttenduTD"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAffecteTD"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduTD"  value="30" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteTD"  value="10" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAttenduTD"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAffecteTD"  value="0" readonly/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAttenduTD"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAffecteTD"  value="0" readonly/> </th>
                                     </tr>
                                 </thead>
                             </table> 
@@ -88,10 +88,10 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
                                     <tr>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAttenduTP"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAffecteTP"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduTP"  value="30" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteTP"  value="10" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAttenduTP"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAffecteTP"  value="0" readonly/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAttenduTP"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAffecteTP"  value="0" readonly/> </th>
                                     </tr>
                                 </thead>
                             </table>
@@ -106,10 +106,10 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
                                     <tr>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAttenduEI"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAffecteEI"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduEI"  value="30" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteEI"  value="10" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAttenduEI"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAffecteEI"  value="0" readonly/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAttenduEI"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAffecteEI"  value="0" readonly/> </th>
                                     </tr>
                                 </thead>
                             </table>
