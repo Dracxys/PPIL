@@ -45,12 +45,12 @@ class UE extends \Illuminate\Database\Eloquent\Model{
 
         foreach($interventions as $intervention){
             $heuresCM += $intervention->heuresCM;
-            $heuresTP += $intervention->heuresCM;
-            $heuresTD += $intervention->heuresCM;
-            $heuresEI += $intervention->heuresCM;
-            $groupeTP += $intervention->heuresCM;
-            $groupeTD += $intervention->heuresCM;
-            $groupeEI += $intervention->heuresCM;
+            $heuresTP += $intervention->heuresTP;
+            $heuresTD += $intervention->heuresTD;
+            $heuresEI += $intervention->heuresEI;
+            $groupeTP += $intervention->groupeTP;
+            $groupeTD += $intervention->groupeTD;
+            $groupeEI += $intervention->groupeEI;
         }
 
         $groupeTP = count(Intervention::distinct()

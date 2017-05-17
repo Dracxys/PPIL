@@ -17,6 +17,7 @@ use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
 use PPIL\models\NotificationIntervention;
 use PPIL\models\Intervention;
+use PPIL\models\UE;
 use Slim\Slim;
 
 
@@ -238,21 +239,20 @@ class UtilisateurControler
                     case "PPIL\models\NotificationIntervention":
                         $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
                                                    ->first();
-                        if(!empty($notificationinscription)){
-                            $intervention = Intervention::where('id_intervention', '=', $notificationinscription->id_intervention)
-                                          ->get();
+                        if(!empty($notification_intervention)){
+                            $intervention = Intervention::where('id_intervention', '=', $notification_intervention->id_intervention)
+                                          ->first();
 
-                            $ue = UE::where('id_UE', '=', $notificationinscription->id_UE)
-                                          ->get();
-
-                            if(!empty($notificationinscription) && !empty($ue)){
-                                $intervention->heuresCM == $notification_intervention->heuresCM;
-                                $intervention->heuresTP == $notification_intervention->heuresTP;
-                                $intervention->heuresTD == $notification_intervention->heuresTD;
-                                $intervention->heuresEI == $notification_intervention->heuresEI;
-                                $intervention->groupeTP == $notification_intervention->groupeTP;
-                                $intervention->groupeTD == $notification_intervention->groupeTD;
-                                $intervention->groupeEI == $notification_intervention->groupeEI;
+                            $ue = UE::where('id_UE', '=', $notification_intervention->id_UE)
+                                ->first();
+                            if(!empty($intervention) && !empty($ue)){
+                                $intervention->heuresCM = $notification_intervention->heuresCM;
+                                $intervention->heuresTP = $notification_intervention->heuresTP;
+                                $intervention->heuresTD = $notification_intervention->heuresTD;
+                                $intervention->heuresEI = $notification_intervention->heuresEI;
+                                $intervention->groupeTP = $notification_intervention->groupeTP;
+                                $intervention->groupeTD = $notification_intervention->groupeTD;
+                                $intervention->groupeEI = $notification_intervention->groupeEI;
                                 $intervention->save();
                                 UE::recalculer($ue);
                             }
