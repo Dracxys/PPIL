@@ -24,7 +24,7 @@ class VueUe extends AbstractView
         
         <div class="panel panel-default">
             <div class="panel-heading clearfix text-left">
-                <h4 class="panel-heading text-center">UE</h4>
+                <h4 class="panel-heading text-center"></h4>
                 
                 <div id="selectUE" class="col-sm-10">
                     <label class="control-label col-sm-6" for="ue">Sélectionner UE</label>
@@ -42,10 +42,41 @@ class VueUe extends AbstractView
             
                 
             </div>
+
+            <div class="container text-center">
+                 <div class="list-group">
+                <a href="#" id="boutonCompo" class="list-group-item active">Composition de l'UE</a>
+                <a href="#" id="boutonInterv" class="list-group-item">Liste des intervenants</a>
+                </div>
+            </div>
+
+END;
+        $html .= self::compositionUE($u);
+        $html .= self::listeIntervenants($u);
+
+
+        $html .= <<<END
         </div>
 END;
+        $html .= self::footerHTML();
+        $html .= "      <script type=\"text/javascript\" src=\"/PPIL/assets/js/ue.js\">     </script>";
+
         return $html;
 
+    }
+
+    private function compositionUE($u) {
+        $html = <<<END
+            <div id="compoUE" class="panel-body">
+            </div>
+END;
+    }
+
+    private function listeIntervenants($u) {
+        $html = <<<END
+                <div id="intervenants" class="panel-body">
+                </div>
+END;
     }
 
     public static function selectUE($ue)
