@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Mar 16 Mai 2017 à 16:02
+-- Généré le :  Mer 17 Mai 2017 à 14:10
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -44,7 +44,10 @@ CREATE TABLE `Enseignant` (
 --
 
 INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `rand`) VALUES
-('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 589347120);
+('francois.lallemand2@etu.univ-lorraine.fr', 'l', 'l', '$2y$10$MHixfrKsJMDIReOB1r7Z.OJWc3EVjcdD9LOwNnCLKOBbNLBRJ9Gfe', 'Professeur des universités', NULL, 192, 384, NULL, 734736573),
+('g@h', 'g', 'g', '$2y$10$PNVCJAVJF5vr6NzBwJiAhuzqqwmNoitrmBawLwvcKUIZ34RgJXsTW', 'Professeur des universités', NULL, 192, 384, NULL, 696792579),
+('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 589347120),
+('z@z', 'z', 'z', '$2y$10$DkJg/HxwWYn3do3LGq2aVuKy90VAMAI12E9Ke4RkqrqlL8R4l1D8a', 'Professeur des universités', NULL, 192, 384, NULL, 813424858);
 
 -- --------------------------------------------------------
 
@@ -86,6 +89,14 @@ CREATE TABLE `Intervention` (
   `id_UE` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `Intervention`
+--
+
+INSERT INTO `Intervention` (`id_intervention`, `fst`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeCM`, `groupeTP`, `groupeTD`, `groupeEI`, `mail_enseignant`, `id_UE`) VALUES
+(1, 0, 0, 4, 5, 0, 1, 2, 3, 0, 'root@root', 3),
+(2, 1, 0, 0, 0, 0, 1, 1, 1, 1, 'root@root', 4);
+
 -- --------------------------------------------------------
 
 --
@@ -99,7 +110,7 @@ CREATE TABLE `Notification` (
   `message` varchar(300) NOT NULL,
   `besoin_validation` tinyint(1) NOT NULL,
   `validation` tinyint(1) NOT NULL,
-  `type_notification` enum('PPIL\\models\\NotificationChgtUE','PPIL\\models\\NotificationInscription','PPIL\\models\\Notification') NOT NULL DEFAULT 'PPIL\\models\\Notification',
+  `type_notification` enum('PPIL\\models\\NotificationChgtUE','PPIL\\models\\NotificationInscription','PPIL\\models\\Notification','PPIL\\models\\NotificationIntervention') NOT NULL DEFAULT 'PPIL\\models\\Notification',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -109,7 +120,8 @@ CREATE TABLE `Notification` (
 --
 
 INSERT INTO `Notification` (`id_notification`, `mail_destinataire`, `mail_source`, `message`, `besoin_validation`, `validation`, `type_notification`, `created_at`, `updated_at`) VALUES
-(7, 'root@root', NULL, 'Demande d\'inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-16 13:13:11', '2017-05-16 13:13:11');
+(10, 'root@root', NULL, 'Demande d\'inscription', 1, 0, 'PPIL\\models\\NotificationInscription', '2017-05-16 14:14:09', '2017-05-16 14:14:09'),
+(23, 'root@root', 'root@root', 'Modification intervention', 1, 0, 'PPIL\\models\\NotificationIntervention', '2017-05-17 13:16:42', '2017-05-17 11:13:06');
 
 -- --------------------------------------------------------
 
@@ -149,7 +161,33 @@ CREATE TABLE `NotificationInscription` (
 --
 
 INSERT INTO `NotificationInscription` (`id_notification`, `nom`, `prenom`, `statut`, `mail`, `mot_de_passe`) VALUES
-(7, 'z', 'z', 'Professeur des universités', 'z@z', '$2y$10$DkJg/HxwWYn3do3LGq2aVuKy90VAMAI12E9Ke4RkqrqlL8R4l1D8a');
+(10, 'm', 'm', 'Professeur des universités', 'francois.lallemand@openmailbox.org', '$2y$10$X2zFjMtqiT0tOf95.h5rIOuw2igwO0Gy2udJR1JaXiSuLCvQUey.O');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `NotificationIntervention`
+--
+
+CREATE TABLE `NotificationIntervention` (
+  `id_notification` int(11) NOT NULL,
+  `heuresCM` int(11) NOT NULL,
+  `heuresTP` int(11) NOT NULL,
+  `heuresTD` int(11) NOT NULL,
+  `heuresEI` int(11) NOT NULL,
+  `groupeTP` int(11) NOT NULL,
+  `groupeTD` int(11) NOT NULL,
+  `groupeEI` int(11) NOT NULL,
+  `id_UE` int(11) NOT NULL,
+  `supprimer` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `NotificationIntervention`
+--
+
+INSERT INTO `NotificationIntervention` (`id_notification`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeTP`, `groupeTD`, `groupeEI`, `id_UE`, `supprimer`) VALUES
+(23, 0, 4, 5, 0, 4, 5, 0, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -172,7 +210,8 @@ CREATE TABLE `Responsabilite` (
 
 INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_formation`, `id_UE`, `privilege`) VALUES
 (4, 'root@root', 'Responsable du departement informatique', NULL, NULL, 2),
-(5, 'root@root', 'Responsable UE', NULL, NULL, 1);
+(5, 'root@root', 'Responsable UE', NULL, 3, 1),
+(6, 'root@root', 'Responsable UE', NULL, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -255,6 +294,13 @@ ALTER TABLE `NotificationInscription`
   ADD PRIMARY KEY (`id_notification`);
 
 --
+-- Index pour la table `NotificationIntervention`
+--
+ALTER TABLE `NotificationIntervention`
+  ADD PRIMARY KEY (`id_notification`),
+  ADD KEY `fk_notification_intervention_ue` (`id_UE`);
+
+--
 -- Index pour la table `Responsabilite`
 --
 ALTER TABLE `Responsabilite`
@@ -283,17 +329,17 @@ ALTER TABLE `Formation`
 -- AUTO_INCREMENT pour la table `Intervention`
 --
 ALTER TABLE `Intervention`
-  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT pour la table `Responsabilite`
 --
 ALTER TABLE `Responsabilite`
-  MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pour la table `UE`
 --
@@ -322,6 +368,12 @@ ALTER TABLE `NotificationChgtUE`
 --
 ALTER TABLE `NotificationInscription`
   ADD CONSTRAINT `fk_id_notificationIns` FOREIGN KEY (`id_notification`) REFERENCES `Notification` (`id_notification`);
+
+--
+-- Contraintes pour la table `NotificationIntervention`
+--
+ALTER TABLE `NotificationIntervention`
+  ADD CONSTRAINT `fk_notification_intervention_ue` FOREIGN KEY (`id_UE`) REFERENCES `UE` (`id_UE`);
 
 --
 -- Contraintes pour la table `Responsabilite`
