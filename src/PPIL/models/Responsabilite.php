@@ -23,5 +23,22 @@ class Responsabilite extends \Illuminate\Database\Eloquent\Model{
 		$n->save();
 	}
 
+	public static function supprimerResponsabilite($mail_enseignant, $id_formation, $id_UE){
+		if (!empty($id_formation)){
+			$n = Responsabilite::where('enseignant', 'like', $mail_enseignant);
+			$responsabilite = Responsabilite::where('enseignant', 'like', $nom_enseignant)
+											->where('id_formation', '=', $id_formation)
+											->get();
+			$responsabilite->delete();
+		}
+			
+		if (!empty($id_UE)){
+			$n = Responsabilite::where('enseignant', 'like', $mail_enseignant);
+			$responsabilite = Responsabilite::where('enseignant', 'like', $nom_enseignant)
+											->where('id_UE', '=', $id_UE)
+											->get();
+			$responsabilite->delete();
+		}
+	}
 
 }
