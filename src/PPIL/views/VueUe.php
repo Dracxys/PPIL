@@ -68,15 +68,21 @@ END;
     private function compositionUE($u) {
         $html = <<<END
             <div id="compoUE" class="panel-body">
+
             </div>
 END;
+
+        return $html;
     }
 
     private function listeIntervenants($u) {
         $html = <<<END
-                <div id="intervenants" class="panel-body">
-                </div>
+            <div id="intervenants" class="panel-body">
+
+            </div>
 END;
+
+        return $html;
     }
 
     public static function selectUE($ue)
