@@ -58,6 +58,7 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
         $new_notification_intervention->groupeTP = $datas['heuresTP'];
         $new_notification_intervention->groupeEI = $datas['heuresEI'];
 
+		$new_notification_intervention->id_intervention = $id_intervention;
 		$new_notification_intervention->id_UE = $id_UE;
 		$new_notification_intervention->supprimer = $supprimer;
         $new_notification_intervention->save();
