@@ -8,6 +8,8 @@ require 'vendor/autoload.php';
 use \PPIL\controlers\HomeControler as HomeControler;
 use PPIL\controlers\UtilisateurControler;
 use PPIL\controlers\ModifProfilControler;
+use PPIL\controlers\FormationControler;
+use PPIL\controlers\UEControler;
 
 $app = new \Slim\Slim();
 
@@ -101,12 +103,12 @@ $app->post("/home/modificationPhoto", function (){
 
 
 $app->post('/home/formation/ue/',function () use ($app){
-    $c = new \PPIL\controlers\FormationControler();
+    $c = new FormationControler();
     $c->infoForm();
 })->name('infoForm');
 
 $app->post('/home/formation/ue/infos', function (){
-    $c = new \PPIL\controlers\FormationControler();
+    $c = new FormationControler();
     $c->infoUE();
 });
 
@@ -128,12 +130,12 @@ $app->post('/home/enseignement/actionEnseignement', function (){
 })->name('enseignementUtilisateur.actionEnseignement');
 
 $app->get('/home/ue', function (){
-    $c = new \PPIL\controlers\UEControler();
+    $c = new UEControler();
     $c->home();
 })->name('ueUtilisateur');
 
 $app->get('/home/formation', function (){
-    $c = new \PPIL\controlers\FormationControler();
+    $c = new FormationControler();
     $c->home();
 })->name('formationUtilisateur');
 

@@ -14,6 +14,7 @@ use PPIL\views\VueUe;
 use PPIL\views\VueHome;
 use PPIL\views\VueModifProfil;
 use PPIL\views\VueUtilisateur;
+use PPIL\models\UE;
 use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
 use Slim\Slim;
