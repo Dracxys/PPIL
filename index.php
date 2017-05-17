@@ -150,8 +150,8 @@ $app->get('/home/formation', function (){
 })->name('formationUtilisateur');
 
 $app->get('/home/enseignants', function (){
-    $c = new UtilisateurControler();
-    $c->enseignants();
+    $c = new \PPIL\controlers\EnseignantsControler();
+    $c->home();
 })->name('enseignantsUtilisateur');
 
 $app->get('/home/journal', function (){

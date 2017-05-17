@@ -153,7 +153,7 @@ END;
 
     public function enseignant(){
         $html = self::headHTML();
-        $html = $html . self::navHTML("Enseignant");
+        $html = $html . self::navHTML("Enseignants");
         $html = $html . self::footerHTML();
         return $html;
     }
