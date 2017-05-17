@@ -20,24 +20,24 @@ class VueFormation extends AbstractView
         $valider = Slim::getInstance()->urlFor('home');
         $lienInfoForm = Slim::getInstance()->urlFor('infoForm');
         $html .= <<< END
-        <div id="formation" class="panel-body panel-default container">
+        <div id="formation" class="panel-body panel-default ">
             <h2 class="panel-heading text-center">Formation</h2>
-            <div class="container panel col-sm-6 ">
+            <div class=" panel-default col-sm-6 ">
                 <div id="selectForm" class="col-sm-10">
                     <label class="control-label col-sm-6" for="formation">Sélectionner Formation</label>
                     <div class="col-sm-6">
                         $select
                     </div>
                 </div>
-                <div id="tableUE" class="container panel col-sm-10">
+                <div id="tableUE" class=" panel-default col-sm-10">
                   
 			    </div>
             </div>
-            <div class="container panel col-sm-6 ">
-                 <div class="container">
+            <div class=" panel-default col-sm-6 ">
+                 <div class="">
                     <label id="nomUE" class="control-label">Sélectionner un UE</label>
                  </div>   
-                 <div class="panel">
+                 <div class="panel-default">
                     <ul class="nav nav-pills">
                         <li class="active"><a href="#tab1" data-toggle="tab">CM</a></li>
                         <li><a href="#tab2" data-toggle="tab">TD</a></li>
@@ -125,10 +125,10 @@ class VueFormation extends AbstractView
                     </div>
                 </div>    
             </div>
-            <div class="container panel-default">
+            <div class=" panel-default">
                 <button type="button" class="btn btn-default center-block" id="valider">Valider</button>
             </div>
-            <div class="container panel-default">
+            <div class=" panel-default">
                 <div class="header">
                     <h2 id="nomFormation" class="text-center">Total du volume horaire </h2>
                 </div>
