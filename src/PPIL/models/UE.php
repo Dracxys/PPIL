@@ -39,6 +39,7 @@ class UE extends \Illuminate\Database\Eloquent\Model{
 		
 		$n->save();
 	}
+
 	
 	
 
