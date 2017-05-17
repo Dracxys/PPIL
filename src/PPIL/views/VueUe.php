@@ -53,8 +53,11 @@ class VueUe extends AbstractView
             </div>
 
 END;
-        $html .= self::compositionUE($u);
-        $html .= self::listeIntervenants($u);
+
+        // finir les fonctions avant de les décommenter
+
+        //$html .= self::compositionUE($u);
+        //$html .= self::listeIntervenants($u);
 
 
         $html .= <<<END
@@ -67,7 +70,7 @@ END;
 
     }
 
-    private function compositionUE($u) {
+    private function compositionUE($values) {
         $compoUE = Slim::getInstance()->urlFor("compoUE");
         $html = <<<END
             <div id="compoUE" style="display: none;">
@@ -81,14 +84,42 @@ END;
         return $html;
     }
 
-    private function listeIntervenants($u) {
+    private function listeIntervenants($users) {
         $intervenantsUE = Slim::getInstance()->urlFor("intervenantsUE");
         $html = <<<END
                 <div id="intervenantsUE" style="display: none;">
                 <form class="form-horizontal" method="post" action="$intervenantsUE" enctype="multipart/form-data">
 			        <h2 class="form-signin-heading ">Intervenants de l'UE</h2>
 			        </form>
-			        </div>
+
+                    <div class="table-responsive">
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th class="text-center">Enseignant</th>
+                                <th class="text-center">Statut</th>
+                                <th class="text-center">Adresse Mail</th>
+                                <th class="text-center">Photo</th>
+                              </tr>
+
+END;
+
+        foreach ($users as $user) {
+            if ($user->prenom!="admin" && $user->nom!="admin" && $_SESSION['mail']!=$user->mail) {
+                $html .= "<tr>" .
+                        "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
+                        "<th class=\"text-center\">" . $user->statut . "</th>" .
+                        "<th class=\"text-center\">" . $user->mail . "</th>" .
+                        "</tr>";
+            }
+        }
+
+
+        $html .= <<<END
+            </thead>
+            </table>
+            </div>
+            </div>
 END;
 
         return $html;
