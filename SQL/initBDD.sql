@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Mer 17 Mai 2017 à 19:14
+-- Généré le :  Mer 17 Mai 2017 à 19:17
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -203,8 +203,8 @@ CREATE TABLE `Responsabilite` (
 
 INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_formation`, `id_UE`, `privilege`) VALUES
 (4, 'root@root', 'Responsable du departement informatique', NULL, NULL, 2),
-(5, 'root@root', 'Responsable UE', NULL, 3, 1),
-(6, 'root@root', 'Responsable UE', NULL, 4, 1);
+(5, 'root@root', 'Responsable UE', NULL, 3, 0),
+(6, 'root@root', 'Responsable UE', NULL, 4, 0);
 
 -- --------------------------------------------------------
 

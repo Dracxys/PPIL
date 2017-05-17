@@ -325,8 +325,15 @@ END;
                 $html .= "<tr>" .
                         "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
                         "<th class=\"text-center\">" . $user->statut . "</th>" .
-                        "<th class=\"text-center\">" . $user->mail . "</th>" .
-                        "</tr>";
+                        "<th class=\"text-center\">" . $user->mail . "</th>";
+                if($user->photo == null){
+                    $default = "/PPIL/assets/images/profil_pictures/default.jpg";
+                    $html .= '<td class="center" ><img src="' . $default  .'" class="img-thumbnail" alt="Photo de profil" width="35" height="35"></td>';
+                }else{
+                    $html .= '<td class="center" ><img src=' . "/PPIL/" . $user->photo  .'" class="img-thumbnail" alt="Photo de profil" width="35" height="35"></td>';
+                }
+
+                $html .= "</tr>";
             }
         }
 

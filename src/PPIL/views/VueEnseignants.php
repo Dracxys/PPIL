@@ -5,22 +5,19 @@
  * Date: 17/05/2017
  * Time: 15:33
  */
-
 namespace PPIL\views;
 
-
+use PPIL\models\Intervention;
 use Slim\App;
 use Slim\Slim;
 use PPIL\models\Enseignant;
 use PPIL\models\Formation;
 
-
 class VueEnseignants extends AbstractView{
-
     public function home($u){
         $html  = self::headHTML();
         $html .= self::navHTML("Enseignants");
-        $select = self::selectEnseignants($u);
+        //$volFST = self::getVolumeFST($u);
         $html .= <<< END
       
         <div class="container">
@@ -44,55 +41,57 @@ class VueEnseignants extends AbstractView{
 					<th class="text-center">Service réalisé à la FST</th>
 				  </tr>
 END;
-				  foreach ($u as $user) {
-                    if ($user->prenom!="admin" && $user->nom!="admin" && $_SESSION['mail']!=$user->mail) {
-                        $html .= "<tr>" .
-                                "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
-                                "<th class=\"text-center\">" . $user->statut . "</th>" .
-                                "<th class=\"text-center\">" . $user->volumeMin . "</th>" .
-                                "<th class=\"text-center\">" . $user->volumeCourant . "</th>" .
-                                "<th class=\"text-center\">" . $user->volumeCourant . "</th>" .
-                                "</tr>";
-                    }
-                   }
 
-                $html .= <<< END
+        foreach ($u as $user) {
+            if ($user->prenom!="admin" && $user->nom!="admin" && $_SESSION['mail']!=$user->mail) {
+                if($user->volumeCourant==NULL) {
+                    $volumeCourant=0;
+                } else {
+                    $volumeCourant=$user->volumeCourant;
+                }
+                $html .= "<tr>" .
+                    "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
+                    "<th class=\"text-center\">" . $user->statut . "</th>" .
+                    "<th class=\"text-center\">" . $user->volumeMin . "</th>" .
+                    "<th class=\"text-center\">" . $volumeCourant . "</th>" .
+                    //"<th class=\"text-center\">" . $volFST . "</th>" .
+                    "<th class=\"text-center\">" . $volumeCourant . "</th>" .
+                    "</tr>";
+            }
+        }
+        $html .= <<< END
 
 				</thead>
 				<tbody>
-
 			    </tbody>
           </table>
         </div>
       </div>
   </div>
 </div>
+
+
 END;
         $html .= self::footerHTML();
         //$html .= "      <script type=\"text/javascript\" src=\"/PPIL/assets/js/enseignants.js\">     </script>";
-
         return $html;
-
     }
 
-    public static function selectEnseignants($u)
-    {
-        $html = '<select class="form-control" id="selectEnseignants" name="selectEnseignants">';
-        $i = 0;
-        foreach ($u as $value) {
-            if(isset($value)){
-                if ($i == 0) {
-                    $html .= '<option selected value=' . '"' . $value . '"' . '>' . $value . '</option>';
-                    $i ++;
-                } else {
-                    $html .= '<option value=' . '"' . $value . '"' . '>' . $value . '</option>';
-                }
-            }
 
+
+    public static function getVolumeFST($u)
+    {
+        $volume = 0;
+
+        $interventions = Intervention::where('mail_enseignant','=', $u->mail)->get();
+        foreach($interventions as $intervention) {
+            if($intervention->fst == true) {
+
+                $volume += $intervention->heuresCM + $intervention->heuresTD + $intervention->heuresTP + $intervention->heuresEI;
+
+            }
         }
-        $html .= "</select>";
-        return $html;
+
+        return $volume;
     }
 }
-
-
