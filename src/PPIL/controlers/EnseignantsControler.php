@@ -20,8 +20,8 @@ class EnseignantsControler {
         $u = Enseignant::all();
         $val = array();
         foreach ($u as $value){
-            if(!in_array($value->mail,$val)){
-                $val[] = $value->mail;
+            if(!in_array($value->nom,$val)){
+                $val[] = $value;
             }
         }
 

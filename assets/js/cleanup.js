@@ -40,23 +40,27 @@ $(function(){
 		$("form#form_actions").each(function() {
 			var valide = $(this).find('button#valide').val();
 			var refuse = $(this).find('button#refuse').val();
+			valide = (valide == 'true');
+			refuse = (refuse == 'true')
 			var id = $(this).find('input#id').val();
-			$.ajax({
-				url : "journal/actionNotification",
-				type: 'post',
-				data: { 'valider': (valide == 'true'), 'refuser': (refuse == 'true'), 'id': id},
-				success: function(){
-					$('tr#'+id).remove();
-					var notifications_count = $("form").length;
-					var text = $('a#notifications_count');
-					if(notifications_count > 0){
-						text.text('Journal');
-						$('font#notifications_count_font').text('(' + notifications_count + ')' );
-					} else {
-						text.text('Journal');
+			if(valide || refuse){
+				$.ajax({
+					url : "journal/actionNotification",
+					type: 'post',
+					data: { 'valider': valide, 'refuser': refuse, 'id': id},
+					success: function(){
+						$('tr#'+id).remove();
+						var notifications_count = $("form").length;
+						var text = $('a#notifications_count');
+						if(notifications_count > 0){
+							text.text('Journal');
+							$('font#notifications_count_font').text('(' + notifications_count + ')' );
+						} else {
+							text.text('Journal');
+						}
 					}
-				}
-			});
+				});
+			}
 		});
 	});
 });
