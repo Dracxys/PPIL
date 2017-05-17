@@ -134,6 +134,16 @@ $app->get('/home/ue', function (){
     $c->home();
 })->name('ueUtilisateur');
 
+$app->get('/home/ue/compoUE', function (){
+    $c = new UEControler();
+    $c->infoUE();
+})->name('compoUE');
+
+$app->get('/home/ue/intervenantsUE', function (){
+    $c = new UEControler();
+    $c->intervenantsUE();
+})->name('intervenantsUE');
+
 $app->get('/home/formation', function (){
     $c = new FormationControler();
     $c->home();
