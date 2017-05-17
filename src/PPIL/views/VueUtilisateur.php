@@ -278,21 +278,17 @@ END;
         <div class="container">
 		  <div class="panel panel-default">
 			<div class="panel-heading clearfix text-center">
-
-
-			  <div class="btn-group pull-right">
-			    <form class="navbar-form navbar-left">
-                    <input type="text" class="form-control" placeholder="Recherche">
-                    <button type="submit" class="btn btn-default">Valider</button>
+			    <form class="navbar-form navbar-right inline-form">
+                    <div class="form-group">
+                      <input type="search" class="input-sm form-control" placeholder="Recherche">
+                      <button type="submit" class="btn btn-primary btn-sm"><span class="glyphicon"></span>Chercher</button>
+                    </div>
                 </form>
-			  </div>
-
-			 <h4>Annuaire</h4>
-            </div>
-
-            <div class="panel-body text-center">
-			    <div class="table-responsive">
-                  <table class="table table-bordered">
+                <h4>Annuaire</h4>
+			</div>
+			<div class="panel-body text-center">
+			<div class="table-responsive">
+                <table class="table table-bordered">
                     <thead>
                       <tr>
                         <th class="text-center">Enseignant</th>
@@ -311,7 +307,6 @@ END;
                         "</tr>";
             }
         }
-
 
         $html .= <<<END
                     </thead>
