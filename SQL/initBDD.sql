@@ -44,8 +44,6 @@ CREATE TABLE `Enseignant` (
 --
 
 INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `rand`) VALUES
-('francois.lallemand2@etu.univ-lorraine.fr', 'l', 'l', '$2y$10$MHixfrKsJMDIReOB1r7Z.OJWc3EVjcdD9LOwNnCLKOBbNLBRJ9Gfe', 'Professeur des universités', NULL, 192, 384, NULL, 734736573),
-('francois.lallemand@openmailbox.org', 'm', 'm', '$2y$10$X2zFjMtqiT0tOf95.h5rIOuw2igwO0Gy2udJR1JaXiSuLCvQUey.O', 'Professeur des universités', NULL, 192, 384, NULL, 48560316),
 ('g@h', 'g', 'g', '$2y$10$PNVCJAVJF5vr6NzBwJiAhuzqqwmNoitrmBawLwvcKUIZ34RgJXsTW', 'Professeur des universités', NULL, 192, 384, NULL, 696792579),
 ('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 589347120),
 ('z@z', 'z', 'z', '$2y$10$DkJg/HxwWYn3do3LGq2aVuKy90VAMAI12E9Ke4RkqrqlL8R4l1D8a', 'Professeur des universités', NULL, 192, 384, NULL, 813424858);
@@ -96,7 +94,8 @@ CREATE TABLE `Intervention` (
 
 INSERT INTO `Intervention` (`id_intervention`, `fst`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeCM`, `groupeTP`, `groupeTD`, `groupeEI`, `mail_enseignant`, `id_UE`) VALUES
 (1, 0, 0, 4, 5, 0, 1, 2, 3, 0, 'root@root', 3),
-(2, 1, 0, 0, 0, 0, 1, 1, 1, 1, 'root@root', 4);
+(2, 1, 0, 0, 0, 0, 1, 1, 1, 1, 'root@root', 3),
+(3, 1, 0, 0, 0, 0, 1, 1, 1, 1, 'root@root', 3);
 
 -- --------------------------------------------------------
 
@@ -121,8 +120,7 @@ CREATE TABLE `Notification` (
 --
 
 INSERT INTO `Notification` (`id_notification`, `mail_destinataire`, `mail_source`, `message`, `besoin_validation`, `validation`, `type_notification`, `created_at`, `updated_at`) VALUES
-(30, 'root@root', 'root@root', 'Modification intervention', 1, 0, 'PPIL\\models\\NotificationIntervention', '2017-05-17 12:19:19', '2017-05-17 12:19:19'),
-(31, 'root@root', 'root@root', 'Modification intervention', 1, 0, 'PPIL\\models\\NotificationIntervention', '2017-05-17 12:36:17', '2017-05-17 12:36:17');
+(32, 'root@root', 'root@root', 'Modification intervention', 1, 0, 'PPIL\\models\\NotificationIntervention', '2017-05-17 12:46:20', '2017-05-17 12:46:20');
 
 -- --------------------------------------------------------
 
@@ -182,7 +180,7 @@ CREATE TABLE `NotificationIntervention` (
 --
 
 INSERT INTO `NotificationIntervention` (`id_notification`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeTP`, `groupeTD`, `groupeEI`, `id_UE`, `supprimer`, `id_intervention`) VALUES
-(31, 5, 4, 5, 0, 4, 5, 0, 3, 0, 1);
+(32, 0, 4, 5, 0, 4, 5, 0, 3, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -240,7 +238,7 @@ CREATE TABLE `UE` (
 --
 
 INSERT INTO `UE` (`id_UE`, `nom_UE`, `composante`, `id_formation`, `heuresTD`, `heuresTP`, `heuresCM`, `heuresEI`, `prevision_heuresTD`, `prevision_heuresTP`, `prevision_heuresCM`, `prevision_heuresEI`, `groupeTD`, `groupeTP`, `groupeEI`, `prevision_groupeTD`, `prevision_groupeTP`, `prevision_groupeEI`) VALUES
-(3, 'Modélisation', 'fst', 1, 0, 0, 0, 0, 10, 12, 16, 0, 0, 0, 0, 2, 3, 1),
+(3, 'Modélisation', 'fst', 1, 0, 0, 0, 0, 10, 12, 16, 0, 0, 2, 3, 2, 3, 1),
 (4, 'bdd', 'fst', 1, 0, 0, 0, 0, 10, 12, 16, 0, 0, 0, 0, 2, 3, 1),
 (5, 'UE de Master - 1', 'fst', 2, 0, 0, 0, 0, 10, 10, 79, 3, 0, 0, 0, 0, 8, 1),
 (6, 'UE de Master - 2', 'fst', 2, 0, 0, 0, 0, 3, 5, 10, 51, 0, 0, 0, 1, 42, 42);
@@ -324,12 +322,12 @@ ALTER TABLE `Formation`
 -- AUTO_INCREMENT pour la table `Intervention`
 --
 ALTER TABLE `Intervention`
-  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT pour la table `Responsabilite`
 --
