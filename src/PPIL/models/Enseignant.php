@@ -31,6 +31,38 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
         $new_notification_inscription->save();
     }
 
+	public static function modifie_intervention($enseignant, $id_intervention, $id_UE, $datas, $supprimer) {
+        $n = new Notification();
+        $n->message = "Modification intervention";
+        $n->besoin_validation = 1;
+        $n->validation = 0;
+        $n->type_notification = 'PPIL\models\NotificationIntervention';
+        $resp = Responsabilite::where('intituleResp', '=', 'Responsable UE')
+              ->where('id_UE', '=', $id_UE)
+              ->first();
+        $n->mail_destinataire = Enseignant::where('mail', '=', $resp->enseignant)
+                              ->first()
+                              ->mail;
+
+        $n->mail_source = $enseignant->mail;
+        $n->save();
+
+        $new_notification_intervention = new NotificationIntervention();
+		$new_notification_intervention->id_notification = $n->id_notification;
+
+        $new_notification_intervention->heuresCM = $datas['heuresCM'];
+        $new_notification_intervention->heuresTD = $datas['heuresTD'];
+        $new_notification_intervention->heuresTP = $datas['heuresTP'];
+        $new_notification_intervention->heuresEI = $datas['heuresEI'];
+        $new_notification_intervention->groupeTD = $datas['heuresTD'];
+        $new_notification_intervention->groupeTP = $datas['heuresTP'];
+        $new_notification_intervention->groupeEI = $datas['heuresEI'];
+
+		$new_notification_intervention->id_UE = $id_UE;
+		$new_notification_intervention->supprimer = $supprimer;
+        $new_notification_intervention->save();
+    }
+
 	public static function reinitialiserMDP($utilisateur, $nveauMDP_hash){
 		$utilisateur->mdp = $nveauMDP_hash;
 		$utilisateur->save();

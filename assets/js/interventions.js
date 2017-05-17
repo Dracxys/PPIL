@@ -1,4 +1,7 @@
-function valider(lien){
+function valider(lien, notification_exist){
+	if(notification_exist){
+		$("div#notification_exist").removeClass('hidden');
+	}
 	$("form#form_interventions").each(function() {
 		$(this).submit(function(e){
 			e.preventDefault();
@@ -22,6 +25,7 @@ function valider(lien){
 		$("form#form_interventions").each(function(){
 			var supprime = $(this).find('button#supprimer').val();
 			var id = $(this).find('input#id').val();
+			var id_UE = $(this).find('input#id_UE').val();
 			var tr = $("tr#"+id);
 			var infos = [
 				tr.find('input#heuresCM').val(),
@@ -35,16 +39,17 @@ function valider(lien){
 			$.ajax({
 				url : lien,
 				type: 'post',
-				data: { 'id': id, 'heuresCM': infos[0], 'heuresTD': infos[1], 'heuresTP': infos[2], 'heuresEI': infos[3], 'groupeTD': infos[4], 'groupeTP': infos[5], 'groupeEI' : infos[6], 'supprime' : supprime},
-				success: function(error){
-					if(error){
+				data: { 'id': id, 'id_UE' : id_UE, 'heuresCM': infos[0], 'heuresTD': infos[1], 'heuresTP': infos[2], 'heuresEI': infos[3], 'groupeTD': infos[4], 'groupeTP': infos[5], 'groupeEI' : infos[6], 'supprime' : supprime},
+				dataType: 'json',
+				success: function(json){
+					if(json.error && !json.notification_exist){
 						//$("div#erreur").removeClass('hidden');
 						tr.addClass("danger");
 					} else {
 						tr.removeClass("danger");
 					}
 					if(supprime == 'true'){
-						tr.remove();
+//						tr.remove();
 					}
 				}
 			});

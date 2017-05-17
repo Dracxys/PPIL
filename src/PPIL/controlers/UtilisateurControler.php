@@ -15,6 +15,7 @@ use PPIL\views\VueModifProfil;
 use PPIL\views\VueUtilisateur;
 use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
+use PPIL\models\NotificationIntervention;
 use PPIL\models\Intervention;
 use Slim\Slim;
 
@@ -46,7 +47,10 @@ class UtilisateurControler
         if(isset($_SESSION['mail'])){
             $val = Slim::getInstance()->request->post();
             $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
+            $id_UE = filter_var($val['id_UE'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
+            $notification_exist = false;
             $error = false;
+
             $infos = array(
                 'heuresCM' => filter_var($val['heuresCM'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE),
                 'heuresTD' => filter_var($val['heuresTD'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE),
@@ -58,32 +62,57 @@ class UtilisateurControler
             );
             $supprime = $val['supprime']==false ? false : filter_var($val['supprime'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
-            $intervention = Intervention::where('id_intervention', '=', $id)
-                          ->first();
-            if(!empty($intervention)){
-                if($supprime){
-                    $intervention->delete();
-                } else{
-                    foreach($infos as $nom => $data){
-                        if($data != null && $data >= 0){
-                            $intervention->$nom= $data;
-                        }else{
-                            $error = true;
-                        }
-                    }
-                    if(!$error){
-                        $intervention->save();
-                    }
-                        /*                    $intervention->heuresTD = $heuresTD;
-                                          $intervention->heuresTP = $heuresTP;
-                    $intervention->heuresEI = $heuresEI;
-                    $intervention->groupeTD = $groupeTD;
-                    $intervention->groupeTP = $groupeTP;
-                    $intervention->groupeEI = $groupeEI;
-                    */
+            foreach($infos as $nom => $data){
+                if(!($data != null && $data >= 0)){
+                    $error = true;
                 }
             }
-            echo $error;
+            if(!($id_UE != null && $id_UE >= 0 && $id != null && $id >= 0)){
+                $error = true;
+            }
+
+            $notifications = Notification::where('mail_destinataire', '=', $_SESSION['mail'])
+                           ->where('type_notification', '=', 'PPIL\models\NotificationIntervention')
+                           ->get();
+            foreach($notifications as $notification){
+                $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
+                                           ->where('id_UE', '=', $id_UE)
+                                           ->first();
+                if(!empty($notification_intervention)){
+                    $error = true;
+                    $notification_exist = true;
+                }
+            }
+
+
+            if(!$error){
+                $i = Intervention::where('id_intervention', '=', $id)
+                   ->first();
+                if(!empty($i)){
+                    if($i->id_intervention == $id
+                       && $i->heuresCM == $infos['heuresCM']
+                       && $i->heuresTP == $infos['heuresTP']
+                       && $i->heuresTD == $infos['heuresTD']
+                       && $i->heuresEI == $infos['heuresEI']
+                       && $i->groupeTP == $infos['groupeTP']
+                       && $i->groupeTD == $infos['groupeTD']
+                       && $i->groupeEI == $infos['groupeEI']
+                       && $i->mail_enseignant == $_SESSION['mail']
+                       && $i->id_UE == $id_UE){
+                        if($supprime){
+                            $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+                            Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime);
+                        }
+                    } else {
+                        $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+                        Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime);
+                    }
+                }
+            }
+            echo json_encode([
+                'error' => $error,
+                'notification_exist' => $notification_exist
+            ]);
         }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
