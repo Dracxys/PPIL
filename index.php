@@ -112,6 +112,11 @@ $app->post('/home/formation/ue/infos', function (){
     $c->infoUE();
 });
 
+$app->post('/home/formation/ue/total', function (){
+    $c = new FormationControler();
+    $c->total();
+});
+
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
