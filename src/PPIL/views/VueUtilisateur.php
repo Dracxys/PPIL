@@ -17,6 +17,7 @@ use PPIL\models\Formation;
 use PPIL\models\Intervention;
 use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
+use PPIL\models\NotificationIntervention;
 
 
 class VueUtilisateur extends AbstractView
@@ -33,6 +34,7 @@ class VueUtilisateur extends AbstractView
       $lien = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignement");
       $html = self::headHTML();
       $html = $html . self::navHTML("Enseignement");
+      $notification_exist = false;
       $html .= <<< END
         <div class="container">
 		  <div class="panel panel-default">
@@ -48,7 +50,10 @@ class VueUtilisateur extends AbstractView
             <div class="panel-body text-center">
 			    <div class="table-responsive">
       <div class="alert alert-danger hidden" role="alert" id="erreur">
-      <strong>Echec!</strong> Vos données ne sont pas valides, vérifiez que vous n'avez pas de nombres négatifs.
+      <strong>Echec!</strong> Vos données ne sont pas valides, vérifiez que vous n\'avez pas de nombres négatifs.
+      </div>
+      <div class="alert alert-warning hidden" role="alert" id="notification_exist">
+      <strong>Attention !</strong> Certaines interventions attendent la validation de leur modification, aucun changement ne sera pris en compte entre temps.
       </div>
 
                   <table class="table table-bordered ">
@@ -72,7 +77,11 @@ END;
         if(isset($_SESSION["mail"])){
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
             $interventions = Intervention::where('mail_enseignant', '=', $e->mail)
-                             ->get();
+                           ->get();
+            $notifications = Notification::where('mail_destinataire', '=', $e->mail)
+                           ->where('type_notification', '=', 'PPIL\models\NotificationIntervention')
+                           ->get();
+
 
             foreach($interventions as $intervention){
                 $composante = $intervention->fst==true ? 'FST' : 'Hors FST';
@@ -80,8 +89,20 @@ END;
                     ->first();
                 $formation = Formation::where("id_formation", "=", $ue->id_formation)
                            ->first();
+
+                $notification_en_attente = "";
+                foreach($notifications as $notification){
+                    $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
+                                               ->where('id_UE', '=', $intervention->id_UE)
+                                               ->first();
+                    if(!empty($notification_intervention)){
+                        $notification_en_attente = "warning";
+                        $notification_exist = true;
+                    }
+                }
+
                 $html .= <<< END
-					<tr id="$intervention->id_intervention">
+					<tr id="$intervention->id_intervention" class="$notification_en_attente">
 
 					  <td>$composante</td>
 					  <td>$ue->nom_UE</td>
@@ -113,6 +134,7 @@ END;
 							<button  name="annuler" class="btn btn-primary hidden" id="annuler" value="true" type="submit">Annuler</button>
 							<button  name="supprimer" class="btn btn-default" id="supprimer" value="false" type="submit">Supprimer</button>
 							<input type="hidden" id="id" name="id" value="$intervention->id_intervention" />
+							<input type="hidden" id="id_UE" name="id_UE" value="$intervention->id_UE" />
 						  </div>
 						</form>
 
@@ -133,7 +155,7 @@ END;
         <script type="text/javascript" src="/PPIL/assets/js/interventions.js"></script>
         <script type="text/javascript">
            $(function(){
-               valider("$lien");
+               valider("$lien", $notification_exist);
 			});
         </script>
 
