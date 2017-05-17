@@ -50,6 +50,10 @@ class UEControler
         echo json_encode($res);
     }
 
+    public function intervenantsUE() {
+        
+    }
+
     public function creerUE(){
         if(isset($_SESSION['mail'])) {
             $val = Slim::getInstance()->request->post();

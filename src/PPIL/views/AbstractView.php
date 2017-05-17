@@ -55,7 +55,7 @@ END;
     public static function navHTML($focus) {
         $responsable_enseignants = false;
         $responsable_formation = false;
-        if(isset($_SESSION["mail"])){
+        if(isset($_SESSION['mail'])){
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
             $responsabilite = Enseignant::get_privilege($e);
             $notifications_count = Notification::where('mail_destinataire', '=', $e->mail)

@@ -20,24 +20,24 @@ class VueFormation extends AbstractView
         $valider = Slim::getInstance()->urlFor('home');
         $lienInfoForm = Slim::getInstance()->urlFor('infoForm');
         $html .= <<< END
-        <div id="formation" class="panel-body panel-default container">
+        <div id="formation" class="panel-body panel-default ">
             <h2 class="panel-heading text-center">Formation</h2>
-            <div class="container panel col-sm-6 ">
+            <div class=" panel-default col-sm-6 ">
                 <div id="selectForm" class="col-sm-10">
                     <label class="control-label col-sm-6" for="formation">Sélectionner Formation</label>
                     <div class="col-sm-6">
                         $select
                     </div>
                 </div>
-                <div id="tableUE" class="container panel col-sm-10">
+                <div id="tableUE" class=" panel-default col-sm-10">
                   
 			    </div>
             </div>
-            <div class="container panel col-sm-6 ">
-                 <div class="container">
+            <div class=" panel-default col-sm-6 ">
+                 <div class="">
                     <label id="nomUE" class="control-label">Sélectionner un UE</label>
                  </div>   
-                 <div class="panel">
+                 <div class="panel-default">
                     <ul class="nav nav-pills">
                         <li class="active"><a href="#tab1" data-toggle="tab">CM</a></li>
                         <li><a href="#tab2" data-toggle="tab">TD</a></li>
@@ -53,11 +53,13 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume attendu</th>
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
-                                    <tr>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduCM"  value="30" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteCM"  value="10" /> </th>
-                                    </tr>
                                 </thead>
+                                <tbody>    
+                                    <tr>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAttenduCM"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAffecteCM"  value="0" readonly/> </th>
+                                    </tr>
+                                </tbody>
                             </table>    
                         </div>
                         <div class="tab-pane" id="tab2">
@@ -69,13 +71,15 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume attendu</th>
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
+                                </thead>    
+                                <tbody>
                                     <tr>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAttenduTD"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAffecteTD"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduTD"  value="30" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteTD"  value="10" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAttenduTD"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAffecteTD"  value="0" readonly/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAttenduTD"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAffecteTD"  value="0" readonly/> </th>
                                     </tr>
-                                </thead>
+                                </tbody>
                             </table> 
                         </div>
                         <div class="tab-pane" id="tab3">
@@ -87,13 +91,15 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume attendu</th>
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
+                                </thead>    
+                                <tbody>
                                     <tr>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAttenduTP"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAffecteTP"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduTP"  value="30" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteTP"  value="10" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAttenduTP"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAffecteTP"  value="0" readonly/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAttenduTP"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAffecteTP"  value="0" readonly/> </th>
                                     </tr>
-                                </thead>
+                                </tbody>
                             </table>
                         </div>
                         <div class="tab-pane" id="tab4">
@@ -105,18 +111,58 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume attendu</th>
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
+                                </thead>    
+                                <tbody>
                                     <tr>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAttenduEI"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="nbGroupeAffecteEI"  value="3" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAttenduEI"  value="30" /> </th>
-                                        <th class="text-center"> <input type="text" class="form-control" id="heureAffecteEI"  value="10" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAttenduEI"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAffecteEI"  value="0" readonly/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAttenduEI"  value="0" /> </th>
+                                        <th class="text-center"> <input type="number" class="form-control" id="heureAffecteEI"  value="0" readonly/> </th>
                                     </tr>
-                                </thead>
+                                </tbody>
                             </table>
                         </div>                        
                     </div>
                 </div>    
             </div>
+            <div class=" panel-default">
+                <button type="button" class="btn btn-default center-block" id="valider">Valider</button>
+            </div>
+            <div class=" panel-default">
+                <div class="header">
+                    <h2 id="nomFormation" class="text-center">Total du volume horaire </h2>
+                </div>
+                <div class="table-responsive">
+                <table class="table table-bordered ">
+                    <thead>
+                      <tr>
+                        <th class="text-center"></th>
+                        <th class="text-center">Volume attendu CM</th>
+                        <th class="text-center">Volume affecté CM</th>
+                        <th class="text-center">Volume attendu TD</th>
+                        <th class="text-center">Volume affecté TD</th>
+                        <th class="text-center">Volume attendu TP</th>
+                        <th class="text-center">Volume affecté TP</th>
+                        <th class="text-center">Volume attendu EI</th>
+                        <th class="text-center">Volume affecté EI</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="text-center">Total</th>
+                            <th id="volumeAttenduCM" class="text-center">0</th>
+                            <th id="volumeAffecteCM" class="text-center">0</th>
+                            <th id="volumeAttenduTD" class="text-center">0</th>
+                            <th id="volumeAffecteTD" class="text-center">0</th>
+                            <th id="volumeAttenduTP" class="text-center">0</th>
+                            <th id="volumeAffecteTP" class="text-center">0</th>
+                            <th id="volumeAttenduEI" class="text-center">0</th>
+                            <th id="volumeAffecteEI" class="text-center">0</th>
+                        </tr>
+                    </tbody>
+                </table>  
+                </div>  
+            </div>  
         </div>
         <script type="text/javascript" src="/PPIL/assets/js/formation.js">     </script>
         <script type="text/javascript">

@@ -33,11 +33,14 @@ class FormationControler
         $nom = $app->request->post();
         $nom = filter_var($nom['nom'],FILTER_SANITIZE_STRING);
         $for = \PPIL\models\Formation::where('nomFormation','like',$nom)->first();
-        $ue = UE::where('id_formation','=',$for->id_formation)->get();
         $res = array();
-        if(!empty($ue)){
-            foreach ($ue as $value){
-                $res[] = $value->nom_UE;
+        if(!empty($for)){
+            $ue = UE::where('id_formation','=',$for->id_formation)->get();
+            if(!empty($ue)){
+                foreach ($ue as $value){
+                    $res[] = $value->id_UE;
+                    $res[] = $value->nom_UE;
+                }
             }
         }
         $app->response->headers->set('Content-Type', 'application/json');
@@ -47,8 +50,8 @@ class FormationControler
     public function infoUE(){
         $app = Slim::getInstance();
         $val = $app->request->post();
-        $nom = filter_var($val['nom'],FILTER_SANITIZE_STRING);
-        $ue = UE::where('nom_UE','=',$nom)->first();
+        $id = filter_var($val['id'],FILTER_SANITIZE_STRING);
+        $ue = UE::where('id_UE','=',$id)->first();
         $app->response->headers->set('Content-Type', 'application/json');
         if(empty($ue)){
             $res = array();
@@ -57,6 +60,47 @@ class FormationControler
             echo json_encode($ue);
         }
 
+    }
+
+    public function total(){
+        $app = Slim::getInstance();
+        $nom = $app->request->post();
+        $nom = filter_var($nom['nom'],FILTER_SANITIZE_STRING);
+        $for = \PPIL\models\Formation::where('nomFormation','like',$nom)->first();
+        $res = array();
+        if(!empty($for)){
+            $ue = UE::where('id_formation','=',$for->id_formation)->get();
+            if(!empty($ue)){
+                $cmPrev = 0;
+                $cm = 0;
+                $tdPrev = 0;
+                $td = 0;
+                $tpPrev = 0;
+                $tp = 0;
+                $eiPrev = 0;
+                $ei = 0;
+                foreach ($ue as $value){
+                    $cmPrev = $cmPrev + $value->prevision_heuresCM;
+                    $cm = $cm + $value->heuresCM;
+                    $tdPrev = $tdPrev + $value->prevision_heuresTD;
+                    $td = $td + $value->heuresTD;
+                    $tpPrev = $tpPrev + $value->prevision_heuresTP;
+                    $tp = $tp + $value->heuresTP;
+                    $eiPrev = $eiPrev + $value->prevision_heuresEI;
+                    $ei = $ei +$value->heuresEI;
+                }
+                $res[] = $cmPrev;
+                $res[] = $cm;
+                $res[] = $tdPrev;
+                $res[] = $td;
+                $res[] = $tpPrev;
+                $res[] = $tp;
+                $res[] = $eiPrev;
+                $res[] = $ei;
+            }
+        }
+        $app->response->headers->set('Content-Type', 'application/json');
+        echo json_encode($res);
     }
 
 

@@ -112,6 +112,11 @@ $app->post('/home/formation/ue/infos', function (){
     $c->infoUE();
 });
 
+$app->post('/home/formation/ue/total', function (){
+    $c = new FormationControler();
+    $c->total();
+});
+
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
@@ -134,14 +139,24 @@ $app->get('/home/ue', function (){
     $c->home();
 })->name('ueUtilisateur');
 
+$app->get('/home/ue/compoUE', function (){
+    $c = new UEControler();
+    $c->infoUE();
+})->name('compoUE');
+
+$app->get('/home/ue/intervenantsUE', function (){
+    $c = new UEControler();
+    $c->intervenantsUE();
+})->name('intervenantsUE');
+
 $app->get('/home/formation', function (){
     $c = new FormationControler();
     $c->home();
 })->name('formationUtilisateur');
 
 $app->get('/home/enseignants', function (){
-    $c = new UtilisateurControler();
-    $c->enseignants();
+    $c = new \PPIL\controlers\EnseignantsControler();
+    $c->home();
 })->name('enseignantsUtilisateur');
 
 $app->get('/home/journal', function (){
