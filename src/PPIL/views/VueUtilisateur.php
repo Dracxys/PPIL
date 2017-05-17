@@ -22,7 +22,7 @@ use PPIL\models\NotificationInscription;
 class VueUtilisateur extends AbstractView
 {
     public function home(){
-        $html = self::headHTML(1);
+        $html = self::headHTML();
         $html = $html . self::navHTML("Profil");
         $html = $html . self::footerHTML();
         return $html;
@@ -31,7 +31,7 @@ class VueUtilisateur extends AbstractView
 
   public function enseignement(){
       $lien = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignement");
-      $html = self::headHTML(2);
+      $html = self::headHTML();
       $html = $html . self::navHTML("Enseignement");
       $html .= <<< END
         <div class="container">
@@ -144,7 +144,7 @@ END;
     }
 
     public function ue(){
-        $html = self::headHTML(3);
+        $html = self::headHTML();
         $html = $html . self::navHTML("UE");
         $html = $html . self::footerHTML();
         return $html;
@@ -152,14 +152,14 @@ END;
 
 
     public function enseignant(){
-        $html = self::headHTML(5);
+        $html = self::headHTML();
         $html = $html . self::navHTML("Enseignant");
         $html = $html . self::footerHTML();
         return $html;
     }
 
     public function journal(){
-        $html = self::headHTML(6);
+        $html = self::headHTML();
         $html = $html . self::navHTML("Journal");
         $html .= <<< END
 	    <div class="container">
@@ -272,7 +272,7 @@ END;
     }
 
     public function annuaire($users){
-        $html = self::headHTML(7);
+        $html = self::headHTML();
         $html = $html . self::navHTML("Annuaire");
         $html .= <<< END
         <div class="container">

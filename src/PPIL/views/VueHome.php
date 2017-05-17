@@ -15,7 +15,7 @@ use Slim\Slim;
 class VueHome extends AbstractView
 {
     public function home($num){
-        $html = self::headHTML(0);
+        $html = self::headHTML();
         $lien = Slim::getInstance()->urlFor("login");
         $lien_oublie = Slim::getInstance()->urlFor("oubliMDP");
         $lien_inscription = Slim::getInstance()->urlFor("inscription");
@@ -68,7 +68,7 @@ END;
     }
 
     public function inscription($num = 0){
-        $html = self::headHTML(0);
+        $html = self::headHTML();
         $valider = Slim::getInstance()->urlFor("validerInscription");
         $annuler = Slim::getInstance()->urlFor("home");
         $html = $html . <<< END
@@ -184,7 +184,7 @@ $html = $html . self::footerHTML();
     }
 
     public function oubliMDP($num = 0){
-        $html = self::headHTML(0);
+        $html = self::headHTML();
         $valider = Slim::getInstance()->urlFor("changementMDP");
         $annuler = Slim::getInstance()->urlFor("home");
         $html = $html . <<< END
@@ -257,7 +257,7 @@ END;
     }
 
     public function changementMDP($e, $num = 0){
-        $html = self::headHTML(0);
+        $html = self::headHTML();
         $valider = Slim::getInstance()->urlFor("changementMDPValider");
         $annuler = Slim::getInstance()->urlFor("home");
         $html = $html . <<< END
@@ -305,7 +305,7 @@ END;
     }
 
     public function oubliMDPErreur($num = 0){
-        $html = self::headHTML(0);
+        $html = self::headHTML();
         $annuler = Slim::getInstance()->urlFor('home');
         if($num == 0) {
             $html = $html . <<< END
