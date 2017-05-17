@@ -1,6 +1,8 @@
 var ppil;
+var id_UE;
+var value
 function recupererUE(lien) {
-    var value = $('#selectForm option:selected').val();
+    value = $('#selectForm option:selected').val();
     $('#nomFormation').text('Volume Horaire ' + value);
     ppil = lien;
     $.ajax({
@@ -30,11 +32,11 @@ function recupererUE(lien) {
 
 function choixUE(element) {
     $('#nomUE').text($(element).text());
-    var id = $(element).attr('id');
+    id_UE = $(element).attr('id');
     $.ajax({
         url: ppil + 'infos',
         type: 'post',
-        data: {'id': id},
+        data: {'id': id_UE},
         success: function (tab) {
             if (tab != undefined) {
                 $('#heureAffecteCM').val(tab.heuresCM);
@@ -100,7 +102,6 @@ function choixUE(element) {
 }
 
 function totalLicence(nom) {
-    console.log(nom);
     $.ajax({
         url: ppil + 'total',
         type: 'post',
@@ -151,7 +152,55 @@ function totalLicence(nom) {
     })
 }
 
+function modifUE() {
+    var heureCM = $('#heureAttenduCM').val();
+    var nbGroupeTD = $('#nbGroupeAttenduTD').val();
+    var heureTD = $('#heureAttenduTD').val();
+    var nbGroupeTP = $('#nbGroupeAttenduTP').val();
+    var heureTP = $('#heureAttenduTP').val();
+    var nbGroupeEI = $('#nbGroupeAttenduEI').val();
+    var heureEI = $('#heureAttenduEI').val();
 
+    if(heureCM < 0 || nbGroupeTD < 0 || heureTD < 0 || nbGroupeTP < 0 || heureTP < 0 || nbGroupeEI < 0 || heureEI < 0){
+        $('#erreur').show();
+    }else{
+        $('#erreur').hide();
+    $.ajax({
+            url: ppil + 'modif',
+            type: 'post',
+            data: {'id': id_UE, 'heureCM' : heureCM, 'nbGroupeTD' : nbGroupeTD,
+            'heureTD' : heureTD, 'nbGroupeTP' : nbGroupeTP , 'heureTP' : heureTP,
+            'nbGroupeEI' : nbGroupeEI, 'heureEI' : heureEI},
+            success: function (res) {
+                if(res != undefined){
+                    if(res[0] == 'true'){
+                        $('#messageTitre').text(res[0]);
+                        $('#message').text('Les modifications ont bien été pris en compte.');
+                        $('#modalDemandeEffectuee').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                        //choixUE($('#'+id_UE));
+                        //totalLicence(value)
+                    }else{
+                        console.log(res[0]);
+                        $('#messageTitre').text(res[0]);
+                        $('#message').text('Les modifications n\'ont pas pu être sauvegardé.');
+                        $('#modalDemandeEffectuee').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                    }
+                }
+
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        })
+    }
+}
 
 
 
