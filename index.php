@@ -130,6 +130,11 @@ $app->post('/home/enseignement/actionEnseignement', function (){
     $c->enseignement_action();
 })->name('enseignementUtilisateur.actionEnseignement');
 
+$app->post('/home/enseignement/actionEnseignementAjouter', function (){
+    $c = new UtilisateurControler();
+    $c->enseignement_action_ajouter();
+})->name('enseignementUtilisateur.actionEnseignementAjouter');
+
 $app->get('/home/ue', function (){
     $c = new UEControler();
     $c->home();

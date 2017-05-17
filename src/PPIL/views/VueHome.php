@@ -341,10 +341,10 @@ END;
 			  <div class="modal-dialog">
 				<div class="modal-content">
 				  <div class="modal-header">
-					<h4 class="modal-title">Une erreur c'est produite</h4>
+					<h4 class="modal-title">Une erreur c\'est produite</h4>
 				  </div>
 				  <div class="modal-body">
-					<p>Aucun compte n'a été trouvé.</p>
+					<p>Aucun compte n\'a été trouvé.</p>
 				  </div>
 				  <div class="modal-footer">
 

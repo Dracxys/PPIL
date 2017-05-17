@@ -119,6 +119,16 @@ class UtilisateurControler
         }
     }
 
+
+    public function enseignement_action_ajouter(){
+        if(isset($_SESSION['mail'])){
+            echo "plop";
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+
     public function ue(){
         if(isset($_SESSION['mail'])){
             $v = new VueUtilisateur();

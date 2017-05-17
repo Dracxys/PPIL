@@ -32,6 +32,9 @@ class VueUtilisateur extends AbstractView
 
   public function enseignement(){
       $lien = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignement");
+      $lien_ajouter = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouter");
+      $home = Slim::getInstance()->urlFor("home");
+
       $html = self::headHTML();
       $html = $html . self::navHTML("Enseignement");
       $notification_exist = false;
@@ -39,10 +42,13 @@ class VueUtilisateur extends AbstractView
         <div class="container">
 		  <div class="panel panel-default">
 			<div class="panel-heading clearfix text-center">
-
+			  <div class="btn-group pull-left">
+			  	<button type="button" class="btn btn-default">Remise à zéro</button>
+			  </div>
 			  <div class="btn-group pull-right">
-				  <button type="button" class="btn btn-default">Exporter</button>
-				  <button type="button" class="btn btn-primary"  id="appliquer">Appliquer</button>
+				<button type="button" class="btn btn-default" id="ajouter">Ajouter</button>
+				<button type="button" class="btn btn-default">Exporter</button>
+				<button type="button" class="btn btn-primary"  id="appliquer">Appliquer</button>
 			  </div>
 			 <h4>Fiche prévisionnelle Des enseignements</h4>
             </div>
@@ -82,11 +88,14 @@ END;
                            ->where('type_notification', '=', 'PPIL\models\NotificationIntervention')
                            ->get();
 
+            $id_ues = array();
+            $id_ues_notification = array();
 
             foreach($interventions as $intervention){
-                $composante = $intervention->fst==true ? 'FST' : 'Hors FST';
+                $id_ues[] = $intervention->id_UE;
                 $ue = UE::where("id_UE", "=", $intervention->id_UE)
                     ->first();
+                $composante = $ue->fst==true ? 'FST' : 'Hors FST';
                 $formation = Formation::where("id_formation", "=", $ue->id_formation)
                            ->first();
 
@@ -98,6 +107,9 @@ END;
                     if(!empty($notification_intervention)){
                         $notification_en_attente = "warning";
                         $notification_exist = true;
+                        foreach($notification_intervention as $n){
+                            $id_ues_notification[] = $n->id_UE;
+                        }
                     }
                 }
 
@@ -139,31 +151,118 @@ END;
 						</form>
 
 					  </td>
-
 </tr>
 END;
-
             }
-        }
+
         $html .= <<< END
-             </tbody>
+        </tbody>
         </table>
         </div>
         </div>
         </div>
         </div>
+        <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h4 class="modal-title">Modifications</h4>
+			  </div>
+			  <div class="modal-body">
+				<p>Vos demandes ont été envoyées aux responsables de UE concernées.</p>
+			  </div>
+			  <div class="modal-footer">
+
+				<button type="button" class="btn btn-default" onclick="location.href='$home'" data-dismiss="modal">Ok</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+
+		<div class="modal fade text-center" id="modalAjouter" role="dialog">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h4 class="modal-title">Ajouter une intervention</h4>
+			  </div>
+			  <div class="modal-body">
+              <div class="table-responsive">
+                  <table class="table table-bordered ">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Composante</th>
+                        <th class="text-center">Formation</th>
+                        <th class="text-center">UE</th>
+						<th class="text-center">Sélectionner</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+END;
+
+        $ues = UE::whereNotIn('id_UE', $id_ues)
+             ->whereNotIn('id_UE', $id_ues_notification)
+             ->get();
+        foreach($notifications as $notification){
+            $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
+                                       ->where('id_UE', '=', $intervention->id_UE)
+                                       ->first();
+            if(!empty($notification_intervention)){
+                $notification_en_attente = "warning";
+                $notification_exist = true;
+            }
+        }
+
+        foreach($ues as $ue_ajout){
+            $composante = $ue_ajout->fst==true ? 'FST' : 'Hors FST';
+            $formation = Formation::where("id_formation", "=", $ue_ajout->id_formation)
+                       ->first();
+
+            $html .= <<< END
+			   		  <tr>
+						<td>$composante</td>
+   						<td>$formation->nomFormation</td>
+						<td>$ue_ajout->nom_UE</td>
+						<td>
+						  <form class="form-inline" method="post" action="" id="form_ajout_ue">
+							<div class="form-group">
+							  <button  name="selectionner" class="btn btn-primary" id="selectionner" value="false" type="submit">Sélectionner</button>
+							  <button  name="annuler" class="btn btn-primary hidden" id="annuler" value="false" type="submit">Annuler</button>
+							  <input type="hidden" id="id" name="id" value="$intervention->id_intervention" />
+							  <input type="hidden" id="id_UE" name="id_UE" value="$intervention->id_UE" />
+							</div>
+						  </form>
+						</td>
+                     </tr>
+END;
+        }
+        $html .= <<< END
+                    </tbody>
+                </table>
+               </div>
+			  </div>
+			  <div class="modal-footer">
+
+        <button type="button" class="btn btn-default" onclick="location.href=''" data-dismiss="modal" id="modal_demande">Effectuer la demande</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+
         <script type="text/javascript" src="/PPIL/assets/js/interventions.js"></script>
         <script type="text/javascript">
-           $(function(){
-               valider("$lien", $notification_exist);
+          $(function(){
+		  ajouter("$lien_ajouter");
+          valider("$lien", $notification_exist);
 			});
         </script>
 
 
 END;
+        }
         $html = $html . self::footerHTML();
         return $html;
-    }
+  }
 
     public function ue(){
         $html = self::headHTML();
