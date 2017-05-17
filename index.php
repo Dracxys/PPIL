@@ -21,10 +21,6 @@ $app->get('/', function () {
     $c->accueil();
 })->name('home');
 
-$app->get('/test', function () use ($app){
-
-});
-
 $app->post('/',function (){
     $c = new HomeControler();
     $c->accueil();
@@ -138,6 +134,11 @@ $app->post('/home/enseignement/actionEnseignement', function (){
     $c = new UtilisateurControler();
     $c->enseignement_action();
 })->name('enseignementUtilisateur.actionEnseignement');
+
+$app->post('/home/enseignement/actionEnseignementAjouter', function (){
+    $c = new UtilisateurControler();
+    $c->enseignement_action_ajouter();
+})->name('enseignementUtilisateur.actionEnseignementAjouter');
 
 $app->get('/home/ue', function (){
     $c = new UEControler();

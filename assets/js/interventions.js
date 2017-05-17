@@ -2,6 +2,7 @@ function valider(lien, notification_exist){
 	if(notification_exist){
 		$("div#notification_exist").removeClass('hidden');
 	}
+
 	$("form#form_interventions").each(function() {
 		$(this).submit(function(e){
 			e.preventDefault();
@@ -55,5 +56,48 @@ function valider(lien, notification_exist){
 			});
 
 		});
+		$('#modalDemandeEffectuee').modal({
+			backdrop: 'static',
+			keyboard: false
+		});
 	});
+}
+
+function ajouter(lien){
+	$('#ajouter').click(function(){
+		$('#modalAjouter').modal({
+		});
+	});
+
+
+	$("form#form_ajout_ue").each(function() {
+		$(this).submit(function(e){
+			e.preventDefault();
+		});
+
+		$(this).find('button#selectionner').click(function(){
+			$(this).toggleClass('hidden');
+			$(this).parent().find('button#selectionner').val(false);
+			$(this).parent().find('button#annuler').toggleClass('hidden');
+			$(this).val(true);
+			$('button#modal_demande').prop('disabled', false);
+			$('button#modal_demande').addClass('btn-primary')
+
+		});
+
+		$(this).find('button#annuler').click(function(){
+			$(this).toggleClass('hidden');
+			$(this).parent().find('button#selectionner').val(false);
+			$(this).parent().find('button#selectionner').toggleClass('hidden');
+			var selection = $("button#selectionner ").filter(function(){
+				return $(this).hasClass('hidden');
+			});
+			if(selection.length <= 0){
+				$("button#modal_demande").prop('disabled', true);
+				$("button#modal_demande").removeClass('btn-primary');
+			}
+
+		});
+	});
+
 }
