@@ -16,7 +16,7 @@ class VueUe extends AbstractView
 {
 
     public function home($u){
-        $html  = self::headHTML(4);
+        $html  = self::headHTML();
         $html .= self::navHTML("UE");
         $select = self::selectUE($u);
         //$lienInfoUE = Slim::getInstance()->urlFor('infoUE');
