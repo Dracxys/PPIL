@@ -174,17 +174,16 @@ function modifUE() {
             success: function (res) {
                 if(res != undefined){
                     if(res[0] == 'true'){
-                        $('#messageTitre').text(res[0]);
+                        $('#messageTitre').text('Succès');
                         $('#message').text('Les modifications ont bien été pris en compte.');
                         $('#modalDemandeEffectuee').modal({
                             backdrop: 'static',
                             keyboard: false
                         });
-                        //choixUE($('#'+id_UE));
-                        //totalLicence(value)
+                        choixUE($('#'+id_UE));
+                        totalLicence(value);
                     }else{
-                        console.log(res[0]);
-                        $('#messageTitre').text(res[0]);
+                        $('#messageTitre').text('Erreur');
                         $('#message').text('Les modifications n\'ont pas pu être sauvegardé.');
                         $('#modalDemandeEffectuee').modal({
                             backdrop: 'static',

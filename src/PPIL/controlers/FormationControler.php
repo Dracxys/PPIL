@@ -143,15 +143,14 @@ class FormationControler
         if (self::verif($val)) {
             $ue = UE::where('id_UE','=',$id)->first();
             if (!empty($ue)) {
-
-                $ue->prevision_heuresCM = 4;
-                //$ue->prevision_heuresTD = filter_var($val['heureTD'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                //$ue->prevision_heuresTP = filter_var($val['heureTP'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                //$ue->prevision_heuresEI = filter_var($val['heureEI'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                //$ue->prevision_groupeTD = filter_var($val['nbGroupeTD'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                //$ue->prevision_groupeTP = filter_var($val['nbGroupeTP'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                //$ue->prevision_groupeEI = filter_var($val['nbGroupeEI'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                $ue->save(); // lance une erreur je ne sais pas pk
+                $ue->prevision_heuresCM = filter_var($val['heureCM'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);;
+                $ue->prevision_heuresTD = filter_var($val['heureTD'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                $ue->prevision_heuresTP = filter_var($val['heureTP'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                $ue->prevision_heuresEI = filter_var($val['heureEI'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                $ue->prevision_groupeTD = filter_var($val['nbGroupeTD'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                $ue->prevision_groupeTP = filter_var($val['nbGroupeTP'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                $ue->prevision_groupeEI = filter_var($val['nbGroupeEI'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                $ue->save();
                 $app->response->headers->set('Content-Type', 'application/json');
                 $res = array();
                 $res[] = 'true';
