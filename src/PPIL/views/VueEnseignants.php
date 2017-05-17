@@ -31,6 +31,7 @@ class VueEnseignants extends AbstractView{
 			  </div>
 			  <h4>Enseignants</h4>
 			</div>
+			
 			<div class="panel-body text-center">
 			<div class="table-responsive">
 			  <table class="table table-bordered">
@@ -42,8 +43,24 @@ class VueEnseignants extends AbstractView{
 					<th class="text-center">Service réalisé</th>
 					<th class="text-center">Service réalisé à la FST</th>
 				  </tr>
+END;
+				  foreach ($u as $user) {
+                    if ($user->prenom!="admin" && $user->nom!="admin" && $_SESSION['mail']!=$user->mail) {
+                        $html .= "<tr>" .
+                                "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
+                                "<th class=\"text-center\">" . $user->statut . "</th>" .
+                                "<th class=\"text-center\">" . $user->volumeMin . "</th>" .
+                                "<th class=\"text-center\">" . $user->volumeCourant . "</th>" .
+                                "<th class=\"text-center\">" . $user->volumeCourant . "</th>" .
+                                "</tr>";
+                    }
+                   }
+
+                $html .= <<< END
+
 				</thead>
 				<tbody>
+
 			    </tbody>
           </table>
         </div>
