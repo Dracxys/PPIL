@@ -106,6 +106,13 @@ END;
             </div>
 END;
         }
+      if ($num == 9) {
+          $html .= <<< END
+            <div class="alert alert-success" role="alert">
+                <strong>Succès</strong> Demande de responsabilité effectuée.
+            </div>
+END;
+      }
        $html .= <<<END
                 <div id="infoperso" class="container-fluid">
                     <div class="row">

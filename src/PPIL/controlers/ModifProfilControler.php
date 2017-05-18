@@ -101,7 +101,7 @@ class ModifProfilControler
         if(isset($_SESSION['mail'])){
             $val = Slim::getInstance()->request->post();
             $user = Enseignant::where("mail","like",$_SESSION['mail'])->first();
-            $v = new VueModifProfil();
+
             $notif = new NotificationResponsabilite();
             $n = new Notification();
             if(isset($_POST['ueSelect'])){
@@ -137,7 +137,8 @@ class ModifProfilControler
 
 
             $notif->save();
-
+            $v = new VueModifProfil();
+            $v->home($user,8);
         }
     }
 

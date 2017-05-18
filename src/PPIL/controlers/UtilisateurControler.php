@@ -10,6 +10,7 @@ namespace PPIL\controlers;
 
 
 use PPIL\models\Enseignant;
+use PPIL\models\NotificationResponsabilite;
 use PPIL\views\VueHome;
 use PPIL\views\VueModifProfil;
 use PPIL\views\VueUtilisateur;
@@ -277,9 +278,16 @@ class UtilisateurControler
                         break;
                     case "PPIL\models\NotificationIntervention":
                         $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
-                                                   ->first();
+                            ->first();
                         if(!empty($notification_intervention)){
                             NotificationIntervention::appliquer($notification_intervention, $notification);
+                        }
+                        break;
+                    case "PPIL\models\NotificationResponsabilite":
+                        $notification_responsabilite = NotificationResponsabilite::where('id_notification', '=', $notification->id_notification)
+                            ->first();
+                        if(!empty($notification_responsabilite)){
+                            NotificationResponsabilite::appliquer($notification_responsabilite, $notification);
                         }
                         break;
                     default:
