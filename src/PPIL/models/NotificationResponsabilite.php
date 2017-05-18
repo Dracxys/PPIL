@@ -14,4 +14,5 @@ class NotificationResponsabilite extends Notification
     protected $table = "NotificationResponsabilite";
     protected $primaryKey = "id_notification";
     public $timestamps = false;
+	
 }
