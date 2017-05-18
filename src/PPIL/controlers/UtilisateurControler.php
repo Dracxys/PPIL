@@ -300,13 +300,12 @@ class UtilisateurControler
                             break;
                     }
                 }
-                /*
                 if($notification->besoin_validation == false){
                     $notification_spe = $notification->type_notification::where('id_notification', '=', $notification->id_notification)
                                       ->first();
                     $notification_spe->delete();
                     $notification->delete();
-                    }*/
+                }
             }
         }
     }
