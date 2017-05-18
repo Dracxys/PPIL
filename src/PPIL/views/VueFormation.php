@@ -190,6 +190,10 @@ END;
     {
         $html = '<select class="form-control" id="selectForm" name="selectForm">';
         $i = 0;
+        $val = array_pop($for);
+        if($val != 'DI'){
+           $for[] = $val;
+        }
         foreach ($for as $value) {
             if(isset($value)){
                 if ($i == 0) {
@@ -202,6 +206,11 @@ END;
 
         }
         $html .= "</select>";
+        if($val == 'DI'){
+            $html .= "<script type=\"text/javascript\">  $(function() { $('#creerForm').show(); });</script>";
+        }else{
+            $html .= "<script type=\"text/javascript\">  $(function() { $('#creerForm').hide(); });</script>";
+        }
         return $html;
     }
 
