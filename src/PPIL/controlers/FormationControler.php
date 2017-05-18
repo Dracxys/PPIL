@@ -217,4 +217,25 @@ class FormationControler
     }
 
 
+    public function supprimerUE(){
+        $app = Slim::getInstance();
+        $val = $app->request->post();
+        $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+        $ue = UE::find($id);
+        if(!empty($ue)){
+            $ue->id_formation = 0;
+            $ue->save();
+            $app->response->headers->set('Content-Type', 'application/json');
+            $res = array();
+            $res[] = 'true';
+            echo json_encode($res);
+        }else{
+            $app->response->headers->set('Content-Type', 'application/json');
+            $res = array();
+            $res[] = 'false';
+            echo json_encode($res);
+        }
+    }
+
+
 }

@@ -131,6 +131,11 @@ $app->post('/home/formation/ue/creer/form',function (){
     $c->creerForm();
 });
 
+$app->post('/home/formation/ue/supprimer',function (){
+   $c = new FormationControler();
+   $c->supprimerUE();
+});
+
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
