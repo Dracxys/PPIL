@@ -268,56 +268,11 @@ class UtilisateurControler
                 if($notification->validation){
                     switch($notification->type_notification){
                     case "PPIL\models\NotificationInscription":
-                        $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
+                        $notification_inscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
                                                  ->first();
 
-                        if(!empty($notificationinscription)){
-                            $e = new Enseignant();
-                            $e->nom = $notificationinscription->nom;
-                            $e->prenom = $notificationinscription->prenom;
-                            $e->mail = $notificationinscription->mail;
-                            $e->mdp = $notificationinscription->mot_de_passe;
-                            $e->statut = $notificationinscription->statut;
-                            switch ($notificationinscription->statut){
-                                case "Professeur des universités" :
-                                    $e->volumeMin = 192;
-                                    $e->volumeMax = 384;
-                                    break;
-                                case "Maître de conférences" :
-                                    $e->volumeMin = 192;
-                                    $e->volumeMax = 384;
-                                    break;
-                                case "PRAG" :
-                                    $e->volumeMin = 384;
-                                    $e->volumeMax = 768;
-                                    break;
-                                case "ATER" :
-                                    $e->volumeMin = 192;
-                                    $e->volumeMax = 192;
-                                    break;
-                                case "1/2 ATER" :
-                                    $e->volumeMin = 96;
-                                    $e->volumeMax = 96;
-                                    break;
-                                case "Doctorant" :
-                                    $e->volumeMin = 64;
-                                    $e->volumeMax = 64;
-                                    break;
-                                case "Vacataire" :
-                                    $e->volumeMin = 0;
-                                    $e->volumeMax = 96;
-                                    break;
-                            }
-                            $nom_source = $notificationinscription->nom;
-                            $prenom_source = $notificationinscription->prenom;
-                            $tmp = rand(0,9);
-                            for($i = 0; $i < 8 ; $i++){
-                                $tmp = $tmp . rand(0,9);
-                            }
-                            $e->rand = $tmp;
-                            $e->save();
-                            $mail = new MailControler();
-                            $mail->sendMaid($e->mail,'Inscription','Votre inscription a été validée par le responsable du département informatique.');
+                        if(!empty($notification_inscription)){
+                            NotificationInscription::appliquer($notification_inscription, $notification);
                         }
                         break;
                     case "PPIL\models\NotificationIntervention":
@@ -345,13 +300,13 @@ class UtilisateurControler
                             break;
                     }
                 }
-
+                /*
                 if($notification->besoin_validation == false){
                     $notification_spe = $notification->type_notification::where('id_notification', '=', $notification->id_notification)
                                       ->first();
                     $notification_spe->delete();
                     $notification->delete();
-                }
+                    }*/
             }
         }
     }
