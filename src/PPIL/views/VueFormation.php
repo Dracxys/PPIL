@@ -17,6 +17,7 @@ class VueFormation extends AbstractView
         $html  = self::headHTML();
         $html .= self::navHTML("Formation");
         $select = self::selectStatut($u);
+        $form = self::creerForm();
         $valider = Slim::getInstance()->urlFor('home');
         $lienInfoForm = Slim::getInstance()->urlFor('infoForm');
         $mes = self::message();
@@ -127,11 +128,13 @@ class VueFormation extends AbstractView
                 </div>    
             </div>
             <div class="panel-defaul container-fluid">
-                <button type="button" class="btn btn-default center-block" onclick="modifUE()" id="valider">Valider</button>
+                <button type="button" class="btn btn-default pull-left" onclick="creerForm()" id="creerForm">Creer une formation</button>
+                <button type="button" class="btn  btn-primary pull-right" onclick="modifUE()" id="valider">Valider</button>
                 <div id="erreur" class="alert alert-danger text-center">
                     <strong>Erreur : </strong> Chiffres négatifs dans un des champs.
                 </div>
                 $mes
+                $form
             </div>
             <div class=" panel-default">
                 <div class="header">
@@ -177,10 +180,16 @@ class VueFormation extends AbstractView
                     recupererUE("$lienInfoForm");
                });
                $('#erreur').hide();
-               
+               $('#modalAnnule').click(function() {
+                    $('#modalAjouter').modal('toggle');
+               });  
+               $('#modalValide').click(function(){
+                    ajouterForm();
+               });
 			});
         </script>
 END;
+        $html .= self::footerHTML();
         return $html;
 
     }
@@ -189,6 +198,10 @@ END;
     {
         $html = '<select class="form-control" id="selectForm" name="selectForm">';
         $i = 0;
+        $val = array_pop($for);
+        if($val != 'DI'){
+           $for[] = $val;
+        }
         foreach ($for as $value) {
             if(isset($value)){
                 if ($i == 0) {
@@ -201,6 +214,11 @@ END;
 
         }
         $html .= "</select>";
+        if($val == 'DI'){
+            $html .= "<script type=\"text/javascript\">  $(function() { $('#creerForm').show(); });</script>";
+        }else{
+            $html .= "<script type=\"text/javascript\">  $(function() { $('#creerForm').hide(); });</script>";
+        }
         return $html;
     }
 
@@ -221,6 +239,42 @@ END;
                 </div>
             </div>
         </div>
+END;
+        return $html;
+    }
+
+    public static function creerForm(){
+        $html = <<< END
+        <div class="modal fade text-center" id="modalAjouter" role="dialog">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h4 class="modal-title">Ajouter une formation</h4>
+			  </div>
+			  <div class="modal-body form-signin form-horizontal">
+                <div class="form-group">
+				    <label class="control-label col-sm-4" for="nomForm">Nom de la formation :</label>
+				    <div class="col-sm-6">
+				        <input type="text" id="nomForm" name="nomForm" class="form-control" placeholder="Nom de la formation" required="true"/>
+				    </div>
+			    </div>
+			    <div class="form-group">
+				    <label class="control-label col-sm-4" for="fst">Formation de la FST : </label>
+				    <div class="col-sm-6">
+				        <select class="form-control" id="selectFst">
+				            <option selected value="1">Oui</option>
+				            <option value="0">Non</option>
+				        </select>
+				    </div>
+			    </div>
+			  </div>
+			  <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  id="modalValide">Valider</button>
+                 <button type="button" class="btn btn-default"  id="modalAnnule">Annuler</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
 END;
         return $html;
     }

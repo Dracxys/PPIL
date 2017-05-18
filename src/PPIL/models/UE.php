@@ -4,7 +4,6 @@ namespace PPIL\models;
 class UE extends \Illuminate\Database\Eloquent\Model{
 	protected $table = "UE";
 	protected $primaryKey = "id_UE";
-    public $incrementing = false;
 	public $timestamps = false;
 
 	public static function creerUE($nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI){
@@ -23,25 +22,25 @@ class UE extends \Illuminate\Database\Eloquent\Model{
 		$n->save();
 	}
 
-	
+
 	public static function modifierUE($id, $nouv_nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI){
 		$n = UE::where('id_UE', '=', $id)->first();
 		$n->nom_UE = $nouv_nom;
-		
+
 		$n->prevision_heuresTD = $heuresTD;
 		$n->prevision_heuresTP = $heuresTP;
 		$n->prevision_heuresCM = $heuresCM;
 		$n->prevision_heuresEI = $heuresEI;
-		
+
 		$n->prevision_groupeTD = $groupeTD;
 		$n->prevision_groupeTP = $groupeTP;
 		$n->prevision_groupeEI = $groupeEI;
-		
+
 		$n->save();
 	}
 
-	
-	
+
+
 
     public static function recalculer($e){
         $interventions = Intervention::where('id_UE', '=', $e->id_UE)

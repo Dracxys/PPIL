@@ -63,13 +63,33 @@ function valider(lien, notification_exist){
 	});
 }
 
-function ajouter(lien){
+function ajouter(lien, lien_autre){
 	$('#ajouter').click(function(){
 		$('#modalAjouter').modal({
 		});
 	});
 
+	$("div#erreur_ajout_autre").addClass('hidden');
+
 	$('button#modal_demande').prop('disabled', true);
+
+	$('#modal_ajout_autre').click(function(){
+		$('form#form_ajout_autre').removeClass('hidden');
+		$(this).addClass('disabled');
+		var selection = $("button#selectionner ").filter(function(){
+			return $(this).hasClass('hidden');
+		});
+		if(selection.length <= 0){
+			$('button#modal_demande').prop('disabled', false);
+			$('button#modal_demande').addClass('btn-primary')
+		}
+
+	});
+
+	$('#modalAjouter').on('hidden.bs.modal', function () {
+		$('form#form_ajout_autre').addClass('hidden');
+		$('#modal_ajout_autre').removeClass('disabled');
+	});
 
 	$("form#form_ajout_ue").each(function() {
 		$(this).submit(function(e){
@@ -83,7 +103,6 @@ function ajouter(lien){
 			$(this).val(true);
 			$('button#modal_demande').prop('disabled', false);
 			$('button#modal_demande').addClass('btn-primary')
-
 		});
 
 		$(this).find('button#annuler').click(function(){
@@ -93,11 +112,10 @@ function ajouter(lien){
 			var selection = $("button#selectionner ").filter(function(){
 				return $(this).hasClass('hidden');
 			});
-			if(selection.length <= 0){
+			if(selection.length <= 0 && !$('#modal_ajout_autre').hasClass('disabled')){
 				$("button#modal_demande").prop('disabled', true);
 				$("button#modal_demande").removeClass('btn-primary');
 			}
-
 		});
 	});
 
@@ -116,6 +134,28 @@ function ajouter(lien){
 					dataType: 'json',
 					success: function(json){
 						tr.remove();
+					}
+				});
+			}
+		});
+
+		$("form#form_ajout_autre").each(function() {
+			var nom_nouvelle_UE = $(this).find('input#ajout_autre_ue');
+			var nom_nouvelle_formation = $(this).find('input#ajout_autre_formation');
+			if(nom_nouvelle_UE != "" && nom_nouvelle_formation != ""){
+				$.ajax({
+					url : lien_autre,
+					type: 'post',
+					data: { 'nom_UE' : nom_nouvelle_UE.val(), 'nom_formation' : nom_nouvelle_formation.val()},
+					dataType: 'json',
+					success: function(json){
+						if(json.error){
+							$("div#erreur_ajout_autre").removeClass('hidden');
+						} else {
+							$("div#erreur_ajout_autre").addClass('hidden');
+							nom_nouvelle_UE.text("");
+							nom_nouvelle_formation.text("");
+						}
 					}
 				});
 			}

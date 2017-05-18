@@ -33,6 +33,7 @@ class VueUtilisateur extends AbstractView
   public function enseignement(){
       $lien = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignement");
       $lien_ajouter = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouter");
+      $lien_ajouter_autre = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouterAutre");
       $home = Slim::getInstance()->urlFor("home");
 
       $html = self::headHTML();
@@ -54,7 +55,6 @@ class VueUtilisateur extends AbstractView
             </div>
 
             <div class="panel-body text-center">
-			    <div class="table-responsive">
       <div class="alert alert-danger hidden" role="alert" id="erreur">
       <strong>Echec!</strong> Vos données ne sont pas valides, vérifiez que vous n\'avez pas de nombres négatifs.
       </div>
@@ -166,7 +166,6 @@ END;
         </div>
         </div>
         </div>
-        </div>
         <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
 		  <div class="modal-dialog">
 			<div class="modal-content">
@@ -188,8 +187,9 @@ END;
 		  <div class="modal-dialog">
 			<div class="modal-content">
 			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title">Ajouter une intervention</h4>
-			  </div>
+              </div>
 			  <div class="modal-body">
               <div class="table-responsive">
                   <table class="table table-bordered ">
@@ -243,11 +243,28 @@ END;
         $html .= <<< END
                     </tbody>
                 </table>
-               </div>
+              </div>
+			  <div class="form-group">
+				<button type="button" class="btn btn-default"  id="modal_ajout_autre">Autre (hors FST)</button>
+			  </div>
+			  <div class="alert alert-danger" role="alert" id="erreur_ajout_autre">
+				<strong>Echec!</strong> Vos données ne sont pas valides, vérifier qu'il n'y a pas de caractères spéciaux.
+			  </div>
+
+			  <form class="form-vertical hidden" id="form_ajout_autre">
+				<div class="form-group">
+				  <label class="control-label" for="ajout_autre_formation">Formation :</label>
+				  <input type="text" class="form-control" id="ajout_autre_formation">
+				</div>
+				<div class="form-group">
+				  <label class="control-label" for="ajout_autre_ue">UE :</label>
+				  <input type="text" class="form-control" id="ajout_autre_ue">
+				</div>
+			  </form>
+
 			  </div>
 			  <div class="modal-footer">
-
-        <button type="button" class="btn btn-default"  id="modal_demande">Effectuer la demande</button>
+				<button type="button" class="btn btn-default"  id="modal_demande">Effectuer la demande</button>
 			  </div>
 			</div>
 		  </div>
@@ -256,7 +273,7 @@ END;
         <script type="text/javascript" src="/PPIL/assets/js/interventions.js"></script>
         <script type="text/javascript">
           $(function(){
-		  ajouter("$lien_ajouter");
+		  ajouter("$lien_ajouter", "$lien_ajouter_autre");
           valider("$lien", $notification_exist);
 			});
         </script>

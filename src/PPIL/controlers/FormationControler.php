@@ -26,13 +26,14 @@ class FormationControler
             $e = Enseignant::find($_SESSION['mail']);
             $privi = Enseignant::get_privilege($e);
             if ($privi == 2) {
-                $f = Formation::all();
+                $f = Formation::where('fst','=','1')->get();
                 $val = array();
                 foreach ($f as $value) {
                     if (!in_array($value->nomFormation, $val)) {
                         $val[] = $value->nomFormation;
                     }
                 }
+                $val[] = 'DI';
                 $v = new VueFormation();
                 echo $v->home($val);
             } elseif ($privi == 1) {
@@ -201,6 +202,18 @@ class FormationControler
             $res = true;
         }
         return $res;
+    }
+
+    public function creerForm(){
+        $app = Slim::getInstance();
+        $val = $app->request->post();
+        $nom = filter_var($val['nom'],FILTER_SANITIZE_STRING);
+        $fst = filter_var($val['fst'], FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+        Formation::creerForm($nom,$fst);
+        $app->response->headers->set('Content-Type', 'application/json');
+        $res = array();
+        $res[] = 'true';
+        echo json_encode($res);
     }
 
 
