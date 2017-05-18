@@ -11,6 +11,7 @@ namespace PPIL\controlers;
 
 use PPIL\models\Enseignant;
 use PPIL\models\Formation;
+use PPIL\models\Intervention;
 use PPIL\models\Responsabilite;
 use PPIL\models\UE;
 use PPIL\views\VueFormation;
@@ -143,14 +144,33 @@ class FormationControler
         if (self::verif($val)) {
             $ue = UE::where('id_UE','=',$id)->first();
             if (!empty($ue)) {
-                $ue->prevision_heuresCM = filter_var($val['heureCM'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);;
-                $ue->prevision_heuresTD = filter_var($val['heureTD'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                $ue->prevision_heuresTP = filter_var($val['heureTP'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                $ue->prevision_heuresEI = filter_var($val['heureEI'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                $ue->prevision_groupeTD = filter_var($val['nbGroupeTD'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                $ue->prevision_groupeTP = filter_var($val['nbGroupeTP'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                $ue->prevision_groupeEI = filter_var($val['nbGroupeEI'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
-                $ue->save();
+                $heuresCM = filter_var($val['heureCM'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);;
+                $heuresTD = filter_var($val['heureTD'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                $heuresTP = filter_var($val['heureTP'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                $heuresEI = filter_var($val['heureEI'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                $groupeTD = filter_var($val['nbGroupeTD'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                $groupeTP = filter_var($val['nbGroupeTP'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                $groupeEI = filter_var($val['nbGroupeEI'],FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+                UE::modifierUE($ue->id_UE,$ue->nom_UE,$heuresCM,$heuresTP,$heuresTD,$heuresEI,$groupeTP,$groupeTD,$groupeEI);
+                $resp = UE::getResponsable($ue->id_UE);
+                $mail = new MailControler();
+                $e = Enseignant::find($_SESSION['mail']);
+                $tab = array();
+                foreach ($resp as $value){
+                    $mes = "Responsable : " . $e->prenom . " " . $e->nom . ".\n";
+                    $mes .= "Les heures attendus de l UE " . $ue->nom_UE . " ont été modifié.";
+                    $mail->sendMaid($value->enseignant,"Modification des heures attendus de votre UE", $mes);
+                    $tab[] = $value->enseignant;
+                }
+                $ens = Intervention::where('id_UE','=',$ue->id_UE)->get();
+                foreach ($ens as $value){
+                   if(!in_array($value->mail_enseignant,$tab)){
+                       $mes = "Responsable : " . $e->prenom . " " . $e->nom . ".\n";
+                       $mes .= "Les heures attendus de l UE " . $ue->nom_UE . " ont été modifié.";
+                       $mail->sendMaid($value->mail_enseignant,"Modification des heures attendus d'un UE", $mes);
+                   }
+                }
+
                 $app->response->headers->set('Content-Type', 'application/json');
                 $res = array();
                 $res[] = 'true';

@@ -24,8 +24,8 @@ class UE extends \Illuminate\Database\Eloquent\Model{
 	}
 
 	
-	public static function modifierUE($nom, $nouv_nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI){
-		$n = UE::where('$nom_UE', 'like', $nom);
+	public static function modifierUE($id, $nouv_nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI){
+		$n = UE::where('id_UE', '=', $id)->first();
 		$n->nom_UE = $nouv_nom;
 		
 		$n->prevision_heuresTD = $heuresTD;
@@ -100,6 +100,12 @@ class UE extends \Illuminate\Database\Eloquent\Model{
         $e->groupeEI = $groupeEI;
         $e->save();
 
+    }
+
+    public static function getResponsable($id){
+        $ue = UE::find($id);
+        $res = Responsabilite::where('id_UE','=',$ue->id_UE)->get();
+        return $res;
     }
 
 

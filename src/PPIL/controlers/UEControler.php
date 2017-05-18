@@ -88,7 +88,7 @@ class UEControler
 	public function modifierUE(){
 		if(isset($_SESSION['mail'])) {
 			$val = Slim::getInstance()->request->post();
-			$nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
+			$id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
 			
 			$nouv_nom = filter_var($val['nouv_nom'], FILTER_SANITIZE_STRING);
 
@@ -103,9 +103,9 @@ class UEControler
 
 			$nom_responsable = filter_var($val['nom_responsable'], FILTER_SANITIZE_STRING);
 
-			UE::modifierUE($nom, $nouv_nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI);
+			UE::modifierUE($id, $nouv_nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI);
 
-			$ue = UE::where('nom_UE','like',$nom)->first();
+			$ue = UE::where('id_UE','=',$id)->first();
 			$responsabilite = Responsabilite::where('id_UE','=',$ue->id_UE)->first();
 			
 			/* il n'existe pas déjà un responsable UE mais on en assigne un nouveau */
