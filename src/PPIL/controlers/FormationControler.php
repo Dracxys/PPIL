@@ -204,5 +204,17 @@ class FormationControler
         return $res;
     }
 
+    public function creerForm(){
+        $app = Slim::getInstance();
+        $val = $app->request->post();
+        $nom = filter_var($val['nom'],FILTER_SANITIZE_STRING);
+        $fst = filter_var($val['fst'], FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
+        Formation::creerForm($nom,$fst);
+        $app->response->headers->set('Content-Type', 'application/json');
+        $res = array();
+        $res[] = 'true';
+        echo json_encode($res);
+    }
+
 
 }

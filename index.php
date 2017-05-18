@@ -101,6 +101,11 @@ $app->post("/home/modificationPhoto", function (){
 })->name('modificationPhoto');
 
 
+$app->post("/home/modifResponsabilite",function(){
+    $c = new ModifProfilControler();
+    $c->modifRespo();
+})->name('modificationResponsabilite');
+
 $app->post('/home/formation/ue/',function () use ($app){
     $c = new FormationControler();
     $c->infoForm();
@@ -119,6 +124,11 @@ $app->post('/home/formation/ue/total', function (){
 $app->post('/home/formation/ue/modif', function (){
     $c = new FormationControler();
     $c->modifForm();
+});
+
+$app->post('/home/formation/ue/creer/form',function (){
+    $c = new FormationControler();
+    $c->creerForm();
 });
 
 
