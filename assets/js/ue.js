@@ -156,8 +156,8 @@ function choixUE() {
                 if (tab != undefined){
                     console.log("non vide");
                     var tr = document.getElementById("tableau");
-                    tab.forEach(function () {
-                        console.log(tab);
+                    tab.forEach(function (element) {
+                        console.log(element);
                     });
                 }
 

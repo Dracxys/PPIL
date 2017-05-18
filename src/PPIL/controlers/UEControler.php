@@ -120,9 +120,9 @@ class UEControler
             echo json_encode($res);
         }else{
             foreach ($interventions as $value){
-                $user = Enseignant::where('mail', 'like', 'mail_enseignant')->first();
+                $user = Enseignant::where('mail', 'like', $value->mail_enseignant)->first();
                 if(!in_array($user, $res)){
-                    $res = $user;
+                    $res[] = $user;
                 }
             }
             echo json_encode($res);
