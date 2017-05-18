@@ -127,7 +127,8 @@ class VueFormation extends AbstractView
                 </div>    
             </div>
             <div class="panel-defaul container-fluid">
-                <button type="button" class="btn btn-default center-block" onclick="modifUE()" id="valider">Valider</button>
+                <button type="button" class="btn btn-default pull-left" onclick="creerForm()" id="creerForm">Creer une formation</button>
+                <button type="button" class="btn  btn-default pull-right" onclick="modifUE()" id="valider">Valider</button>
                 <div id="erreur" class="alert alert-danger text-center">
                     <strong>Erreur : </strong> Chiffres négatifs dans un des champs.
                 </div>
@@ -221,6 +222,40 @@ END;
                 </div>
             </div>
         </div>
+END;
+        return $html;
+    }
+
+    public static function creerForm(){
+        $html = <<< END
+        <div class="modal fade text-center" id="modalAjouter" role="dialog">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h4 class="modal-title">Ajouter un UE</h4>
+			  </div>
+			  <div class="modal-body">
+              <div class="table-responsive">
+                  <table class="table table-bordered ">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Composante</th>
+                        <th class="text-center">Formation</th>
+                        <th class="text-center">UE</th>
+						<th class="text-center">Sélectionner</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ueDispo">
+                    </tbody>
+                </table>
+               </div>
+			  </div>
+			  <div class="modal-footer">
+                <button type="button" class="btn btn-default"  id="modal_demande">Valider</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
 END;
         return $html;
     }
