@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Jeu 18 Mai 2017 à 12:38
+-- Généré le :  Jeu 18 Mai 2017 à 14:28
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -45,7 +45,7 @@ CREATE TABLE `Enseignant` (
 
 INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `rand`) VALUES
 ('g@h', 'g', 'g', '$2y$10$PNVCJAVJF5vr6NzBwJiAhuzqqwmNoitrmBawLwvcKUIZ34RgJXsTW', 'Professeur des universités', NULL, 192, 384, NULL, 696792579),
-('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', NULL, 192, 384, NULL, 589347120),
+('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', 60, 192, 384, NULL, 589347120),
 ('z@z', 'z', 'z', '$2y$10$DkJg/HxwWYn3do3LGq2aVuKy90VAMAI12E9Ke4RkqrqlL8R4l1D8a', 'Professeur des universités', NULL, 192, 384, NULL, 813424858);
 
 -- --------------------------------------------------------
@@ -66,7 +66,8 @@ CREATE TABLE `Formation` (
 
 INSERT INTO `Formation` (`id_formation`, `nomFormation`, `fst`) VALUES
 (1, 'Licence informatique', 1),
-(2, 'Master Informatique', 1);
+(2, 'Master Informatique', 1),
+(10, 'sdfghjklm', 0);
 
 -- --------------------------------------------------------
 
@@ -95,7 +96,8 @@ CREATE TABLE `Intervention` (
 
 INSERT INTO `Intervention` (`id_intervention`, `fst`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeCM`, `groupeTP`, `groupeTD`, `groupeEI`, `mail_enseignant`, `id_UE`) VALUES
 (1, 0, 30, 4, 5, 0, 1, 4, 5, 0, 'root@root', 3),
-(2, 1, 0, 0, 0, 0, 1, 1, 1, 1, 'root@root', 4);
+(2, 1, 0, 0, 0, 0, 1, 1, 1, 1, 'root@root', 4),
+(7, 0, 4, 0, 0, 0, 1, 0, 0, 0, 'root@root', 13);
 
 -- --------------------------------------------------------
 
@@ -114,13 +116,6 @@ CREATE TABLE `Notification` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `Notification`
---
-
-INSERT INTO `Notification` (`id_notification`, `mail_destinataire`, `mail_source`, `message`, `besoin_validation`, `validation`, `type_notification`, `created_at`, `updated_at`) VALUES
-(42, 'root@root', 'root@root', 'Ajout intervention', 1, 0, 'PPIL\\models\\NotificationIntervention', '2017-05-18 07:18:28', '2017-05-18 07:18:28');
 
 -- --------------------------------------------------------
 
@@ -170,17 +165,19 @@ CREATE TABLE `NotificationIntervention` (
   `groupeTP` int(11) NOT NULL,
   `groupeTD` int(11) NOT NULL,
   `groupeEI` int(11) NOT NULL,
-  `id_UE` int(11) NOT NULL,
+  `id_UE` int(11) DEFAULT NULL,
   `supprimer` tinyint(4) NOT NULL DEFAULT '0',
-  `id_intervention` int(11) DEFAULT NULL
+  `id_intervention` int(11) DEFAULT NULL,
+  `nom_UE` varchar(32) DEFAULT NULL,
+  `nom_formation` varchar(32) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `NotificationIntervention`
 --
 
-INSERT INTO `NotificationIntervention` (`id_notification`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeTP`, `groupeTD`, `groupeEI`, `id_UE`, `supprimer`, `id_intervention`) VALUES
-(42, 0, 0, 0, 0, 0, 0, 0, 5, 0, NULL);
+INSERT INTO `NotificationIntervention` (`id_notification`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeTP`, `groupeTD`, `groupeEI`, `id_UE`, `supprimer`, `id_intervention`, `nom_UE`, `nom_formation`) VALUES
+(63, 4, 0, 0, 0, 0, 0, 0, 13, 0, 7, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -258,7 +255,8 @@ INSERT INTO `UE` (`id_UE`, `nom_UE`, `fst`, `id_formation`, `heuresTD`, `heuresT
 (3, 'Modélisation', 1, 1, 5, 4, 30, 0, 10, 12, 16, 0, 2, 2, 2, 2, 3, 1),
 (4, 'bdd', 1, 1, 0, 0, 0, 0, 10, 12, 16, 0, 0, 0, 0, 2, 3, 1),
 (5, 'UE de Master - 1', 1, 2, 0, 0, 0, 0, 10, 10, 79, 3, 1, 1, 1, 0, 8, 1),
-(6, 'UE de Master - 2', 1, 2, 0, 0, 0, 0, 3, 5, 10, 51, 0, 0, 0, 1, 42, 42);
+(6, 'UE de Master - 2', 1, 2, 0, 0, 0, 0, 3, 5, 10, 51, 0, 0, 0, 1, 42, 42),
+(13, 'sdfghjklm', 0, 10, 0, 0, 4, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0);
 
 --
 -- Index pour les tables exportées
@@ -340,17 +338,17 @@ ALTER TABLE `UE`
 -- AUTO_INCREMENT pour la table `Formation`
 --
 ALTER TABLE `Formation`
-  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT pour la table `Intervention`
 --
 ALTER TABLE `Intervention`
-  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT pour la table `Responsabilite`
 --
@@ -360,7 +358,7 @@ ALTER TABLE `Responsabilite`
 -- AUTO_INCREMENT pour la table `UE`
 --
 ALTER TABLE `UE`
-  MODIFY `id_UE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_UE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- Contraintes pour les tables exportées
 --
