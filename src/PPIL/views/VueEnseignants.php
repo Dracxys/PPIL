@@ -17,7 +17,6 @@ class VueEnseignants extends AbstractView{
     public function home($u){
         $html  = self::headHTML();
         $html .= self::navHTML("Enseignants");
-        //$volFST = self::getVolumeFST($u);
         $html .= <<< END
       
         <div class="container">
@@ -43,19 +42,20 @@ class VueEnseignants extends AbstractView{
 END;
 
         foreach ($u as $user) {
-            if ($user->prenom!="admin" && $user->nom!="admin" && $_SESSION['mail']!=$user->mail) {
+            if ($_SESSION['mail']!=$user->mail) {
                 if($user->volumeCourant==NULL) {
                     $volumeCourant=0;
                 } else {
                     $volumeCourant=$user->volumeCourant;
                 }
+                $volFST = self::getVolumeFST($user);
                 $html .= "<tr>" .
                     "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
                     "<th class=\"text-center\">" . $user->statut . "</th>" .
                     "<th class=\"text-center\">" . $user->volumeMin . "</th>" .
                     "<th class=\"text-center\">" . $volumeCourant . "</th>" .
-                    //"<th class=\"text-center\">" . $volFST . "</th>" .
-                    "<th class=\"text-center\">" . $volumeCourant . "</th>" .
+                    "<th class=\"text-center\">" . $volFST . "</th>" .
+
                     "</tr>";
             }
         }
@@ -79,19 +79,26 @@ END;
 
 
 
-    public static function getVolumeFST($u)
+    public static function getVolumeFST($user)
     {
-        $volume = 0;
-
-        $interventions = Intervention::where('mail_enseignant','=', $u->mail)->get();
-        foreach($interventions as $intervention) {
-            if($intervention->fst == true) {
-
-                $volume += $intervention->heuresCM + $intervention->heuresTD + $intervention->heuresTP + $intervention->heuresEI;
-
-            }
+        $intervention = Intervention::where('mail_enseignant', 'like', $user->mail)->where('fst','like','1')->get();
+        $heuresTD = 0;
+        $heuresCM = 0;
+        $heuresTP = 0;
+        $heuresEI = 0;
+        $heuresTotales = 0;
+        foreach ($intervention as $value){
+            $heuresTD += $value->heuresTD;
+            $heuresCM += $value->heuresCM;
+            $heuresEI += $value->heuresEI;
+            $heuresTP += $value->heuresTP;
         }
+        if($user->statut == "Professeur des universités" || $user->statut == "Maître de conférences"){
+            $heuresTotales = $heuresTD + ($heuresCM *(3/2)) + ($heuresEI)* (7/6) + ($heuresTP);
+        }else{
+            $heuresTotales = $heuresTD + ($heuresCM *(3/2)) + ($heuresEI* (7/6)) + ($heuresTP * (3/2));
+        }
+        return ceil($heuresTotales);
 
-        return $volume;
     }
 }
