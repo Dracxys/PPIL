@@ -13,7 +13,8 @@ use Slim\Slim;
 class VueModifProfil extends AbstractView
 {
     public function home($user, $num)
-    {
+  {
+      $modifresp = Slim::getInstance()->urlFor("modificationResponsabilite");
         $html = self::headHTML();
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
@@ -132,7 +133,12 @@ END;
         $html .= <<<END
 
         <script type="text/javascript" src="/PPIL/assets/js/jquery.circliful.min.js"></script>
-        <script type="text/javascript" src="/PPIL/assets/js/modifprofil.js"></script>
+          <script type="text/javascript" src="/PPIL/assets/js/modifprofil.js"></script>
+		  <script type="text/javascript">
+          $(function(){
+			  setup("$modifresp");
+		  });
+	  </script>
 
 END;
         return $html;
@@ -192,7 +198,7 @@ END;
                  <div id="responsabilite" style="display: none;">
                  <div class="container">
                     <h2 class="">Modification des responsabilités</h2>
-                    <form class="form-vertical" method="post" action="$modifresp" >
+                    <form class="form-vertical" id="form_resp" method="post" action="">
                          <div class="radio">
                             <input type="radio" name="responsabilite" id="respUE" value="responsableUE"> Responsable d'UE
                          </div>
@@ -226,12 +232,12 @@ END;
                     </div>
                      <div class="form-group">
                             <div class="col-2">
-                                <input type="submit" class="btn btn-primary">
+                                <input type="submit" class="btn btn-primary" id="submit_resp">
                             </div>
                     </div>
                     </form>
                  </div>
-                 </div>
+              </div>
 
 END;
         return $html;

@@ -10,6 +10,7 @@ use PPIL\controlers\UtilisateurControler;
 use PPIL\controlers\ModifProfilControler;
 use PPIL\controlers\FormationControler;
 use PPIL\controlers\UEControler;
+use PPIL\controlers\EnseignantsControler;
 
 $app = new \Slim\Slim();
 
@@ -194,7 +195,7 @@ $app->get('/home/formation', function (){
 })->name('formationUtilisateur');
 
 $app->get('/home/enseignants', function (){
-    $c = new \PPIL\controlers\EnseignantsControler();
+    $c = new EnseignantsControler();
     $c->home();
 })->name('enseignantsUtilisateur');
 
