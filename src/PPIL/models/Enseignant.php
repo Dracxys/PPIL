@@ -116,7 +116,7 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
     public static function getPourcentageVolumeHoraire($user){
         $pourcentage=0;
         if(!is_null($user->volumeCourant) || $user->volumeCourant != 0){
-            $pourcentage = ($user->volumeCourant / $user->VolumeMin)*100;
+            $pourcentage = ($user->volumeCourant / $user->volumeMin)*100;
         }
         return $pourcentage;
     }
