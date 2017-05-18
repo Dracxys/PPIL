@@ -51,3 +51,18 @@ $( "#boutonPassword" ).click(function() {
     $("#photo").hide();
     $("#infoperso").hide();
 });
+
+
+$( document ).ready(function() {
+    $("#cercle").circliful({
+        animation: 1,
+        animationStep: 5,
+        foregroundBorderWidth: 15,
+        backgroundBorderWidth: 15,
+        textSize: 28,
+        textStyle: 'font-size: 12px;',
+        textColor: '#666',
+        multiPercentage: 1,
+        percentages: [10, 20, 30],
+    });
+});

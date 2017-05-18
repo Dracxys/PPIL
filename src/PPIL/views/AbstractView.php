@@ -21,6 +21,7 @@ class AbstractView {
     <meta name="author" content="">
     <title>PPIL </title>
     <link href="/PPIL/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/PPIL/assets/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="/PPIL/assets/bootstrap/js/bootstrap.min.js"></script>
 </head>

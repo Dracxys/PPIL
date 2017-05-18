@@ -4,6 +4,7 @@ namespace PPIL\views;
 
 
 use PPIL\models\Enseignant;
+use PPIL\models\Intervention;
 use Slim\App;
 use Slim\Slim;
 
@@ -79,7 +80,19 @@ END;
             </div>
 END;
         }
+       $html .= <<<END
+                <div id="infoperso" class="container-fluid">
+                    <div class="row"> 
+
+END;
+
         $html .= self::infoperso($user);
+        $html .= self::horaireEffect($user);
+        $html .= <<<END
+                    </div>
+                </div>
+END;
+
         $html .= self::responsabilite($user);
         $html .= self::photo($user);
         $html .= self::password($user);
@@ -89,8 +102,13 @@ END;
            </div>
         </div>
 END;
-        $html = $html . self::footerHTML();
-        $html .= "		<script type=\"text/javascript\" src=\"/PPIL/assets/js/modifprofil.js\">     </script>";
+        $html .= self::footerHTML();
+        $html .= <<<END
+      
+        <script type="text/javascript" src="/PPIL/assets/js/jquery.circliful.min.js"></script>
+        <script type="text/javascript" src="/PPIL/assets/js/modifprofil.js"></script>
+ 
+END;
         return $html;
     }
 
@@ -99,9 +117,9 @@ END;
         $modifprofil = Slim::getInstance()->urlFor("modificationProfil");
         $select = self::selectStatut($user);
         $html = <<< END
-        <div id="infoperso" class="panel-body">
+        <div class="panel-body col-md-8">
 			<form class="form-signin form-horizontal" method="post" action="$modifprofil"  id="valider">
-			  <h2 class="form-signin-heading ">Modification du profil</h2>
+			  <h2 class="form-signin-heading">Modification du profil</h2>
 			  <div class="form-group">
 				<label class="control-label col-sm-4" for="nom">Nom </label>
 				<div class="col-sm-4">
@@ -232,6 +250,25 @@ END;
             }
         }
         $html .= "</select>";
+        return $html;
+    }
+
+    public static function horaireEffect($user){
+        $volumeCourant = $user->volumeCourant;
+        if(is_null($volumeCourant)) $volumeCourant = 0;
+        $volumeMin = $user->volumeMin;
+        $volumeMax = $user->volumeMax;
+        $pourcentage = Enseignant::getPourcentageVolumeHoraire($user);
+        $html = <<<END
+                    <h2 class="form-signin-heading text-center " xmlns="http://www.w3.org/1999/html">Charge horaire minimum</h2>
+                    <div class="col-md-4">
+                        <div class="text-center" id="cercle" title="Charge horaire minimum" data-animation="1" data-animationStep="5" data-percent="$pourcentage"></div>
+				        <label class="control-label ">Volume horaire courant : $volumeCourant</label><br>
+			            <label class="control-label ">Volume horaire minimum : $volumeMin</label><br>
+				        <label class="control-label ">Volume horaire maximum : $volumeMax</label><br>
+
+                    </div>
+END;
         return $html;
     }
 }

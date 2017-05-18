@@ -86,4 +86,35 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
         return $responsable;
     }
 
+
+    public static function convertionHeuresTD($user){
+        $intervention = Intervention::where('mail_enseignant', 'like', $user->mail)->get();
+        $heuresTD = 0;
+        $heuresCM = 0;
+        $heuresTP = 0;
+        $heuresEI = 0;
+        $heuresTotales = 0;
+        foreach ($intervention as $value){
+            $heuresTD += $value->heuresTD;
+            $heuresCM += $value->heuresCM;
+            $heuresEI += $value->heuresEI;
+            $heuresTP += $value->heuresTP;
+        }
+        if($user->statut == "Professeur des universités" || $user->statut == "Maître de conférences"){
+            $heuresTotales = $heuresTD + ($heuresCM *(3/2)) + ($heuresEI)* (7/6) + ($heuresTP);
+        }else{
+            $heuresTotales = $heuresTD + ($heuresCM *(3/2)) + ($heuresEI* (7/6)) + ($heuresTP * (3/2));
+        }
+        $user->volumeCourant = ceil($heuresTotales);
+        $user->save();
+    }
+
+    public static function getPourcentageVolumeHoraire($user){
+        $pourcentage=0;
+        if(!is_null($user->volumeCourant) || $user->volumeCourant != 0){
+            $pourcentage = ($user->volumeCourant / $user->VolumeMin)*100;
+        }
+        return $pourcentage;
+    }
+
 }
