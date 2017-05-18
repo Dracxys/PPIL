@@ -102,11 +102,11 @@ class UtilisateurControler
                        && $i->id_UE == $id_UE){
                         if($supprime){
                             $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
-                            Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime);
+                            Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
                         }
                     } else {
                         $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
-                        Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime);
+                        Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
                     }
                 }
             }
@@ -176,29 +176,13 @@ class UtilisateurControler
             $nom_formation = filter_var($val['nom_UE'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
             $error = false;
 
-            #On cherche si il y a une intervention dans cette ue par cet enseignant
-            $intervention = Intervention::where('mail_enseignant', '=', $_SESSION['mail'])
-                          ->where('id_UE', '=', $id_UE)
-                          ->first();
-
-            if(empty($intervention)){
-                #il n'y en a pas
-                #il n'a pas déjà fait de demande ?
-                $notifications = Notification::where('mail_destinataire', '=', $_SESSION['mail'])
-                               ->where('type_notification', '=', 'PPIL\models\NotificationIntervention')
-                               ->get();
-                foreach($notifications as $notification){
-                    $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
-                                               ->where('id_UE', '=', $id_UE)
-                                               ->first();
-                    if(!empty($notification_intervention)){
-                        $error = true;
-                    }
-                }
+            if(is_null($nom_UE) || is_null($nom_formation) || $nom_UE == "" || $nom_formation == ""){
+                $error = true;
             }
             if(!$error){
                 $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
                 $id = null;
+                $id_UE = null;
                 $supprime = false;
                 $infos = array(
                     'heuresCM' => 0,
@@ -209,7 +193,7 @@ class UtilisateurControler
                     'groupeTP' => 0,
                     'groupeEI' => 0
                 );
-                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime);
+                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, $nom_UE, $nom_formation);
             }
             echo json_encode([
                 'error' => $error,
@@ -340,42 +324,7 @@ class UtilisateurControler
                         $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
                                                    ->first();
                         if(!empty($notification_intervention)){
-                            if(is_null($notification_intervention->id_intervention)){
-                                $ue = UE::where('id_UE', '=', $notification_intervention->id_UE)
-                                    ->first();
-                                $intervention = new Intervention();
-                                $intervention->fst = $ue->fst;
-                                $intervention->heuresCM = $notification_intervention->heuresCM;
-                                $intervention->heuresTP = $notification_intervention->heuresTP;
-                                $intervention->heuresTD = $notification_intervention->heuresTD;
-                                $intervention->heuresEI = $notification_intervention->heuresEI;
-                                $intervention->groupeTP = $notification_intervention->groupeTP;
-                                $intervention->groupeTD = $notification_intervention->groupeTD;
-                                $intervention->groupeEI = $notification_intervention->groupeEI;
-                                $intervention->mail_enseignant = $notification->mail_source;
-                                $intervention->id_UE = $ue->id_UE;
-                                $intervention->save();
-                                UE::recalculer($ue);
-                                Enseignant::conversionHeuresTD(Enseignant::where('mail', 'like', $intervention->mail_enseignant)->first());
-                            } else {
-                                $intervention = Intervention::where('id_intervention', '=', $notification_intervention->id_intervention)
-                                              ->first();
-
-                                $ue = UE::where('id_UE', '=', $notification_intervention->id_UE)
-                                    ->first();
-                                if(!empty($intervention) && !empty($ue)){
-                                    $intervention->heuresCM = $notification_intervention->heuresCM;
-                                    $intervention->heuresTP = $notification_intervention->heuresTP;
-                                    $intervention->heuresTD = $notification_intervention->heuresTD;
-                                    $intervention->heuresEI = $notification_intervention->heuresEI;
-                                    $intervention->groupeTP = $notification_intervention->groupeTP;
-                                    $intervention->groupeTD = $notification_intervention->groupeTD;
-                                    $intervention->groupeEI = $notification_intervention->groupeEI;
-                                    $intervention->save();
-                                    UE::recalculer($ue);
-                                    Enseignant::conversionHeuresTD(Enseignant::where('mail', 'like', $intervention->mail_enseignant)->first());
-                                }
-                            }
+                            NotificationIntervention::appliquer($notification_intervention, $notification);
                         }
                         break;
                     default:

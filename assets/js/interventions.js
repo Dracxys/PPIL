@@ -75,10 +75,20 @@ function ajouter(lien, lien_autre){
 
 	$('#modal_ajout_autre').click(function(){
 		$('form#form_ajout_autre').removeClass('hidden');
+		$(this).addClass('disabled');
+		var selection = $("button#selectionner ").filter(function(){
+			return $(this).hasClass('hidden');
+		});
+		if(selection.length <= 0){
+			$('button#modal_demande').prop('disabled', false);
+			$('button#modal_demande').addClass('btn-primary')
+		}
+
 	});
 
 	$('#modalAjouter').on('hidden.bs.modal', function () {
 		$('form#form_ajout_autre').addClass('hidden');
+		$('#modal_ajout_autre').removeClass('disabled');
 	});
 
 	$("form#form_ajout_ue").each(function() {
@@ -102,7 +112,7 @@ function ajouter(lien, lien_autre){
 			var selection = $("button#selectionner ").filter(function(){
 				return $(this).hasClass('hidden');
 			});
-			if(selection.length <= 0){
+			if(selection.length <= 0 && !$('#modal_ajout_autre').hasClass('disabled')){
 				$("button#modal_demande").prop('disabled', true);
 				$("button#modal_demande").removeClass('btn-primary');
 			}
