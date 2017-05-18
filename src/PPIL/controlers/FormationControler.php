@@ -26,13 +26,14 @@ class FormationControler
             $e = Enseignant::find($_SESSION['mail']);
             $privi = Enseignant::get_privilege($e);
             if ($privi == 2) {
-                $f = Formation::all();
+                $f = Formation::where('fst','=','1')->get();
                 $val = array();
                 foreach ($f as $value) {
                     if (!in_array($value->nomFormation, $val)) {
                         $val[] = $value->nomFormation;
                     }
                 }
+                $val[] = 'DI';
                 $v = new VueFormation();
                 echo $v->home($val);
             } elseif ($privi == 1) {
