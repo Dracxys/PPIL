@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Mer 17 Mai 2017 à 20:58
+-- Généré le :  Jeu 18 Mai 2017 à 09:18
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -114,6 +114,13 @@ CREATE TABLE `Notification` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `Notification`
+--
+
+INSERT INTO `Notification` (`id_notification`, `mail_destinataire`, `mail_source`, `message`, `besoin_validation`, `validation`, `type_notification`, `created_at`, `updated_at`) VALUES
+(42, 'root@root', 'root@root', 'Ajout intervention', 1, 0, 'PPIL\\models\\NotificationIntervention', '2017-05-18 07:18:28', '2017-05-18 07:18:28');
+
 -- --------------------------------------------------------
 
 --
@@ -164,8 +171,15 @@ CREATE TABLE `NotificationIntervention` (
   `groupeEI` int(11) NOT NULL,
   `id_UE` int(11) NOT NULL,
   `supprimer` tinyint(4) NOT NULL DEFAULT '0',
-  `id_intervention` int(11) NOT NULL
+  `id_intervention` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `NotificationIntervention`
+--
+
+INSERT INTO `NotificationIntervention` (`id_notification`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeTP`, `groupeTD`, `groupeEI`, `id_UE`, `supprimer`, `id_intervention`) VALUES
+(42, 0, 0, 0, 0, 0, 0, 0, 5, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -189,7 +203,9 @@ CREATE TABLE `Responsabilite` (
 INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_formation`, `id_UE`, `privilege`) VALUES
 (4, 'root@root', 'Responsable du departement informatique', NULL, NULL, 2),
 (5, 'root@root', 'Responsable UE', NULL, 3, 0),
-(6, 'root@root', 'Responsable UE', NULL, 4, 0);
+(6, 'root@root', 'Responsable UE', NULL, 4, 0),
+(7, 'root@root', 'Responsable UE', NULL, 5, 0),
+(8, 'root@root', 'Responsable UE', NULL, 6, 0);
 
 -- --------------------------------------------------------
 
@@ -200,7 +216,7 @@ INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_forma
 CREATE TABLE `UE` (
   `id_UE` int(11) NOT NULL,
   `nom_UE` varchar(32) NOT NULL,
-  `composante` tinyint(1) NOT NULL,
+  `fst` tinyint(1) NOT NULL,
   `id_formation` int(11) NOT NULL,
   `heuresTD` int(4) NOT NULL DEFAULT '0',
   `heuresTP` int(4) NOT NULL DEFAULT '0',
@@ -222,10 +238,10 @@ CREATE TABLE `UE` (
 -- Contenu de la table `UE`
 --
 
-INSERT INTO `UE` (`id_UE`, `nom_UE`, `composante`, `id_formation`, `heuresTD`, `heuresTP`, `heuresCM`, `heuresEI`, `prevision_heuresTD`, `prevision_heuresTP`, `prevision_heuresCM`, `prevision_heuresEI`, `groupeTD`, `groupeTP`, `groupeEI`, `prevision_groupeTD`, `prevision_groupeTP`, `prevision_groupeEI`) VALUES
+INSERT INTO `UE` (`id_UE`, `nom_UE`, `fst`, `id_formation`, `heuresTD`, `heuresTP`, `heuresCM`, `heuresEI`, `prevision_heuresTD`, `prevision_heuresTP`, `prevision_heuresCM`, `prevision_heuresEI`, `groupeTD`, `groupeTP`, `groupeEI`, `prevision_groupeTD`, `prevision_groupeTP`, `prevision_groupeEI`) VALUES
 (3, 'Modélisation', 1, 1, 5, 4, 30, 0, 10, 12, 16, 0, 2, 2, 2, 2, 3, 1),
 (4, 'bdd', 1, 1, 0, 0, 0, 0, 10, 12, 16, 0, 0, 0, 0, 2, 3, 1),
-(5, 'UE de Master - 1', 1, 2, 0, 0, 0, 0, 10, 10, 79, 3, 0, 0, 0, 0, 8, 1),
+(5, 'UE de Master - 1', 1, 2, 0, 0, 0, 0, 10, 10, 79, 3, 1, 1, 1, 0, 8, 1),
 (6, 'UE de Master - 2', 1, 2, 0, 0, 0, 0, 3, 5, 10, 51, 0, 0, 0, 1, 42, 42);
 
 --
@@ -307,17 +323,17 @@ ALTER TABLE `Formation`
 -- AUTO_INCREMENT pour la table `Intervention`
 --
 ALTER TABLE `Intervention`
-  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT pour la table `Responsabilite`
 --
 ALTER TABLE `Responsabilite`
-  MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT pour la table `UE`
 --

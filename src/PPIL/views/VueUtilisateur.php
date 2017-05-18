@@ -61,13 +61,14 @@ class VueUtilisateur extends AbstractView
       <div class="alert alert-warning hidden" role="alert" id="notification_exist">
       <strong>Attention !</strong> Certaines interventions attendent la validation de leur modification, aucun changement ne sera pris en compte entre temps.
       </div>
+                  <div class="table-responsive ">
 
                   <table class="table table-bordered ">
                     <thead>
                       <tr>
                         <th class="text-center">Composante</th>
                         <th class="text-center">Formation</th>
-                        <th class="text-center">Heures UE</th>
+                        <th class="text-center">UE</th>
                         <th class="text-center">Heures CM</th>
                         <th class="text-center">Heures TD</th>
                         <th class="text-center">Groupe TD</th>
@@ -102,13 +103,16 @@ END;
                 $notification_en_attente = "";
                 foreach($notifications as $notification){
                     $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
-                                               ->where('id_UE', '=', $intervention->id_UE)
-                                               ->first();
-                    if(!empty($notification_intervention)){
-                        $notification_en_attente = "warning";
-                        $notification_exist = true;
-                        foreach($notification_intervention as $n){
-                            $id_ues_notification[] = $n->id_UE;
+                                               //                                               ->where('id_UE', '=', $intervention->id_UE)
+                                               ->get();
+
+                    foreach($notification_intervention as $n){
+                        if(!empty($n)){
+                            if($n->id_UE == $intervention->id_UE){
+                                $notification_en_attente = "warning";
+                                $notification_exist = true;
+                            }
+                            $id_ues_notification[] = $n->id_UE ;
                         }
                     }
                 }
@@ -117,8 +121,8 @@ END;
 					<tr id="$intervention->id_intervention" class="$notification_en_attente">
 
 					  <td>$composante</td>
-					  <td>$ue->nom_UE</td>
    					  <td>$formation->nomFormation</td>
+					  <td>$ue->nom_UE</td>
                       <td >
 						<input type="number" name="heuresCM" id="heuresCM" min="0" value="$intervention->heuresCM" class="form-control"/>
 					  </td>
@@ -158,6 +162,7 @@ END;
         $html .= <<< END
         </tbody>
         </table>
+        </div>
         </div>
         </div>
         </div>
@@ -228,8 +233,7 @@ END;
 							<div class="form-group">
 							  <button  name="selectionner" class="btn btn-primary" id="selectionner" value="false" type="submit">Sélectionner</button>
 							  <button  name="annuler" class="btn btn-primary hidden" id="annuler" value="false" type="submit">Annuler</button>
-							  <input type="hidden" id="id" name="id" value="$intervention->id_intervention" />
-							  <input type="hidden" id="id_UE" name="id_UE" value="$intervention->id_UE" />
+							  <input type="hidden" id="id_UE" name="id_UE" value="$ue_ajout->id_UE" />
 							</div>
 						  </form>
 						</td>
