@@ -84,4 +84,73 @@ class UEControler
 
         }
     }
+	
+	public function modifierUE(){
+		if(isset($_SESSION['mail'])) {
+			$val = Slim::getInstance()->request->post();
+			$id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
+			
+			$nouv_nom = filter_var($val['nouv_nom'], FILTER_SANITIZE_STRING);
+
+			$heuresCM = filter_var($val['heuresCM'], FILTER_SANITIZE_STRING);
+			$heuresTP = filter_var($val['heuresTP'], FILTER_SANITIZE_STRING);
+			$heuresTD = filter_var($val['heuresTD'], FILTER_SANITIZE_STRING);
+			$heuresEI = filter_var($val['heuresEI'], FILTER_SANITIZE_STRING);
+
+			$groupeTP = filter_var($val['groupeTP'], FILTER_SANITIZE_STRING);
+			$groupeTD = filter_var($val['groupeTD'], FILTER_SANITIZE_STRING);
+			$groupeEI = filter_var($val['groupeEI'], FILTER_SANITIZE_STRING);
+
+			$nom_responsable = filter_var($val['nom_responsable'], FILTER_SANITIZE_STRING);
+
+			UE::modifierUE($id, $nouv_nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI);
+
+			$ue = UE::where('id_UE','=',$id)->first();
+			$responsabilite = Responsabilite::where('id_UE','=',$ue->id_UE)->first();
+			
+			/* il n'existe pas déjà un responsable UE mais on en assigne un nouveau */
+			if (empty($responsabilite) && !empty($nom_responsable)){ 
+				$nouv_responsable = Enseignant::where('nom', 'like', $nom_responsable)->first();
+				if(!empty($nouv_responsable)){
+				Responsabilite::ajoutResponsabilite($nouv_responsable->mail, 'responsable ue', null, $ue->id_UE);
+				//notification au nouv responsable
+				} else {
+					// *************************** ERREUR : L'ENSIGNANT N'EXISTE PAS
+				}
+			}
+			/* il existe déjà un responsable UE */
+			if (!empty($responsabilite)){
+				$ancien_responsable = Enseignant::where('mail','like',$responsabilite->enseignant)->first();
+				
+				/* on le supprime sans le remplacer */
+				if (empty($nom_responsable)){
+					//notification à l'ancien responsable UE
+					Responsabilite::supprimerResponsabilite($ancien_responsable->mail, null, $ue->id_UE);
+				} else {
+					$nouv_responsable = Enseignant::where('nom', 'like', $nom_responsable)->first();
+					/* le nom du responsable appartient à la BDD */
+					if (!empty($nouv_responsable)){
+						/* le responsable ne change pas */
+						if(strcmp($ancien_responsable->mail, $nouv_responsable->mail) == 0){
+							//notification changements effectués sur l'UE
+						}
+						/* on le remplace par un autre responsable UE */
+						if(strcmp($ancien_responsable->mail, $nouv_responsable->mail) != 0) {
+							//notification à l'ancien responsable UE
+							Responsabilite::supprimerResponsabilite($ancien_responsable->mail, null, $ue->id_UE);
+							
+							Responsabilite::ajoutResponsabilite($nouv_responsable->mail, 'responsable ue', null, $ue->id_UE);
+							//notification au nouveau responsable
+						}
+					} else {
+						// *************************** ERREUR : L'ENSIGNANT N'EXISTE PAS
+					}
+				}
+						
+			}
+		}
+	}
+	
+	
+	
 }

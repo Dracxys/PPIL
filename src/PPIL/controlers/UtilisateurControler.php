@@ -17,6 +17,7 @@ use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
 use PPIL\models\NotificationIntervention;
 use PPIL\models\Intervention;
+use PPIL\models\UE;
 use Slim\Slim;
 
 
@@ -117,6 +118,57 @@ class UtilisateurControler
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
+
+
+    public function enseignement_action_ajouter(){
+        if(isset($_SESSION['mail'])){
+            $val = Slim::getInstance()->request->post();
+            $id_UE = filter_var($val['id_UE'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
+            $error = false;
+
+            #On cherche si il y a une intervention dans cette ue par cet enseignant
+            $intervention = Intervention::where('mail_enseignant', '=', $_SESSION['mail'])
+                          ->where('id_UE', '=', $id_UE)
+                          ->first();
+
+            if(empty($intervention)){
+                #il n'y en a pas
+                #il n'a pas déjà fait de demande ?
+                $notifications = Notification::where('mail_destinataire', '=', $_SESSION['mail'])
+                               ->where('type_notification', '=', 'PPIL\models\NotificationIntervention')
+                               ->get();
+                foreach($notifications as $notification){
+                    $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
+                                               ->where('id_UE', '=', $id_UE)
+                                               ->first();
+                    if(!empty($notification_intervention)){
+                        $error = true;
+                    }
+                }
+            }
+            if(!$error){
+                $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+                $id = null;
+                $supprime = false;
+                $infos = array(
+                    'heuresCM' => 0,
+                    'heuresTD' => 0,
+                    'heuresTP' => 0,
+                    'heuresEI' => 0,
+                    'groupeTD' => 0,
+                    'groupeTP' => 0,
+                    'groupeEI' => 0
+                );
+                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime);
+            }
+            echo json_encode([
+                'error' => $error,
+            ]);
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
 
     public function ue(){
         if(isset($_SESSION['mail'])){
@@ -232,9 +284,48 @@ class UtilisateurControler
                             $e->rand = $tmp;
                             $e->save();
                             $mail = new MailControler();
-                            $mail->sendMaid($e->mail,'Inscription','Votre inscription a �t� valid�e par le responsable du département informatique.');
+                            $mail->sendMaid($e->mail,'Inscription','Votre inscription a été validée par le responsable du département informatique.');
                         }
                         break;
+                    case "PPIL\models\NotificationIntervention":
+                        $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
+                                                   ->first();
+                        if(!empty($notification_intervention)){
+                            if(is_null($notification_intervention->id_intervention)){
+                                $ue = UE::where('id_UE', '=', $notification_intervention->id_UE)
+                                    ->first();
+                                $intervention = new Intervention();
+                                $intervention->fst = $ue->fst;
+                                $intervention->heuresCM = $notification_intervention->heuresCM;
+                                $intervention->heuresTP = $notification_intervention->heuresTP;
+                                $intervention->heuresTD = $notification_intervention->heuresTD;
+                                $intervention->heuresEI = $notification_intervention->heuresEI;
+                                $intervention->groupeTP = $notification_intervention->groupeTP;
+                                $intervention->groupeTD = $notification_intervention->groupeTD;
+                                $intervention->groupeEI = $notification_intervention->groupeEI;
+                                $intervention->mail_enseignant = $notification->mail_source;
+                                $intervention->id_UE = $ue->id_UE;
+                                $intervention->save();
+                                UE::recalculer($ue);
+                            } else {
+                                $intervention = Intervention::where('id_intervention', '=', $notification_intervention->id_intervention)
+                                              ->first();
+
+                                $ue = UE::where('id_UE', '=', $notification_intervention->id_UE)
+                                    ->first();
+                                if(!empty($intervention) && !empty($ue)){
+                                    $intervention->heuresCM = $notification_intervention->heuresCM;
+                                    $intervention->heuresTP = $notification_intervention->heuresTP;
+                                    $intervention->heuresTD = $notification_intervention->heuresTD;
+                                    $intervention->heuresEI = $notification_intervention->heuresEI;
+                                    $intervention->groupeTP = $notification_intervention->groupeTP;
+                                    $intervention->groupeTD = $notification_intervention->groupeTD;
+                                    $intervention->groupeEI = $notification_intervention->groupeEI;
+                                    $intervention->save();
+                                    UE::recalculer($ue);
+                                }
+                            }
+                        }
                     default:
                         break;
                     }
@@ -246,7 +337,7 @@ class UtilisateurControler
 
                             if(!empty($notificationinscription)){
                                 $mail = new MailControler();
-                                $mail->sendMaid($notificationinscription->mail,'Inscription','Votre inscription a été refusé par le responsable du département informatique.');
+                                $mail->sendMaid($notificationinscription->mail,'Inscription','Votre inscription a été refusée par le responsable du département informatique.');
                             }
                             break;
                         default:
@@ -353,7 +444,7 @@ class UtilisateurControler
 					// *************************** ERREUR : L'ENSIGNANT N'EXISTE PAS
 				} else {
 					$nouvUE = UE::where('nom_UE', 'like', $nom)->first();
-					ajoutResponsabilite($responsable->mail, 'responsable ue', null, $nouvUE->id_UE);
+					Responsabilite::ajoutResponsabilite($responsable->mail, 'responsable ue', null, $nouvUE->id_UE);
 				}
 			}
 
