@@ -71,6 +71,10 @@ function ajouter(lien){
 
 	$('button#modal_demande').prop('disabled', true);
 
+	$('#modal_ajout_autre').click(function(){
+		$('form#form_ajout_autre').removeClass('hidden');
+	});
+
 	$("form#form_ajout_ue").each(function() {
 		$(this).submit(function(e){
 			e.preventDefault();
@@ -97,7 +101,6 @@ function ajouter(lien){
 				$("button#modal_demande").prop('disabled', true);
 				$("button#modal_demande").removeClass('btn-primary');
 			}
-
 		});
 	});
 
