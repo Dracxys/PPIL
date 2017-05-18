@@ -24,18 +24,18 @@ class VueFormation extends AbstractView
         $html .= <<< END
         <div id="formation" class="panel-body panel-default ">
             <h2 class="panel-heading text-center">Formation</h2>
-            <div class=" panel-default col-sm-6 ">
-                <div id="selectForm" class="col-sm-10">
+            <div class="form-horizontal panel-default col-sm-6 ">
+                <div id="selectForm" class="panel-default container col-sm-10">
                     <label class="control-label col-sm-6" for="formation">Sélectionner Formation</label>
-                    <div class="col-sm-6">
+                    <div class="container col-sm-6">
                         $select
                     </div>
                 </div>
-                <div id="tableUE" class=" panel-default col-sm-10">
+                <div id="tableUE" class=" tab-content panel-default col-sm-10">
                   
 			    </div>
             </div>
-            <div class=" panel-default col-sm-6 ">
+            <div class=" panel-default container col-sm-6 ">
                  <div class="">
                     <label id="nomUE" class="control-label">Sélectionner un UE</label>
                  </div>   
@@ -127,7 +127,7 @@ class VueFormation extends AbstractView
                     </div>
                 </div>    
             </div>
-            <div class="panel-defaul container-fluid">
+            <div class="panel-default container ">
                 <button type="button" class="btn btn-default pull-left" onclick="creerForm()" id="creerForm">Creer une formation</button>
                 <button type="button" class="btn  btn-primary pull-right" onclick="modifUE()" id="valider">Valider</button>
                 <div id="erreur" class="alert alert-danger text-center">
@@ -225,7 +225,7 @@ END;
     public static function message(){
         $html = <<< END
         <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
-		    <div class="modal-dialog">
+		    <div class="modal-dialog ">
 			    <div class="modal-content">
                     <div class="modal-header">
                         <h4 id="messageTitre" class="modal-title">Succès</h4>

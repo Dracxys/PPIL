@@ -12,11 +12,16 @@ function recupererUE(lien) {
         dataType: 'json',
         success: function (tab) {
             if (tab.length > 0) {
-                var html = "<ul class='nav'>";
+                var html = "<table class='table'><tbody>";
+                var j = 0;
                 for (var i = 0; i < tab.length; i++) {
-                    html = html + "<li><a id='" + tab[i] + "' onclick='choixUE(this)'>" + tab[++i] + "</a></li>";
+                    j = i + 1;
+                    html = html + "<tr><td><a id='" + tab[i] + "' onclick='choixUE(this)'>" + tab[j] + "</a></td>"+
+                        "<td><button type='button' class='btn btn-default pull-right' onclick='supprimer("+tab[i]+")' " +
+                        ">Supprimer</button></td></tr>";
+                    i = j;
                 }
-                html = html + "</ul>";
+                html = html + "</tbody></table>";
                 $('#tableUE').html(html);
                 $('#nomUE').text(tab[1]);
                 choixUE($("#" + tab[0]));
@@ -260,8 +265,39 @@ function ajouterForm() {
                 });
 
             } else {
+                $('#modalAjouter').modal('toggle');
                 $('#messageTitre').text('Erreur');
                 $('#message').text('Problème lors de la création de la formation.');
+                $('#modalDemandeEffectuee').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    })
+}
+
+function supprimer(ue) {
+    $.ajax({
+        url: ppil + 'supprimer',
+        type: 'post',
+        data: {'id': ue},
+        success: function (res) {
+            if (res != undefined && res[0] == 'true') {
+                $('#messageTitre').text('Succès');
+                $('#message').text('Cette UE n\'est plus associé à cette formation.');
+                $('#modalDemandeEffectuee').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                recupererUE(ppil);
+            } else {
+                $('#messageTitre').text('Erreur');
+                $('#message').text('Problème lors de la désassociation de cette UE à cette formation.');
                 $('#modalDemandeEffectuee').modal({
                     backdrop: 'static',
                     keyboard: false
