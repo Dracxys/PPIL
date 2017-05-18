@@ -2,6 +2,10 @@
 namespace  PPIL\controlers;
 
 use PPIL\models\Enseignant;
+use PPIL\models\Formation;
+use PPIL\models\NotificationResponsabilite;
+use PPIL\models\Responsabilite;
+use PPIL\models\UE;
 use PPIL\views\VueHome;
 use PPIL\views\VueUtilisateur;
 use PPIL\views\VueModifProfil;
@@ -88,6 +92,52 @@ class ModifProfilControler
                     echo $v->home($user, 1);
                 } else echo $v->home($user, 3);
             } else echo $v->home($user, 2);
+        }
+    }
+
+
+
+    public function modifRespo(){
+        if(isset($_SESSION['mail'])){
+            $val = Slim::getInstance()->request->post();
+            $user = Enseignant::where("mail","like",$_SESSION['mail'])->first();
+            $v = new VueModifProfil();
+            $notif = new NotificationResponsabilite();
+            $n = new Notification();
+            if(isset($_POST['ueSelect'])){
+
+                $type = UE::where("nom_UE","like",$_POST['ueSelect'])->first();
+
+                $intitulé="Responsable UE";
+                $id_UE = $type->id_UE;
+                $notif->intitule=$intitulé;
+                $notif->privilege = 0;
+                $notif->id_UE = $id_UE;
+                $n->message = "Demande de responsabilité : UE";
+            }
+            if(isset($_POST['formSelect'])) {
+                $type = Formation::where("nomFormation", "like", $_POST['formSelect']->value)->first;
+                $intitulé = "Responsable Formation";
+                $id_formation = $type->id_formation;
+                $notif->intitule = $intitulé;
+                $notif->privilege = 1;
+                $notif->id_formation = $id_formation;
+                $n->message = "Demande de responsabilité : formation";
+            }
+            $n->besoin_validation = 1;
+            $n->validation = 0;
+            $n->type_notification = 'PPIL\models\NotificationResponsabilite';
+
+            $resp = Responsabilite::where('intituleResp', '=', 'Responsable du departement informatique')->first();
+            $ens_respDI = Enseignant::where('mail', '=', $resp->enseignant)->first();
+            $n->mail_destinataire = $ens_respDI->mail;
+            $n->mail_source = $_SESSION['mail'];
+            $n->save();
+            $notif->id_notification = $n->id_notification;
+
+
+            $notif->save();
+
         }
     }
 

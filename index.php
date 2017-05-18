@@ -101,6 +101,11 @@ $app->post("/home/modificationPhoto", function (){
 })->name('modificationPhoto');
 
 
+$app->post("/home/modifResponsabilite",function(){
+    $c = new ModifProfilControler();
+    $c->modifRespo();
+})->name('modificationResponsabilite');
+
 $app->post('/home/formation/ue/',function () use ($app){
     $c = new FormationControler();
     $c->infoForm();

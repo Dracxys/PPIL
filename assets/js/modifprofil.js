@@ -52,6 +52,20 @@ $( "#boutonPassword" ).click(function() {
     $("#infoperso").hide();
 });
 
+$("#respUE").click(function(){
+    document.getElementById("formation").classList.remove("active");
+    document.getElementById("UE").classList.add("active");
+    $("#UE").show();
+    $("#formation").hide();
+});
+
+$("#respForm").click(function(){
+    document.getElementById("formation").classList.add("active");
+    document.getElementById("UE").classList.remove("active");
+    $("#UE").hide();
+    $("#formation").show();
+});
+
 
 $( document ).ready(function() {
     $("#cercle").circliful({
