@@ -3,6 +3,13 @@ var boutonResp = document.getElementById("boutonResp");
 var boutonPhoto = document.getElementById("boutonPhoto");
 var boutonPassword = document.getElementById("boutonPassword");
 
+$('#navbar_panel').on('hidden.bs.collapse', function () {
+	$('#liste_groupe').toggleClass("list-group-horizontal");
+});
+
+$('#navbar_panel').on('show.bs.collapse', function () {
+	$('#liste_groupe').toggleClass("list-group-horizontal");
+});
 
 $( "#boutonInfo" ).click(function() {
     boutonInfo.classList.add("active");

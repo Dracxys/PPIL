@@ -24,6 +24,7 @@ class AbstractView {
     <link href="/PPIL/assets/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="/PPIL/assets/bootstrap/js/bootstrap.min.js"></script>
+	<link href="/PPIL/assets/css/profil.css" rel="stylesheet">
 </head>
 <body>
   <div class="jumbotron" style="background-color:

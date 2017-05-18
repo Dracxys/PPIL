@@ -17,15 +17,36 @@ class VueModifProfil extends AbstractView
         $html = self::headHTML();
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
+		<div class="container">
 		<div class="panel panel-default">
-         <div class="panel-heading">
-		 <div class="list-group">
-            <a href="#" id="boutonInfo" class="list-group-item active">Informations personnelles</a>
-            <a href="#" id="boutonResp" class="list-group-item">Responsabilités</a>
-            <a href="#" id="boutonPhoto" class="list-group-item">Photo</a>
-            <a href="#" id="boutonPassword" class="list-group-item">Mot de passe</a>
-        </div>
-        </div>
+		  <div class="panel-heading nav navbar-default">
+            <div class="container-fluid">
+
+				 <div class="navbar-header">
+				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_panel">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <h4 class="navbar-text">
+					Profil
+				  </h4>
+				 </div>
+
+				 <div class="collapse navbar-collapse" id="navbar_panel">
+				   <div class=" navbar-right">
+					 <div class="list-group list-group-horizontal" id="liste_groupe">
+					   <a href="#" id="boutonInfo" class="list-group-item active">Informations personnelles</a>
+					   <a href="#" id="boutonResp" class="list-group-item">Responsabilités</a>
+					   <a href="#" id="boutonPhoto" class="list-group-item">Photo</a>
+					   <a href="#" id="boutonPassword" class="list-group-item">Mot de passe</a>
+					 </div>
+				   </div>
+				</div>
+
+		  </div>
+		</div>
+
         <div class="panel-body">
 END;
         if ($num == 0) {
@@ -103,6 +124,7 @@ END;
 
 
         $html .= <<<END
+           </div>
            </div>
            </div>
 END;
