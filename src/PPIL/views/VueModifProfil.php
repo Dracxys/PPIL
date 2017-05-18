@@ -4,7 +4,9 @@ namespace PPIL\views;
 
 
 use PPIL\models\Enseignant;
+use PPIL\models\Formation;
 use PPIL\models\Intervention;
+use PPIL\models\UE;
 use Slim\App;
 use Slim\Slim;
 
@@ -159,10 +161,52 @@ END;
 
     public function responsabilite($user)
     {
+        $modifresp = Slim::getInstance()->urlFor("modificationResponsabilite");
+        $u = UE::all();
+        $f = Formation::all();
         $html = <<<END
                  <div id="responsabilite" style="display: none;">
+                    <form class="form-horizontal" method="post" action="$modifresp" >
                     <h2 class="form-signin-heading ">Modification des responsabilités</h2>
+                        <div class="form-group">
+                            <input type="radio" name="responsabilite" id="respUE" value="responsableUE">Responsable d'UE
+                        </div>
+                        <div id="UE" class="form-group" style="display:none;">
+END;
+        foreach($u as $value){
+            $html.= <<<END
+                    <div class="form-group">
+                    <input type="radio" name="ueSelect" value="$value->nom_UE">$value->nom_UE
+                    </div>
+END;
+        }
+        $html .=
+        <<<END
+                        </div>
+                        <div class="form-group">
+                            <input type="radio" name="responsabilite" id="respForm" value="responsableForm">Responsable de formation 
+                        </div>
+                        <div id="formation" class="form-group" style="display: none"> 
+END;
+        foreach($f as $value){
+            $html.= <<<END
+                    <div class="form-group">
+                    <input type="radio" name="formSelect" value="$value->nomFormation">$value->nomFormation
+                    </div>
+END;
+        }
+
+        $html .=
+            <<<END
+                    </div>    
+                     <div class="form-group">
+                            <div class="col-2">
+                                <input type="submit" class="btn btn-primary" </input>
+                            </div>
+                    </div>
+                    </form>
                  </div>
+                 
 END;
         return $html;
     }

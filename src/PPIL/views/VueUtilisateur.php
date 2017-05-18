@@ -33,6 +33,7 @@ class VueUtilisateur extends AbstractView
   public function enseignement(){
       $lien = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignement");
       $lien_ajouter = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouter");
+      $lien_ajouter_autre = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouterAutre");
       $home = Slim::getInstance()->urlFor("home");
 
       $html = self::headHTML();
@@ -244,16 +245,13 @@ END;
                 </table>
               </div>
 			  <div class="form-group">
-				<button type="button" class="btn btn-default"  id="modal_ajout_autre">Autre</button>
+				<button type="button" class="btn btn-default"  id="modal_ajout_autre">Autre (hors FST)</button>
 			  </div>
+			  <div class="alert alert-danger" role="alert" id="erreur_ajout_autre">
+				<strong>Echec!</strong> Vos données ne sont pas valides, vérifier qu'il n'y a pas de caractères spéciaux.
+			  </div>
+
 			  <form class="form-vertical hidden" id="form_ajout_autre">
-				<div class="form-group">
-				  <label class="control-label" for="ajout_autre_composante">Composante :</label>
-				  <select class="form-control" id="ajout_autre_composante">
-					<option>FST</option>
-					<option>Hors FST</option>
-				  </select>
-				</div>
 				<div class="form-group">
 				  <label class="control-label" for="ajout_autre_formation">Formation :</label>
 				  <input type="text" class="form-control" id="ajout_autre_formation">
@@ -275,7 +273,7 @@ END;
         <script type="text/javascript" src="/PPIL/assets/js/interventions.js"></script>
         <script type="text/javascript">
           $(function(){
-		  ajouter("$lien_ajouter");
+		  ajouter("$lien_ajouter", "$lien_ajouter_autre");
           valider("$lien", $notification_exist);
 			});
         </script>

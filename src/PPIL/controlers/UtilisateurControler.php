@@ -169,6 +169,55 @@ class UtilisateurControler
         }
     }
 
+    public function enseignement_action_ajouter_autre(){
+        if(isset($_SESSION['mail'])){
+            $val = Slim::getInstance()->request->post();
+            $nom_UE = filter_var($val['nom_UE'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+            $nom_formation = filter_var($val['nom_UE'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE);
+            $error = false;
+
+            #On cherche si il y a une intervention dans cette ue par cet enseignant
+            $intervention = Intervention::where('mail_enseignant', '=', $_SESSION['mail'])
+                          ->where('id_UE', '=', $id_UE)
+                          ->first();
+
+            if(empty($intervention)){
+                #il n'y en a pas
+                #il n'a pas déjà fait de demande ?
+                $notifications = Notification::where('mail_destinataire', '=', $_SESSION['mail'])
+                               ->where('type_notification', '=', 'PPIL\models\NotificationIntervention')
+                               ->get();
+                foreach($notifications as $notification){
+                    $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
+                                               ->where('id_UE', '=', $id_UE)
+                                               ->first();
+                    if(!empty($notification_intervention)){
+                        $error = true;
+                    }
+                }
+            }
+            if(!$error){
+                $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+                $id = null;
+                $supprime = false;
+                $infos = array(
+                    'heuresCM' => 0,
+                    'heuresTD' => 0,
+                    'heuresTP' => 0,
+                    'heuresEI' => 0,
+                    'groupeTD' => 0,
+                    'groupeTP' => 0,
+                    'groupeEI' => 0
+                );
+                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime);
+            }
+            echo json_encode([
+                'error' => $error,
+            ]);
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
 
     public function ue(){
         if(isset($_SESSION['mail'])){

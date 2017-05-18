@@ -26,6 +26,9 @@ $app->post('/',function (){
     $c->accueil();
 });
 
+$app->get('/test',function (){
+    echo exec('whoami');
+});
 
 $app->post('/login', function () use ($app){
     $c = new HomeControler();
@@ -98,6 +101,11 @@ $app->post("/home/modificationPhoto", function (){
 })->name('modificationPhoto');
 
 
+$app->post("/home/modifResponsabilite",function(){
+    $c = new ModifProfilControler();
+    $c->modifRespo();
+})->name('modificationResponsabilite');
+
 $app->post('/home/formation/ue/',function () use ($app){
     $c = new FormationControler();
     $c->infoForm();
@@ -144,6 +152,11 @@ $app->post('/home/enseignement/actionEnseignementAjouter', function (){
     $c = new UtilisateurControler();
     $c->enseignement_action_ajouter();
 })->name('enseignementUtilisateur.actionEnseignementAjouter');
+
+$app->post('/home/enseignement/actionEnseignementAjouterAutre', function (){
+    $c = new UtilisateurControler();
+    $c->enseignement_action_ajouter_autre();
+})->name('enseignementUtilisateur.actionEnseignementAjouterAutre');
 
 $app->get('/home/ue', function (){
     $c = new UEControler();
