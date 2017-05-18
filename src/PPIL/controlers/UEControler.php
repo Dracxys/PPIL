@@ -113,7 +113,7 @@ class UEControler
 				$nouv_responsable = Enseignant::where('nom', 'like', $nom_responsable)->first();
 				if(!empty($nouv_responsable)){
 				Responsabilite::ajoutResponsabilite($nouv_responsable->mail, 'responsable ue', null, $ue->id_UE);
-				//notification au nouv responsable
+				Notification::notification_ajout_responsabilite($nouv_responsable->mail, $_SESSION['mail'], $nouv_nom, null);
 				} else {
 					// *************************** ERREUR : L'ENSIGNANT N'EXISTE PAS
 				}
@@ -124,7 +124,7 @@ class UEControler
 				
 				/* on le supprime sans le remplacer */
 				if (empty($nom_responsable)){
-					//notification à l'ancien responsable UE
+					Notification::notification_supprimer_responsabilite($ancien_responsable->mail, $_SESSION['mail'], $nouv_nom, null);
 					Responsabilite::supprimerResponsabilite($ancien_responsable->mail, null, $ue->id_UE);
 				} else {
 					$nouv_responsable = Enseignant::where('nom', 'like', $nom_responsable)->first();
@@ -132,15 +132,15 @@ class UEControler
 					if (!empty($nouv_responsable)){
 						/* le responsable ne change pas */
 						if(strcmp($ancien_responsable->mail, $nouv_responsable->mail) == 0){
-							//notification changements effectués sur l'UE
+							Notification::notification_modification_UE_formation($nouv_responsable->mail, $_SESSION['mail'], $nouv_nom, null)
 						}
 						/* on le remplace par un autre responsable UE */
 						if(strcmp($ancien_responsable->mail, $nouv_responsable->mail) != 0) {
-							//notification à l'ancien responsable UE
+							Notification::notification_supprimer_responsabilite($ancien_responsable->mail, $_SESSION['mail'], $nouv_nom, null);
 							Responsabilite::supprimerResponsabilite($ancien_responsable->mail, null, $ue->id_UE);
 							
 							Responsabilite::ajoutResponsabilite($nouv_responsable->mail, 'responsable ue', null, $ue->id_UE);
-							//notification au nouveau responsable
+							Notification::notification_ajout_responsabilite($nouv_responsable->mail, $_SESSION['mail'], $nouv_nom, null);
 						}
 					} else {
 						// *************************** ERREUR : L'ENSIGNANT N'EXISTE PAS
