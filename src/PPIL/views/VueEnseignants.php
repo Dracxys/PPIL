@@ -18,16 +18,31 @@ class VueEnseignants extends AbstractView{
         $html  = self::headHTML();
         $html .= self::navHTML("Enseignants");
         $html .= <<< END
-      
+
         <div class="container">
 		  <div class="panel panel-default">
-			<div class="panel-heading clearfix text-center">
-			  <div class="btn-group pull-right">
-				<button type="button" class="btn btn-default" id="exporterEnseignants">Exporter</button>
+			<div class="panel-heading nav navbar-default">
+			  <div class="container-fluid">
+
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_panel">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <h4 class="navbar-text">
+					Enseignants
+				  </h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="navbar_panel">
+				  <div class="navbar-right">
+					<button type="button" class="btn btn-default navbar-btn" id="exporterEnseignants">Exporter</button>
+				  </div>
+				</div>
 			  </div>
-			  <h4>Enseignants</h4>
+
 			</div>
-			
 			<div class="panel-body text-center">
 			<div class="table-responsive">
 			  <table class="table table-bordered">
@@ -68,6 +83,7 @@ END;
         </div>
       </div>
   </div>
+</div>
 </div>
 
 

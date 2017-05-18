@@ -17,14 +17,16 @@ class VueModifProfil extends AbstractView
         $html = self::headHTML();
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
-		<div class="container panel-default text-center">
-		<div class="container">
+		<div class="panel panel-default">
+         <div class="panel-heading">
 		 <div class="list-group">
             <a href="#" id="boutonInfo" class="list-group-item active">Informations personnelles</a>
             <a href="#" id="boutonResp" class="list-group-item">Responsabilités</a>
             <a href="#" id="boutonPhoto" class="list-group-item">Photo</a>
             <a href="#" id="boutonPassword" class="list-group-item">Mot de passe</a>
         </div>
+        </div>
+        <div class="panel-body">
 END;
         if ($num == 0) {
             $html .= <<< END
@@ -84,7 +86,7 @@ END;
         }
        $html .= <<<END
                 <div id="infoperso" class="container-fluid">
-                    <div class="row"> 
+                    <div class="row">
 
 END;
 
@@ -102,14 +104,14 @@ END;
 
         $html .= <<<END
            </div>
-        </div>
+           </div>
 END;
         $html .= self::footerHTML();
         $html .= <<<END
-      
+
         <script type="text/javascript" src="/PPIL/assets/js/jquery.circliful.min.js"></script>
         <script type="text/javascript" src="/PPIL/assets/js/modifprofil.js"></script>
- 
+
 END;
         return $html;
     }
@@ -119,7 +121,7 @@ END;
         $modifprofil = Slim::getInstance()->urlFor("modificationProfil");
         $select = self::selectStatut($user);
         $html = <<< END
-        <div class="panel-body col-md-8">
+        <div class="col-md-8">
 			<form class="form-signin form-horizontal" method="post" action="$modifprofil"  id="valider">
 			  <h2 class="form-signin-heading">Modification du profil</h2>
 			  <div class="form-group">
@@ -151,7 +153,7 @@ END;
 
 			  <div class="form-group">
 				<button type="submit" class="btn btn-primary">Valider</button>
-				<button type="submit" class="btn btn-default" formnovalidate="false">Annuler</input>
+				<button type="submit" class="btn btn-default" formnovalidate="false">Annuler</button>
               </div>
 			</form>
             </div>
@@ -166,16 +168,17 @@ END;
         $f = Formation::all();
         $html = <<<END
                  <div id="responsabilite" style="display: none;">
-                    <form class="form-horizontal" method="post" action="$modifresp" >
-                    <h2 class="form-signin-heading ">Modification des responsabilités</h2>
-                        <div class="form-group">
-                            <input type="radio" name="responsabilite" id="respUE" value="responsableUE">Responsable d'UE
-                        </div>
+                 <div class="container">
+                    <h2 class="">Modification des responsabilités</h2>
+                    <form class="form-vertical" method="post" action="$modifresp" >
+                         <div class="radio">
+                            <input type="radio" name="responsabilite" id="respUE" value="responsableUE"> Responsable d'UE
+                         </div>
                         <div id="UE" class="form-group" style="display:none;">
 END;
         foreach($u as $value){
             $html.= <<<END
-                    <div class="form-group">
+                    <div class="radio">
                     <input type="radio" name="ueSelect" value="$value->nom_UE">$value->nom_UE
                     </div>
 END;
@@ -183,14 +186,14 @@ END;
         $html .=
         <<<END
                         </div>
-                        <div class="form-group">
-                            <input type="radio" name="responsabilite" id="respForm" value="responsableForm">Responsable de formation 
+                        <div class="radio">
+                            <input type="radio" name="responsabilite" id="respForm" value="responsableForm">Responsable de formation
                         </div>
-                        <div id="formation" class="form-group" style="display: none"> 
+                        <div id="formation" class="form-group" style="display: none">
 END;
         foreach($f as $value){
             $html.= <<<END
-                    <div class="form-group">
+                    <div class="radio">
                     <input type="radio" name="formSelect" value="$value->nomFormation">$value->nomFormation
                     </div>
 END;
@@ -198,15 +201,16 @@ END;
 
         $html .=
             <<<END
-                    </div>    
+                    </div>
                      <div class="form-group">
                             <div class="col-2">
-                                <input type="submit" class="btn btn-primary" </input>
+                                <input type="submit" class="btn btn-primary">
                             </div>
                     </div>
                     </form>
                  </div>
-                 
+                 </div>
+
 END;
         return $html;
     }
@@ -238,7 +242,7 @@ END;
                     </div>
                     <div class="form-group">
                             <div class="col-2">
-                                <input type="submit" class="btn btn-primary" </input>
+                                <input type="submit" class="btn btn-primary" />
                             </div>
                     </div>
                     </form>
@@ -273,8 +277,9 @@ END;
 				  <input type="password" id="conf" name="conf" class="form-control" placeholder="Confirmer nouveau mot de passe" required="true"/>
 				</div>
 			  </div>
+              <div>
 				<button type="submit" class="btn btn-primary">Valider</button>
-				<button type="submit" class="btn btn-default" formnovalidate="false">Annuler</input>
+				<button type="submit" class="btn btn-default" formnovalidate="false">Annuler</button>
               </div>
 			</form>
             </div>

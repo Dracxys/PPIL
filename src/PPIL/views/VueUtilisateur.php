@@ -39,21 +39,40 @@ class VueUtilisateur extends AbstractView
       $html = self::headHTML();
       $html = $html . self::navHTML("Enseignement");
       $notification_exist = false;
-      $html .= <<< END
-        <div class="container">
-		  <div class="panel panel-default">
-			<div class="panel-heading clearfix text-center">
-			  <div class="btn-group pull-left">
-			  	<button type="button" class="btn btn-default">Remise à zéro</button>
-			  </div>
-			  <div class="btn-group pull-right">
-				<button type="button" class="btn btn-default" id="ajouter">Ajouter</button>
-				<button type="button" class="btn btn-default">Exporter</button>
-				<button type="button" class="btn btn-primary"  id="appliquer">Appliquer</button>
-			  </div>
-			 <h4>Fiche prévisionnelle Des enseignements</h4>
-            </div>
+$html .= <<< END
+			 <div class="container">
 
+		  <div class="panel panel-default">
+			<div class="panel-heading nav navbar-default">
+              <div class="container-fluid">
+
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_panel">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <h4 class="navbar-text hidden-xs hidden-sm">
+					Fiche prévisionnelle des enseignements
+				  </h4>
+				  <h4 class="navbar-text hidden-md hidden-lg">
+					Fiche prévisionnelle
+				  </h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="navbar_panel">
+					<div class="navbar-right">
+					  <button type="button" class="btn btn-default navbar-btn" id="ajouter">Ajouter</button>
+					  <button type="button" class="btn btn-default navbar-btn">Exporter</button>
+					  <button type="button" class="btn btn-default navbar-btn">Remise à zéro</button>
+					  <button type="button" class="btn btn-primary navbar-btn"  id="appliquer">Appliquer</button>
+
+					</div>
+<!-- </ul> -->
+				</div>
+
+			  </div>
+			</div>
             <div class="panel-body text-center">
       <div class="alert alert-danger hidden" role="alert" id="erreur">
       <strong>Echec!</strong> Vos données ne sont pas valides, vérifiez que vous n\'avez pas de nombres négatifs.
@@ -268,7 +287,6 @@ END;
 			  </div>
 			</div>
 		  </div>
-		</div>
 
         <script type="text/javascript" src="/PPIL/assets/js/interventions.js"></script>
         <script type="text/javascript">
@@ -306,11 +324,30 @@ END;
         $html .= <<< END
 	    <div class="container">
 		  <div class="panel panel-default">
-			<div class="panel-heading clearfix text-center">
-			  <div class="btn-group pull-right">
-				<button type="button" class="btn btn-default" disabled="true" id="appliquer">Appliquer</button>
+			<div class="panel-heading nav navbar-default">
+			  <div class="container-fluid">
+
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_panel">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <h4 class="navbar-text hidden-xs hidden-sm">
+					Journal des modifications
+				  </h4>
+				  <h4 class="navbar-text hidden-md hidden-lg">
+					Journal
+				  </h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="navbar_panel">
+				  <div class="navbar-right">
+					<button type="button" class="btn btn-default navbar-btn" disabled="true" id="appliquer">Appliquer</button>
+				  </div>
+				</div>
+
 			  </div>
-			  <h4>Journal des modifications</h4>
 			</div>
 			<div class="panel-body text-center">
 			<div class="table-responsive">
@@ -419,14 +456,34 @@ END;
         $html .= <<< END
         <div class="container">
 		  <div class="panel panel-default">
-			<div class="panel-heading clearfix text-center">
-			    <form class="navbar-form navbar-right inline-form">
-                    <div class="form-group">
-                      <input type="search" class="input-sm form-control" placeholder="Recherche">
-                      <button type="submit" class="btn btn-primary btn-sm"><span class="glyphicon"></span>Chercher</button>
+			<div class="panel-heading nav navbar-default">
+			  <div class="container-fluid">
+
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_panel">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <h4 class="navbar-text">
+					Annuaire
+				  </h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="navbar_panel">
+				  <form class="navbar-form navbar-right">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Recherche">
+					  <div class="input-group-btn">
+						<button class="btn btn-default" type="submit">
+						  <i class="glyphicon glyphicon-search"></i>
+						</button>
+					  </div>
                     </div>
-                </form>
-                <h4>Annuaire</h4>
+				  </form>
+				</div>
+
+			  </div>
 			</div>
 			<div class="panel-body text-center">
 			<div class="table-responsive">
