@@ -223,7 +223,7 @@ class FormationControler
         $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
         $ue = UE::find($id);
         if(!empty($ue)){
-            $ue->id_formation = 0;
+            $ue->id_formation = null;
             $ue->save();
             $app->response->headers->set('Content-Type', 'application/json');
             $res = array();
