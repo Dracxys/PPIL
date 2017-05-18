@@ -307,6 +307,7 @@ class UtilisateurControler
                                 $intervention->id_UE = $ue->id_UE;
                                 $intervention->save();
                                 UE::recalculer($ue);
+                                Enseignant::conversionHeuresTD(Enseignant::where('mail', 'like', $intervention->mail_enseignant));
                             } else {
                                 $intervention = Intervention::where('id_intervention', '=', $notification_intervention->id_intervention)
                                               ->first();
@@ -323,9 +324,11 @@ class UtilisateurControler
                                     $intervention->groupeEI = $notification_intervention->groupeEI;
                                     $intervention->save();
                                     UE::recalculer($ue);
+                                    Enseignant::conversionHeuresTD(Enseignant::where('mail', 'like', $intervention->mail_enseignant));
                                 }
                             }
                         }
+                        break;
                     default:
                         break;
                     }

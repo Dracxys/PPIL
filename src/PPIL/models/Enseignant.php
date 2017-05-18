@@ -91,7 +91,7 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
     }
 
 
-    public static function convertionHeuresTD($user){
+    public static function conversionHeuresTD($user){
         $intervention = Intervention::where('mail_enseignant', 'like', $user->mail)->get();
         $heuresTD = 0;
         $heuresCM = 0;
