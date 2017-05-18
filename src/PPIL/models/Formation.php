@@ -6,4 +6,12 @@ class Formation extends \Illuminate\Database\Eloquent\Model{
 	protected $primaryKey = "id_formation";
     public $timestamps = false;
 
+    public static function creerForm($nom,$fst){
+        $form = new Formation();
+        $form->nomFormation = $nom;
+        $form->fst = $fst;
+        $form->save();
+
+    }
+
 }

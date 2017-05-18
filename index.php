@@ -118,6 +118,11 @@ $app->post('/home/formation/ue/modif', function (){
     $c->modifForm();
 });
 
+$app->post('/home/formation/ue/creer/form',function (){
+    $c = new FormationControler();
+    $c->creerForm();
+});
+
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
