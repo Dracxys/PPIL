@@ -54,7 +54,6 @@ class VueUtilisateur extends AbstractView
             </div>
 
             <div class="panel-body text-center">
-			    <div class="table-responsive">
       <div class="alert alert-danger hidden" role="alert" id="erreur">
       <strong>Echec!</strong> Vos données ne sont pas valides, vérifiez que vous n\'avez pas de nombres négatifs.
       </div>
@@ -166,7 +165,6 @@ END;
         </div>
         </div>
         </div>
-        </div>
         <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
 		  <div class="modal-dialog">
 			<div class="modal-content">
@@ -188,8 +186,9 @@ END;
 		  <div class="modal-dialog">
 			<div class="modal-content">
 			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title">Ajouter une intervention</h4>
-			  </div>
+              </div>
 			  <div class="modal-body">
               <div class="table-responsive">
                   <table class="table table-bordered ">
@@ -243,11 +242,31 @@ END;
         $html .= <<< END
                     </tbody>
                 </table>
-               </div>
+              </div>
+			  <div class="form-group">
+				<button type="button" class="btn btn-default"  id="modal_ajout_autre">Autre</button>
+			  </div>
+			  <form class="form-vertical hidden" id="form_ajout_autre">
+				<div class="form-group">
+				  <label class="control-label" for="ajout_autre_composante">Composante :</label>
+				  <select class="form-control" id="ajout_autre_composante">
+					<option>FST</option>
+					<option>Hors FST</option>
+				  </select>
+				</div>
+				<div class="form-group">
+				  <label class="control-label" for="ajout_autre_formation">Formation :</label>
+				  <input type="text" class="form-control" id="ajout_autre_formation">
+				</div>
+				<div class="form-group">
+				  <label class="control-label" for="ajout_autre_ue">UE :</label>
+				  <input type="text" class="form-control" id="ajout_autre_ue">
+				</div>
+			  </form>
+
 			  </div>
 			  <div class="modal-footer">
-
-        <button type="button" class="btn btn-default"  id="modal_demande">Effectuer la demande</button>
+				<button type="button" class="btn btn-default"  id="modal_demande">Effectuer la demande</button>
 			  </div>
 			</div>
 		  </div>
