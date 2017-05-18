@@ -33,7 +33,11 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 
 	public static function modifie_intervention($enseignant, $id_intervention, $id_UE, $datas, $supprimer) {
         $n = new Notification();
-        $n->message = "Modification intervention";
+        if($id_intervention == null){
+            $n->message = "Ajout intervention";
+        } else {
+            $n->message = "Modification intervention";
+        }
         $n->besoin_validation = 1;
         $n->validation = 0;
         $n->type_notification = 'PPIL\models\NotificationIntervention';
