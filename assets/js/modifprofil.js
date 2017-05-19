@@ -86,18 +86,20 @@ function setup(modifprofil){
 		$("#formation").show();
 	});
 
+	/*
 	$("form#form_resp").submit(function(e){
 		e.preventDefault();
 		$.ajax({
 			url : modifprofil,
 			type: 'post',
-			data: $("form#form_resp").serialize(),
+			data: $("form#form_resp").serializeArray(),
 			dataType: 'json',
 			success: function(json){
-				location.reload();
+				console.log(json);
+				//location.reload();
 			}
 		});
-	});
+	});*/
 
 
 }
