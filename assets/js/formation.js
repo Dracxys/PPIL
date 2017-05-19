@@ -202,6 +202,7 @@ function modifUE() {
         $('#erreur').show();
     } else {
         $('#erreur').hide();
+        $('#valider').addClass( 'disabled' );
         $.ajax({
             url: ppil + '/ue/modif',
             type: 'post',
@@ -230,6 +231,7 @@ function modifUE() {
                         });
                     }
                 }
+                $('#valider').removeClass( 'disabled' );
 
             },
             xhrFields: {
@@ -241,6 +243,7 @@ function modifUE() {
 }
 
 function creerForm() {
+    enseignant();
     $('#modalAjouterForm').modal({
         backdrop: 'static',
         keyboard: false
@@ -249,61 +252,78 @@ function creerForm() {
 
 function ajouterForm() {
     var nom = $('#nomForm').val();
-    var fst = 1;
-    $.ajax({
-        url: ppil + '/ue/creer/form',
-        type: 'post',
-        data: {'nom': nom, 'fst': fst},
-        success: function (res) {
-            if (res != undefined && res[0] == 'true') {
-                $('#modalAjouterForm').modal('toggle');
-                $('#messageTitre').text('Succès');
-                $('#message').text('La formation a bien été créée.');
-                $('#modalDemandeEffectuee').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
-                $.ajax({
-                    url: ppil + '/ue/actu',
-                    type: 'post',
-                    success: function (res) {
-                        if (res != undefined) {
-                            var html = "";
-                            var i = 0;
-                            res.forEach(function (element) {
-                                if(i == 0){
-                                    html += "<option selected value='" + element +"'>" + element + "</option>";
-                                }else{
-                                    html += "<option>" + element + "</option>";
-                                }
+    if(nom == "" || nom == "Obligatoire"){
+        $('#nomForm').val("Obligatoire");
+        $('#nomForm').css("color","red");
+    }else{
+        $('#modalValide').addClass('disabled');
+        var respon = $('#respForm option:selected').val();
+        var fst = 1;
+        $.ajax({
+            url: ppil + '/ue/creer/form',
+            type: 'post',
+            data: {'nom': nom, 'fst': fst, 'resp': respon},
+            success: function (res) {
+                if (res != undefined && res[0] == 'true') {
+                    $('#modalAjouterForm').modal('toggle');
+                    $('#messageTitre').text('Succès');
+                    $('#message').text('La formation a bien été créée.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    $('#modalValide').removeClass( 'disabled' );
+                    $.ajax({
+                        url: ppil + '/ue/actu',
+                        type: 'post',
+                        success: function (res) {
+                            if (res != undefined) {
+                                var html = "";
+                                var i = 0;
+                                res.forEach(function (element) {
+                                    if(i == 0){
+                                        html += "<option selected value='" + element +"'>" + element + "</option>";
+                                    }else{
+                                        html += "<option>" + element + "</option>";
+                                    }
 
-                            });
-                            $('#selectForm').html(html);
-                            recupererUE(ppil);
-                        }
+                                });
+                                $('#selectForm').html(html);
+                                recupererUE(ppil);
+                                $('#nomForm').val("");
+                                $('#nomForm').css("color","black");
 
-                    },
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    crossDomain: true
-                });
+                            }
 
-            } else {
-                $('#modalAjouterForm').modal('toggle');
-                $('#messageTitre').text('Erreur');
-                $('#message').text('Problème lors de la création de la formation.');
-                $('#modalDemandeEffectuee').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
-            }
-        },
-        xhrFields: {
-            withCredentials: true
-        },
-        crossDomain: true
-    })
+                        },
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true
+                    });
+
+                } else {
+                    $('#modalAjouterForm').modal('toggle');
+                    $('#messageTitre').text('Erreur');
+                    $('#message').text('Problème lors de la création de la formation.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    $('#nomForm').val("");
+                    $('#nomForm').css("color","black");
+                    $('#modalValide').removeClass( 'disabled' );
+                }
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        })
+    }
+
+
+
 }
 
 function supprimer(ue) {
@@ -348,6 +368,7 @@ function enseignant() {
                 })
             }
             $('#resp').html(html);
+            $('#respForm').html(html);
         },
         xhrFields: {
             withCredentials: true
@@ -363,6 +384,7 @@ function ajouterUE() {
         $('#nomUEForm').val("Obligatoire");
         $('#nomUEForm').css("color","red");
     }else{
+        $('#modalValideUE').addClass('disabled');
         var heureCM = $('#heureCMForm').val();
         var nbGroupeTD = $('#nbGroupeTDForm').val();
         var heureTD = $('#heureTDForm').val();
@@ -403,6 +425,7 @@ function ajouterUE() {
                 $('#heureTPForm').val(0);
                 $('#nbGroupeEIForm').val(0);
                 $('#heureEIForm').val(0);
+                $('#modalValideUE').removeClass('disabled');
 
             },
             xhrFields: {

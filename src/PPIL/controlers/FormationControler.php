@@ -214,15 +214,42 @@ class FormationControler
         $app = Slim::getInstance();
         $val = $app->request->post();
         $nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
+        $resp = filter_var($val['resp'], FILTER_SANITIZE_STRING);
         if($nom != ""){
             $fst = filter_var($val['fst'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
             $f = Formation::where('nomFormation','like',$nom)->first();
             if(empty($f)){
-                Formation::creerForm($nom, $fst);
-                $app->response->headers->set('Content-Type', 'application/json');
-                $res = array();
-                $res[] = 'true';
-                echo json_encode($res);
+                if($resp != '0'){
+                    $ens = Enseignant::find($resp);
+                    if(!empty($ens)){
+                        $idFor = Formation::creerForm($nom, $fst);
+                        $respon = new Responsabilite();
+                        $respon->enseignant = $resp;
+                        $respon->intituleResp = "Responsable formation";
+                        $respon->id_formation = $idFor;
+                        $respon->privilege = 1;
+                        $respon->save();
+                        $mail = new MailControler();
+                        $mail->sendMaid($resp, 'Formation', 'Vous avez été choisi comme responsable de cette formation : ' . $nom . ".");
+                        $app->response->headers->set('Content-Type', 'application/json');
+                        $res = array();
+                        $res[] = 'true';
+                        echo json_encode($res);
+                        return true;
+                    }else{
+                        $app->response->headers->set('Content-Type', 'application/json');
+                        $res = array();
+                        $res[] = 'false';
+                        echo json_encode($res);
+                    }
+                }else{
+                    Formation::creerForm($nom, $fst);
+                    $app->response->headers->set('Content-Type', 'application/json');
+                    $res = array();
+                    $res[] = 'true';
+                    echo json_encode($res);
+                }
+
             }else{
                 $app->response->headers->set('Content-Type', 'application/json');
                 $res = array();

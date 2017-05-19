@@ -214,7 +214,7 @@ class VueFormation extends AbstractView
                });
                $('#erreur').hide();
                $('#modalAnnule').click(function() {
-                    $('#modalAjouter').modal('toggle');
+                    $('#modalAjouterForm').modal('toggle');
                });  
                $('#modalValide').click(function(){
                     ajouterForm();
@@ -304,10 +304,18 @@ END;
 			  </div>
 			  <div class="modal-body form-signin form-horizontal">
                 <div class="form-group">
-				    <label class="control-label col-sm-4" for="nomForm">Nom de la formation :</label>
-				    <div class="col-sm-6">
+				    <label class="control-label col-sm-5" for="nomForm">Nom de la formation :</label>
+				    <div class="col-sm-4">
 				        <input type="text" id="nomForm" name="nomForm" class="form-control" placeholder="Nom de la formation" required="true"/>
 				    </div>
+			    </div>
+			    <div class="form-group">
+				        <label class="control-label col-sm-5" for="resp">Responsable : </label>
+				        <div class="col-sm-4">
+				            <select id="respForm" class="form-control" name="respForm">
+				             
+				            </select>
+				        </div>
 			    </div>
 			  </div>
 			  <div class="modal-footer">

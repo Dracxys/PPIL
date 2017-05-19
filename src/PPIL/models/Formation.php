@@ -11,6 +11,7 @@ class Formation extends \Illuminate\Database\Eloquent\Model{
         $form->nomFormation = $nom;
         $form->fst = $fst;
         $form->save();
+        return $form->id_formation;
 
     }
 
