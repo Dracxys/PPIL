@@ -152,11 +152,11 @@ function choixUE() {
             type: 'post',
             data: {'id': id_UE},
             success: function (tab) {
-                console.log("succès ajax");
+                $('#tab').remove();
                 if (tab != undefined){
                     var html;
                     for (var i = 0; i < tab.length; i = i + 9){
-                        html += "<tr>"
+                        html += "<tr id='tab'>"
                             +"<th class='text-center'>" + tab[0+i] + " " + tab[1 + i] + "</th>"
                             +"<th class='text-center'>" + tab[2+i] + "</th>"
                             +"<th class='text-center'>" + tab[3+i] + "</th>"
