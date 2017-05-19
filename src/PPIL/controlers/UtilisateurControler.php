@@ -254,13 +254,13 @@ class UtilisateurControler
             if(!empty($notification)){
                 //     #beaucoup de vérifications pour éviter les cas particuliers
                 if(!$valider  && $refuser && $notification->besoin_validation){
-                    echo $notification->id_notification . " refuse";
+                    //echo $notification->id_notification . " refuse";
                     $notification->besoin_validation = false;
                     $notification->validation = false;
                     $notification->save();
 
                 }elseif($valider && !$refuser && $notification->besoin_validation) {
-                    echo $notification->id_notification . " valide";
+                    //echo $notification->id_notification . " valide";
                     $notification->besoin_validation = false;
                     $notification->validation = true;
                     $notification->save();

@@ -7,7 +7,6 @@ class NotificationIntervention extends Notification{
 	public $timestamps = false;
 
 	public static function appliquer($notification_intervention, $notification) {
-
         if(is_null($notification_intervention->id_intervention)){
             # ajout d'une nouvelle intervention
             if($notification_intervention->nom_UE != null && $notification_intervention->nom_formation != null && $notification_intervention->id_UE == null){
@@ -40,7 +39,7 @@ class NotificationIntervention extends Notification{
                 Enseignant::conversionHeuresTD(Enseignant::where('mail', 'like', $intervention->mail_enseignant)->first());
 
 
-            } else if($notification_intervention->nom_UE == null && $notification_intervention->nom_formation == null && $notification_intervention->id_UE != null && $notification_intervention->nom_formation != null){
+            } else if($notification_intervention->nom_UE == null && $notification_intervention->nom_formation == null && $notification_intervention->id_UE != null){
                 # pas de noms donnés, id_UE et id_formation sont définis
                 $ue = UE::where('id_UE', '=', $notification_intervention->id_UE)
                     ->first();
@@ -79,6 +78,9 @@ class NotificationIntervention extends Notification{
                 Enseignant::conversionHeuresTD(Enseignant::where('mail', 'like', $intervention->mail_enseignant)->first());
             }
         }
+
+        $notification_intervention->delete();
+        $notification->delete();
 
     }
 

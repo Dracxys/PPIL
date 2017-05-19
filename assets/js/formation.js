@@ -4,9 +4,9 @@ var value;
 function recupererUE(lien) {
     value = $('#selectForm option:selected').val();
     $('#nomFormation').text('Volume Horaire ' + value);
-    ppil = lien;
+    ppil = lien ;
     $.ajax({
-        url: lien,
+        url: ppil + '/ue',
         type: 'post',
         data: {'nom': value},
         dataType: 'json',
@@ -47,7 +47,7 @@ function choixUE(element) {
         $('#nomUE').text($(element).text());
         id_UE = $(element).attr('id');
         $.ajax({
-            url: ppil + 'infos',
+            url: ppil + '/ue/infos',
             type: 'post',
             data: {'id': id_UE},
             success: function (tab) {
@@ -126,13 +126,20 @@ function choixUE(element) {
         $('#heureAttenduEI').val(0);
         $('#nbGroupeAffecteEI').val(0);
         $('#nbGroupeAttenduEI').val(0);
+        $('#heureAffecteCM').css("color","black");
+        $('#heureAffecteTD').css("color","black");
+        $('#nbGroupeAffecteTD').css("color","black");
+        $('#heureAffecteTP').css("color","black");
+        $('#nbGroupeAffecteTP').css("color","black");
+        $('#heureAffecteEI').css("color","black");
+        $('#nbGroupeAffecteEI').css("color","black");
     }
 
 }
 
 function totalLicence(nom) {
     $.ajax({
-        url: ppil + 'total',
+        url: ppil + '/ue/total',
         type: 'post',
         data: {'nom': nom},
         success: function (tab) {
@@ -179,6 +186,10 @@ function totalLicence(nom) {
                     $('#volumeAffecteTP').text(0);
                     $('#volumeAttenduEI').text(0);
                     $('#volumeAffecteEI').text(0);
+                    $('#volumeAffecteCM').css("color","black");
+                    $('#volumeAffecteTD').css("color","black");
+                    $('#volumeAffecteTP').css("color","black");
+                    $('#volumeAffecteEI').css("color","black");
                 }
             }
         },
@@ -202,8 +213,9 @@ function modifUE() {
         $('#erreur').show();
     } else {
         $('#erreur').hide();
+        $('#valider').addClass( 'disabled' );
         $.ajax({
-            url: ppil + 'modif',
+            url: ppil + '/ue/modif',
             type: 'post',
             data: {
                 'id': id_UE, 'heureCM': heureCM, 'nbGroupeTD': nbGroupeTD,
@@ -230,6 +242,7 @@ function modifUE() {
                         });
                     }
                 }
+                $('#valider').removeClass( 'disabled' );
 
             },
             xhrFields: {
@@ -241,7 +254,8 @@ function modifUE() {
 }
 
 function creerForm() {
-    $('#modalAjouter').modal({
+    enseignant();
+    $('#modalAjouterForm').modal({
         backdrop: 'static',
         keyboard: false
     });
@@ -249,47 +263,89 @@ function creerForm() {
 
 function ajouterForm() {
     var nom = $('#nomForm').val();
-    var fst = 1;
-    $.ajax({
-        url: ppil + 'creer/form',
-        type: 'post',
-        data: {'nom': nom, 'fst': fst},
-        success: function (res) {
-            if (res != undefined) {
-                $('#modalAjouter').modal('toggle');
-                $('#messageTitre').text('Succès');
-                $('#message').text('La formation a bien été créée.');
-                $('#modalDemandeEffectuee').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
+    if(nom == "" || nom == "Obligatoire"){
+        $('#nomForm').val("Obligatoire");
+        $('#nomForm').css("color","red");
+    }else{
+        $('#modalValide').addClass('disabled');
+        var respon = $('#respForm option:selected').val();
+        var fst = 1;
+        $.ajax({
+            url: ppil + '/ue/creer/form',
+            type: 'post',
+            data: {'nom': nom, 'fst': fst, 'resp': respon},
+            success: function (res) {
+                if (res != undefined && res[0] == 'true') {
+                    $('#modalAjouterForm').modal('toggle');
+                    $('#messageTitre').text('Succès');
+                    $('#message').text('La formation a bien été créée.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    $('#modalValide').removeClass( 'disabled' );
+                    $.ajax({
+                        url: ppil + '/ue/actu',
+                        type: 'post',
+                        success: function (res) {
+                            if (res != undefined) {
+                                var html = "";
+                                var i = 0;
+                                res.forEach(function (element) {
+                                    if(i == 0){
+                                        html += "<option selected value='" + element +"'>" + element + "</option>";
+                                    }else{
+                                        html += "<option>" + element + "</option>";
+                                    }
 
-            } else {
-                $('#modalAjouter').modal('toggle');
-                $('#messageTitre').text('Erreur');
-                $('#message').text('Problème lors de la création de la formation.');
-                $('#modalDemandeEffectuee').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
-            }
-        },
-        xhrFields: {
-            withCredentials: true
-        },
-        crossDomain: true
-    })
+                                });
+                                $('#selectForm').html(html);
+                                recupererUE(ppil);
+                                $('#nomForm').val("");
+                                $('#nomForm').css("color","black");
+
+                            }
+
+                        },
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true
+                    });
+
+                } else {
+                    $('#modalAjouterForm').modal('toggle');
+                    $('#messageTitre').text('Erreur');
+                    $('#message').text('Problème lors de la création de la formation.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    $('#nomForm').val("");
+                    $('#nomForm').css("color","black");
+                    $('#modalValide').removeClass( 'disabled' );
+                }
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        })
+    }
+
+
+
 }
 
 function supprimer(ue) {
     $.ajax({
-        url: ppil + 'supprimer',
+        url: ppil + '/ue/supprimer',
         type: 'post',
         data: {'id': ue},
         success: function (res) {
             if (res != undefined && res[0] == 'true') {
                 $('#messageTitre').text('Succès');
-                $('#message').text('Cette UE n\'est plus associé à cette formation.');
+                $('#message').text('Cette UE a bien été supprimé.');
                 $('#modalDemandeEffectuee').modal({
                     backdrop: 'static',
                     keyboard: false
@@ -297,7 +353,7 @@ function supprimer(ue) {
                 recupererUE(ppil);
             } else {
                 $('#messageTitre').text('Erreur');
-                $('#message').text('Problème lors de la désassociation de cette UE à cette formation.');
+                $('#message').text('Problème lors de la suppression de cette UE.');
                 $('#modalDemandeEffectuee').modal({
                     backdrop: 'static',
                     keyboard: false
@@ -311,31 +367,145 @@ function supprimer(ue) {
     })
 }
 
-function ajouterUE() {
+function enseignant() {
     $.ajax({
-        url: ppil + 'ue',
+        url: ppil + '/ue/enseignant',
         type: 'get',
         success: function (res) {
-            var html = "";
-            res.forEach(function (element) {
-                html += "<tr><th class='text-center hidden'>"+element.id_UE+"</th>"
-                + "<th class='text-center'>"+element.nom_UE+"</th>"
-                + "<th class='text-center'>Test</th></tr>"
-            })
-            $('#dispoUE').html(html);
+            var html = "<option selected value='0'>aucun</option>";
+            if (res != undefined) {
+                res.forEach(function (element) {
+                    html += "<option value='"+element.mail+"'>" + element.nom + " " + element.prenom + "</option>";
+                })
+            }
+            $('#resp').html(html);
+            $('#respForm').html(html);
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    })
+
+}
+
+function ajouterUE() {
+    var nomUE = $('#nomUEForm').val();
+    if(nomUE == "" || nomUE == "Obligatoire"){
+        $('#nomUEForm').val("Obligatoire");
+        $('#nomUEForm').css("color","red");
+    }else{
+        $('#modalValideUE').addClass('disabled');
+        var heureCM = $('#heureCMForm').val();
+        var nbGroupeTD = $('#nbGroupeTDForm').val();
+        var heureTD = $('#heureTDForm').val();
+        var nbGroupeTP = $('#nbGroupeTPForm').val();
+        var heureTP = $('#heureTPForm').val();
+        var nbGroupeEI = $('#nbGroupeEIForm').val();
+        var heureEI = $('#heureEIForm').val();
+        var respon = $('#resp option:selected').val();
+        $.ajax({
+            url: ppil + '/ue/ajout/ue',
+            type: 'post',
+            data: {'form' : value,'nom' : nomUE, 'heureCM' : heureCM, 'heureTD' : heureTD, 'heureTP' : heureTP, 'heureEI' : heureEI,
+            'nbGroupeTD' : nbGroupeTD, 'nbGroupeTP' : nbGroupeTP , 'nbGroupeEI' : nbGroupeEI, 'resp' : respon},
+            success: function (res) {
+                $('#modalAjouterUE').modal('toggle');
+                if (res != undefined && res[0] == 'true') {
+                    $('#messageTitre').text('Succès');
+                    $('#message').text('UE ajouté.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                }else{
+                    $('#messageTitre').text('Erreur');
+                    $('#message').text('Problème lors de l\'ajout.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                }
+                recupererUE(ppil);
+                $('#nomUEForm').css("color","black");
+                $('#nomUEForm').val("");
+                $('#heureCMForm').val(0);
+                $('#nbGroupeTDForm').val(0);
+                $('#heureTDForm').val(0);
+                $('#nbGroupeTPForm').val(0);
+                $('#heureTPForm').val(0);
+                $('#nbGroupeEIForm').val(0);
+                $('#heureEIForm').val(0);
+                $('#modalValideUE').removeClass('disabled');
+
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        });
+    }
+}
+
+function supprimerForm() {
+    $('#deleteForm').addClass('disabled');
+    $.ajax({
+        url: ppil + '/supprimer',
+        type: 'post',
+        data: {'nom': value},
+        success: function (res) {
+            $('#delete').modal('toggle');
+            if (res != undefined && res[0] == 'true') {
+                $('#messageTitre').text('Succès');
+                $('#message').text('Cette formation a bien été supprimé.');
+                $('#modalDemandeEffectuee').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $.ajax({
+                    url: ppil + '/ue/actu',
+                    type: 'post',
+                    success: function (res) {
+                        if (res != undefined) {
+                            var html = "";
+                            var i = 0;
+                            res.forEach(function (element) {
+                                if(i == 0){
+                                    html += "<option selected value='" + element +"'>" + element + "</option>";
+                                }else{
+                                    html += "<option>" + element + "</option>";
+                                }
+
+                            });
+                            $('#selectForm').html(html);
+                        }
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true
+                });
+                recupererUE(ppil);
+                $('#deleteForm').removeClass('disabled');
+            } else {
+                $('#delete').modal('toggle');
+                $('#messageTitre').text('Erreur');
+                $('#message').text('Problème lors de la suppression de cette formation.');
+                $('#modalDemandeEffectuee').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $('#deleteForm').removeClass('disabled');
+            }
         },
         xhrFields: {
             withCredentials: true
         },
         crossDomain: true
     });
-
-
-    $('#modalAjouterUE').modal({
-        backdrop: 'static',
-        keyboard: false
-    });
 }
+
+
 
 
 

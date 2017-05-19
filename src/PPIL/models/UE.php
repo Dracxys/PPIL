@@ -6,7 +6,7 @@ class UE extends \Illuminate\Database\Eloquent\Model{
 	protected $primaryKey = "id_UE";
 	public $timestamps = false;
 
-	public static function creerUE($nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI){
+	public static function creerUE($nom, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI, $form = null, $fst = 1){
 		$n = new UE();
 		$n->nom_UE = $nom;
 
@@ -18,8 +18,11 @@ class UE extends \Illuminate\Database\Eloquent\Model{
 		$n->prevision_groupeTD = $groupeTD;
 		$n->prevision_groupeTP = $groupeTP;
 		$n->prevision_groupeEI = $groupeEI;
+		$n->id_formation = $form;
+		$n->fst = $fst;
 
 		$n->save();
+		return $n->id_UE;
 	}
 
 

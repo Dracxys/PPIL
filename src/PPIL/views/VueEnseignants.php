@@ -18,6 +18,7 @@ class VueEnseignants extends AbstractView{
     public function home($u){
         $html  = self::headHTML();
         $html .= self::navHTML("Enseignants");
+		$ajouter = Slim::getInstance()->urlFor("vueinscriptionDI");
         $html .= <<< END
 
         <div class="container">
@@ -35,13 +36,14 @@ class VueEnseignants extends AbstractView{
 					Enseignants
 				  </h4>
 				</div>
-
+				<form class="form-signin form-horizontal" method="post">
 				<div class="collapse navbar-collapse" id="navbar_panel">
 				  <div class="navbar-right">
-                                       <button type="button" class="btn btn-default navbar-btn" id="ajouterEnseignants">Ajouter</button>
+                                       <button type="submit" class="btn btn-default" formaction="$ajouter"  formnovalidate="false" id="ajouterEnseignants">Ajouter</button>
                                         <button type="button" class="btn btn-default navbar-btn" id="exporterEnseignants">Exporter</button>
                                     </div>
 				</div>
+				</form>
 			  </div>
 			</div>
 			<div class="panel-body text-center">
@@ -99,15 +101,16 @@ END;
         return $html;
     }
 
-	public static function inscritptionParDI($num){
+	public static function inscriptionParDI($num){
 		$html = self::headHTML();
+		$html .= self::navHTML("Enseignants");
         $valider = Slim::getInstance()->urlFor("inscriptionParDI");
-        $annuler = Slim::getInstance()->urlFor("home");
+        $annuler = Slim::getInstance()->urlFor("enseignantsUtilisateur");
         $html = $html . <<< END
 		<div class="container panel panel-default text-center">
 		  <div class="panel-body">
 			<form class="form-signin form-horizontal" method="post" action="$valider" id="inscription">
-			  <h2 class="form-signin-heading ">Inscription</h2>
+			  <h2 class="form-signin-heading ">Ajout d'un nouvel enseignant</h2>
 			  <div class="form-group">
 				<label class="control-label col-sm-4" for="nom">Nom </label>
 				<div class="col-sm-4">
@@ -173,7 +176,7 @@ END;
 			  <div class="modal-dialog">
 				<div class="modal-content">
 				  <div class="modal-header">
-					<h4 class="modal-title">Votre demande a été prise en compte.</h4>
+					<h4 class="modal-title">Le nouvel enseignant a bien été ajouté.</h4>
 				  
 					<button type="button" class="btn btn-default" onclick="location.href='$annuler'" data-dismiss="modal">Ok</button>
 				  </div>
@@ -190,20 +193,17 @@ END;
 			});
         </script>
 END;
+        }
         $html = $html . <<< END
         <div class="form-group">
-				<button type="submit" class="btn btn-primary" id="button_valider">Valider</button>
+				<button type="submit" class="btn btn-primary" formaction="$valider" id="button_valider">Valider</button>
 				<button type="submit" class="btn btn-default" formaction="$annuler" formnovalidate="false">Annuler</input>
         </div>
 		</form>
-END;
-        
-        }else{
-            $html = $html . <<< END
+
                 </div>
             </div>
 END;
-        }
 
 
 $html = $html . self::footerHTML();

@@ -38,6 +38,7 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 		$new_enseignant->mail = $mail;
 		$new_enseignant->statut = $statut;
 		$new_enseignant->mdp = $mdp;
+		$new_enseignant->rand = rand(100000000, 1000000000);
 		$new_enseignant->save();
 	}
 

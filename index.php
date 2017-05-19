@@ -137,11 +137,25 @@ $app->post('/home/formation/ue/supprimer',function (){
    $c->supprimerUE();
 });
 
-$app->get('/home/formation/ue/ue', function (){
+$app->get('/home/formation/ue/enseignant', function (){
     $c = new FormationControler();
-    $c->recupererUE();
+    $c->recupererEnseignant();
 });
 
+$app->post('/home/formation/ue/ajout/ue',function (){
+    $c = new FormationControler();
+    $c->ajouterUE();
+});
+
+$app->post('/home/formation/ue/actu',function (){
+    $c = new FormationControler();
+    $c->actualisation();
+});
+
+$app->post('/home/formation/supprimer',function (){
+    $c = new FormationControler();
+    $c->supprimerForm();
+});
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
@@ -232,12 +246,12 @@ $app->post('/home/enseignants/vueinscriptionDI', function (){
     $c->lancerVueInscriptionParDI();
 });
 
-$app->get('/home/enseignants/inscriptionDI', function (){
+$app->get('/home/enseignants/inscriptionParDI', function (){
     $c = new EnseignantsControler();
     $c->inscriptionParDI();
-})->name('inscriptionDI');
+})->name('inscriptionParDI');
 
-$app->post('/home/enseignants/inscriptionDI', function (){
+$app->post('/home/enseignants/inscriptionParDI', function (){
     $c = new EnseignantsControler();
     $c->inscriptionParDI();
 });
