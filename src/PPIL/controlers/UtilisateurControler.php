@@ -159,7 +159,7 @@ class UtilisateurControler
                     'groupeTP' => 0,
                     'groupeEI' => 0
                 );
-                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime);
+                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
             }
             echo json_encode([
                 'error' => $error,

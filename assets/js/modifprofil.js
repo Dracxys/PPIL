@@ -91,10 +91,11 @@ function setup(modifprofil){
 		$.ajax({
 			url : modifprofil,
 			type: 'post',
-			data: $("form#form_resp").serialize(),
+			data: $("form#form_resp").serializeArray(),
 			dataType: 'json',
 			success: function(json){
-				location.reload();
+				console.log(json);
+				//location.reload();
 			}
 		});
 	});
