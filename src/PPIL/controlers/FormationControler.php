@@ -421,5 +421,65 @@ class FormationControler
         }
     }
 
+    public function supprimerForm(){
+        $app = Slim::getInstance();
+        $val = $app->request->post();
+        $nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
+        $f = Formation::where('nomFormation','like',$nom)->first();
+        $c = new MailControler();
+        if(!empty($f)){
+            $lotUE = UE::where('id_formation','=',$f->id_formation)->get();
+            foreach ($lotUE as $ue){
+                $id = $ue->id_UE;
+                $inter = Intervention::where('id_UE', '=', $id)->get();
+                foreach ($inter as $value) {
+                    if ($_SESSION['mail'] != $value->mail_enseignant) {
+                        $c->sendMaid($value->mail_enseignant, "UE supprimé", "UE : " . $ue->nom_UE . " a été supprimé.");
+                    }
+                    $value->delete();
+                    $e = Enseignant::find($value->mail_enseignant);
+                    Enseignant::conversionHeuresTD($e);
+                }
+                $resp = Responsabilite::where('id_UE', '=', $id)->get();
+                foreach ($resp as $value) {
+                    if ($_SESSION['mail'] != $value->enseignant) {
+                        $c->sendMaid($value->enseignant, "UE supprimé", "Vous n'êtes plus responsable de l'UE :  " . $ue->nom_UE . ".");
+                    }
+                    $value->delete();
+                }
+                $notif = NotificationIntervention::where('id_UE', '=', $id)->get();
+                foreach ($notif as $value) {
+                    $n = Notification::where('id_notification', '=', $value->id_notification)->first();
+                    if ($_SESSION['mail'] != $n->mail_source) {
+                        $c->sendMaid($value->mail_source, "UE supprimé", "UE : " . $ue->nom_UE . " a été supprimé.");
+                    }
+                    $value->delete();
+                    $n->delete();
+                }
+                $ue->delete();
+            }
+            $respons = Responsabilite::where('id_formation','=',$f->id_formation)->get();
+            foreach ($respons as $v){
+                if($_SESSION['mail'] != $v->enseignant){
+                    $c->sendMaid($v->enseignant,"Formation supprimé","La formation : " . $f->nomFormation . " a été supprimée.");
+                }
+                $v->delete();
+            }
+            $f->delete();
+            $app->response->headers->set('Content-Type', 'application/json');
+            $res = array();
+            $res[] = 'true';
+            echo json_encode($res);
+            return true;
+
+        }else{
+            $app->response->headers->set('Content-Type', 'application/json');
+            $res = array();
+            $res[] = 'false';
+            echo json_encode($res);
+            return false;
+        }
+    }
+
 
 }

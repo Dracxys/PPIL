@@ -152,6 +152,11 @@ $app->post('/home/formation/ue/actu',function (){
     $c->actualisation();
 });
 
+$app->post('/home/formation/supprimer',function (){
+    $c = new FormationControler();
+    $c->supprimerForm();
+});
+
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
     $c = new ModifProfilControler();

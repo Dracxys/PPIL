@@ -433,12 +433,68 @@ function ajouterUE() {
             },
             crossDomain: true
         });
-
-
     }
-
-    
 }
+
+function supprimerForm() {
+    $('#deleteForm').addClass('disabled');
+    $.ajax({
+        url: ppil + '/supprimer',
+        type: 'post',
+        data: {'nom': value},
+        success: function (res) {
+            $('#delete').modal('toggle');
+            if (res != undefined && res[0] == 'true') {
+                $('#messageTitre').text('Succès');
+                $('#message').text('Cette formation a bien été supprimé.');
+                $('#modalDemandeEffectuee').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $.ajax({
+                    url: ppil + '/ue/actu',
+                    type: 'post',
+                    success: function (res) {
+                        if (res != undefined) {
+                            var html = "";
+                            var i = 0;
+                            res.forEach(function (element) {
+                                if(i == 0){
+                                    html += "<option selected value='" + element +"'>" + element + "</option>";
+                                }else{
+                                    html += "<option>" + element + "</option>";
+                                }
+
+                            });
+                            $('#selectForm').html(html);
+                        }
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true
+                });
+                recupererUE(ppil);
+                $('#deleteForm').removeClass('disabled');
+            } else {
+                $('#delete').modal('toggle');
+                $('#messageTitre').text('Erreur');
+                $('#message').text('Problème lors de la suppression de cette formation.');
+                $('#modalDemandeEffectuee').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $('#deleteForm').removeClass('disabled');
+            }
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    });
+}
+
+
 
 
 
