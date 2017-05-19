@@ -122,7 +122,15 @@ class UEControler
             foreach ($interventions as $value){
                 $user = Enseignant::where('mail', 'like', $value->mail_enseignant)->first();
                 if(!in_array($user, $res)){
-                    $res[] = $user;
+                    $res[] = $user->nom;
+                    $res[] = $user->prenom;
+                    $res[] = $value->heuresCM;
+                    $res[] = $value->groupeTD;
+                    $res[] = $value->heuresTD;
+                    $res[] = $value->groupeTP;
+                    $res[] = $value->heuresTP;
+                    $res[] = $value->groupeEI;
+                    $res[] = $value->heuresEI;
                 }
             }
             echo json_encode($res);
