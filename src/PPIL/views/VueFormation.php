@@ -13,8 +13,9 @@ use Slim\Slim;
 
 class VueFormation extends AbstractView
 {
-    public function home($u){
-        $html  = self::headHTML();
+    public function home($u)
+    {
+        $html = self::headHTML();
         $html .= self::navHTML("Formation");
         $select = self::selectStatut($u);
         $form = self::creerForm();
@@ -196,6 +197,12 @@ class VueFormation extends AbstractView
                     ajouterForm();
                });
                $('#ajouterUE').click(function(){
+                    $('#modalAjouterUE').modal({
+                         backdrop: 'static',
+                         keyboard: false
+                    });
+               });
+               $('#modalValideUE').click(function(){
                     ajouterUE();
                });
                $('#modalAnnuleUE').click(function() {
@@ -214,14 +221,14 @@ END;
         $html = '<select class="form-control" id="selectForm" name="selectForm">';
         $i = 0;
         $val = array_pop($for);
-        if($val != 'DI'){
-           $for[] = $val;
+        if ($val != 'DI') {
+            $for[] = $val;
         }
         foreach ($for as $value) {
-            if(isset($value)){
+            if (isset($value)) {
                 if ($i == 0) {
                     $html .= '<option selected value=' . '"' . $value . '"' . '>' . $value . '</option>';
-                    $i ++;
+                    $i++;
                 } else {
                     $html .= '<option value=' . '"' . $value . '"' . '>' . $value . '</option>';
                 }
@@ -229,15 +236,16 @@ END;
 
         }
         $html .= "</select>";
-        if($val == 'DI'){
+        if ($val == 'DI') {
             $html .= "<script type=\"text/javascript\">  $(function() { $('#creerForm').show(); });</script>";
-        }else{
+        } else {
             $html .= "<script type=\"text/javascript\">  $(function() { $('#creerForm').hide(); });</script>";
         }
         return $html;
     }
 
-    public static function message(){
+    public static function message()
+    {
         $html = <<< END
         <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
 		    <div class="modal-dialog ">
@@ -258,7 +266,8 @@ END;
         return $html;
     }
 
-    public static function creerForm(){
+    public static function creerForm()
+    {
         $html = <<< END
         <div class="modal fade text-center" id="modalAjouter" role="dialog">
 		  <div class="modal-dialog">
@@ -285,7 +294,8 @@ END;
         return $html;
     }
 
-    public static function ajouterUE(){
+    public static function ajouterUE()
+    {
         $html = <<< END
         <div class="modal fade text-center" id="modalAjouterUE" role="dialog">
 		  <div class="modal-dialog">
@@ -294,19 +304,57 @@ END;
 				<h4 class="modal-title">Ajouter un UE</h4>
 			  </div>
 			  <div class="modal-body">
-                <div class="table-responsive">
-                  <table class="table table-bordered ">
-                    <thead>
-                      <tr>
-                        <th class="text-center hidden">Identifiant UE</th>  
-                        <th class="text-center">UE</th>
-						<th class="text-center">Sélectionner</th>
-                      </tr>
-                    </thead>
-                    <tbody id="dispoUE">
-                    </tbody>
-                    </table>
-                </div>
+                <form class="form-signin form-horizontal" method="post" action="" id="ajoutUE">
+                    <div class="form-group">
+				        <label class="control-label col-sm-5" for="nomUE">Nom UE :</label>
+				        <div class="col-sm-4">
+				            <input type="text" id="nomUE" name="nomUE" class="form-control" placeholder="Nom UE" required="true"/>
+				        </div>
+			        </div>
+                    <div class="form-group">
+				        <label class="control-label col-sm-5" for="heureCM">Heure CM :</label>
+				        <div class="col-sm-4">
+				            <input type="number" id="heureCM" name="heureCM" class="form-control" value="0" placeholder="0" />
+				        </div>
+			        </div>
+			        <div class="form-group">
+				        <label class="control-label col-sm-5" for="nbGroupeTD">Nombre de Groupe TD :</label>
+				        <div class="col-sm-4">
+				            <input type="number" id="nbGroupeTD" name="nbGroupeTD" class="form-control" value="0" placeholder="0" />
+				        </div>
+			        </div>
+			        <div class="form-group">
+				        <label class="control-label col-sm-5" for="heureTD">Heure TD :</label>
+				        <div class="col-sm-4">
+				            <input type="number" id="heureTD" name="heureTD" class="form-control" value="0" placeholder="0" />
+				        </div>
+			        </div>
+			        <div class="form-group">
+				        <label class="control-label col-sm-5" for="nbGroupeTP">Nombre de Groupe TP :</label>
+				        <div class="col-sm-4">
+				            <input type="number" id="nbGroupeTP" name="nbGroupeTP" class="form-control" value="0" placeholder="0" />
+				        </div>
+			        </div>
+			        <div class="form-group">
+				        <label class="control-label col-sm-5" for="heureTP">Heure TP :</label>
+				        <div class="col-sm-4">
+				            <input type="number" id="heureTP" name="heureTP" class="form-control" value="0" placeholder="0" />
+				        </div>
+			        </div>
+			        <div class="form-group">
+				        <label class="control-label col-sm-5" for="nbGroupeEI">Nombre de Groupe EI :</label>
+				        <div class="col-sm-4">
+				            <input type="number" id="nbGroupeEI" name="nbGroupeEI" class="form-control" value="0" placeholder="0" />
+				        </div>
+			        </div>
+			        <div class="form-group">
+				        <label class="control-label col-sm-5" for="heureEI">Heure EI :</label>
+				        <div class="col-sm-4">
+				            <input type="number" id="heureEI" name="heureEI" class="form-control" value="0" placeholder="0" />
+				        </div>
+			        </div>
+			    </form>
+              </div>
 			  <div class="modal-footer">
                 <button type="button" class="btn btn-primary"  id="modalValideUE">Valider</button>
                  <button type="button" class="btn btn-default"  id="modalAnnuleUE">Annuler</button>
