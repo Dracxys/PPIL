@@ -176,3 +176,21 @@ function choixUE() {
         crossDomain: true
     });
 }
+
+    function boutonValidationModif() {
+        id_UE = $('#selectUE option:selected').val();
+        $.ajax({
+            url: ppil + '/boutonModif',
+            type: 'post',
+            data: {'id': id_UE},
+            success: function (element) {
+                if(element = true){
+                    var html = "<button type='button' class='btn btn-default center-block' onclick='modifUE()' id='valider'>Valider</button>";
+                    $('#boutton_validation').html(html);
+                }
+            }, xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        });
+    }
