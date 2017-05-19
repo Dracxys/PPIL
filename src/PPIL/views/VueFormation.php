@@ -22,16 +22,20 @@ class VueFormation extends AbstractView
         $lienInfoForm = Slim::getInstance()->urlFor('infoForm');
         $mes = self::message();
         $html .= <<< END
-        <div id="formation" class="panel-body panel-default ">
-            <h2 class="panel-heading text-center">Formation</h2>
-            <div class="form-horizontal panel-default col-sm-6 ">
-                <div id="selectForm" class="panel-default container col-sm-10">
+        <div class="container">
+        <div id="formation" class="panel panel-default ">
+            <div class="panel-heading">
+            <h2 class="text-center">Formation</h2>
+            </div>
+            <div class="panel-body">
+            <div class="form-horizontal container-fluid col-sm-6 ">
+                <div id="selectForm" class="container-fluid col-sm-10">
                     <label class="control-label col-sm-6" for="formation">Sélectionner Formation</label>
                     <div class="container col-sm-6">
                         $select
                     </div>
                 </div>
-                <div id="tableUE" class=" tab-content panel-default col-sm-10">
+                <div id="tableUE" class="container-fluid col-sm-10">
                   
 			    </div>
             </div>
@@ -127,7 +131,7 @@ class VueFormation extends AbstractView
                     </div>
                 </div>    
             </div>
-            <div class="panel-default container ">
+            <div class="panel-default container-fluid">
                 <button type="button" class="btn btn-default pull-left" onclick="creerForm()" id="creerForm">Creer une formation</button>
                 <button type="button" class="btn  btn-primary pull-right" onclick="modifUE()" id="valider">Valider</button>
                 <div id="erreur" class="alert alert-danger text-center">
@@ -140,7 +144,7 @@ class VueFormation extends AbstractView
                 <div class="header">
                     <h2 id="nomFormation" class="text-center">Total du volume horaire </h2>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive container-fluid">
                 <table class="table table-bordered ">
                     <thead>
                       <tr>
@@ -170,7 +174,9 @@ class VueFormation extends AbstractView
                     </tbody>
                 </table>  
                 </div>  
+            </div>
             </div>  
+        </div>
         </div>
         <script type="text/javascript" src="/PPIL/assets/js/formation.js">     </script>
         <script type="text/javascript">

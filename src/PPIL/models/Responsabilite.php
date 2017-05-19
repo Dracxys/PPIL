@@ -8,17 +8,15 @@ class Responsabilite extends \Illuminate\Database\Eloquent\Model{
 
 	public static function ajoutResponsabilite($mail, $intitule_responsabilite, $id_formation, $id_UE){
 		$n = new Responsabilite();
-		$n->intituleResp = strtolower ($intitule_responsabilite);
+		$n->intituleResp = strtolower($intitule_responsabilite);
 		$n->enseignant = $mail;
+        $n->id_UE = $id_UE;
+        $n->id_formation = $id_formation;
+		if($n->id_UE != null){
 
-		if(strcmp(strtolower ($intitule_responsabilite), 'responsable ue')){
-			$n->id_UE = $id_UE;
-			$n->priorite = 0;
-		} else if(strcmp(strtolower ($intitule_responsabilite), 'responsable formation')){
-			$n->id_formation = $id_formation;
-			$n->priorite = 1;
-		} else {
-			$n->priorite = 2;
+			$n->privilege = 0;
+		} else if($n->id_formation != null){
+			$n->privilege = 1;
 		}
 		$n->save();
 	}
@@ -31,7 +29,7 @@ class Responsabilite extends \Illuminate\Database\Eloquent\Model{
 											->get();
 			$responsabilite->delete();
 		}
-			
+
 		if (!empty($id_UE)){
 			$n = Responsabilite::where('enseignant', 'like', $mail_enseignant);
 			$responsabilite = Responsabilite::where('enseignant', 'like', $nom_enseignant)

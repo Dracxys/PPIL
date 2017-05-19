@@ -86,6 +86,7 @@ function setup(modifprofil){
 		$("#formation").show();
 	});
 
+	/*
 	$("form#form_resp").submit(function(e){
 		e.preventDefault();
 		$.ajax({
@@ -98,7 +99,7 @@ function setup(modifprofil){
 				//location.reload();
 			}
 		});
-	});
+	});*/
 
 
 }

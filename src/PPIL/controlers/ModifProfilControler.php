@@ -102,7 +102,7 @@ class ModifProfilControler
             $error = true;
             $val = Slim::getInstance()->request->post();
             $user = Enseignant::where("mail","like",$_SESSION['mail'])->first();
-            $v = new VueModifProfil();
+
             $notif = new NotificationResponsabilite();
             $n = new Notification();
             if(isset($val['ueSelect'])){
@@ -138,9 +138,9 @@ class ModifProfilControler
             $notif->id_notification = $n->id_notification;
 
             $notif->save();
-            echo json_encode([
-                'error' => $error,
-            ]);
+
+            $v = new VueModifProfil();
+            echo $v->home($user,8);
         }
     }
 
