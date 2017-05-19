@@ -99,14 +99,14 @@ class ModifProfilControler
 
     public function modifRespo(){
         if(isset($_SESSION['mail'])){
+            $error = true;
             $val = Slim::getInstance()->request->post();
             $user = Enseignant::where("mail","like",$_SESSION['mail'])->first();
 
             $notif = new NotificationResponsabilite();
             $n = new Notification();
-            if(isset($_POST['ueSelect'])){
-
-                $type = UE::where("nom_UE","like",$_POST['ueSelect'])->first();
+            if(isset($val['ueSelect'])){
+                $type = UE::where("nom_UE","like",$val['ueSelect'])->first();
 
                 $intitulé="Responsable UE";
                 $id_UE = $type->id_UE;
@@ -114,15 +114,17 @@ class ModifProfilControler
                 $notif->privilege = 0;
                 $notif->id_UE = $id_UE;
                 $n->message = "Demande de responsabilité : UE";
+                $error = false;
             }
-            if(isset($_POST['formSelect'])) {
-                $type = Formation::where("nomFormation", "like", $_POST['formSelect']->value)->first;
+            if(isset($val['formSelect'])) {
+                $type = Formation::where("nomFormation", "like", $val['formSelect'])->first();
                 $intitulé = "Responsable Formation";
                 $id_formation = $type->id_formation;
                 $notif->intitule = $intitulé;
                 $notif->privilege = 1;
                 $notif->id_formation = $id_formation;
                 $n->message = "Demande de responsabilité : formation";
+                $error = false;
             }
             $n->besoin_validation = 1;
             $n->validation = 0;
@@ -135,10 +137,10 @@ class ModifProfilControler
             $n->save();
             $notif->id_notification = $n->id_notification;
 
-
             $notif->save();
+
             $v = new VueModifProfil();
-            $v->home($user,8);
+            echo $v->home($user,8);
         }
     }
 

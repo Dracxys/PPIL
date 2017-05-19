@@ -142,7 +142,7 @@ function ajouter(lien, lien_autre){
 		$("form#form_ajout_autre").each(function() {
 			var nom_nouvelle_UE = $(this).find('input#ajout_autre_ue');
 			var nom_nouvelle_formation = $(this).find('input#ajout_autre_formation');
-			if(nom_nouvelle_UE != "" && nom_nouvelle_formation != ""){
+			if(nom_nouvelle_UE.val() != "" && nom_nouvelle_formation.val() != ""){
 				$.ajax({
 					url : lien_autre,
 					type: 'post',

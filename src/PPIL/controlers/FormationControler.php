@@ -41,9 +41,12 @@ class FormationControler
                 $res = array();
                 foreach ($resp as $value) {
                     $f = Formation::find($value->id_formation);
-                    if (!in_array($f->nomFormation, $res)) {
-                        $res[] = $f->nomFormation;
+                    if(!empty($f)){
+                        if (!in_array($f->nomFormation, $res)) {
+                            $res[] = $f->nomFormation;
+                        }
                     }
+
                 }
                 $v = new VueFormation();
                 echo $v->home($res);
@@ -235,6 +238,13 @@ class FormationControler
             $res[] = 'false';
             echo json_encode($res);
         }
+    }
+
+    public function recupererUE(){
+        $app = Slim::getInstance();
+        $ue = UE::where('id_formation','=',null)->get();
+        $app->response->headers->set('Content-Type', 'application/json');
+        echo json_encode($ue);
     }
 
 
