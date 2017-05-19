@@ -137,11 +137,20 @@ $app->post('/home/formation/ue/supprimer',function (){
    $c->supprimerUE();
 });
 
-$app->get('/home/formation/ue/ue', function (){
+$app->get('/home/formation/ue/enseignant', function (){
     $c = new FormationControler();
-    $c->recupererUE();
+    $c->recupererEnseignant();
 });
 
+$app->post('/home/formation/ue/ajout/ue',function (){
+    $c = new FormationControler();
+    $c->ajouterUE();
+});
+
+$app->post('/home/formation/ue/actu',function (){
+    $c = new FormationControler();
+    $c->actualisation();
+});
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
