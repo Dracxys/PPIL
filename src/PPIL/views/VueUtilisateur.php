@@ -75,7 +75,7 @@ $html .= <<< END
 			</div>
             <div class="panel-body text-center">
       <div class="alert alert-danger hidden" role="alert" id="erreur">
-      <strong>Echec!</strong> Vos données ne sont pas valides, vérifiez que vous n\'avez pas de nombres négatifs.
+      <strong>Echec!</strong>Certaines informations sont invalides, vérifiez que vos données ne contiennent pas de nombres négatifs ou de caractères spéciaux
       </div>
       <div class="alert alert-warning hidden" role="alert" id="notification_exist">
       <strong>Attention !</strong> Certaines interventions attendent la validation de leur modification, aucun changement ne sera pris en compte entre temps.
@@ -245,7 +245,7 @@ END;
             $html .= <<< END
 			   		  <tr>
 						<td>$composante</td>
-   						<td>$formation->nomFormation</td>
+            <td>$formation->nomFormation</td>
 						<td>$ue_ajout->nom_UE</td>
 						<td>
 						  <form class="form-inline" method="post" action="" id="form_ajout_ue">
@@ -267,7 +267,7 @@ END;
 				<button type="button" class="btn btn-default"  id="modal_ajout_autre">Autre (hors FST)</button>
 			  </div>
 			  <div class="alert alert-danger" role="alert" id="erreur_ajout_autre">
-				<strong>Echec!</strong> Vos données ne sont pas valides, vérifier qu'il n'y a pas de caractères spéciaux.
+				<strong>Echec!</strong> Certaines informations ne sont pas valides, vérifier que vos données ne contiennent pas de nombres négatifs ou de caractères spéciaux.
 			  </div>
 
 			  <form class="form-vertical hidden" id="form_ajout_autre">

@@ -22,7 +22,10 @@ function valider(lien, notification_exist){
 		});
 	});
 
+	//$("div#erreur").removeClass('hidden');
+
 	$('#appliquer').click(function(){
+		var danger = false;
 		$("form#form_interventions").each(function(){
 			var supprime = $(this).find('button#supprimer').val();
 			var id = $(this).find('input#id').val();
@@ -37,29 +40,43 @@ function valider(lien, notification_exist){
 				tr.find('input#groupeTP').val(),
 				tr.find('input#groupeEI').val()
 			];
-			$.ajax({
-				url : lien,
-				type: 'post',
-				data: { 'id': id, 'id_UE' : id_UE, 'heuresCM': infos[0], 'heuresTD': infos[1], 'heuresTP': infos[2], 'heuresEI': infos[3], 'groupeTD': infos[4], 'groupeTP': infos[5], 'groupeEI' : infos[6], 'supprime' : supprime},
-				dataType: 'json',
-				success: function(json){
-					if(json.error && !json.notification_exist){
-						//$("div#erreur").removeClass('hidden');
-						tr.addClass("danger");
-					} else {
-						tr.removeClass("danger");
-					}
-					if(supprime == 'true'){
-//						tr.remove();
-					}
+
+			for(var i=0; i<infos.length; i++){
+				if(infos[i] == "" || infos[i] < 0){
+					danger = true;
+					tr.addClass("danger");
+					break;
 				}
-			});
+				tr.removeClass("danger");
+			}
+
+			if(danger){
+				$("div#erreur").removeClass('hidden');
+			} else {
+				$("div#erreur").addClass('hidden');
+				$.ajax({
+					url : lien,
+					type: 'post',
+					data: { 'id': id, 'id_UE' : id_UE, 'heuresCM': infos[0], 'heuresTD': infos[1], 'heuresTP': infos[2], 'heuresEI': infos[3], 'groupeTD': infos[4], 'groupeTP': infos[5], 'groupeEI' : infos[6], 'supprime' : supprime},
+					dataType: 'json',
+					success: function(json){
+/*						if(json.error && !json.notification_exist){
+							//$("div#erreur").removeClass('hidden');
+							//tr.addClass("danger");
+						} else {
+							//tr.removeClass("danger");
+						}*/
+					}
+				});
+			}
 
 		});
-		$('#modalDemandeEffectuee').modal({
-			backdrop: 'static',
-			keyboard: false
-		});
+		if(!danger){
+			$('#modalDemandeEffectuee').modal({
+				backdrop: 'static',
+				keyboard: false
+			});
+		}
 	});
 }
 
