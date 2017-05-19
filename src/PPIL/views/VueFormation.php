@@ -20,18 +20,42 @@ class VueFormation extends AbstractView
         $select = self::selectStatut($u);
         $form = self::creerForm();
         $valider = Slim::getInstance()->urlFor('home');
-        $lienInfoForm = Slim::getInstance()->urlFor('infoForm');
+        $lienInfoForm = Slim::getInstance()->urlFor('formationUtilisateur');
         $mes = self::message();
         $ue = self::ajouterUE();
         $html .= <<< END
         <div class="container">
         <div id="formation" class="panel panel-default ">
-            <div class="panel-heading">
-            <h2 class="text-center">Formation</h2>
+            <div class="panel-heading nav navbar-default">
+            <div class="container-fluid">
+
+				 <div class="navbar-header">
+				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_panel">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <h4 class="navbar-text">
+					Formation
+				  </h4>
+				 </div>
+
+				 <div class="collapse navbar-collapse" id="navbar_panel">
+				   <div class=" navbar-right">
+					 <div class="btn-group pull-right">
+                       <form class="navbar-form navbar-left">
+					  <button type="button" class="btn btn-default "  id="creerForm">Créer une formation</button>
+                      <button type="button" class="btn btn-default "  id="ajouterUE">Ajouter un UE</button>
+					 </form>
+					 </div>
+				   </div>
+				 </div>
+
+		  </div>
             </div>
             <div class="panel-body">
             <div class="form-horizontal container-fluid col-sm-6 ">
-                <div id="selectForm" class="container-fluid col-sm-10">
+                <div id="selectFormDiv" class="container-fluid col-sm-10">
                     <label class="control-label col-sm-6" for="formation">Sélectionner Formation</label>
                     <div class="container col-sm-6">
                         $select
@@ -134,8 +158,7 @@ class VueFormation extends AbstractView
                 </div>    
             </div>
             <div class="panel-default container-fluid">
-                <button type="button" class="btn btn-default pull-left" onclick="creerForm()" id="creerForm">Creer une formation</button>
-                <button type="button" class="btn btn-default pull-left"  id="ajouterUE">Ajouter UE</button>
+                
                 <button type="button" class="btn  btn-primary pull-right" onclick="modifUE()" id="valider">Valider</button>
                 <div id="erreur" class="alert alert-danger text-center">
                     <strong>Erreur : </strong> Chiffres négatifs dans un des champs.
@@ -202,6 +225,9 @@ class VueFormation extends AbstractView
                          keyboard: false
                     });
                     enseignant();
+               });
+               $('#creerForm').click(function(){
+                    creerForm();
                });
                $('#modalValideUE').click(function(){
                     ajouterUE();
@@ -270,7 +296,7 @@ END;
     public static function creerForm()
     {
         $html = <<< END
-        <div class="modal fade text-center" id="modalAjouter" role="dialog">
+        <div class="modal fade text-center" id="modalAjouterForm" role="dialog">
 		  <div class="modal-dialog">
 			<div class="modal-content">
 			  <div class="modal-header">

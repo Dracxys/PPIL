@@ -147,6 +147,10 @@ $app->post('/home/formation/ue/ajout/ue',function (){
     $c->ajouterUE();
 });
 
+$app->post('/home/formation/ue/actu',function (){
+    $c = new FormationControler();
+    $c->actualisation();
+});
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){

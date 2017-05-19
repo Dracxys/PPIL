@@ -4,9 +4,9 @@ var value;
 function recupererUE(lien) {
     value = $('#selectForm option:selected').val();
     $('#nomFormation').text('Volume Horaire ' + value);
-    ppil = lien;
+    ppil = lien ;
     $.ajax({
-        url: lien,
+        url: ppil + '/ue',
         type: 'post',
         data: {'nom': value},
         dataType: 'json',
@@ -47,7 +47,7 @@ function choixUE(element) {
         $('#nomUE').text($(element).text());
         id_UE = $(element).attr('id');
         $.ajax({
-            url: ppil + 'infos',
+            url: ppil + '/ue/infos',
             type: 'post',
             data: {'id': id_UE},
             success: function (tab) {
@@ -132,7 +132,7 @@ function choixUE(element) {
 
 function totalLicence(nom) {
     $.ajax({
-        url: ppil + 'total',
+        url: ppil + '/ue/total',
         type: 'post',
         data: {'nom': nom},
         success: function (tab) {
@@ -203,7 +203,7 @@ function modifUE() {
     } else {
         $('#erreur').hide();
         $.ajax({
-            url: ppil + 'modif',
+            url: ppil + '/ue/modif',
             type: 'post',
             data: {
                 'id': id_UE, 'heureCM': heureCM, 'nbGroupeTD': nbGroupeTD,
@@ -241,7 +241,7 @@ function modifUE() {
 }
 
 function creerForm() {
-    $('#modalAjouter').modal({
+    $('#modalAjouterForm').modal({
         backdrop: 'static',
         keyboard: false
     });
@@ -251,21 +251,46 @@ function ajouterForm() {
     var nom = $('#nomForm').val();
     var fst = 1;
     $.ajax({
-        url: ppil + 'creer/form',
+        url: ppil + '/ue/creer/form',
         type: 'post',
         data: {'nom': nom, 'fst': fst},
         success: function (res) {
-            if (res != undefined) {
-                $('#modalAjouter').modal('toggle');
+            if (res != undefined && res[0] == 'true') {
+                $('#modalAjouterForm').modal('toggle');
                 $('#messageTitre').text('Succès');
                 $('#message').text('La formation a bien été créée.');
                 $('#modalDemandeEffectuee').modal({
                     backdrop: 'static',
                     keyboard: false
                 });
-                recupererUE(ppil);
+                $.ajax({
+                    url: ppil + '/ue/actu',
+                    type: 'post',
+                    success: function (res) {
+                        if (res != undefined) {
+                            var html = "";
+                            var i = 0;
+                            res.forEach(function (element) {
+                                if(i == 0){
+                                    html += "<option selected value='" + element +"'>" + element + "</option>";
+                                }else{
+                                    html += "<option>" + element + "</option>";
+                                }
+
+                            });
+                            $('#selectForm').html(html);
+                            recupererUE(ppil);
+                        }
+
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true
+                });
+
             } else {
-                $('#modalAjouter').modal('toggle');
+                $('#modalAjouterForm').modal('toggle');
                 $('#messageTitre').text('Erreur');
                 $('#message').text('Problème lors de la création de la formation.');
                 $('#modalDemandeEffectuee').modal({
@@ -283,7 +308,7 @@ function ajouterForm() {
 
 function supprimer(ue) {
     $.ajax({
-        url: ppil + 'supprimer',
+        url: ppil + '/ue/supprimer',
         type: 'post',
         data: {'id': ue},
         success: function (res) {
@@ -313,7 +338,7 @@ function supprimer(ue) {
 
 function enseignant() {
     $.ajax({
-        url: ppil + 'enseignant',
+        url: ppil + '/ue/enseignant',
         type: 'get',
         success: function (res) {
             var html = "<option selected value='0'>aucun</option>";
@@ -347,7 +372,7 @@ function ajouterUE() {
         var heureEI = $('#heureEIForm').val();
         var respon = $('#resp option:selected').val();
         $.ajax({
-            url: ppil + 'ajout/ue',
+            url: ppil + '/ue/ajout/ue',
             type: 'post',
             data: {'form' : value,'nom' : nomUE, 'heureCM' : heureCM, 'heureTD' : heureTD, 'heureTP' : heureTP, 'heureEI' : heureEI,
             'nbGroupeTD' : nbGroupeTD, 'nbGroupeTP' : nbGroupeTP , 'nbGroupeEI' : nbGroupeEI, 'resp' : respon},
