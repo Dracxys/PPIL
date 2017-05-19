@@ -198,8 +198,8 @@ END;
     public function responsabilite($user)
     {
         $modifresp = Slim::getInstance()->urlFor("modificationResponsabilite");
-        $u = UE::all();
-        $f = Formation::all();
+        $u = UE::where('fst','=',1)->get();
+        $f = Formation::where('fst','=',1)->get();
         $html = <<<END
                  <div id="responsabilite" style="display: none;">
                  <div class="container">
