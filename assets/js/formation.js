@@ -126,6 +126,13 @@ function choixUE(element) {
         $('#heureAttenduEI').val(0);
         $('#nbGroupeAffecteEI').val(0);
         $('#nbGroupeAttenduEI').val(0);
+        $('#heureAffecteCM').css("color","black");
+        $('#heureAffecteTD').css("color","black");
+        $('#nbGroupeAffecteTD').css("color","black");
+        $('#heureAffecteTP').css("color","black");
+        $('#nbGroupeAffecteTP').css("color","black");
+        $('#heureAffecteEI').css("color","black");
+        $('#nbGroupeAffecteEI').css("color","black");
     }
 
 }
@@ -179,6 +186,10 @@ function totalLicence(nom) {
                     $('#volumeAffecteTP').text(0);
                     $('#volumeAttenduEI').text(0);
                     $('#volumeAffecteEI').text(0);
+                    $('#volumeAffecteCM').css("color","black");
+                    $('#volumeAffecteTD').css("color","black");
+                    $('#volumeAffecteTP').css("color","black");
+                    $('#volumeAffecteEI').css("color","black");
                 }
             }
         },
