@@ -106,7 +106,7 @@ END;
             </div>
 END;
         }
-      if ($num == 9) {
+      if ($num == 8) {
           $html .= <<< END
             <div class="alert alert-success" role="alert">
                 <strong>Succès</strong> Demande de responsabilité effectuée.
@@ -205,7 +205,7 @@ END;
                  <div id="responsabilite" style="display: none;">
                  <div class="container">
                     <h2 class="">Modification des responsabilités</h2>
-                    <form class="form-vertical" id="form_resp" method="post" action="">
+                    <form class="form-vertical" id="form_resp" method="post" action="$modifresp">
                          <div class="radio">
                             <input type="radio" name="responsabilite" id="respUE" value="responsableUE"> Responsable d'UE
                          </div>

@@ -189,10 +189,10 @@ $app->post('/home/ue/compoUE/listIntervenant', function (){
     $c->intervenantsUE();
 });
 
-$app->get('/home/ue/intervenantsUE', function (){
+$app->post('/home/ue/compoUE/boutonModif', function (){
     $c = new UEControler();
-    $c->intervenantsUE();
-})->name('intervenantsUE');
+    $c->boutonModif();
+});
 
 $app->get('/home/formation', function (){
     $c = new FormationControler();

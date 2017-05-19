@@ -9,6 +9,8 @@
 
 namespace PPIL\views;
 
+use PPIL\controlers\EnseignantsControler;
+use PPIL\models\Enseignant;
 use PPIL\models\UE;
 use Slim\App;
 use Slim\Slim;
@@ -86,9 +88,11 @@ END;
            $(function(){
                setLien("$lienInfoUE")
                choixUE();
+               boutonValidationModif();
                listIntervenant();
                $('#selectUE').change(function() {
                choixUE();
+               boutonValidationModif();
                listIntervenant();
                });
                $('#erreur').hide();
@@ -191,7 +195,8 @@ END;
                     </div>
                 </div>
                 <div class="panel-defaul container-fluid">
-                <button type="button" class="btn btn-default center-block" onclick="modifUE()" id="valider">Valider</button>
+                <div id="boutton_validation">
+                </div>
                 <div id="erreur" class="alert alert-danger text-center">
                     <strong>Erreur : </strong> Chiffres négatifs dans un des champs.
                 </div>
@@ -218,39 +223,20 @@ END;
                             <thead>
                               <tr>
                                 <th class="text-center">Enseignant</th>
-                                <th class="text-center">Statut</th>
-                                <th class="text-center">Adresse Mail</th>
-                                <th class="text-center">Photo</th>
+                                <th class="text-center">Heures CM</th>
+                                <th class="text-center">Nombres groupes TD</th>
+                                <th class="text-center">Heures TD</th>
+                                <th class="text-center">Nombres groupes TP</th>
+                                <th class="text-center">Heures TP</th>
+                                <th class="text-center">Nombres groupes EI</th>
+                                <th class="text-center">Heures EI</th>
                               </tr>
-                              <tr id="tableau">
-                              </tr>
-
-END;
-
-       /*foreach ($users as $user) {
-            if ($user->prenom!="admin" && $user->nom!="admin" && $_SESSION['mail']!=$user->mail) {
-                $html .= "<tr>" .
-                        "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
-                        "<th class=\"text-center\">" . $user->statut . "</th>" .
-                        "<th class=\"text-center\">" . $user->mail . "</th>";
-
-                if($user->photo == null){
-                    $default = "/PPIL/assets/images/profil_pictures/default.jpg";
-                    $html .= '<td class="center" ><img src="' . $default  .'" class="img-thumbnail" alt="Photo de profil" width="35" height="35"></td>';
-                }else{
-                    $html .= '<td class="center" ><img src=' . "/PPIL/" . $user->photo  .' class="img-thumbnail" alt="Photo de profil" width="35" height="35"></td>';
-                }
-
-                $html .= "</tr>";
-            }
-        }*/
-        //ajout intervenant
-
-        $html .= <<<END
-            </thead>
-            </table>
-            </div>
-            </div>
+                              </thead>
+                              <tbody id="tableau">
+                              </tbody>
+                          </table>
+                    </div>
+                </div>
 END;
 
         return $html;

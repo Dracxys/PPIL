@@ -160,7 +160,7 @@ class UtilisateurControler
                     'groupeTP' => 0,
                     'groupeEI' => 0
                 );
-                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime);
+                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
             }
             echo json_encode([
                 'error' => $error,
@@ -276,6 +276,7 @@ class UtilisateurControler
                             NotificationInscription::appliquer($notification_inscription, $notification);
                         }
                         break;
+
                     case "PPIL\models\NotificationIntervention":
                         $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
                             ->first();
@@ -283,6 +284,7 @@ class UtilisateurControler
                             NotificationIntervention::appliquer($notification_intervention, $notification);
                         }
                         break;
+
                     case "PPIL\models\NotificationResponsabilite":
                         $notification_responsabilite = NotificationResponsabilite::where('id_notification', '=', $notification->id_notification)
                             ->first();
@@ -290,6 +292,7 @@ class UtilisateurControler
                             NotificationResponsabilite::appliquer($notification_responsabilite, $notification);
                         }
                         break;
+
                     default:
                         break;
                     }
@@ -307,12 +310,12 @@ class UtilisateurControler
                         default:
                             break;
                     }
-                }
-                if($notification->besoin_validation == false){
-                    $notification_spe = $notification->type_notification::where('id_notification', '=', $notification->id_notification)
-                                      ->first();
-                    $notification_spe->delete();
-                    $notification->delete();
+                    if($notification->besoin_validation == false){
+                        $notification_spe = $notification->type_notification::where('id_notification', '=', $notification->id_notification)
+                                          ->first();
+                        $notification_spe->delete();
+                        $notification->delete();
+                    }
                 }
             }
         }
