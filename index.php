@@ -137,6 +137,11 @@ $app->post('/home/formation/ue/supprimer',function (){
    $c->supprimerUE();
 });
 
+$app->get('/home/formation/ue/ue', function (){
+    $c = new FormationControler();
+    $c->recupererUE();
+});
+
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
@@ -184,10 +189,10 @@ $app->post('/home/ue/compoUE/listIntervenant', function (){
     $c->intervenantsUE();
 });
 
-$app->get('/home/ue/intervenantsUE', function (){
+$app->post('/home/ue/compoUE/boutonModif', function (){
     $c = new UEControler();
-    $c->intervenantsUE();
-})->name('intervenantsUE');
+    $c->boutonModif();
+});
 
 $app->get('/home/formation', function (){
     $c = new FormationControler();

@@ -7,14 +7,14 @@ $( "#boutonCompo" ).click(function() {
     boutonInterv.classList.remove("active");
 
     $( "#compoUE" ).show();
-    $("#intervenants").hide();
+    $("#intervenantsUE").hide();
 });
 
 $( "#boutonInterv" ).click(function() {
     boutonInterv.classList.add("active");
     boutonCompo.classList.remove("active");
 
-    $( "#intervenants" ).show();
+    $( "#intervenantsUE" ).show();
     $("#compoUE").hide();
 });
 
@@ -152,13 +152,22 @@ function choixUE() {
             type: 'post',
             data: {'id': id_UE},
             success: function (tab) {
-                console.log("succès ajax");
+                $('#tab').remove();
                 if (tab != undefined){
-                    console.log("non vide");
-                    var tr = document.getElementById("tableau");
-                    tab.forEach(function (element) {
-                        console.log(element);
-                    });
+                    var html;
+                    for (var i = 0; i < tab.length; i = i + 9){
+                        html += "<tr id='tab'>"
+                            +"<th class='text-center'>" + tab[0+i] + " " + tab[1 + i] + "</th>"
+                            +"<th class='text-center'>" + tab[2+i] + "</th>"
+                            +"<th class='text-center'>" + tab[3+i] + "</th>"
+                            +"<th class='text-center'>" + tab[4+i] + "</th>"
+                            +"<th class='text-center'>" + tab[5+i] + "</th>"
+                            +"<th class='text-center'>" + tab[6+i] + "</th>"
+                            +"<th class='text-center'>" + tab[7+i] + "</th>"
+                            +"<th class='text-center'>" + tab[8+i] + "</th>"
+                            +"</tr>";
+                    }
+                    $('#tableau').html(html);
                 }
 
             }, xhrFields: {
@@ -167,3 +176,21 @@ function choixUE() {
         crossDomain: true
     });
 }
+
+    function boutonValidationModif() {
+        id_UE = $('#selectUE option:selected').val();
+        $.ajax({
+            url: ppil + '/boutonModif',
+            type: 'post',
+            data: {'id': id_UE},
+            success: function (element) {
+                if(element = true){
+                    var html = "<button type='button' class='btn btn-default center-block' onclick='modifUE()' id='valider'>Valider</button>";
+                    $('#boutton_validation').html(html);
+                }
+            }, xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        });
+    }

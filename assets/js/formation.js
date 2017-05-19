@@ -249,7 +249,7 @@ function creerForm() {
 
 function ajouterForm() {
     var nom = $('#nomForm').val();
-    var fst = $('#selectFst option:selected').val();
+    var fst = 1;
     $.ajax({
         url: ppil + 'creer/form',
         type: 'post',
@@ -309,6 +309,32 @@ function supprimer(ue) {
         },
         crossDomain: true
     })
+}
+
+function ajouterUE() {
+    $.ajax({
+        url: ppil + 'ue',
+        type: 'get',
+        success: function (res) {
+            var html = "";
+            res.forEach(function (element) {
+                html += "<tr><th class='text-center hidden'>"+element.id_UE+"</th>"
+                + "<th class='text-center'>"+element.nom_UE+"</th>"
+                + "<th class='text-center'>Test</th></tr>"
+            })
+            $('#dispoUE').html(html);
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    });
+
+
+    $('#modalAjouterUE').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
 }
 
 

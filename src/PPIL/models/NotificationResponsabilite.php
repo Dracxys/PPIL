@@ -7,6 +7,7 @@
  */
 
 namespace PPIL\models;
+use PPIL\controlers\MailControler;
 
 
 class NotificationResponsabilite extends Notification
@@ -17,13 +18,12 @@ class NotificationResponsabilite extends Notification
 
     public static function appliquer($notification_responsabilite, $notification)
     {
-        $r = new Responsabilite();
         $enseignant  = $notification->mail_source;
         $intitule = $notification_responsabilite->intitule;
         $id_formation = $notification_responsabilite->id_formation;
         $id_UE = $notification_responsabilite->id_UE;
 
-        $r->ajoutResponsabilite($enseignant,$intitule,$id_formation,$id_UE);
+        Responsabilite::ajoutResponsabilite($enseignant,$intitule,$id_formation,$id_UE);
 
 
         $mail = new MailControler();

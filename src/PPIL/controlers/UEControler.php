@@ -121,13 +121,44 @@ class UEControler
         }else{
             foreach ($interventions as $value){
                 $user = Enseignant::where('mail', 'like', $value->mail_enseignant)->first();
-                if(!in_array($user, $res)){
-                    $res[] = $user;
-                }
+                    $res[] = $user->nom;
+                    $res[] = $user->prenom;
+                    $res[] = $value->heuresCM;
+                    $res[] = $value->groupeTD;
+                    $res[] = $value->heuresTD;
+                    $res[] = $value->groupeTP;
+                    $res[] = $value->heuresTP;
+                    $res[] = $value->groupeEI;
+                    $res[] = $value->heuresEI;
             }
             echo json_encode($res);
         }
     }
+
+    public function boutonModif(){
+        $app = Slim::getInstance();
+        $val = $app->request->post();
+        $app->response->headers->set('Content-Type', 'application/json');
+        $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
+        if (isset($_SESSION['mail'])) {
+            $user = Enseignant::where('mail', 'like', $_SESSION['mail'])->first();
+            $respon = Responsabilite::where('enseignant','like', $user->mail)->get();
+            if(!empty($respon)) {
+                $privi = Enseignant::get_privilege($user);
+                if($privi == 2){
+                    echo json_encode(true);
+                }elseif ($privi == 1 || $privi == 0){
+                    foreach ($respon as $value){
+                        if($value->id_UE == $id){
+                            echo json_encode(true);
+                            break;
+                        }
+                    }
+                }else echo json_encode(false);
+            }
+            }
+
+        }
 
     public function creerUE(){
         if(isset($_SESSION['mail'])) {
