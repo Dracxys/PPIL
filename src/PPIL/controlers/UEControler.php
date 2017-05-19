@@ -121,7 +121,6 @@ class UEControler
         }else{
             foreach ($interventions as $value){
                 $user = Enseignant::where('mail', 'like', $value->mail_enseignant)->first();
-                if(!in_array($user, $res)){
                     $res[] = $user->nom;
                     $res[] = $user->prenom;
                     $res[] = $value->heuresCM;
@@ -131,7 +130,6 @@ class UEControler
                     $res[] = $value->heuresTP;
                     $res[] = $value->groupeEI;
                     $res[] = $value->heuresEI;
-                }
             }
             echo json_encode($res);
         }
