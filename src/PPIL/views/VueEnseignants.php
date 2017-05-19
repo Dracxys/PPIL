@@ -12,6 +12,7 @@ use Slim\App;
 use Slim\Slim;
 use PPIL\models\Enseignant;
 use PPIL\models\Formation;
+use PPIL\models\Responsabilite;
 
 class VueEnseignants extends AbstractView{
     public function home($u){
@@ -37,11 +38,12 @@ class VueEnseignants extends AbstractView{
 
 				<div class="collapse navbar-collapse" id="navbar_panel">
 				  <div class="navbar-right">
-					<button type="button" class="btn btn-default navbar-btn" id="exporterEnseignants">Exporter</button>
-				  </div>
+'                                       <button type="button" class="btn btn-default navbar-btn" id="ajouterEnseignants">Ajouter</button>
+                                        <button type="button" class="btn btn-default navbar-btn" id="exporterEnseignants">Exporter</button>
+                                    </div>
 				</div>
 			  </div>
-
+                          
 			</div>
 			<div class="panel-body text-center">
 			<div class="table-responsive">
@@ -54,6 +56,8 @@ class VueEnseignants extends AbstractView{
 					<th class="text-center">Service réalisé</th>
 					<th class="text-center">Service réalisé à la FST</th>
 				  </tr>
+                
+                
 END;
 
         foreach ($u as $user) {
