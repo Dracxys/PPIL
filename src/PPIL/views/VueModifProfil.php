@@ -188,7 +188,6 @@ END;
 
 			  <div class="form-group">
 				<button type="submit" class="btn btn-primary">Valider</button>
-				<button type="submit" class="btn btn-default" formnovalidate="false">Annuler</button>
               </div>
 			</form>
             </div>
@@ -314,7 +313,6 @@ END;
 			  </div>
               <div>
 				<button type="submit" class="btn btn-primary">Valider</button>
-				<button type="submit" class="btn btn-default" formnovalidate="false">Annuler</button>
               </div>
 			</form>
             </div>
