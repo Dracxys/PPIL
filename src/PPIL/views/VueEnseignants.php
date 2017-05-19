@@ -38,7 +38,7 @@ class VueEnseignants extends AbstractView{
 
 				<div class="collapse navbar-collapse" id="navbar_panel">
 				  <div class="navbar-right">
-'                                       <button type="button" class="btn btn-default navbar-btn" id="ajouterEnseignants">Ajouter</button>
+                                       <button type="button" class="btn btn-default navbar-btn" id="ajouterEnseignants">Ajouter</button>
                                         <button type="button" class="btn btn-default navbar-btn" id="exporterEnseignants">Exporter</button>
                                     </div>
 				</div>
