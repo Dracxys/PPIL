@@ -263,7 +263,7 @@ function ajouterForm() {
                     backdrop: 'static',
                     keyboard: false
                 });
-
+                recupererUE(ppil);
             } else {
                 $('#modalAjouter').modal('toggle');
                 $('#messageTitre').text('Erreur');
@@ -311,9 +311,85 @@ function supprimer(ue) {
     })
 }
 
+function enseignant() {
+    $.ajax({
+        url: ppil + 'enseignant',
+        type: 'get',
+        success: function (res) {
+            var html = "<option selected value='0'>aucun</option>";
+            if (res != undefined) {
+                res.forEach(function (element) {
+                    html += "<option value='"+element.mail+"'>" + element.nom + " " + element.prenom + "</option>";
+                })
+            }
+            $('#resp').html(html);
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    })
+
+}
+
 function ajouterUE() {
+    var nomUE = $('#nomUEForm').val();
+    if(nomUE == "" || nomUE == "Obligatoire"){
+        $('#nomUEForm').val("Obligatoire");
+        $('#nomUEForm').css("color","red");
+    }else{
+        var heureCM = $('#heureCMForm').val();
+        var nbGroupeTD = $('#nbGroupeTDForm').val();
+        var heureTD = $('#heureTDForm').val();
+        var nbGroupeTP = $('#nbGroupeTPForm').val();
+        var heureTP = $('#heureTPForm').val();
+        var nbGroupeEI = $('#nbGroupeEIForm').val();
+        var heureEI = $('#heureEIForm').val();
+        var respon = $('#resp option:selected').val();
+        $.ajax({
+            url: ppil + 'ajout/ue',
+            type: 'post',
+            data: {'form' : value,'nom' : nomUE, 'heureCM' : heureCM, 'heureTD' : heureTD, 'heureTP' : heureTP, 'heureEI' : heureEI,
+            'nbGroupeTD' : nbGroupeTD, 'nbGroupeTP' : nbGroupeTP , 'nbGroupeEI' : nbGroupeEI, 'resp' : respon},
+            success: function (res) {
+                $('#modalAjouterUE').modal('toggle');
+                if (res != undefined && res[0] == 'true') {
+                    $('#messageTitre').text('Succès');
+                    $('#message').text('UE ajouté.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                }else{
+                    $('#messageTitre').text('Erreur');
+                    $('#message').text('Problème lors de l\'ajout.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                }
+                recupererUE(ppil);
+                $('#nomUEForm').css("color","black");
+                $('#nomUEForm').val("");
+                $('#heureCMForm').val(0);
+                $('#nbGroupeTDForm').val(0);
+                $('#heureTDForm').val(0);
+                $('#nbGroupeTPForm').val(0);
+                $('#heureTPForm').val(0);
+                $('#nbGroupeEIForm').val(0);
+                $('#heureEIForm').val(0);
+
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        });
 
 
+    }
+
+    
 }
 
 

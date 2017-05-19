@@ -135,7 +135,7 @@ class VueFormation extends AbstractView
             </div>
             <div class="panel-default container-fluid">
                 <button type="button" class="btn btn-default pull-left" onclick="creerForm()" id="creerForm">Creer une formation</button>
-                <button type="button" class="btn btn-default pull-left" onclick="ajouterUE()" id="ajouterUE">Ajouter UE</button>
+                <button type="button" class="btn btn-default pull-left"  id="ajouterUE">Ajouter UE</button>
                 <button type="button" class="btn  btn-primary pull-right" onclick="modifUE()" id="valider">Valider</button>
                 <div id="erreur" class="alert alert-danger text-center">
                     <strong>Erreur : </strong> Chiffres négatifs dans un des champs.
@@ -201,6 +201,7 @@ class VueFormation extends AbstractView
                          backdrop: 'static',
                          keyboard: false
                     });
+                    enseignant();
                });
                $('#modalValideUE').click(function(){
                     ajouterUE();
@@ -306,51 +307,59 @@ END;
 			  <div class="modal-body">
                 <form class="form-signin form-horizontal" method="post" action="" id="ajoutUE">
                     <div class="form-group">
-				        <label class="control-label col-sm-5" for="nomUE">Nom UE :</label>
+				        <label class="control-label col-sm-5" for="nomUEForm">Nom UE :</label>
 				        <div class="col-sm-4">
-				            <input type="text" id="nomUE" name="nomUE" class="form-control" placeholder="Nom UE" required="true"/>
+				            <input type="text" id="nomUEForm" name="nomUEForm" class="form-control" placeholder="Nom UE" required="true"/>
 				        </div>
 			        </div>
                     <div class="form-group">
-				        <label class="control-label col-sm-5" for="heureCM">Heure CM :</label>
+				        <label class="control-label col-sm-5" for="heureCMForm">Heure CM :</label>
 				        <div class="col-sm-4">
-				            <input type="number" id="heureCM" name="heureCM" class="form-control" value="0" placeholder="0" />
+				            <input type="number" id="heureCMForm" name="heureCMForm" class="form-control" min="0" value="0" placeholder="0" />
 				        </div>
 			        </div>
 			        <div class="form-group">
-				        <label class="control-label col-sm-5" for="nbGroupeTD">Nombre de Groupe TD :</label>
+				        <label class="control-label col-sm-5" for="nbGroupeTDForm">Nombre de Groupe TD :</label>
 				        <div class="col-sm-4">
-				            <input type="number" id="nbGroupeTD" name="nbGroupeTD" class="form-control" value="0" placeholder="0" />
+				            <input type="number" id="nbGroupeTDForm" name="nbGroupeTDForm" class="form-control" min="0" value="0" placeholder="0" />
 				        </div>
 			        </div>
 			        <div class="form-group">
-				        <label class="control-label col-sm-5" for="heureTD">Heure TD :</label>
+				        <label class="control-label col-sm-5" for="heureTDForm">Heure TD :</label>
 				        <div class="col-sm-4">
-				            <input type="number" id="heureTD" name="heureTD" class="form-control" value="0" placeholder="0" />
+				            <input type="number" id="heureTDForm" name="heureTDForm" class="form-control" min="0" value="0" placeholder="0" />
 				        </div>
 			        </div>
 			        <div class="form-group">
-				        <label class="control-label col-sm-5" for="nbGroupeTP">Nombre de Groupe TP :</label>
+				        <label class="control-label col-sm-5" for="nbGroupeTPForm">Nombre de Groupe TP :</label>
 				        <div class="col-sm-4">
-				            <input type="number" id="nbGroupeTP" name="nbGroupeTP" class="form-control" value="0" placeholder="0" />
+				            <input type="number" id="nbGroupeTPForm" name="nbGroupeTPForm" class="form-control" min="0" value="0" placeholder="0" />
 				        </div>
 			        </div>
 			        <div class="form-group">
-				        <label class="control-label col-sm-5" for="heureTP">Heure TP :</label>
+				        <label class="control-label col-sm-5" for="heureTPForm">Heure TP :</label>
 				        <div class="col-sm-4">
-				            <input type="number" id="heureTP" name="heureTP" class="form-control" value="0" placeholder="0" />
+				            <input type="number" id="heureTPForm" name="heureTPForm" class="form-control" min="0" value="0" placeholder="0" />
 				        </div>
 			        </div>
 			        <div class="form-group">
-				        <label class="control-label col-sm-5" for="nbGroupeEI">Nombre de Groupe EI :</label>
+				        <label class="control-label col-sm-5" for="nbGroupeEIForm">Nombre de Groupe EI :</label>
 				        <div class="col-sm-4">
-				            <input type="number" id="nbGroupeEI" name="nbGroupeEI" class="form-control" value="0" placeholder="0" />
+				            <input type="number" id="nbGroupeEIForm" name="nbGroupeEIForm" class="form-control" min="0" value="0" placeholder="0" />
 				        </div>
 			        </div>
 			        <div class="form-group">
-				        <label class="control-label col-sm-5" for="heureEI">Heure EI :</label>
+				        <label class="control-label col-sm-5" for="heureEIForm">Heure EI :</label>
 				        <div class="col-sm-4">
-				            <input type="number" id="heureEI" name="heureEI" class="form-control" value="0" placeholder="0" />
+				            <input type="number" id="heureEIForm" name="heureEIForm" class="form-control" min="0" value="0" placeholder="0" />
+				        </div>
+			        </div>
+                    <div class="form-group">
+				        <label class="control-label col-sm-5" for="resp">Responsable : </label>
+				        <div class="col-sm-4">
+				            <select id="resp" class="form-control" name="resp">
+				             
+				            </select>
 				        </div>
 			        </div>
 			    </form>
