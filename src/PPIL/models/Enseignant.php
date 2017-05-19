@@ -30,6 +30,16 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 		$new_notification_inscription->mot_de_passe = $mdp;
         $new_notification_inscription->save();
     }
+	
+	public static function inscriptionParDI($mail, $nom, $prenom, $statut, $mdp){
+		$new_enseignant = new Enseignant();
+		$new_enseignant->nom = $nom;
+		$new_enseignant->prenom = $prenom;
+		$new_enseignant->mail = $mail;
+		$new_enseignant->statut = $statut;
+		$new_enseignant->mdp = $mdp;
+		$new_enseignant->save();
+	}
 
 	public static function modifie_intervention($enseignant, $id_intervention, $id_UE, $datas, $supprimer, $nom_UE, $nom_formation) {
         if($id_intervention == null && $id_UE == null

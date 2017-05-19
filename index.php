@@ -215,4 +215,26 @@ $app->get('/home/annuaire', function (){
 })->name('annuaireUtilisateur');
 /* ===================== liens dans la barre de navigation ==================*/
 
+/* ===================== liens dans enseignants ==================*/
+
+$app->get('/home/enseignants/vueinscriptionDI', function (){
+    $c = new EnseignantsControler();
+    $c->lancerVueInscriptionParDI();
+})->name('vueinscriptionDI');
+
+$app->post('/home/enseignants/vueinscriptionDI', function (){
+    $c = new EnseignantsControler();
+    $c->lancerVueInscriptionParDI();
+});
+
+$app->get('/home/enseignants/inscriptionDI', function (){
+    $c = new EnseignantsControler();
+    $c->inscriptionParDI();
+})->name('inscriptionDI');
+
+$app->post('/home/enseignants/inscriptionDI', function (){
+    $c = new EnseignantsControler();
+    $c->inscriptionParDI();
+});
+
 $app->run();
