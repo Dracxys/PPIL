@@ -56,6 +56,7 @@ class VueEnseignants extends AbstractView{
 				  </tr>
 END;
 
+        $i=0;
         foreach ($u as $user) {
             if ($_SESSION['mail']!=$user->mail) {
                 if($user->volumeCourant==NULL) {
@@ -64,7 +65,8 @@ END;
                     $volumeCourant=$user->volumeCourant;
                 }
                 $volFST = self::getVolumeFST($user);
-                $html .= "<tr>" .
+                //$html .= "<tr id=\"ligne".$i."\" onclick=\"select(this)\">" .
+                $html .= "<tr name=\"ligne\" id=\"".$i."\" onclick=\"select(".$i.")\">" .
                     "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
                     "<th class=\"text-center\">" . $user->statut . "</th>" .
                     "<th class=\"text-center\">" . $user->volumeMin . "</th>" .
@@ -72,6 +74,7 @@ END;
                     "<th class=\"text-center\">" . $volFST . "</th>" .
 
                     "</tr>";
+                $i++;
             }
         }
         $html .= <<< END
@@ -89,7 +92,7 @@ END;
 
 END;
         $html .= self::footerHTML();
-        //$html .= "      <script type=\"text/javascript\" src=\"/PPIL/assets/js/enseignants.js\">     </script>";
+        $html .= "<script type=\"text/javascript\" src=\"/PPIL/assets/js/enseignants.js\">     </script>";
         return $html;
     }
 
