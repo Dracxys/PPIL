@@ -154,7 +154,6 @@ function choixUE() {
             success: function (tab) {
                 console.log("succès ajax");
                 if (tab != undefined){
-                    console.log(tab);
                     var html;
                     for (var i = 0; i < tab.length; i = i + 9){
                         html += "<tr>"
