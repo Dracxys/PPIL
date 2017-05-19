@@ -12,6 +12,8 @@ namespace PPIL\controlers;
 use PPIL\models\Enseignant;
 use PPIL\models\Formation;
 use PPIL\models\Intervention;
+use PPIL\models\Notification;
+use PPIL\models\NotificationIntervention;
 use PPIL\models\Responsabilite;
 use PPIL\models\UE;
 use PPIL\views\VueFormation;
@@ -226,8 +228,33 @@ class FormationControler
         $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT,FILTER_NULL_ON_FAILURE);
         $ue = UE::find($id);
         if(!empty($ue)){
-            $ue->id_formation = null;
-            $ue->save();
+            $inter = Intervention::where('id_UE','=',$id)->get();
+            $c = new MailControler();
+            foreach ($inter as $value){
+                if($_SESSION['mail'] != $value->mail_enseignant){
+                    $c->sendMaid($value->mail_enseignant,"UE supprimé","UE : " . $ue->nom_UE . " a été supprimé.");
+                }
+                $value->delete();
+                $e = Enseignant::find($value->mail_enseignant);
+                Enseignant::conversionHeuresTD($e);
+            }
+            $resp = Responsabilite::where('id_UE','=',$id)->get();
+            foreach ($resp as $value){
+                if($_SESSION['mail'] != $value->enseignant){
+                    $c->sendMaid($value->enseignant,"UE supprimé","Vous n'êtes plus responsable de l'UE :  " . $ue->nom_UE . ".");
+                }
+                $value->delete();
+            }
+            $notif = NotificationIntervention::where('id_UE','=',$id)->get();
+            foreach ($notif as $value){
+                $n = Notification::where('id_notification','=',$value->id_notification)->first();
+                if($_SESSION['mail'] != $n->mail_source){
+                    $c->sendMaid($value->mail_source,"UE supprimé","UE : " . $ue->nom_UE . " a été supprimé.");
+                }
+                $value->delete();
+                $n->delete();
+            }
+            $ue->delete();
             $app->response->headers->set('Content-Type', 'application/json');
             $res = array();
             $res[] = 'true';

@@ -289,7 +289,7 @@ function supprimer(ue) {
         success: function (res) {
             if (res != undefined && res[0] == 'true') {
                 $('#messageTitre').text('Succès');
-                $('#message').text('Cette UE n\'est plus associé à cette formation.');
+                $('#message').text('Cette UE a bien été supprimé.');
                 $('#modalDemandeEffectuee').modal({
                     backdrop: 'static',
                     keyboard: false
@@ -297,7 +297,7 @@ function supprimer(ue) {
                 recupererUE(ppil);
             } else {
                 $('#messageTitre').text('Erreur');
-                $('#message').text('Problème lors de la désassociation de cette UE à cette formation.');
+                $('#message').text('Problème lors de la suppression de cette UE.');
                 $('#modalDemandeEffectuee').modal({
                     backdrop: 'static',
                     keyboard: false
