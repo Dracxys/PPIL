@@ -177,5 +177,6 @@ function ajouter(lien, lien_autre){
 				});
 			}
 		});
+		$('#modalAjouter').modal('hide');
 	});
 }
