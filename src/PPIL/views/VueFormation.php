@@ -21,6 +21,7 @@ class VueFormation extends AbstractView
         $valider = Slim::getInstance()->urlFor('home');
         $lienInfoForm = Slim::getInstance()->urlFor('infoForm');
         $mes = self::message();
+        $ue = self::ajouterUE();
         $html .= <<< END
         <div class="container">
         <div id="formation" class="panel panel-default ">
@@ -133,12 +134,14 @@ class VueFormation extends AbstractView
             </div>
             <div class="panel-default container-fluid">
                 <button type="button" class="btn btn-default pull-left" onclick="creerForm()" id="creerForm">Creer une formation</button>
+                <button type="button" class="btn btn-default pull-left" onclick="ajouterUE()" id="ajouterUE">Ajouter UE</button>
                 <button type="button" class="btn  btn-primary pull-right" onclick="modifUE()" id="valider">Valider</button>
                 <div id="erreur" class="alert alert-danger text-center">
                     <strong>Erreur : </strong> Chiffres négatifs dans un des champs.
                 </div>
                 $mes
                 $form
+                $ue
             </div>
             <div class=" panel-default">
                 <div class="header">
@@ -191,6 +194,12 @@ class VueFormation extends AbstractView
                });  
                $('#modalValide').click(function(){
                     ajouterForm();
+               });
+               $('#ajouterUE').click(function(){
+                    ajouterUE();
+               });
+               $('#modalAnnuleUE').click(function() {
+                    $('#modalAjouterUE').modal('toggle');
                });
 			});
         </script>
@@ -264,15 +273,6 @@ END;
 				        <input type="text" id="nomForm" name="nomForm" class="form-control" placeholder="Nom de la formation" required="true"/>
 				    </div>
 			    </div>
-			    <div class="form-group">
-				    <label class="control-label col-sm-4" for="fst">Formation de la FST : </label>
-				    <div class="col-sm-6">
-				        <select class="form-control" id="selectFst">
-				            <option selected value="1">Oui</option>
-				            <option value="0">Non</option>
-				        </select>
-				    </div>
-			    </div>
 			  </div>
 			  <div class="modal-footer">
                 <button type="button" class="btn btn-primary"  id="modalValide">Valider</button>
@@ -281,6 +281,40 @@ END;
 			</div>
 		  </div>
 		</div>
+END;
+        return $html;
+    }
+
+    public static function ajouterUE(){
+        $html = <<< END
+        <div class="modal fade text-center" id="modalAjouterUE" role="dialog">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h4 class="modal-title">Ajouter un UE</h4>
+			  </div>
+			  <div class="modal-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered ">
+                    <thead>
+                      <tr>
+                        <th class="text-center hidden">Identifiant UE</th>  
+                        <th class="text-center">UE</th>
+						<th class="text-center">Sélectionner</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dispoUE">
+                    </tbody>
+                    </table>
+                </div>
+			  <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  id="modalValideUE">Valider</button>
+                 <button type="button" class="btn btn-default"  id="modalAnnuleUE">Annuler</button>
+			  </div>
+			  </div>
+		    </div>
+		  </div>
+        </div>
 END;
         return $html;
     }

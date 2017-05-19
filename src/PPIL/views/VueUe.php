@@ -88,9 +88,11 @@ END;
            $(function(){
                setLien("$lienInfoUE")
                choixUE();
+               boutonValidationModif();
                listIntervenant();
                $('#selectUE').change(function() {
                choixUE();
+               boutonValidationModif();
                listIntervenant();
                });
                $('#erreur').hide();
@@ -193,6 +195,8 @@ END;
                     </div>
                 </div>
                 <div class="panel-defaul container-fluid">
+                <div id="boutton_validation">
+                </div>
                 <div id="erreur" class="alert alert-danger text-center">
                     <strong>Erreur : </strong> Chiffres négatifs dans un des champs.
                 </div>
