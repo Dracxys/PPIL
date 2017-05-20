@@ -219,6 +219,8 @@ class VueFormation extends AbstractView
                $('#erreur').hide();
                $('#modalAnnule').click(function() {
                     $('#modalAjouterForm').modal('toggle');
+                    $('#modalValideModif').addClass('hidden');
+                    $('#modalValide').removeClass('hidden');
                });  
                $('#modalValide').click(function(){
                     ajouterForm();
@@ -254,6 +256,9 @@ class VueFormation extends AbstractView
                });
                $('#modifierForm').click(function(){
                     modifForm();
+               });
+               $('#modalValideModif').click(function(){
+                    modifFormBase();
                });
 			});
         </script>
@@ -332,7 +337,7 @@ END;
 			    <div class="form-group">
 				        <label class="control-label col-sm-5" for="resp">Responsable 1 : </label>
 				        <div class="col-sm-4">
-				            <select id="respForm1" class="form-control" name="respForm">
+				            <select id="respForm1" class="form-control" name="respForm1">
 				             
 				            </select>
 				        </div>
@@ -340,7 +345,7 @@ END;
 			    <div class="form-group">
 				        <label class="control-label col-sm-5" for="resp">Responsable 2 : </label>
 				        <div class="col-sm-4">
-				            <select id="respForm2" class="form-control" name="respForm">
+				            <select id="respForm2" class="form-control" name="respForm2">
 				             
 				            </select>
 				        </div>
@@ -348,7 +353,7 @@ END;
 			    <div class="form-group">
 				        <label class="control-label col-sm-5" for="resp">Responsable  3: </label>
 				        <div class="col-sm-4">
-				            <select id="respForm3" class="form-control" name="respForm">
+				            <select id="respForm3" class="form-control" name="respForm3">
 				             
 				            </select>
 				        </div>
@@ -356,15 +361,16 @@ END;
 			    <div class="form-group">
 				        <label class="control-label col-sm-5" for="resp">Responsable 4 : </label>
 				        <div class="col-sm-4">
-				            <select id="respForm4" class="form-control" name="respForm">
+				            <select id="respForm4" class="form-control" name="respForm4">
 				             
 				            </select>
 				        </div>
 			    </div>
 			  </div>
 			  <div class="modal-footer">
+                <button type="button" class="btn btn-primary hidden"  id="modalValideModif">Valider</button>
                 <button type="button" class="btn btn-primary"  id="modalValide">Valider</button>
-                 <button type="button" class="btn btn-default"  id="modalAnnule">Annuler</button>
+                <button type="button" class="btn btn-default"  id="modalAnnule">Annuler</button>
 			  </div>
 			</div>
 		  </div>
@@ -444,7 +450,7 @@ END;
               </div>
 			  <div class="modal-footer">
                 <button type="button" class="btn btn-primary"  id="modalValideUE">Valider</button>
-                 <button type="button" class="btn btn-default"  id="modalAnnuleUE">Annuler</button>
+                <button type="button" class="btn btn-default"  id="modalAnnuleUE">Annuler</button>
 			  </div>
 			  </div>
 		    </div>

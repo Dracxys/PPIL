@@ -536,11 +536,46 @@ function supprimerForm() {
 }
 
 function modifForm() {
+    enseignant();
+    $('#modalValide').addClass('hidden');
+    $('#modalValideModif').removeClass('hidden');
     $.ajax({
         url: ppil + '/info',
         type: 'post',
         data: { 'nom' : value},
         success: function (res) {
+            $('#nomForm').val(value);
+            var i = 0;
+            res.forEach(function (element) {
+                var mail = element.enseignant;
+                switch (i){
+                    case 0:
+                        //console.log(mail);
+                        //var tmp = $('#respForm1 option:selected').val();
+                        //console.log(tmp);
+                        $('#respForm1').val(mail);
+                        i++;
+                        break;
+                    case 1:
+                        $('#respForm2').val(mail);
+                        i++;
+                        break;
+                    case 2:
+                        $('#respForm3').val(mail);
+                        i++;
+                        break;
+                    case 3:
+                        $('#respForm4').val(mail);
+                        i++;
+                        break;
+
+                }
+
+            });
+            $('#modalAjouterForm').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
 
         },
         xhrFields: {
@@ -548,6 +583,108 @@ function modifForm() {
         },
         crossDomain: true
     });
+}
+
+function modifFormBase() {
+    var nom = $('#nomForm').val();
+    if(nom == "" || nom == "Obligatoire"){
+        $('#nomForm').val("Obligatoire");
+        $('#nomForm').css("color","red");
+    }else {
+        var respon1 = $('#respForm1 option:selected').val();
+        var respon2 = $('#respForm2 option:selected').val();
+        var respon3 = $('#respForm3 option:selected').val();
+        var respon4 = $('#respForm4 option:selected').val();
+        if (respon1 != '0' && respon2 != '0' && respon1 == respon2) {
+            $('#respForm2').css('color', 'red');
+        } else if (respon1 != '0' && respon3 != '0' && respon1 == respon3) {
+            $('#respForm3').css('color', 'red');
+        } else if (respon1 != '0' && respon4 != '0' && respon1 == respon4) {
+            $('#respForm4').css('color', 'red');
+        } else if (respon2 != '0' && respon3 != '0' && respon2 == respon3) {
+            $('#respForm3').css('color', 'red');
+        } else if (respon2 != '0' && respon4 != '0' && respon2 == respon4) {
+            $('#respForm4').css('color', 'red');
+        } else if (respon3 != '0' && respon4 != '0' && respon3 == respon4) {
+            $('#respForm4').css('color', 'red');
+        } else {
+            $('#modalValideModif').addClass('disabled');
+            var fst = 1;
+            $.ajax({
+                url: ppil + '/ue/modif/form',
+                type: 'post',
+                data: {'nom': nom, 'ancienNom' : value, 'resp1': respon1, 'resp2': respon2, 'resp3': respon3, 'resp4': respon4},
+                success: function (res) {
+                    if (res != undefined && res[0] == 'true') {
+                        $('#modalValideModif').addClass('hidden');
+                        $('#modalValide').removeClass('hidden');
+                        $('#modalAjouterForm').modal('toggle');
+                        $('#messageTitre').text('Succès');
+                        $('#message').text('La formation a bien été modifiée.');
+                        $('#modalDemandeEffectuee').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                        $('#modalValideModif').removeClass('disabled');
+                        $.ajax({
+                            url: ppil + '/ue/actu',
+                            type: 'post',
+                            success: function (res) {
+                                if (res != undefined) {
+                                    var html = "";
+                                    var i = 0;
+                                    res.forEach(function (element) {
+                                        if (i == 0) {
+                                            html += "<option selected value='" + element + "'>" + element + "</option>";
+                                        } else {
+                                            html += "<option>" + element + "</option>";
+                                        }
+
+                                    });
+                                    $('#selectForm').html(html);
+                                    recupererUE(ppil);
+                                    $('#nomForm').val("");
+                                    $('#nomForm').css("color", "black");
+                                    $('#respForm2').css('color', 'black');
+                                    $('#respForm3').css('color', 'black');
+                                    $('#respForm4').css('color', 'black');
+
+                                }
+
+                            },
+                            xhrFields: {
+                                withCredentials: true
+                            },
+                            crossDomain: true
+                        });
+
+                    } else {
+                        $('#modalValideModif').addClass('hidden');
+                        $('#modalValide').removeClass('hidden');
+                        $('#modalAjouterForm').modal('toggle');
+                        $('#messageTitre').text('Erreur');
+                        $('#message').text('Problème lors de la modification de la formation.');
+                        $('#modalDemandeEffectuee').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                        $('#nomForm').val("");
+                        $('#nomForm').css("color", "black");
+                        $('#nomForm').css("color", "black");
+                        $('#respForm2').css('color', 'black');
+                        $('#respForm3').css('color', 'black');
+                        $('#respForm4').css('color', 'black');
+                        $('#modalValideModif').removeClass('disabled');
+                    }
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true
+            })
+        }
+    }
+
 }
 
 

@@ -164,6 +164,11 @@ $app->post('/home/formation/info',function (){
     $c->form();
 });
 
+$app->post('/home/formation/ue/modif/form',function (){
+    $c = new FormationControler();
+    $c->modifierForm();
+});
+
 /* ===================== liens dans formation ==================*/
 
 /* ===================== liens dans la barre de navigation ==================*/
