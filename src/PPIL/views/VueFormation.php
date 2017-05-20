@@ -24,6 +24,7 @@ class VueFormation extends AbstractView
         $lienInfoForm = Slim::getInstance()->urlFor('formationUtilisateur');
         $mes = self::message();
         $ue = self::ajouterUE();
+        $del = self::delete();
         $html .= <<< END
         <div class="container">
         <div id="formation" class="panel panel-default ">
@@ -46,7 +47,9 @@ class VueFormation extends AbstractView
 					 <div class="btn-group pull-right">
                        <form class="navbar-form navbar-left">
 					  <button type="button" class="btn btn-default "  id="creerForm">Créer une formation</button>
-                      <button type="button" class="btn btn-default "  id="ajouterUE">Ajouter un UE</button>
+					  <button type="button" class="btn btn-default "  id="ajouterUE">Ajouter un UE</button>
+					  <button type="button" class="btn btn-default "  id="modifierForm">Modifier la formation</button>
+					  <button type="button" class="btn btn-default "  id="suppForm">Supprimer la formation</button>
 					 </form>
 					 </div>
 				   </div>
@@ -167,6 +170,7 @@ class VueFormation extends AbstractView
                 $mes
                 $form
                 $ue
+                $del
             </div>
             <div class=" panel-default">
                 <div class="header">
@@ -236,6 +240,22 @@ class VueFormation extends AbstractView
                $('#modalAnnuleUE').click(function() {
                     $('#modalAjouterUE').modal('toggle');
                });
+               $('#suppForm').click(function() {
+                    $('#deleteMess').text("Etes vous sûr de vouloir supprimer cette formation : " + $('#selectForm option:selected').val() + ".");
+                    $('#delete').modal({
+                         backdrop: 'static',
+                         keyboard: false
+                    });
+               });
+               $('#deleteAnnule').click(function() {
+                    $('#delete').modal('toggle');
+               });
+               $('#deleteForm').click(function() {
+                    supprimerForm();
+               });
+               $('#modifierForm').click(function(){
+                    modifForm();
+               });
 			});
         </script>
 END;
@@ -265,9 +285,9 @@ END;
         }
         $html .= "</select>";
         if ($val == 'DI') {
-            $html .= "<script type=\"text/javascript\">  $(function() { $('#creerForm').show(); });</script>";
+            $html .= "<script type=\"text/javascript\">  $(function() { $('#creerForm').show(); $('#suppForm').show(); });</script>";
         } else {
-            $html .= "<script type=\"text/javascript\">  $(function() { $('#creerForm').hide(); });</script>";
+            $html .= "<script type=\"text/javascript\">  $(function() { $('#creerForm').hide(); $('#suppForm').hide(); });</script>";
         }
         return $html;
     }
@@ -311,10 +331,33 @@ END;
 				    </div>
 			    </div>
 			    <div class="form-group">
-				        <label class="control-label col-sm-5" for="resp">Responsable : </label>
+				        <label class="control-label col-sm-5" for="resp">Responsable 1 : </label>
 				        <div class="col-sm-4">
-				            <select id="respForm" class="form-control" name="respForm">
+				            <select id="respForm1" class="form-control" name="respForm">
 
+				            </select>
+				        </div>
+			    </div>
+			    <div class="form-group">
+				        <label class="control-label col-sm-5" for="resp">Responsable 2 : </label>
+				        <div class="col-sm-4">
+				            <select id="respForm2" class="form-control" name="respForm">
+
+				            </select>
+				        </div>
+			    </div>
+			    <div class="form-group">
+				        <label class="control-label col-sm-5" for="resp">Responsable  3: </label>
+				        <div class="col-sm-4">
+				            <select id="respForm3" class="form-control" name="respForm">
+
+				            </select>
+				        </div>
+			    </div>
+			    <div class="form-group">
+				        <label class="control-label col-sm-5" for="resp">Responsable 4 : </label>
+				        <div class="col-sm-4">
+				            <select id="respForm4" class="form-control" name="respForm">
 				            </select>
 				        </div>
 			    </div>
@@ -410,4 +453,34 @@ END;
 END;
         return $html;
     }
+
+    public function delete(){
+        $html = <<< END
+        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirmer la suppression</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p id="deleteMess">Etes vous sûr de vouloir supprimer cette formation</p>
+                    <p class="debug-url"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="deleteAnnule" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <a id="deleteForm" class="btn btn-danger btn-ok">Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+END;
+        return $html;
+
+    }
+
 }
