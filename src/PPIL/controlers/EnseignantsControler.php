@@ -12,6 +12,7 @@ namespace PPIL\controlers;
 use PPIL\models\Enseignant;
 use PPIL\views\VueEnseignants;
 use PPIL\models\UE;
+use PPIL\models\NotificationInscription;
 use Slim\Slim;
 
 class EnseignantsControler {
@@ -35,7 +36,7 @@ class EnseignantsControler {
 	
 	public function lancerVueInscriptionParDI(){
 		$v = new VueEnseignants();
-		echo $v->inscritptionParDI();
+		echo $v->inscriptionParDI(0);
 	}
 	
 	public function inscriptionParDI(){
@@ -57,15 +58,16 @@ class EnseignantsControler {
                 $statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
 
                 Enseignant::inscriptionParDI($mail, $nom, $prenom, $statut, $mdp_hash);
-                //retour sur vue enseignant
+				$v = new VueEnseignants();
+				echo $v->inscriptionParDI(3);
             }else{
 				$v = new VueEnseignants();
-				$v->inscritptionParDI(1);
+				echo $v->inscriptionParDI(1);
 			}
 
         }else{
 			$v = new VueEnseignants();
-			$v->inscritptionParDI(2);
+			echo $v->inscriptionParDI(2);
 		}
 	}
 
