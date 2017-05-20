@@ -32,7 +32,7 @@ class UEControler
             if(!empty($respon)){
                 $privi = Enseignant::get_privilege($e);
                 if ($privi == 2) {
-                    $ue = UE::where('fst', 'like', 1)->get();
+                    $ue = UE::where('fst', '=', 1)->get();
                     $res = array();
                     foreach ($ue as $value) {
                         if (!in_array($value, $res)) {
@@ -45,14 +45,18 @@ class UEControler
                     $resp = Responsabilite::where('enseignant', 'like', $e->mail)->get();
                     $res = array();
                     foreach ($resp as $value) {
-                        $ue = UE::where('id_formation', 'like', $value->id_formation)->first();
+                        $ue = UE::where('id_formation', '=', $value->id_formation)->first();
+                        if (!in_array($ue, $res)) {
+                            $res[] = $ue;
+                        }
+                        $ue = UE::where('id_UE', '=', $value->id_UE)->first();
                         if (!in_array($ue, $res)) {
                             $res[] = $ue;
                         }
                     }
                     $intervention = Intervention::where('mail_enseignant', 'like', $e->mail)->get();
                     foreach ($intervention as $value){
-                        $ue = UE::where('id_UE', 'like', $value->id_UE)->where('fst', 'like', 1)->first();
+                        $ue = UE::where('id_UE', '=', $value->id_UE)->where('fst', 'like', 1)->first();
                         if(!in_array($ue, $res)){
                             $res[] = $ue;
                         }
@@ -60,15 +64,17 @@ class UEControler
                     $v = new VueUe();
                     echo $v->home($res);
                 } else {
-                    $resp = Responsabilite::where('enseignant', 'like', $e->mail)->first();
+                    $resp = Responsabilite::where('enseignant', 'like', $e->mail)->get();
                     $res = array();
-                    $ue = UE::where('id_UE', 'like', $resp->id_UE)->first();
-                       if (!in_array($ue, $res)) {
-                           $res[] = $ue;
-                       }
+                    foreach ($resp as $value){
+                        $ue = UE::where('id_UE', '=', $value->id_UE)->first();
+                        if(!in_array($ue, $res)){
+                            $res[] = $ue;
+                        }
+                    }
                     $intervention = Intervention::where('mail_enseignant', 'like', $e->mail)->get();
                     foreach ($intervention as $value){
-                        $ue = UE::where('id_UE', 'like', $value->id_UE)->where('fst', 'like', 1)->first();
+                        $ue = UE::where('id_UE', '=', $value->id_UE)->where('fst', '=', 1)->first();
                         if(!in_array($ue, $res)){
                             $res[] = $ue;
                         }
@@ -80,7 +86,7 @@ class UEControler
                 $res = array();
                 $intervention = Intervention::where('mail_enseignant', 'like', $e->mail)->get();
                 foreach ($intervention as $value){
-                    $ue = UE::where('id_UE', 'like', $value->id_UE)->where('fst', 'like', 1)->first();
+                    $ue = UE::where('id_UE', '=', $value->id_UE)->where('fst', '=', 1)->first();
                     if(!in_array($ue, $res)){
                         $res[] = $ue;
                     }
