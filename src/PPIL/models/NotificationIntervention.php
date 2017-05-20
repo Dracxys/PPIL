@@ -5,6 +5,7 @@ class NotificationIntervention extends Notification{
 	protected $table = "NotificationIntervention";
 	protected $primaryKey = "id_notification";
 	public $timestamps = false;
+    public $incrementing = false;
 
 	public static function appliquer($notification_intervention, $notification) {
         if(is_null($notification_intervention->id_intervention)){
@@ -65,17 +66,25 @@ class NotificationIntervention extends Notification{
 
             $ue = UE::where('id_UE', '=', $notification_intervention->id_UE)
                 ->first();
+
+
             if(!empty($intervention) && !empty($ue)){
-                $intervention->heuresCM = $notification_intervention->heuresCM;
-                $intervention->heuresTP = $notification_intervention->heuresTP;
-                $intervention->heuresTD = $notification_intervention->heuresTD;
-                $intervention->heuresEI = $notification_intervention->heuresEI;
-                $intervention->groupeTP = $notification_intervention->groupeTP;
-                $intervention->groupeTD = $notification_intervention->groupeTD;
-                $intervention->groupeEI = $notification_intervention->groupeEI;
-                $intervention->save();
-                UE::recalculer($ue);
-                Enseignant::conversionHeuresTD(Enseignant::where('mail', 'like', $intervention->mail_enseignant)->first());
+                if($notification_intervention->supprimer){
+                    $intervention->delete();
+                    UE::recalculer($ue);
+                    Enseignant::conversionHeuresTD(Enseignant::where('mail', 'like', $intervention->mail_enseignant)->first());
+                } else {
+                    $intervention->heuresCM = $notification_intervention->heuresCM;
+                    $intervention->heuresTP = $notification_intervention->heuresTP;
+                    $intervention->heuresTD = $notification_intervention->heuresTD;
+                    $intervention->heuresEI = $notification_intervention->heuresEI;
+                    $intervention->groupeTP = $notification_intervention->groupeTP;
+                    $intervention->groupeTD = $notification_intervention->groupeTD;
+                    $intervention->groupeEI = $notification_intervention->groupeEI;
+                    $intervention->save();
+                    UE::recalculer($ue);
+                    Enseignant::conversionHeuresTD(Enseignant::where('mail', 'like', $intervention->mail_enseignant)->first());
+                }
             }
         }
 

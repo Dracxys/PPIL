@@ -15,6 +15,7 @@ class NotificationResponsabilite extends Notification
     protected $table = "NotificationResponsabilite";
     protected $primaryKey = "id_notification";
     public $timestamps = false;
+    public $incrementing = false;
 
     public static function appliquer($notification_responsabilite, $notification)
     {

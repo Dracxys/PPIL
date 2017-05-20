@@ -106,7 +106,7 @@ END;
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
             $interventions = Intervention::where('mail_enseignant', '=', $e->mail)
                            ->get();
-            $notifications = Notification::where('mail_destinataire', '=', $e->mail)
+            $notifications = Notification::where('mail_source', '=', $e->mail)
                            ->where('type_notification', '=', 'PPIL\models\NotificationIntervention')
                            ->get();
 
@@ -126,6 +126,7 @@ END;
                     $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
                                                //                                               ->where('id_UE', '=', $intervention->id_UE)
                                                ->get();
+
 
                     foreach($notification_intervention as $n){
                         if(!empty($n)){

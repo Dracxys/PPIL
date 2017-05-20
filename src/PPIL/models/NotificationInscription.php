@@ -6,6 +6,7 @@ use PPIL\controlers\MailControler;
 class NotificationInscription extends Notification{
 	protected $table = "NotificationInscription";
 	protected $primaryKey = "id_notification";
+    public $incrementing = false;
 	public $timestamps = false;
 
     public static function appliquer($notificationinscription, $notification){

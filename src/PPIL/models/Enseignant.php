@@ -30,7 +30,7 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 		$new_notification_inscription->mot_de_passe = $mdp;
         $new_notification_inscription->save();
     }
-	
+
 	public static function inscriptionParDI($mail, $nom, $prenom, $statut, $mdp){
 		$new_enseignant = new Enseignant();
 		$new_enseignant->nom = $nom;
@@ -43,9 +43,10 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 	}
 
 	public static function modifie_intervention($enseignant, $id_intervention, $id_UE, $datas, $supprimer, $nom_UE, $nom_formation) {
+
         if($id_intervention == null && $id_UE == null
         && $nom_UE != null && $nom_formation != null){
-            # Pas besoin de validation, on crée, applique et efface la notification
+            # Pas besoin de validation, on crée et applique la notification
             $n = new Notification();
             $n->type_notification = 'PPIL\models\NotificationIntervention';
             $n->mail_source = $enseignant->mail;
@@ -58,9 +59,9 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
             $new_notification_intervention->heuresTD = $datas['heuresTD'];
             $new_notification_intervention->heuresTP = $datas['heuresTP'];
             $new_notification_intervention->heuresEI = $datas['heuresEI'];
-            $new_notification_intervention->groupeTD = $datas['heuresTD'];
-            $new_notification_intervention->groupeTP = $datas['heuresTP'];
-            $new_notification_intervention->groupeEI = $datas['heuresEI'];
+            $new_notification_intervention->groupeTD = $datas['groupeTD'];
+            $new_notification_intervention->groupeTP = $datas['groupeTP'];
+            $new_notification_intervention->groupeEI = $datas['groupeEI'];
 
             $new_notification_intervention->id_intervention = $id_intervention;
             $new_notification_intervention->id_UE = $id_UE;
@@ -70,8 +71,8 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 
             $new_notification_intervention->save();
             NotificationIntervention::appliquer($new_notification_intervention, $n);
-            $new_notification_intervention->delete();
-            $n->delete();
+            //  $new_notification_intervention->delete();
+            //$n->delete();
 
         } else {
             $ue = UE::where('id_UE', '=', $id_UE)
@@ -90,15 +91,16 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
                 $n->save();
 
                 $new_notification_intervention = new NotificationIntervention();
+
                 $new_notification_intervention->id_notification = $n->id_notification;
 
                 $new_notification_intervention->heuresCM = $datas['heuresCM'];
                 $new_notification_intervention->heuresTD = $datas['heuresTD'];
                 $new_notification_intervention->heuresTP = $datas['heuresTP'];
                 $new_notification_intervention->heuresEI = $datas['heuresEI'];
-                $new_notification_intervention->groupeTD = $datas['heuresTD'];
-                $new_notification_intervention->groupeTP = $datas['heuresTP'];
-                $new_notification_intervention->groupeEI = $datas['heuresEI'];
+                $new_notification_intervention->groupeTD = $datas['groupeTD'];
+                $new_notification_intervention->groupeTP = $datas['groupeTP'];
+                $new_notification_intervention->groupeEI = $datas['groupeEI'];
 
                 $new_notification_intervention->id_intervention = $id_intervention;
                 $new_notification_intervention->id_UE = $id_UE;
@@ -109,8 +111,8 @@ class Enseignant extends \Illuminate\Database\Eloquent\Model{
 
                 if($ue->fst == false){
                     NotificationIntervention::appliquer($new_notification_intervention, $n);
-                    $new_notification_intervention->delete();
-                    $n->delete();
+                    //$new_notification_intervention->delete();
+                    //$n->delete();
                 } else {
                     $resp = Responsabilite::where('intituleResp', '=', 'Responsable UE')
                           ->where('id_UE', '=', $id_UE)
