@@ -157,6 +157,11 @@ $app->post('/home/formation/supprimer',function (){
     $c->supprimerForm();
 });
 
+$app->post('/home/formation/info',function (){
+    $c = new FormationControler();
+    $c->form();
+});
+
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
     $c = new ModifProfilControler();

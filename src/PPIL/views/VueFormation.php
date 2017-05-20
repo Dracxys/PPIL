@@ -46,8 +46,9 @@ class VueFormation extends AbstractView
 					 <div class="btn-group pull-right">
                        <form class="navbar-form navbar-left">
 					  <button type="button" class="btn btn-default "  id="creerForm">Créer une formation</button>
+					  <button type="button" class="btn btn-default "  id="ajouterUE">Ajouter un UE</button>
+					  <button type="button" class="btn btn-default "  id="modifierForm">Modifier la formation</button>
 					  <button type="button" class="btn btn-default "  id="suppForm">Supprimer la formation</button>
-                      <button type="button" class="btn btn-default "  id="ajouterUE">Ajouter un UE</button>
 					 </form>
 					 </div>
 				   </div>
@@ -251,6 +252,9 @@ class VueFormation extends AbstractView
                $('#deleteForm').click(function() {
                     supprimerForm();
                });
+               $('#modifierForm').click(function(){
+                    modifForm();
+               });
 			});
         </script>
 END;
@@ -326,9 +330,33 @@ END;
 				    </div>
 			    </div>
 			    <div class="form-group">
-				        <label class="control-label col-sm-5" for="resp">Responsable : </label>
+				        <label class="control-label col-sm-5" for="resp">Responsable 1 : </label>
 				        <div class="col-sm-4">
-				            <select id="respForm" class="form-control" name="respForm">
+				            <select id="respForm1" class="form-control" name="respForm">
+				             
+				            </select>
+				        </div>
+			    </div>
+			    <div class="form-group">
+				        <label class="control-label col-sm-5" for="resp">Responsable 2 : </label>
+				        <div class="col-sm-4">
+				            <select id="respForm2" class="form-control" name="respForm">
+				             
+				            </select>
+				        </div>
+			    </div>
+			    <div class="form-group">
+				        <label class="control-label col-sm-5" for="resp">Responsable  3: </label>
+				        <div class="col-sm-4">
+				            <select id="respForm3" class="form-control" name="respForm">
+				             
+				            </select>
+				        </div>
+			    </div>
+			    <div class="form-group">
+				        <label class="control-label col-sm-5" for="resp">Responsable 4 : </label>
+				        <div class="col-sm-4">
+				            <select id="respForm4" class="form-control" name="respForm">
 				             
 				            </select>
 				        </div>
@@ -454,4 +482,5 @@ END;
         return $html;
 
     }
+
 }
