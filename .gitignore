@@ -8,7 +8,7 @@ composer\.lock
 vendor/
 
 composer.lock
-
+phpinfo.php
 db.ppil.conf.ini
 
 #*
