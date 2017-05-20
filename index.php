@@ -107,6 +107,8 @@ $app->post("/home/modifResponsabilite",function(){
     $c->modifRespo();
 })->name('modificationResponsabilite');
 
+/* ===================== liens dans formation ==================*/
+
 $app->post('/home/formation/ue/',function () use ($app){
     $c = new FormationControler();
     $c->infoForm();
@@ -161,6 +163,8 @@ $app->post('/home/formation/info',function (){
     $c = new FormationControler();
     $c->form();
 });
+
+/* ===================== liens dans formation ==================*/
 
 /* ===================== liens dans la barre de navigation ==================*/
 $app->get('/home/profil', function (){
@@ -260,5 +264,12 @@ $app->post('/home/enseignants/inscriptionParDI', function (){
     $c = new EnseignantsControler();
     $c->inscriptionParDI();
 });
+
+$app->post('/home/enseignants', function (){
+    $c = new EnseignantsControler();
+    $c->home();
+});
+
+/* ===================== liens dans enseignants ==================*/
 
 $app->run();
