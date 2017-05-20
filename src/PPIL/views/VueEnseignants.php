@@ -16,7 +16,8 @@ use PPIL\models\Responsabilite;
 
 class VueEnseignants extends AbstractView{
     public function home($u){
-        $html  = self::headHTML();
+        $scripts_and_css = "";
+        $html  = self::headHTML($scripts_and_css);
         $html .= self::navHTML("Enseignants");
 		$ajouter = Slim::getInstance()->urlFor("vueinscriptionDI");
         $html .= <<< END
@@ -39,9 +40,9 @@ class VueEnseignants extends AbstractView{
 				<form class="form-signin form-horizontal" method="post">
 				<div class="collapse navbar-collapse" id="navbar_panel">
 				  <div class="navbar-right">
-                                       <button type="submit" class="btn btn-default" formaction="$ajouter"  formnovalidate="false" id="ajouterEnseignants">Ajouter</button>
-                                        <button type="button" class="btn btn-default navbar-btn" id="exporterEnseignants">Exporter</button>
-                                    </div>
+                    <button type="sumbit" class="btn btn-default navbar-btn" formaction="$ajouter"  formnovalidate="false" id="ajouterEnseignants">Ajouter</button>
+                    <button type="button" class="btn btn-default navbar-btn" id="exporterEnseignants">Exporter</button>
+                  </div>
 				</div>
 				</form>
 			  </div>
@@ -57,8 +58,7 @@ class VueEnseignants extends AbstractView{
 					<th class="text-center">Service réalisé</th>
 					<th class="text-center">Service réalisé à la FST</th>
 				  </tr>
-                
-                
+
 END;
 
         $i=0;
@@ -101,8 +101,9 @@ END;
         return $html;
     }
 
-	public static function inscriptionParDI($num){
-		$html = self::headHTML();
+	public function inscriptionParDI($num){
+        $scripts_and_css = "";
+		$html = self::headHTML($scripts_and_css);
 		$html .= self::navHTML("Enseignants");
         $valider = Slim::getInstance()->urlFor("inscriptionParDI");
         $annuler = Slim::getInstance()->urlFor("enseignantsUtilisateur");
@@ -177,7 +178,6 @@ END;
 				<div class="modal-content">
 				  <div class="modal-header">
 					<h4 class="modal-title">Le nouvel enseignant a bien été ajouté.</h4>
-				  
 					<button type="button" class="btn btn-default" onclick="location.href='$annuler'" data-dismiss="modal">Ok</button>
 				  </div>
 				</div>
@@ -200,18 +200,16 @@ END;
 				<button type="submit" class="btn btn-default" formaction="$annuler" formnovalidate="false">Annuler</input>
         </div>
 		</form>
-
                 </div>
             </div>
 END;
 
-
-$html = $html . self::footerHTML();
+        $html = $html . self::footerHTML();
 
         return $html;
 	}
 
-    public static function getVolumeFST($user)
+    public function getVolumeFST($user)
     {
         $intervention = Intervention::where('mail_enseignant', 'like', $user->mail)->where('fst','like','1')->get();
         $heuresTD = 0;
