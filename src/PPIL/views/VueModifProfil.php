@@ -25,7 +25,7 @@ END;
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
 		<div class="container">
-		<div class="panel panel-default">
+		<div class="panel panel-default text-center">
 		  <div class="panel-heading nav navbar-default">
             <div class="container-fluid">
 
@@ -141,6 +141,7 @@ END;
            </div>
            </div>
            </div>
+           </div>
 END;
         $html .= self::footerHTML();
         $html .= <<< END
@@ -160,7 +161,7 @@ END;
         $modifprofil = Slim::getInstance()->urlFor("modificationProfil");
         $select = self::selectStatut($user);
         $html = <<< END
-        <div class="col-md-8">
+        <div class="col-md-7 text-center">
 			<form class="form-signin form-horizontal" method="post" action="$modifprofil"  id="valider">
 			  <h2 class="form-signin-heading">Modification du profil</h2>
 			  <div class="form-group">
@@ -205,14 +206,17 @@ END;
         $u = UE::where('fst','=',1)->get();
         $f = Formation::where('fst','=',1)->get();
         $html = <<<END
-                 <div id="responsabilite" style="display: none;">
                  <div class="container">
-                    <h2 class="">Modification des responsabilités</h2>
-                    <form class="form-vertical" id="form_resp" method="post" action="$modifresp">
-                         <div class="radio">
-                            <input type="radio" name="responsabilite" id="respUE" value="responsableUE"> Responsable d'UE
-                         </div>
-                        <div id="UE" class="form-group" style="display:none;">
+				   <div id="responsabilite" style="display: none;" class="">
+                     <h2>Modification des responsabilités</h2>
+
+                     <div class="text-center">
+                       <form class="form-horizontal" id="form_resp" method="post" action="$modifresp">
+						 <div class="form-group">
+						   <div class="radio">
+							 <label class="radio-inline"><input type="radio" name="responsabilite" id="respUE" value="responsableUE">  Responsable d'UE </label>
+                           </div>
+                           <div id="UE" class="form-group" style="display:none;">
 END;
         foreach($u as $value){
             $html.= <<< END
@@ -222,11 +226,13 @@ END;
 END;
         }
         $html .= <<< END
-                        </div>
-                        <div class="radio">
-                            <input type="radio" name="responsabilite" id="respForm" value="responsableForm">Responsable de formation
-                        </div>
-                        <div id="formation" class="form-group" style="display: none">
+					 </div>
+					 </div>
+					 <div class="form-group">
+                       <div class="radio">
+                         <label class="radio-inline"><input type="radio" name="responsabilite" id="respForm" value="responsableForm">Responsable de formation</label>
+                       </div>
+                       <div id="formation" class="form-group" style="display: none">
 END;
         foreach($f as $value){
             $html.= <<< END
@@ -237,14 +243,17 @@ END;
         }
 
         $html .= <<< END
-                    </div>
-                     <div class="form-group">
-                            <div class="col-2">
+                     </div>
+					 </div>
+					 <div class="form-group">
                                 <input type="submit" class="btn btn-primary" id="submit_resp">
-                            </div>
                     </div>
                     </form>
                  </div>
+                            <div class="col-md-3">
+                    </div>
+
+        </div>
               </div>
 
 END;
@@ -255,9 +264,9 @@ END;
     {
         $modifphoto = Slim::getInstance()->urlFor("modificationPhoto");
         $html = <<< END
-                <div id="photo" style="display: none;">
+                <div id="photo" style="display: none;" class="text-center">
                     <form class="form-horizontal" method="post" action="$modifphoto" enctype="multipart/form-data">
-			        <h2 class="form-signin-heading ">Modification de la photo du profil</h2>
+			        <h2>Modification de la photo du profil</h2>
                     <div class="form-group">
                     	<div class="col-2">
 END;
@@ -277,9 +286,7 @@ END;
                         </div>
                     </div>
                     <div class="form-group">
-                            <div class="col-2">
-                                <input type="submit" class="btn btn-primary" />
-                            </div>
+                      <input type="submit" class="btn btn-primary" />
                     </div>
                     </form>
                     </div>
@@ -292,32 +299,37 @@ END;
     {
         $modifpassword = Slim::getInstance()->urlFor("modificationPassword");
         $html = <<< END
-                <div id="motdepasse" style="display: none;">
-                <form class="form-signin form-horizontal" method="post" action="$modifpassword"  id="valider">
-			  <h2 class="form-signin-heading ">Modification du mot de passe</h2>
-			  <div class="form-group">
-				<label class="control-label col-sm-4" for="ancien">Ancien mot de passe</label>
-				<div class="col-sm-4">
-				  <input type="password" id="ancien" name="ancien" class="form-control" placeholder="Ancien mot de passe" required="true"/>
+			<div class="container">
+				<div id="motdepasse" style="display: none;" class="text-center">
+        		<h2>Modification du mot de passe</h2>
+
+				<div class="text-center">
+				  <form class="form-horizontal" method="post" action="$modifpassword"  id="valider">
+					<div class="form-group">
+					  <label class="control-label col-sm-6" for="ancien">Ancien mot de passe</label>
+					  <div class="col-sm-3">
+						<input type="password" id="ancien" name="ancien" class="form-control" placeholder="Ancien mot de passe" required="true"/>
+					  </div>
+					</div>
+					<div class="form-group">
+					  <label class="control-label col-sm-6" for="nouv">Nouveau mot de passe</label>
+					  <div class="col-sm-3">
+						<input type="password" id="nouv" name="nouv" class="form-control" placeholder="Nouveau mot de passe" required="true" />
+					  </div>
+					</div>
+					<div class="form-group">
+					  <label class="control-label col-sm-6" for="conf">Confirmer du nouveau mot de passe</label>
+					  <div class="col-sm-3">
+						<input type="password" id="conf" name="conf" class="form-control" placeholder="Confirmer nouveau mot de passe" required="true"/>
+					  </div>
+					</div>
+					<div class="form-group">
+					  <button type="submit" class="btn btn-primary">Valider</button>
+					</div>
+				  </form>
 				</div>
-			  </div>
-			  <div class="form-group">
-				<label class="control-label col-sm-4" for="nouv">Nouveau mot de passe</label>
-				<div class="col-sm-4">
-				  <input type="password" id="nouv" name="nouv" class="form-control" placeholder="Nouveau mot de passe" required="true" />
 				</div>
-			  </div>
-              <div class="form-group">
-				<label class="control-label col-sm-4" for="conf">Confirmer du nouveau mot de passe</label>
-				<div class="col-sm-4">
-				  <input type="password" id="conf" name="conf" class="form-control" placeholder="Confirmer nouveau mot de passe" required="true"/>
-				</div>
-			  </div>
-              <div>
-				<button type="submit" class="btn btn-primary">Valider</button>
-              </div>
-			</form>
-            </div>
+
 END;
         return $html;
     }
@@ -344,8 +356,8 @@ END;
         $volumeMax = $user->volumeMax;
         $pourcentage = Enseignant::getPourcentageVolumeHoraire($user);
         $html = <<< END
-                    <h2 class="form-signin-heading text-center " xmlns="http://www.w3.org/1999/html">Charge horaire minimum</h2>
-                    <div class="col-md-4">
+                    <div class="col-md-4 text-center">
+                       <h2 class="form-signin-heading ">Charge horaire minimum</h2>
                         <div class="text-center" id="cercle" title="Charge horaire minimum" data-animation="1" data-animationStep="5" data-percent="$pourcentage"></div>
 				        <label class="control-label ">Volume horaire courant : $volumeCourant</label><br>
 			            <label class="control-label ">Volume horaire minimum : $volumeMin</label><br>
