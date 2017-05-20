@@ -213,42 +213,49 @@ class FormationControler
     {
         $app = Slim::getInstance();
         $val = $app->request->post();
+        $resp = array();
         $nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
-        $resp = filter_var($val['resp'], FILTER_SANITIZE_STRING);
+        $resp[] =  filter_var($val['resp1'], FILTER_SANITIZE_STRING);
+        $resp[] =  filter_var($val['resp2'], FILTER_SANITIZE_STRING);
+        $resp[] =  filter_var($val['resp3'], FILTER_SANITIZE_STRING);
+        $resp[] =  filter_var($val['resp4'], FILTER_SANITIZE_STRING);
         if($nom != ""){
             $fst = filter_var($val['fst'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
             $f = Formation::where('nomFormation','like',$nom)->first();
             if(empty($f)){
-                if($resp != '0'){
-                    $ens = Enseignant::find($resp);
-                    if(!empty($ens)){
-                        $idFor = Formation::creerForm($nom, $fst);
-                        $respon = new Responsabilite();
-                        $respon->enseignant = $resp;
-                        $respon->intituleResp = "Responsable formation";
-                        $respon->id_formation = $idFor;
-                        $respon->privilege = 1;
-                        $respon->save();
-                        $mail = new MailControler();
-                        $mail->sendMaid($resp, 'Formation', 'Vous avez été choisi comme responsable de cette formation : ' . $nom . ".");
-                        $app->response->headers->set('Content-Type', 'application/json');
-                        $res = array();
-                        $res[] = 'true';
-                        echo json_encode($res);
-                        return true;
-                    }else{
-                        $app->response->headers->set('Content-Type', 'application/json');
-                        $res = array();
-                        $res[] = 'false';
-                        echo json_encode($res);
+                $id = Formation::creerForm($nom, $fst);
+                foreach ($resp as $value){
+                    if($value != '0'){
+                        $ens = Enseignant::find($value);
+                        if(!empty($ens)){
+                            $respon = new Responsabilite();
+                            $respon->enseignant = $value;
+                            $respon->intituleResp = "Responsable formation";
+                            $respon->id_formation = $id;
+                            $respon->privilege = 1;
+                            $respon->save();
+                            $mail = new MailControler();
+                            $mail->sendMaid($value, 'Formation', 'Vous avez été choisi comme responsable de cette formation : ' . $nom . ".");
+                        }else{
+                            $respon = Responsabilite::where('id_formation','=',$id)->get();
+                            foreach ($respon as $item){
+                                $item->delete();
+                            }
+                            $form = Formation::find($id);
+                            $form->delete();
+                            $app->response->headers->set('Content-Type', 'application/json');
+                            $res = array();
+                            $res[] = 'false';
+                            echo json_encode($res);
+                            return false;
+                        }
                     }
-                }else{
-                    Formation::creerForm($nom, $fst);
-                    $app->response->headers->set('Content-Type', 'application/json');
-                    $res = array();
-                    $res[] = 'true';
-                    echo json_encode($res);
                 }
+
+                $app->response->headers->set('Content-Type', 'application/json');
+                $res = array();
+                $res[] = 'true';
+                echo json_encode($res);
 
             }else{
                 $app->response->headers->set('Content-Type', 'application/json');
@@ -476,6 +483,23 @@ class FormationControler
             $app->response->headers->set('Content-Type', 'application/json');
             $res = array();
             $res[] = 'false';
+            echo json_encode($res);
+            return false;
+        }
+    }
+
+    public function form(){
+        $app = Slim::getInstance();
+        $val = $app->request->post();
+        $nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
+        $f = Formation::where('nomFormation','like',$nom)->first();
+        if(!empty($f)){
+            $app->response->headers->set('Content-Type', 'application/json');
+            echo json_encode($f);
+        }else{
+            $app->response->headers->set('Content-Type', 'application/json');
+            $res = "";
+            $res->id_formation = null;
             echo json_encode($res);
             return false;
         }
