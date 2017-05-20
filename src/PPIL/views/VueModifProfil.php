@@ -43,10 +43,10 @@ END;
 				 <div class="collapse navbar-collapse" id="navbar_panel">
 				   <div class=" navbar-right">
 					 <div class="list-group list-group-horizontal" id="liste_groupe">
-					   <a href="#" id="boutonInfo" class="list-group-item active">Informations personnelles</a>
-					   <a href="#" id="boutonResp" class="list-group-item">Responsabilités</a>
-					   <a href="#" id="boutonPhoto" class="list-group-item">Photo</a>
-					   <a href="#" id="boutonPassword" class="list-group-item">Mot de passe</a>
+					   <a href="" id="boutonInfo" class="list-group-item active">Informations personnelles</a>
+					   <a href="" id="boutonResp" class="list-group-item">Responsabilités</a>
+					   <a href="" id="boutonPhoto" class="list-group-item">Photo</a>
+					   <a href="" id="boutonPassword" class="list-group-item">Mot de passe</a>
 					 </div>
 				   </div>
 				</div>
