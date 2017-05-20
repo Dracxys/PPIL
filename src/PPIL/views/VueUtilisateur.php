@@ -23,7 +23,8 @@ use PPIL\models\NotificationIntervention;
 class VueUtilisateur extends AbstractView
 {
     public function home(){
-        $html = self::headHTML();
+        $scripts_and_css = "";
+        $html  = self::headHTML($scripts_and_css);
         $html = $html . self::navHTML("Profil");
         $html = $html . self::footerHTML();
         return $html;
@@ -36,7 +37,8 @@ class VueUtilisateur extends AbstractView
       $lien_ajouter_autre = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouterAutre");
       $home = Slim::getInstance()->urlFor("home");
 
-      $html = self::headHTML();
+      $scripts_and_css = "";
+      $html  = self::headHTML($scripts_and_css);
       $html = $html . self::navHTML("Enseignement");
       $notification_exist = false;
 $html .= <<< END
@@ -304,7 +306,8 @@ END;
   }
 
     public function ue(){
-        $html = self::headHTML();
+        $scripts_and_css = "";
+        $html  = self::headHTML($scripts_and_css);
         $html = $html . self::navHTML("UE");
         $html = $html . self::footerHTML();
         return $html;
@@ -312,14 +315,16 @@ END;
 
 
     public function enseignant(){
-        $html = self::headHTML();
+        $scripts_and_css = "";
+        $html  = self::headHTML($scripts_and_css);
         $html = $html . self::navHTML("Enseignants");
         $html = $html . self::footerHTML();
         return $html;
     }
 
     public function journal(){
-        $html = self::headHTML();
+        $scripts_and_css = "";
+        $html  = self::headHTML($scripts_and_css);
         $html = $html . self::navHTML("Journal");
         $html .= <<< END
 	    <div class="container">
@@ -451,7 +456,8 @@ END;
     }
 
     public function annuaire($users){
-        $html = self::headHTML();
+        $scripts_and_css = "";
+        $html  = self::headHTML($scripts_and_css);
         $html = $html . self::navHTML("Annuaire");
         $html .= <<< END
         <div class="container">

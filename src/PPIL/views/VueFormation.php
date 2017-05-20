@@ -15,7 +15,8 @@ class VueFormation extends AbstractView
 {
     public function home($u)
     {
-        $html = self::headHTML();
+        $scripts_and_css = "";
+        $html  = self::headHTML($scripts_and_css);
         $html .= self::navHTML("Formation");
         $select = self::selectStatut($u);
         $form = self::creerForm();
@@ -62,20 +63,20 @@ class VueFormation extends AbstractView
                     </div>
                 </div>
                 <div id="tableUE" class="container-fluid col-sm-10">
-                  
+
 			    </div>
             </div>
             <div class=" panel-default container col-sm-6 ">
                  <div class="">
                     <label id="nomUE" class="control-label">Sélectionner un UE</label>
-                 </div>   
+                 </div>
                  <div class="panel-default">
                     <ul class="nav nav-pills">
                         <li class="active"><a href="#tab1" data-toggle="tab">CM</a></li>
                         <li><a href="#tab2" data-toggle="tab">TD</a></li>
                         <li><a href="#tab3" data-toggle="tab">TP</a></li>
                         <li><a href="#tab4" data-toggle="tab">EI</a></li>
-                   
+
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab1">
@@ -86,13 +87,13 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
                                 </thead>
-                                <tbody>    
+                                <tbody>
                                     <tr>
                                         <th class="text-center"> <input type="number" class="form-control" id="heureAttenduCM"  value="0" min="0"/> </th>
                                         <th class="text-center"> <input type="number" class="form-control" id="heureAffecteCM"  value="0" min="0" readonly/> </th>
                                     </tr>
                                 </tbody>
-                            </table>    
+                            </table>
                         </div>
                         <div class="tab-pane" id="tab2">
                             <table class="table table-bordered">
@@ -103,7 +104,7 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume attendu</th>
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
-                                </thead>    
+                                </thead>
                                 <tbody>
                                     <tr>
                                         <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAttenduTD" min="0"  value="0" /> </th>
@@ -112,7 +113,7 @@ class VueFormation extends AbstractView
                                         <th class="text-center"> <input type="number" class="form-control" id="heureAffecteTD" min="0"  value="0" readonly/> </th>
                                     </tr>
                                 </tbody>
-                            </table> 
+                            </table>
                         </div>
                         <div class="tab-pane" id="tab3">
                             <table class="table table-bordered">
@@ -123,7 +124,7 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume attendu</th>
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
-                                </thead>    
+                                </thead>
                                 <tbody>
                                     <tr>
                                         <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAttenduTP" min="0" value="0" /> </th>
@@ -143,7 +144,7 @@ class VueFormation extends AbstractView
                                         <th class="text-center">Volume attendu</th>
                                         <th class="text-center">Volume affecté</th>
                                     </tr>
-                                </thead>    
+                                </thead>
                                 <tbody>
                                     <tr>
                                         <th class="text-center"> <input type="number" class="form-control" id="nbGroupeAttenduEI" min="0"  value="0" /> </th>
@@ -153,12 +154,12 @@ class VueFormation extends AbstractView
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>                        
+                        </div>
                     </div>
-                </div>    
+                </div>
             </div>
             <div class="panel-default container-fluid">
-                
+
                 <button type="button" class="btn  btn-primary pull-right" onclick="modifUE()" id="valider">Valider</button>
                 <div id="erreur" class="alert alert-danger text-center">
                     <strong>Erreur : </strong> Chiffres négatifs dans un des champs.
@@ -199,13 +200,13 @@ class VueFormation extends AbstractView
                             <th id="volumeAffecteEI" class="text-center">0</th>
                         </tr>
                     </tbody>
-                </table>  
-                </div>  
+                </table>
+                </div>
             </div>
-            </div>  
+            </div>
         </div>
         </div>
-        <script type="text/javascript" src="/PPIL/assets/js/formation.js">     </script>
+        <script type="text/javascript" src="/PPIL/assets/js/formation.js"></script>
         <script type="text/javascript">
            $(function(){
                recupererUE("$lienInfoForm");
@@ -215,7 +216,7 @@ class VueFormation extends AbstractView
                $('#erreur').hide();
                $('#modalAnnule').click(function() {
                     $('#modalAjouterForm').modal('toggle');
-               });  
+               });
                $('#modalValide').click(function(){
                     ajouterForm();
                });
@@ -243,7 +244,7 @@ END;
 
     }
 
-    public static function selectStatut($for)
+    public function selectStatut($for)
     {
         $html = '<select class="form-control" id="selectForm" name="selectForm">';
         $i = 0;
@@ -271,7 +272,7 @@ END;
         return $html;
     }
 
-    public static function message()
+    public function message()
     {
         $html = <<< END
         <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
@@ -293,7 +294,7 @@ END;
         return $html;
     }
 
-    public static function creerForm()
+    public function creerForm()
     {
         $html = <<< END
         <div class="modal fade text-center" id="modalAjouterForm" role="dialog">
@@ -313,7 +314,7 @@ END;
 				        <label class="control-label col-sm-5" for="resp">Responsable : </label>
 				        <div class="col-sm-4">
 				            <select id="respForm" class="form-control" name="respForm">
-				             
+
 				            </select>
 				        </div>
 			    </div>
@@ -329,7 +330,7 @@ END;
         return $html;
     }
 
-    public static function ajouterUE()
+    public function ajouterUE()
     {
         $html = <<< END
         <div class="modal fade text-center" id="modalAjouterUE" role="dialog">
@@ -392,7 +393,7 @@ END;
 				        <label class="control-label col-sm-5" for="resp">Responsable : </label>
 				        <div class="col-sm-4">
 				            <select id="resp" class="form-control" name="resp">
-				             
+
 				            </select>
 				        </div>
 			        </div>

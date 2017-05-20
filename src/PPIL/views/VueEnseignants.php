@@ -16,7 +16,8 @@ use PPIL\models\Responsabilite;
 
 class VueEnseignants extends AbstractView{
     public function home($u){
-        $html  = self::headHTML();
+        $scripts_and_css = "";
+        $html  = self::headHTML($scripts_and_css);
         $html .= self::navHTML("Enseignants");
         $html .= <<< END
 
@@ -38,9 +39,9 @@ class VueEnseignants extends AbstractView{
 
 				<div class="collapse navbar-collapse" id="navbar_panel">
 				  <div class="navbar-right">
-                                       <button type="button" class="btn btn-default navbar-btn" id="ajouterEnseignants">Ajouter</button>
-                                        <button type="button" class="btn btn-default navbar-btn" id="exporterEnseignants">Exporter</button>
-                                    </div>
+                    <button type="button" class="btn btn-default navbar-btn" id="ajouterEnseignants">Ajouter</button>
+                    <button type="button" class="btn btn-default navbar-btn" id="exporterEnseignants">Exporter</button>
+                  </div>
 				</div>
 			  </div>
 			</div>
@@ -55,8 +56,8 @@ class VueEnseignants extends AbstractView{
 					<th class="text-center">Service réalisé</th>
 					<th class="text-center">Service réalisé à la FST</th>
 				  </tr>
-                
-                
+
+
 END;
 
         $i=0;
@@ -99,8 +100,9 @@ END;
         return $html;
     }
 
-	public static function inscritptionParDI($num){
-		$html = self::headHTML();
+	public function inscritptionParDI($num){
+        $scripts_and_css = "";
+		$html = self::headHTML($scripts_and_css);
         $valider = Slim::getInstance()->urlFor("inscriptionParDI");
         $annuler = Slim::getInstance()->urlFor("home");
         $html = $html . <<< END
@@ -174,7 +176,7 @@ END;
 				<div class="modal-content">
 				  <div class="modal-header">
 					<h4 class="modal-title">Votre demande a été prise en compte.</h4>
-				  
+
 					<button type="button" class="btn btn-default" onclick="location.href='$annuler'" data-dismiss="modal">Ok</button>
 				  </div>
 				</div>
@@ -197,7 +199,7 @@ END;
         </div>
 		</form>
 END;
-        
+
         }else{
             $html = $html . <<< END
                 </div>
@@ -205,13 +207,12 @@ END;
 END;
         }
 
-
-$html = $html . self::footerHTML();
+        $html = $html . self::footerHTML();
 
         return $html;
 	}
 
-    public static function getVolumeFST($user)
+    public function getVolumeFST($user)
     {
         $intervention = Intervention::where('mail_enseignant', 'like', $user->mail)->where('fst','like','1')->get();
         $heuresTD = 0;

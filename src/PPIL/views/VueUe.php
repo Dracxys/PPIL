@@ -20,7 +20,8 @@ class VueUe extends AbstractView
 {
 
     public function home($u){
-        $html  = self::headHTML();
+        $scripts_and_css = "";
+        $html  = self::headHTML($scripts_and_css);
         $html .= self::navHTML("UE");
         $select = self::selectUE($u);
         $lienInfoUE = Slim::getInstance()->urlFor('compoUE');
@@ -75,14 +76,14 @@ END;
         $html .= self::listeIntervenants();
 
 
-        $html .= <<<END
+        $html .= <<< END
 					 </div>
 		</div>
 		</div>
 
 END;
         $html .= self::footerHTML();
-        $html .=<<<END
+        $html .=<<< END
         <script type="text/javascript" src="/PPIL/assets/js/ue.js"></script>
         <script type="text/javascript">
            $(function(){
@@ -212,7 +213,7 @@ END;
 
     private function listeIntervenants() {
 
-        $html = <<<END
+        $html = <<< END
                 <div id="intervenantsUE" style="display: none;">
                 <form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
 			        <h2 class="form-signin-heading ">Intervenants de l'UE</h2>
@@ -242,7 +243,7 @@ END;
         return $html;
     }
 
-    public static function selectUE($ue)
+    public function selectUE($ue)
     {
         $html = '<select class="form-control" id="selectUE" name="selectUE">';
         $i = 0;
@@ -261,7 +262,7 @@ END;
         return $html;
     }
 
-    public static function message(){
+    public function message(){
         $html = <<< END
         <div class="modal fade" id="modalDemandeEffectuee" role="dialog">
 		    <div class="modal-dialog">

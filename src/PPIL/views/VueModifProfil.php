@@ -13,9 +13,15 @@ use Slim\Slim;
 class VueModifProfil extends AbstractView
 {
     public function home($user, $num)
-  {
-      $modifresp = Slim::getInstance()->urlFor("modificationResponsabilite");
-        $html = self::headHTML();
+    {
+        $modifresp = Slim::getInstance()->urlFor("modificationResponsabilite");
+        $scripts_and_css = <<< END
+            <script type="text/javascript" src="/PPIL/assets/js/jquery.circliful.min.js"></script>
+            <script type="text/javascript" src="/PPIL/assets/js/modifprofil.js"></script>
+			<link href="/PPIL/assets/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
+			<link href="/PPIL/assets/css/profil.css" rel="stylesheet">
+END;
+        $html  = self::headHTML($scripts_and_css);
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
 		<div class="container">
@@ -113,7 +119,7 @@ END;
             </div>
 END;
       }
-       $html .= <<<END
+       $html .= <<< END
                 <div id="infoperso" class="container-fluid">
                     <div class="row">
 
@@ -121,7 +127,7 @@ END;
 
         $html .= self::infoperso($user);
         $html .= self::horaireEffect($user);
-        $html .= <<<END
+        $html .= <<< END
                     </div>
                 </div>
 END;
@@ -131,16 +137,14 @@ END;
         $html .= self::password($user);
 
 
-        $html .= <<<END
+        $html .= <<< END
            </div>
            </div>
            </div>
 END;
         $html .= self::footerHTML();
-        $html .= <<<END
+        $html .= <<< END
 
-        <script type="text/javascript" src="/PPIL/assets/js/jquery.circliful.min.js"></script>
-          <script type="text/javascript" src="/PPIL/assets/js/modifprofil.js"></script>
 		  <script type="text/javascript">
           $(function(){
 			  setup("$modifresp");
@@ -200,7 +204,7 @@ END;
         $modifresp = Slim::getInstance()->urlFor("modificationResponsabilite");
         $u = UE::all();
         $f = Formation::all();
-        $html = <<<END
+        $html = <<< END
                  <div id="responsabilite" style="display: none;">
                  <div class="container">
                     <h2 class="">Modification des responsabilités</h2>
@@ -211,14 +215,13 @@ END;
                         <div id="UE" class="form-group" style="display:none;">
 END;
         foreach($u as $value){
-            $html.= <<<END
+            $html.= <<< END
                     <div class="radio">
                     <input type="radio" name="ueSelect" value="$value->nom_UE">$value->nom_UE
                     </div>
 END;
         }
-        $html .=
-        <<<END
+        $html .= <<< END
                         </div>
                         <div class="radio">
                             <input type="radio" name="responsabilite" id="respForm" value="responsableForm">Responsable de formation
@@ -226,15 +229,14 @@ END;
                         <div id="formation" class="form-group" style="display: none">
 END;
         foreach($f as $value){
-            $html.= <<<END
+            $html.= <<< END
                     <div class="radio">
                     <input type="radio" name="formSelect" value="$value->nomFormation">$value->nomFormation
                     </div>
 END;
         }
 
-        $html .=
-            <<<END
+        $html .= <<< END
                     </div>
                      <div class="form-group">
                             <div class="col-2">
@@ -252,7 +254,7 @@ END;
     public function photo($user)
     {
         $modifphoto = Slim::getInstance()->urlFor("modificationPhoto");
-        $html = <<<END
+        $html = <<< END
                 <div id="photo" style="display: none;">
                     <form class="form-horizontal" method="post" action="$modifphoto" enctype="multipart/form-data">
 			        <h2 class="form-signin-heading ">Modification de la photo du profil</h2>
@@ -265,7 +267,7 @@ END;
                     }else{
                         $html .= '<img src=' . "/PPIL/" . $user->photo  .' class="img-thumbnail" alt="Photo de profil" width="304" height="236">';
                     }
-                        $html .= <<<END
+                        $html .= <<< END
                         </div>
                     </div>
 
@@ -286,10 +288,10 @@ END;
         return $html;
     }
 
-    public static function password($user)
+    public function password($user)
     {
         $modifpassword = Slim::getInstance()->urlFor("modificationPassword");
-        $html = <<<END
+        $html = <<< END
                 <div id="motdepasse" style="display: none;">
                 <form class="form-signin form-horizontal" method="post" action="$modifpassword"  id="valider">
 			  <h2 class="form-signin-heading ">Modification du mot de passe</h2>
@@ -320,7 +322,7 @@ END;
         return $html;
     }
 
-    public static function selectStatut($user)
+    public function selectStatut($user)
     {
         $array = array('Professeur des universités', 'Maître de conférences', 'PRAG', 'ATER', '1/2 ATER', 'Doctorant', 'Vacataire');
         $html = '<select class="form-control" name="statut">';
@@ -335,13 +337,13 @@ END;
         return $html;
     }
 
-    public static function horaireEffect($user){
+    public function horaireEffect($user){
         $volumeCourant = $user->volumeCourant;
         if(is_null($volumeCourant)) $volumeCourant = 0;
         $volumeMin = $user->volumeMin;
         $volumeMax = $user->volumeMax;
         $pourcentage = Enseignant::getPourcentageVolumeHoraire($user);
-        $html = <<<END
+        $html = <<< END
                     <h2 class="form-signin-heading text-center " xmlns="http://www.w3.org/1999/html">Charge horaire minimum</h2>
                     <div class="col-md-4">
                         <div class="text-center" id="cercle" title="Charge horaire minimum" data-animation="1" data-animationStep="5" data-percent="$pourcentage"></div>

@@ -9,47 +9,41 @@ use Slim\App;
 use Slim\Slim;
 
 class AbstractView {
-    public static function headHTML() {
-        $HTML= <<<END
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="PPIL">
-    <meta name="author" content="">
-    <title>PPIL </title>
-    <link href="/PPIL/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/PPIL/assets/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="/PPIL/assets/bootstrap/js/bootstrap.min.js"></script>
-	<link href="/PPIL/assets/css/profil.css" rel="stylesheet">
-</head>
-<body>
-  <div class="jumbotron" style="background-color:
-END;
+    public static function headHTML($scripts_and_css) {
+		$color = dechex(mt_rand(0,16777215));
+		$color = str_pad($color,6,'0');
+		$color_string = "background-color:#" . $color ;
 
-    $color = dechex(mt_rand(0,16777215));
-    $color = str_pad($color,6,'0');
-
-    $HTML .= "#" . $color . "\"";
-
-    $HTML .= ">" . <<<END
-	<div class="container">
-	  <div class="row">
-		<div class="hidden-sm hidden-xs col-md-2">
-          <div class="logo-univ">
-            <img width="100" height="100" src="/PPIL/assets/images/logo-univ.png" />
-          </div>
-        </div>
-        <div class="text-center col-md-8" style="color:#FFFFFF">
-		  <h1>Service enseignant</h1>
-        </div>
-      </div>
-	</div>
-  </div>
-
+        $HTML= <<< END
+		<!DOCTYPE html>
+		<html lang="fr">
+		  <head>
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<meta name="description" content="PPIL">
+			<meta name="author" content="">
+			<title>PPIL </title>
+			<link href="/PPIL/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+			<script src="/PPIL/assets/bootstrap/js/bootstrap.min.js"></script>
+            $scripts_and_css
+		  </head>
+		  <body>
+			<div class="jumbotron" style="$color_string">
+			  <div class="container">
+				<div class="row">
+				  <div class="hidden-sm hidden-xs col-md-2">
+					<div class="logo-univ">
+					  <img width="100" height="100" src="/PPIL/assets/images/logo-univ.png" />
+					</div>
+				  </div>
+				  <div class="text-center col-md-8" style="color:#FFFFFF">
+					<h1>Service enseignant</h1>
+				  </div>
+				</div>
+			  </div>
+			</div>
 END;
         return $HTML;
     }
@@ -61,7 +55,7 @@ END;
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
             $responsabilite = Enseignant::get_privilege($e);
             $notifications_count = Notification::where('mail_destinataire', '=', $e->mail)
-                                 ->count();
+											   ->count();
 
             if(isset($responsabilite)){
                 if($responsabilite == 2){
@@ -84,17 +78,18 @@ END;
         );
         $deco = Slim::getInstance()->urlFor("deconnexion");
         $HTML= <<< END
-        <nav class="navbar navbar-default">
-          <div class="container-fluid">
-			<div class="navbar-header">
-			  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			  </button>
-			  <a class="navbar-brand" href="http://www.univ-lorraine.fr/">Univ-lorraine</a>			</div>
-			<div class="collapse navbar-collapse" id="navbar">
-			  <ul class="nav navbar-nav">
+             <nav class="navbar navbar-default">
+			   <div class="container-fluid">
+				 <div class="navbar-header">
+				   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+					 <span class="icon-bar"></span>
+					 <span class="icon-bar"></span>
+					 <span class="icon-bar"></span>
+				   </button>
+				   <a class="navbar-brand" href="http://www.univ-lorraine.fr/">Univ-lorraine</a>
+				 </div>
+				 <div class="collapse navbar-collapse" id="navbar">
+				   <ul class="nav navbar-nav">
 END;
         foreach($options as $option => $link){
             $class = "";
@@ -102,42 +97,42 @@ END;
                 $class = 'class="active"';
             }
             switch($option){
-            case 'Enseignants' :
-                if($responsable_enseignants){
-                    $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
-                }
-                break;
-            case 'Formation' :
-                if($responsable_formation){
-                    $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
-                }
-                break;
-            case 'Journal' :
-                if($notifications_count > 0){
-                    $HTML .= '<li ' . $class . '  ><a href="'. $link .'" id="notifications_count">'. $option . " <font color='red' id='notifications_count_font'>(" .  $notifications_count . ')</font></a></li>';
-                }else{
-                    $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option . '</a></li>';
-                }
-                break;
-            default :
-                $HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
-                break;
+				case 'Enseignants' :
+					if($responsable_enseignants){
+						$HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
+					}
+					break;
+				case 'Formation' :
+					if($responsable_formation){
+						$HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
+					}
+					break;
+				case 'Journal' :
+					if($notifications_count > 0){
+						$HTML .= '<li ' . $class . '  ><a href="'. $link .'" id="notifications_count">'. $option . " <font color='red' id='notifications_count_font'>(" .  $notifications_count . ')</font></a></li>';
+					}else{
+						$HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option . '</a></li>';
+					}
+					break;
+				default :
+					$HTML .= '<li ' . $class . '><a href="'. $link .'">'. $option .'</a></li>';
+					break;
             }
         }
         $HTML .= <<< END
-			  </ul>
-			  <ul class="nav navbar-nav navbar-right">
-				<p class="navbar-text hidden-xs hidden-sm">
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+		<p class="navbar-text hidden-xs hidden-sm">
 END;
         if(isset($_SESSION["mail"])){
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
             $HTML .= $e->prenom ." ". $e->nom ."</p>";
         }
         $HTML .= <<< END
-				<li><a href="$deco">Se déconnecter</a></li>
-			  </ul>
-			</div>
-          </div>
+		<li><a href="$deco">Se déconnecter</a></li>
+		</ul>
+		</div>
+        </div>
         </nav>
 END;
         return $HTML;
@@ -145,8 +140,8 @@ END;
 
     public static function footerHTML() {
         $HTML= <<< END
-  </body>
-</html>
+		</body>
+		</html>
 END;
         return $HTML;
     }
