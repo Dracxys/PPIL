@@ -12,6 +12,9 @@ use PPIL\controlers\FormationControler;
 use PPIL\controlers\UEControler;
 use PPIL\controlers\EnseignantsControler;
 
+use PPIL\models\Intervention;
+use League\Csv\Writer;
+
 $app = new \Slim\Slim();
 
 \PPIL\utils\ConnectionFactory::setConfig('db.ppil.conf.ini');
@@ -28,7 +31,13 @@ $app->post('/',function (){
 });
 
 $app->get('/test',function (){
-    echo exec('whoami');
+    $intervention = Intervention::all();
+    $csv = Writer::createFromFileObject(new SplTempFileObject());
+    $csv->insertOne($intervention->first()->getTableColumns());
+    foreach($intervention as $i){
+        $csv->insertOne($i->toArray());
+    }
+    $csv->output('interventions.csv');
 });
 
 $app->post('/login', function () use ($app){

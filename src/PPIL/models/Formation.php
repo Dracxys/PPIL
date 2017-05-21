@@ -1,7 +1,7 @@
 <?php
 namespace PPIL\models;
 
-class Formation extends \Illuminate\Database\Eloquent\Model{
+class Formation extends AbstractModel{
 	protected $table = "Formation";
 	protected $primaryKey = "id_formation";
     public $timestamps = false;

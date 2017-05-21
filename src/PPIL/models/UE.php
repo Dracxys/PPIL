@@ -1,7 +1,7 @@
 <?php
 namespace PPIL\models;
 
-class UE extends \Illuminate\Database\Eloquent\Model{
+class UE extends AbstractModel{
 	protected $table = "UE";
 	protected $primaryKey = "id_UE";
 	public $timestamps = false;
