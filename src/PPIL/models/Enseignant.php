@@ -3,7 +3,7 @@ namespace PPIL\models;
 
 use Illuminate\Database\Capsule\Manager as DB;
 
-class Enseignant extends \Illuminate\Database\Eloquent\Model{
+class Enseignant extends AbstractModel{
 	protected $table = "Enseignant";
 	protected $primaryKey = "mail";
     public $incrementing = false;

@@ -4,7 +4,8 @@
         "slim/slim": "2.*",
         "illuminate/database": "~5.1",
         "twbs/bootstrap": "^3.3",
-		"phpmailer/phpmailer": "~5.2"
+		"phpmailer/phpmailer": "~5.2",
+		"league/csv": "^8.2"
     },
 	"autoload": {
 		"psr-0": {

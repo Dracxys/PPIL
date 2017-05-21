@@ -1,12 +1,12 @@
 <?php
 namespace PPIL\models;
 
-class Notification extends \Illuminate\Database\Eloquent\Model{
+class Notification extends AbstractModel{
 	protected $table = "Notification";
 	protected $primaryKey = "id_notification";
 	public $timestamps = true;
 
-	
+
 	public static function notification_ajout_responsabilite($mail_destinataire, $mail_source, $UE, $formation){
 		$n = new Notification();
 		$n->mail_destinataire = $mail_destinataire;
@@ -22,7 +22,7 @@ class Notification extends \Illuminate\Database\Eloquent\Model{
 		}
 		$n->save();
 	}
-	
+
 	public static function notification_supprimer_responsabilite($mail_destinataire, $mail_source, $UE, $formation){
 		$n = new Notification();
 		$n->mail_destinataire = $mail_destinataire;
@@ -38,8 +38,8 @@ class Notification extends \Illuminate\Database\Eloquent\Model{
 		}
 		$n->save();
 	}
-	
-	
+
+
 	public static function notification_modification_UE_formation($mail_destinataire, $mail_source, $UE, $formation){
 		$n = new Notification();
 		$n->mail_destinataire = $mail_destinataire;
