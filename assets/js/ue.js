@@ -19,6 +19,7 @@ $( "#boutonInterv" ).click(function() {
 });
 
 var ppil;
+var id_UE;
 
 function setLien(lien){
     ppil = lien;
@@ -184,9 +185,18 @@ function choixUE() {
             type: 'post',
             data: {'id': id_UE},
             success: function (element) {
-                if(element = true){
+                if(element == true){
+                    $("#nbGroupeAttenduTD").prop('disabled', false);
+                    $("#nbGroupeAffecteTD").prop('disabled', false);
+                    $("#heureAttenduTD").prop('disabled', false);
+                    $("#heureAffecteTD").prop('disabled', false);
                     var html = "<button type='button' class='btn btn-default center-block' onclick='modifUE()' id='valider'>Valider</button>";
                     $('#boutton_validation').html(html);
+                }else {
+                    $("#nbGroupeAttenduTD").prop('disabled', true);
+                    $("#nbGroupeAffecteTD").prop('disabled', true);
+                    $("#heureAttenduTD").prop('disabled', true);
+                    $("#heureAffecteTD").prop('disabled', true);
                 }
             }, xhrFields: {
                 withCredentials: true
