@@ -57,7 +57,10 @@ class VueEnseignants extends AbstractView{
 					<th class="text-center">Volume statutaire</th>
 					<th class="text-center">Service réalisé</th>
 					<th class="text-center">Service réalisé à la FST</th>
+					<th class="text-center">Action</th>
 				  </tr>
+                </thead>
+				<tbody>
 
 END;
 
@@ -77,6 +80,7 @@ END;
                     "<th class=\"text-center\">" . $user->volumeMin . "</th>" .
                     "<th class=\"text-center\">" . $volumeCourant . "</th>" .
                     "<th class=\"text-center\">" . $volFST . "</th>" .
+                    "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='".Slim::getInstance()->urlFor('supprimerEnseignant',array('id' => $user->rand))."'>Supprimer</button> ". "</th>" .
 
                     "</tr>";
                 $i++;
@@ -84,8 +88,7 @@ END;
         }
         $html .= <<< END
 
-				</thead>
-				<tbody>
+				
 			    </tbody>
           </table>
         </div>

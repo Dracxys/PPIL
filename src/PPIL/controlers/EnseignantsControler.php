@@ -10,6 +10,11 @@ namespace PPIL\controlers;
 
 
 use PPIL\models\Enseignant;
+use PPIL\models\Intervention;
+use PPIL\models\Notification;
+use PPIL\models\NotificationIntervention;
+use PPIL\models\NotificationResponsabilite;
+use PPIL\models\Responsabilite;
 use PPIL\views\VueEnseignants;
 use PPIL\models\UE;
 use PPIL\models\NotificationInscription;
@@ -70,5 +75,58 @@ class EnseignantsControler {
 			echo $v->inscriptionParDI(2);
 		}
 	}
+
+	public function supprimer($id){
+	    $id = filter_var($id,FILTER_SANITIZE_NUMBER_INT);
+	    $e = Enseignant::where('rand','=',$id)->first();
+	    if(!empty($e)){
+	        $mail = $e->mail;
+	        $resp = Responsabilite::where('enseignant','like',$mail)->get();
+	        foreach ($resp as $value){
+	            $value->delete();
+            }
+            $inter = Intervention::where('mail_enseignant','like',$mail)->get();
+            foreach ($inter as $value){
+                $value->delete();
+            }
+            $notifDes = Notification::where('mail_destinataire','like',$mail)->get();
+            foreach ($notifDes as $value){
+                switch ($value->type_notification){
+                    case "PPIL\models\NotificationIntervention":
+                        $n = NotificationIntervention::where('id_notification','=',$value->id_notification)->first();
+                        $n->delete();
+                        $value->delete();
+                        break;
+
+                    case "PPIL\models\NotificationResponsabilite":
+                        $n = NotificationResponsabilite::where('id_notification','=',$value->id_notification)->first();
+                        $n->delete();
+                        $value->delete();
+                        break;
+                }
+            }
+            $notifSour = Notification::where('mail_source','like',$mail)->get();
+            foreach ($notifSour as $value){
+                switch ($value->type_notification){
+                    case "PPIL\models\NotificationIntervention":
+                        $n = NotificationIntervention::where('id_notification','=',$value->id_notification)->first();
+                        $n->delete();
+                        $value->delete();
+                        break;
+
+                    case "PPIL\models\NotificationResponsabilite":
+                        $n = NotificationResponsabilite::where('id_notification','=',$value->id_notification)->first();
+                        $n->delete();
+                        $value->delete();
+                        break;
+                }
+            }
+            $c = new MailControler();
+            $c->sendMaid($mail,"Suppression de votre compte.","Votre compte enseignant a été supprimé par le responsable du Département Informatique.");
+            $e->delete();
+            self::home();
+
+        }
+    }
 
 }

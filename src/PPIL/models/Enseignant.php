@@ -37,6 +37,36 @@ class Enseignant extends AbstractModel{
 		$new_enseignant->prenom = $prenom;
 		$new_enseignant->mail = $mail;
 		$new_enseignant->statut = $statut;
+        switch ($statut){
+            case "Professeur des universités" :
+                $new_enseignant->volumeMin = 192;
+                $new_enseignant->volumeMax = 384;
+                break;
+            case "Maître de conférences" :
+                $new_enseignant->volumeMin = 192;
+                $new_enseignant->volumeMax = 384;
+                break;
+            case "PRAG" :
+                $new_enseignant->volumeMin = 384;
+                $new_enseignant->volumeMax = 768;
+                break;
+            case "ATER" :
+                $new_enseignant->volumeMin = 192;
+                $new_enseignant->volumeMax = 192;
+                break;
+            case "1/2 ATER" :
+                $new_enseignant->volumeMin = 96;
+                $new_enseignant->volumeMax = 96;
+                break;
+            case "Doctorant" :
+                $new_enseignant->volumeMin = 64;
+                $new_enseignant->volumeMax = 64;
+                break;
+            case "Vacataire" :
+                $new_enseignant->volumeMin = 0;
+                $new_enseignant->volumeMax = 96;
+                break;
+        }
 		$new_enseignant->mdp = $mdp;
 		$new_enseignant->rand = rand(100000000, 1000000000);
 		$new_enseignant->save();
