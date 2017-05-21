@@ -55,7 +55,7 @@ class NotificationInscription extends Notification{
         $e->rand = $tmp;
         $e->save();
         $mail = new MailControler();
-        $mail->sendMaid($e->mail,'Inscription','Votre inscription a été validée par le responsable du département informatique.');
+        $mail->sendMail($e->mail,'Inscription Service Enseignant','Votre inscription au sein de l\'application de Service Enseignant a été validée par le responsable du département informatique.');
 
         $notificationinscription->delete();
         $notification->delete();

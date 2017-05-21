@@ -147,26 +147,8 @@ END;
 				  </select>
 				</div>
 			  </div>
-              <div class="form-group">
-				<label class="control-label col-sm-4" for="password">Mot de passe </label>
-				<div class="col-sm-4">
-				  <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" required="true"/>
-				</div>
-			  </div>
-			  <div class="form-group">
-				<label class="control-label col-sm-4" for="password">Confirmer mot de passe </label>
-				<div class="col-sm-4">
-				  <input type="password" id="password" name="password2" class="form-control" placeholder="Mot de passe" required="true"/>
-				</div>
-			  </div>
 END;
-        if($num == 1){
-            $html = $html . <<< END
-            <div class="alert alert-danger">
-                La confirmation de votre mot de passe est erronée.
-            </div>
-END;
-        }elseif ($num == 2){
+        if ($num == 2){
             $html = $html . <<< END
             <div class="alert alert-danger">
                 Adresse mail déjà utilisée.

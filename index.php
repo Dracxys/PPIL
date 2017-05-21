@@ -293,12 +293,12 @@ $app->get('/home/annuaire', function (){
 $app->get('/home/enseignants/vueinscriptionDI', function (){
     $c = new EnseignantsControler();
     $c->lancerVueInscriptionParDI();
-})->name('vueinscriptionDI');
+});
 
 $app->post('/home/enseignants/vueinscriptionDI', function (){
     $c = new EnseignantsControler();
     $c->lancerVueInscriptionParDI();
-});
+})->name('vueinscriptionDI');
 
 $app->get('/home/enseignants/inscriptionParDI', function (){
     $c = new EnseignantsControler();

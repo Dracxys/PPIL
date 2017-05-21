@@ -52,10 +52,7 @@ class EnseignantsControler {
         $utilisateur = Enseignant::where('mail', 'like' , $mail) -> first();
         $newUtilisateur = NotificationInscription::where('mail','like',$mail)->first();
         if (empty($utilisateur) && empty($newUtilisateur)){ //l'utilisateur n'existe pas dans la BDD
-            $mdp = filter_var($val['password'], FILTER_SANITIZE_STRING);
-            $mdpConfirm = filter_var($val['password2'], FILTER_SANITIZE_STRING);
-
-            if($mdp == $mdpConfirm){
+                $mdp = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 10);
                 $mdp_hash = password_hash($mdp, PASSWORD_DEFAULT);
 
                 $nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
@@ -63,12 +60,11 @@ class EnseignantsControler {
                 $statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
 
                 Enseignant::inscriptionParDI($mail, $nom, $prenom, $statut, $mdp_hash);
+                $mailControler = new MailControler();
+                $mailControler->sendMail($mail, 'Inscription Service Enseignant', 'Le Responsable du Département Informatique a crée un compte Enseignant avec cette adresse mail. Voici le mot de passe associé à ce compte : ' . $mdp);
+
 				$v = new VueEnseignants();
 				echo $v->inscriptionParDI(3);
-            }else{
-				$v = new VueEnseignants();
-				echo $v->inscriptionParDI(1);
-			}
 
         }else{
 			$v = new VueEnseignants();
@@ -122,7 +118,7 @@ class EnseignantsControler {
                 }
             }
             $c = new MailControler();
-            $c->sendMaid($mail,"Suppression de votre compte.","Votre compte enseignant a été supprimé par le responsable du Département Informatique.");
+            $c->sendMail($mail,"Suppression de votre compte Enseignant","Votre compte enseignant a été supprimé de l'application Service Enseignant par le Responsable du Département Informatique.");
             $e->delete();
             self::home();
 

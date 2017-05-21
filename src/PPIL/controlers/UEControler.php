@@ -219,7 +219,7 @@ class UEControler
                 foreach ($resp as $value){
                     $mes = "Responsable : " . $e->prenom . " " . $e->nom . ".\n";
                     $mes .= "Les heures attendus de l UE " . $ue->nom_UE . " ont été modifié.";
-                    $mail->sendMaid($value->enseignant,"Modification des heures attendus de votre UE", $mes);
+                    $mail->sendMail($value->enseignant,"Modification des heures attendus de votre UE", $mes);
                     $tab[] = $value->enseignant;
                 }
                 $ens = Intervention::where('id_UE','=',$ue->id_UE)->get();
@@ -227,7 +227,7 @@ class UEControler
                     if(!in_array($value->mail_enseignant,$tab)){
                         $mes = "Responsable : " . $e->prenom . " " . $e->nom . ".\n";
                         $mes .= "Les heures attendus de l UE " . $ue->nom_UE . " ont été modifié.";
-                        $mail->sendMaid($value->mail_enseignant,"Modification des heures attendus d'un UE", $mes);
+                        $mail->sendMail($value->mail_enseignant,"Modification des heures attendus d'un UE", $mes);
                     }
                 }
 
