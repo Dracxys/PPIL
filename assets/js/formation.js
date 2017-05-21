@@ -1,7 +1,6 @@
 var ppil;
 var id_UE;
 var value;
-var max_fields      = 10;
 function recupererUE(lien) {
     value = $('#selectForm option:selected').val();
     $('#nomFormation').text('Volume Horaire ' + value);
@@ -317,14 +316,14 @@ function ajouterForm() {
                                         }
 
                                     });
+                                    $('#selectForm').empty();
                                     $('#selectForm').html(html);
-                                    recupererUE(ppil);
                                     $('#nomForm').val("");
                                     $('#nomForm').css("color","black");
                                     $('#respForm2').css('color','black');
                                     $('#respForm3').css('color','black');
                                     $('#respForm4').css('color','black');
-
+                                    recupererUE(ppil);
                                 }
 
                             },
@@ -371,14 +370,41 @@ function supprimer(ue) {
         data: {'id': ue},
         success: function (res) {
             if (res != undefined && res[0] == 'true') {
-                $('#messageTitre').text('Succès');
-                $('#message').text('Cette UE a bien été supprimé.');
-                $('#modalDemandeEffectuee').modal({
-                    backdrop: 'static',
-                    keyboard: false
+                $.ajax({
+                    url: ppil + '/ue/actu',
+                    type: 'post',
+                    success: function (res) {
+                        if (res != undefined) {
+                            var html = "";
+                            var i = 0;
+                            res.forEach(function (element) {
+                                if (i == 0) {
+                                    html += "<option selected value='" + element + "'>" + element + "</option>";
+                                    i++;
+                                } else {
+                                    html += "<option>" + element + "</option>";
+                                }
+
+                            });
+                            $('#selectForm').html(html);
+                            $('#messageTitre').text('Succès');
+                            $('#message').text('Cette UE a bien été supprimé.');
+                            $('#modalDemandeEffectuee').modal({
+                                backdrop: 'static',
+                                keyboard: false
+                            });
+                            recupererUE(ppil);
+                        }
+
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true
                 });
-                recupererUE(ppil);
+
             } else {
+                recupererUE(ppil);
                 $('#messageTitre').text('Erreur');
                 $('#message').text('Problème lors de la suppression de cette UE.');
                 $('#modalDemandeEffectuee').modal({
@@ -502,12 +528,16 @@ function supprimerForm() {
                             res.forEach(function (element) {
                                 if(i == 0){
                                     html += "<option selected value='" + element +"'>" + element + "</option>";
+                                    value = element;
+                                    i++;
                                 }else{
                                     html += "<option>" + element + "</option>";
                                 }
 
                             });
+                            $('#selectForm').empty();
                             $('#selectForm').html(html);
+                            recupererUE(ppil);
                         }
                     },
                     xhrFields: {
@@ -515,7 +545,7 @@ function supprimerForm() {
                     },
                     crossDomain: true
                 });
-                recupererUE(ppil);
+
                 $('#deleteForm').removeClass('disabled');
             } else {
                 $('#delete').modal('toggle');
@@ -636,6 +666,7 @@ function modifFormBase() {
                                     res.forEach(function (element) {
                                         if (i == 0) {
                                             html += "<option selected value='" + element + "'>" + element + "</option>";
+                                            i++;
                                         } else {
                                             html += "<option>" + element + "</option>";
                                         }
