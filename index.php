@@ -35,6 +35,7 @@ $app->post('/',function (){
 $app->get('/test',function (){
     $intervention = Intervention::all();
     $csv = Writer::createFromFileObject(new SplTempFileObject());
+    $csv->setDelimiter(';');
     $csv->insertOne($intervention->first()->getTableColumns());
     foreach($intervention as $i){
         $csv->insertOne($i->toArray());
