@@ -28,7 +28,7 @@ class NotificationResponsabilite extends Notification
 
 
         $mail = new MailControler();
-        $mail->sendMaid($enseignant,'Responsabilite','Votre demande de responsabilité a été validée par le responsable du département informatique.');
+        $mail->sendMail($enseignant,'Responsabilite','Votre demande de responsabilité a été validée par le responsable du département informatique.');
 
         $notification_responsabilite->delete();
         $notification->delete();

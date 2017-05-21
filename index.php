@@ -294,12 +294,12 @@ $app->get('/home/annuaire', function (){
 $app->get('/home/enseignants/vueinscriptionDI', function (){
     $c = new EnseignantsControler();
     $c->lancerVueInscriptionParDI();
-})->name('vueinscriptionDI');
+});
 
 $app->post('/home/enseignants/vueinscriptionDI', function (){
     $c = new EnseignantsControler();
     $c->lancerVueInscriptionParDI();
-});
+})->name('vueinscriptionDI');
 
 $app->get('/home/enseignants/inscriptionParDI', function (){
     $c = new EnseignantsControler();
@@ -315,6 +315,11 @@ $app->post('/home/enseignants', function (){
     $c = new EnseignantsControler();
     $c->home();
 });
+
+$app->get('/home/enseignants/supprimer/:id',function ($id){
+    $c = new EnseignantsControler();
+    $c->supprimer($id);
+})->name('supprimerEnseignant');
 
 /* ===================== liens dans enseignants ==================*/
 

@@ -165,7 +165,7 @@ class FormationControler
                 foreach ($resp as $value) {
                     $mes = "Responsable : " . $e->prenom . " " . $e->nom . ".\n";
                     $mes .= "Les heures attendus de l UE " . $ue->nom_UE . " ont été modifié.";
-                    $mail->sendMaid($value->enseignant, "Modification des heures attendus de votre UE", $mes);
+                    $mail->sendMail($value->enseignant, "Modification des heures attendus de votre UE", $mes);
                     $tab[] = $value->enseignant;
                 }
                 $ens = Intervention::where('id_UE', '=', $ue->id_UE)->get();
@@ -173,7 +173,7 @@ class FormationControler
                     if (!in_array($value->mail_enseignant, $tab)) {
                         $mes = "Responsable : " . $e->prenom . " " . $e->nom . ".\n";
                         $mes .= "Les heures attendus de l UE " . $ue->nom_UE . " ont été modifié.";
-                        $mail->sendMaid($value->mail_enseignant, "Modification des heures attendus d'un UE", $mes);
+                        $mail->sendMail($value->mail_enseignant, "Modification des heures attendus d'un UE", $mes);
                     }
                 }
 
@@ -235,7 +235,7 @@ class FormationControler
                             $respon->privilege = 1;
                             $respon->save();
                             $mail = new MailControler();
-                            $mail->sendMaid($value, 'Formation', 'Vous avez été choisi comme responsable de cette formation : ' . $nom . ".");
+                            $mail->sendMail($value, 'Formation', 'Vous avez été choisi comme responsable de cette formation : ' . $nom . ".");
                         }else{
                             $respon = Responsabilite::where('id_formation','=',$id)->get();
                             foreach ($respon as $item){
@@ -284,7 +284,7 @@ class FormationControler
             $c = new MailControler();
             foreach ($inter as $value) {
                 if ($_SESSION['mail'] != $value->mail_enseignant) {
-                    $c->sendMaid($value->mail_enseignant, "UE supprimé", "UE : " . $ue->nom_UE . " a été supprimé.");
+                    $c->sendMail($value->mail_enseignant, "UE supprimé", "UE : " . $ue->nom_UE . " a été supprimé.");
                 }
                 $value->delete();
                 $e = Enseignant::find($value->mail_enseignant);
@@ -293,7 +293,7 @@ class FormationControler
             $resp = Responsabilite::where('id_UE', '=', $id)->get();
             foreach ($resp as $value) {
                 if ($_SESSION['mail'] != $value->enseignant) {
-                    $c->sendMaid($value->enseignant, "UE supprimé", "Vous n'êtes plus responsable de l'UE :  " . $ue->nom_UE . ".");
+                    $c->sendMail($value->enseignant, "UE supprimé", "Vous n'êtes plus responsable de l'UE :  " . $ue->nom_UE . ".");
                 }
                 $value->delete();
             }
@@ -301,7 +301,7 @@ class FormationControler
             foreach ($notif as $value) {
                 $n = Notification::where('id_notification', '=', $value->id_notification)->first();
                 if ($_SESSION['mail'] != $n->mail_source) {
-                    $c->sendMaid($value->mail_source, "UE supprimé", "UE : " . $ue->nom_UE . " a été supprimé.");
+                    $c->sendMail($value->mail_source, "UE supprimé", "UE : " . $ue->nom_UE . " a été supprimé.");
                 }
                 $value->delete();
                 $n->delete();
@@ -356,7 +356,7 @@ class FormationControler
                         $respon->privilege = 0;
                         $respon->save();
                         $mail = new MailControler();
-                        $mail->sendMaid($resp, 'UE', 'Vous avez été choisi comme responsable d\'UE : ' . $nomUE . ".");
+                        $mail->sendMail($resp, 'UE', 'Vous avez été choisi comme responsable d\'UE : ' . $nomUE . ".");
                         $app->response->headers->set('Content-Type', 'application/json');
                         $res = array();
                         $res[] = 'true';
@@ -441,7 +441,7 @@ class FormationControler
                 $inter = Intervention::where('id_UE', '=', $id)->get();
                 foreach ($inter as $value) {
                     if ($_SESSION['mail'] != $value->mail_enseignant) {
-                        $c->sendMaid($value->mail_enseignant, "UE supprimé", "UE : " . $ue->nom_UE . " a été supprimé.");
+                        $c->sendMail($value->mail_enseignant, "UE supprimé", "UE : " . $ue->nom_UE . " a été supprimé.");
                     }
                     $value->delete();
                     $e = Enseignant::find($value->mail_enseignant);
@@ -450,7 +450,7 @@ class FormationControler
                 $resp = Responsabilite::where('id_UE', '=', $id)->get();
                 foreach ($resp as $value) {
                     if ($_SESSION['mail'] != $value->enseignant) {
-                        $c->sendMaid($value->enseignant, "UE supprimé", "Vous n'êtes plus responsable de l'UE :  " . $ue->nom_UE . ".");
+                        $c->sendMail($value->enseignant, "UE supprimé", "Vous n'êtes plus responsable de l'UE :  " . $ue->nom_UE . ".");
                     }
                     $value->delete();
                 }
@@ -458,7 +458,7 @@ class FormationControler
                 foreach ($notif as $value) {
                     $n = Notification::where('id_notification', '=', $value->id_notification)->first();
                     if ($_SESSION['mail'] != $n->mail_source) {
-                        $c->sendMaid($value->mail_source, "UE supprimé", "UE : " . $ue->nom_UE . " a été supprimé.");
+                        $c->sendMail($value->mail_source, "UE supprimé", "UE : " . $ue->nom_UE . " a été supprimé.");
                     }
                     $value->delete();
                     $n->delete();
@@ -468,7 +468,7 @@ class FormationControler
             $respons = Responsabilite::where('id_formation','=',$f->id_formation)->get();
             foreach ($respons as $v){
                 if($_SESSION['mail'] != $v->enseignant){
-                    $c->sendMaid($v->enseignant,"Formation supprimé","La formation : " . $f->nomFormation . " a été supprimée.");
+                    $c->sendMail($v->enseignant,"Formation supprimé","La formation : " . $f->nomFormation . " a été supprimée.");
                 }
                 $v->delete();
             }
@@ -525,7 +525,7 @@ class FormationControler
                 $respons = Responsabilite::where('id_formation','=',$f->id_formation)->get();
                 foreach ($respons as $value){
                     if(!in_array($value->enseignant,$resp)){
-                        $c->sendMaid($value->enseignant,'Formation',"Vous n'êtes plus responsable de cette formation : " . $f->nomFormation .".");
+                        $c->sendMail($value->enseignant,'Formation',"Vous n'êtes plus responsable de cette formation : " . $f->nomFormation .".");
                         $value->delete();
                     }else{
                         unset($resp[array_search($value->enseignant,$resp)]);
@@ -539,7 +539,7 @@ class FormationControler
                         $respon->id_formation = $f->id_formation;
                         $respon->privilege = 1;
                         $respon->save();
-                        $c->sendMaid($value, 'Formation', 'Vous avez été choisi comme responsable de cette formation : ' . $nom . ".");
+                        $c->sendMail($value, 'Formation', 'Vous avez été choisi comme responsable de cette formation : ' . $nom . ".");
                     }
                 }
                 $app->response->headers->set('Content-Type', 'application/json');

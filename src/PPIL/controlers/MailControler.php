@@ -25,7 +25,7 @@ class MailControler
         $this->mail->SMTPAuth = true;
     }
 
-    public function sendMaid($destinataire, $sujet, $corps){
+    public function sendMail($destinataire, $sujet, $corps){
         $this->mail->CharSet = 'utf-8';
         $this->mail->setFrom('ppil.email1@gmail.com');
         $this->mail->Subject = $sujet;

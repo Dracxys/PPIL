@@ -57,7 +57,10 @@ class VueEnseignants extends AbstractView{
 					<th class="text-center">Volume statutaire</th>
 					<th class="text-center">Service réalisé</th>
 					<th class="text-center">Service réalisé à la FST</th>
+					<th class="text-center">Action</th>
 				  </tr>
+                </thead>
+				<tbody>
 
 END;
 
@@ -77,6 +80,7 @@ END;
                     "<th class=\"text-center\">" . $user->volumeMin . "</th>" .
                     "<th class=\"text-center\">" . $volumeCourant . "</th>" .
                     "<th class=\"text-center\">" . $volFST . "</th>" .
+                    "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='".Slim::getInstance()->urlFor('supprimerEnseignant',array('id' => $user->rand))."'>Supprimer</button> ". "</th>" .
 
                     "</tr>";
                 $i++;
@@ -84,8 +88,7 @@ END;
         }
         $html .= <<< END
 
-				</thead>
-				<tbody>
+				
 			    </tbody>
           </table>
         </div>
@@ -144,26 +147,8 @@ END;
 				  </select>
 				</div>
 			  </div>
-              <div class="form-group">
-				<label class="control-label col-sm-4" for="password">Mot de passe </label>
-				<div class="col-sm-4">
-				  <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" required="true"/>
-				</div>
-			  </div>
-			  <div class="form-group">
-				<label class="control-label col-sm-4" for="password">Confirmer mot de passe </label>
-				<div class="col-sm-4">
-				  <input type="password" id="password" name="password2" class="form-control" placeholder="Mot de passe" required="true"/>
-				</div>
-			  </div>
 END;
-        if($num == 1){
-            $html = $html . <<< END
-            <div class="alert alert-danger">
-                La confirmation de votre mot de passe est erronée.
-            </div>
-END;
-        }elseif ($num == 2){
+        if ($num == 2){
             $html = $html . <<< END
             <div class="alert alert-danger">
                 Adresse mail déjà utilisée.

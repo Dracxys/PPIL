@@ -304,7 +304,7 @@ class UtilisateurControler
 
                             if(!empty($notificationinscription)){
                                 $mail = new MailControler();
-                                $mail->sendMaid($notificationinscription->mail,'Inscription','Votre inscription a été refusée par le responsable du département informatique.');
+                                $mail->sendMail($notificationinscription->mail,'Inscription','Votre inscription a été refusée par le responsable du département informatique.');
                             }
                             break;
                         default:

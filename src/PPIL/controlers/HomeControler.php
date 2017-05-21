@@ -97,7 +97,7 @@ class HomeControler{
             $lien = $_SERVER['HTTP_HOST'] . Slim::getInstance()->request->getRootUri();
             $lien = 'http://'.$lien.'/oublieMDP/suppression/'.$e->rand;
             $corps = $corps . $lien;
-            $mail->sendMaid($e->mail,'Réinitialisation du mot de passe', $corps);
+            $mail->sendMail($e->mail,'Réinitialisation du mot de passe', $corps);
             $v = new VueHome();
             echo $v->oubliMDP(2);
         }else{
