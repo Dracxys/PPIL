@@ -14,6 +14,8 @@ use PPIL\controlers\EnseignantsControler;
 
 use PPIL\models\Intervention;
 use League\Csv\Writer;
+use League\Csv\Reader;
+use Slim\Slim;
 
 $app = new \Slim\Slim();
 
@@ -38,6 +40,35 @@ $app->get('/test',function (){
         $csv->insertOne($i->toArray());
     }
     $csv->output('interventions.csv');
+});
+
+
+$app->get('/test2',function (){
+    $csv = Reader::createFromPath(Slim::getInstance()->root() . 'interventions.csv');
+    $csv->setOffset(1);
+    $nb_insert = $csv->each(function ($row) {
+        $result = false;
+        $i = Intervention::find($row[0]);
+        if(is_null($i)){
+            $intervention = new Intervention();
+            $intervention->id_intervention = $row[0];
+            $intervention->fst = $row[1];
+            $intervention->heuresCM = $row[2];
+            $intervention->heuresTP = $row[3];
+            $intervention->heuresTD = $row[4];
+            $intervention->heuresEI = $row[5];
+            $intervention->groupeTP = $row[6];
+            $intervention->groupeTD = $row[7];
+            $intervention->groupeEI = $row[8];
+            $intervention->mail_enseignant = $row[9];
+            $intervention->id_UE = $row[10];
+            $intervention->save();
+            $result = true;
+        }
+        return $result;
+
+    });
+    //$csv->output('interventions.csv');
 });
 
 $app->post('/login', function () use ($app){
