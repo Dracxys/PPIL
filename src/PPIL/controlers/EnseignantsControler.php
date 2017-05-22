@@ -72,6 +72,15 @@ class EnseignantsControler {
 		}
 	}
 
+    public function profilEnseignant($id) {
+        $id = filter_var($id,FILTER_SANITIZE_NUMBER_INT);
+        $e = Enseignant::where('rand','=',$id)->first();
+        if(!empty($e)){
+            $v = new VueEnseignants();
+            echo $v->profilEnseignant($e);
+        }
+    }
+
 	public function supprimer($id){
 	    $id = filter_var($id,FILTER_SANITIZE_NUMBER_INT);
 	    $e = Enseignant::where('rand','=',$id)->first();

@@ -277,7 +277,7 @@ END;
                         <p id="message">Les modifications ont bien été pris en compte.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" onclick="" data-dismiss="modal">Ok</button>
+                        <button type="button" class="btn btn-primary" onclick="" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
             </div>
