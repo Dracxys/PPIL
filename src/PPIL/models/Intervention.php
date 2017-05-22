@@ -12,7 +12,7 @@ class Intervention extends AbstractModel{
 	    $inter->heuresCM = $heureCM;
 	    $inter->heuresTD = $heureTD;
 	    $inter->heuresTP = $heureTP;
-	    $inter->heureEI = $heureEI;
+	    $inter->heuresEI = $heureEI;
 	    $inter->groupeTD = $groupeTD;
 	    $inter->groupeTP = $groupeTP;
 	    $inter->groupeEI = $groupeEI;
