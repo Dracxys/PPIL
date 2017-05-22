@@ -74,6 +74,7 @@ END;
 
         $html .= self::compositionUE();
         $html .= self::listeIntervenants();
+        $html .= self::message();
 
 
         $html .= <<< END
