@@ -167,8 +167,8 @@ function choixUE() {
                             +"<th class='text-center'>" + "<input type='number' id='nbei' class='form-control' value=" + tab[7+i] + " min='0'/></th>"
                             +"<th class='text-center'>" + "<input type='number' id='hei' class='form-control' value=" + tab[8+i] + " min='0'/></th>"
                             +"<th class='text-center'>"
-                            +"<button type='button' class='btn btn-default pull-left' onclick='boutonValidationModifIntervenantUE('" + tab[9+i] + ',' + tab[2+i] + ',' + tab[3+i] + ',' + tab[4+i] + ',' + tab[5+i]+ ',' + tab[6+i] + ',' + tab[7+i] + ',' + tab[8+i] + ")' id='validerHeuresIntervenantUE'>Valider</button>"
-                            +"<button type='button' class='btn btn-default pull-right' onclick='boutonSuppressionEnseignant('" + tab[9+i] + ")' id='supprimerInternantUE'>Supprimer</button>"
+                            +"<button type='button' class='btn btn-default pull-left' onclick='boutonValidationModifIntervenantUE(" + tab[9+i] + ',' + tab[2+i] + ',' + tab[3+i] + ',' + tab[4+i] + ',' + tab[5+i]+ ',' + tab[6+i] + ',' + tab[7+i] + ',' + tab[8+i] + ")' id='validerHeuresIntervenantUE'>Valider</button>"
+                            +"<button type='button' class='btn btn-default pull-right' onclick='boutonSuppressionEnseignant(" + tab[9+i] + ")' id='supprimerInternantUE'>Supprimer</button>"
                             +"</th>"
                             +"</tr>";
                     }
