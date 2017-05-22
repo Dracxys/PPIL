@@ -25,7 +25,7 @@ END;
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
 		<div class="container">
-		<div class="panel panel-default text-center">
+		<div class="panel panel-default">
 		  <div class="panel-heading nav navbar-default">
             <div class="container-fluid">
 
@@ -208,14 +208,20 @@ END;
         $html = <<<END
                  <div class="container">
 				   <div id="responsabilite" style="display: none;" class="">
-                     <h2>Modification des responsabilités</h2>
+                     <h2 class="text-center">Modification des responsabilités</h2>
 
-                     <div class="text-center">
+                     <div class="">
+                     <div class='col-md-5'>
+                     </div>
+                     <div class='col-md-4'>
                        <form class="form-horizontal" id="form_resp" method="post" action="$modifresp">
 						 <div class="form-group">
 						   <div class="radio">
 							 <label class="radio-inline"><input type="radio" name="responsabilite" id="respUE" value="responsableUE">  Responsable d'UE </label>
                            </div>
+                            <div class='col-md-2'>
+                            </div>
+                            <div class='col-md-5'>
                            <div id="UE" class="form-group" style="display:none;">
 END;
         foreach($u as $value){
@@ -228,10 +234,17 @@ END;
         $html .= <<< END
 					 </div>
 					 </div>
+                     <div class='col-md-5'>
+               
+                     </div>
+					 </div>
 					 <div class="form-group">
                        <div class="radio">
                          <label class="radio-inline"><input type="radio" name="responsabilite" id="respForm" value="responsableForm">Responsable de formation</label>
                        </div>
+                       <div class='col-md-2'>
+                       </div>
+                       <div class='col-md-5'>
                        <div id="formation" class="form-group" style="display: none">
 END;
         foreach($f as $value){
@@ -244,15 +257,17 @@ END;
 
         $html .= <<< END
                      </div>
+                     </div>
+                     <div class='col-md-5'>
+                     </div>
 					 </div>
 					 <div class="form-group">
                                 <input type="submit" class="btn btn-primary" id="submit_resp">
                     </div>
                     </form>
-                 </div>
-                            <div class="col-md-3">
                     </div>
-
+                     <div class='col-md-3'>
+                     </div>
         </div>
               </div>
 
