@@ -158,18 +158,18 @@ function choixUE() {
                     var html;
                     var line = 0;
                     for (var i = 0; i < tab.length; i = i + 10){
-                        html += "<tr id='tab'>"
-                            +"<th class='text-center'>" + tab[0+i] + " " + tab[1 + i] + "</th>"
-                            +"<th class='text-center'>" + "<input type='number' id='hcm"+ line +"' class='form-control' value=" + tab[2+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='nbtd"+ line +"' class='form-control' value=" + tab[3+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='htd"+ line +"' class='form-control' value=" + tab[4+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='nbtp"+ line +"' class='form-control' value=" + tab[5+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='htp"+ line +"' class='form-control' value=" + tab[6+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='nbei"+ line +"' class='form-control' value=" + tab[7+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='hei"+ line +"' class='form-control' value=" + tab[8+i] + " min='0'/></th>"
-                            +"<th class='text-center'>"
-                            +"<button type='button' class='btn btn-default pull-left' onclick='modifIntervenantUE(\"" + tab[9+i] + '\",' + line +")' id='validerHeuresIntervenantUE'>Valider</button>"
-                            +"<button type='button' class='btn btn-default pull-right' onclick='boutonSuppressionEnseignant(\"" + tab[9+i] +")' id='supprimerInternantUE'>Supprimer</button>"
+                        html += "<tr id='tab' class=''>"
+                            +"<th class='col-md-3 text-center'>" + tab[0+i] + " " + tab[1 + i] + "</th>"
+                            +"<th class='col-md-1'>" + "<input type='number' id='hcm"+ line +"' class='form-control' value=" + tab[2+i] + " min='0'/></th>"
+                            +"<th class='col-md-1'>" + "<input type='number' id='nbtd"+ line +"' class='form-control' value=" + tab[3+i] + " min='0'/></th>"
+                            +"<th class='col-md-1'>" + "<input type='number' id='htd"+ line +"' class='form-control' value=" + tab[4+i] + " min='0'/></th>"
+                            +"<th class='col-md-1'>" + "<input type='number' id='nbtp"+ line +"' class='form-control' value=" + tab[5+i] + " min='0'/></th>"
+                            +"<th class='col-md-1'>" + "<input type='number' id='htp"+ line +"' class='form-control' value=" + tab[6+i] + " min='0'/></th>"
+                            +"<th class='col-md-1'>" + "<input type='number' id='nbei"+ line +"' class='form-control' value=" + tab[7+i] + " min='0'/></th>"
+                            +"<th class='col-md-1'>" + "<input type='number' id='hei"+ line +"' class='form-control' value=" + tab[8+i] + " min='0'/></th>"
+                            +"<th class='col-md-3 text-center'>"
+                            +"<button type='button' class='btn btn-default' onclick='modifIntervenantUE(\"" + tab[9+i] + '\",' + line +")' id='validerHeuresIntervenantUE'>Valider</button>"
+                            +"<button type='button' class='btn btn-default' onclick='boutonSuppressionEnseignant(\"" + tab[9+i] +"\")' id='supprimerInternantUE'>Supprimer</button>"
                             +"</th>"
                             +"</tr>";
                         line++;
