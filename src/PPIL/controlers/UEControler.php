@@ -151,26 +151,33 @@ class UEControler
         $val = $app->request->post();
         $app->response->headers->set('Content-Type', 'application/json');
         $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
+        $res = array();
         if (isset($_SESSION['mail'])) {
             $user = Enseignant::where('mail', 'like', $_SESSION['mail'])->first();
             $respon = Responsabilite::where('enseignant', 'like', $user->mail)->get();
             if (!empty($respon)) {
                 $privi = Enseignant::get_privilege($user);
                 if ($privi == 2) {
-                    echo json_encode(true);
+                    $res[] = 'true';
+                    echo json_encode($res);
                 } elseif ($privi == 1 || $privi == 0) {
                     foreach ($respon as $value) {
                         if ($value->id_UE == $id) {
-                            echo json_encode(1);
+                            $res[] = 'true';
+                            echo json_encode($res);
                             break;
                         }
                     }
-                } else echo json_encode(0);
+                } else {
+                    $res[] = 'false';
+                    echo json_encode($res);}
             }else{
-                echo json_encode(0);
+                $res[] = 'false';
+                echo json_encode($res);
             }
         }else{
-            echo json_encode(0);
+            $res[] = 'false';
+            echo json_encode($res);
         }
 
     }
