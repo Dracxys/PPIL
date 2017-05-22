@@ -156,21 +156,23 @@ function choixUE() {
                 $('#tab').remove();
                 if (tab != undefined){
                     var html;
+                    var line = 0;
                     for (var i = 0; i < tab.length; i = i + 10){
                         html += "<tr id='tab'>"
                             +"<th class='text-center'>" + tab[0+i] + " " + tab[1 + i] + "</th>"
-                            +"<th class='text-center'>" + "<input type='number' id='hcm' class='form-control' value=" + tab[2+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='nbtd' class='form-control' value=" + tab[3+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='htd' class='form-control' value=" + tab[4+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='nbtp' class='form-control' value=" + tab[5+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='htp' class='form-control' value=" + tab[6+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='nbei' class='form-control' value=" + tab[7+i] + " min='0'/></th>"
-                            +"<th class='text-center'>" + "<input type='number' id='hei' class='form-control' value=" + tab[8+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='hcm"+ line +"' class='form-control' value=" + tab[2+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='nbtd"+ line +"' class='form-control' value=" + tab[3+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='htd"+ line +"' class='form-control' value=" + tab[4+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='nbtp"+ line +"' class='form-control' value=" + tab[5+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='htp"+ line +"' class='form-control' value=" + tab[6+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='nbei"+ line +"' class='form-control' value=" + tab[7+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='hei"+ line +"' class='form-control' value=" + tab[8+i] + " min='0'/></th>"
                             +"<th class='text-center'>"
-                            +"<button type='button' class='btn btn-default pull-left' onclick='boutonValidationModifIntervenantUE('" + tab[9+i] + ',' + tab[2+i] + ',' + tab[3+i] + ',' + tab[4+i] + ',' + tab[5+i]+ ',' + tab[6+i] + ',' + tab[7+i] + ',' + tab[8+i] + ")' id='validerHeuresIntervenantUE'>Valider</button>"
-                            +"<button type='button' class='btn btn-default pull-right' onclick='boutonSuppressionEnseignant('" + tab[9+i] + ")' id='supprimerInternantUE'>Supprimer</button>"
+                            +"<button type='button' class='btn btn-default pull-left' onclick='modifIntervenantUE(\"" + tab[9+i] + '\",' + line +")' id='validerHeuresIntervenantUE'>Valider</button>"
+                            +"<button type='button' class='btn btn-default pull-right' onclick='boutonSuppressionEnseignant(\"" + tab[9+i] +")' id='supprimerInternantUE'>Supprimer</button>"
                             +"</th>"
                             +"</tr>";
+                        line++;
                     }
                     $('#tableau').html(html);
                 }
@@ -229,8 +231,15 @@ function choixUE() {
         });
     }
 
-function boutonValidationModifIntervenantUE(mail, hcm, nbtd, htd, nbtp,htp,nbei,hei) {
+function modifIntervenantUE(mail, line) {
     id_UE = $('#selectUE option:selected').val();
+    var hcm = $('#hcm'+line).val();
+    var nbtd = $('#nbtd'+line).val();
+    var htd = $('#htd'+line).val();
+    var nbtp = $('#nbtp'+line).val();
+    var htp = $('#htp'+line).val();
+    var nbei = $('#nbei'+line).val();
+    var hei = $('#hei'+line).val();
     $.ajax({
         url: ppil + '/modifHeureEnseignant',
         type: 'post',
