@@ -168,8 +168,8 @@ function choixUE() {
                             +"<th class='text-center'>" + "<input type='number' id='nbei"+ line +"' class='form-control' value=" + tab[7+i] + " min='0'/></th>"
                             +"<th class='text-center'>" + "<input type='number' id='hei"+ line +"' class='form-control' value=" + tab[8+i] + " min='0'/></th>"
                             +"<th class='text-center'>"
-                            +"<button type='button' class='btn btn-default pull-left' onclick='modifIntervenantUE(\"" + tab[9+i] + '\",' + line +")' id='validerHeuresIntervenantUE'>Valider</button>"
-                            +"<button type='button' class='btn btn-default pull-right' onclick='boutonSuppressionEnseignant(\"" + tab[9+i] +")' id='supprimerInternantUE'>Supprimer</button>"
+                            +"<button type='button' class='btn btn-default' onclick='modifIntervenantUE(\"" + tab[9+i] + '\",' + line +")' id='validerHeuresIntervenantUE'>Valider</button>"
+                            +"<button type='button' class='btn btn-default' onclick='boutonSuppressionEnseignant(\"" + tab[9+i] +")' id='supprimerInternantUE'>Supprimer</button>"
                             +"</th>"
                             +"</tr>";
                         line++;
@@ -247,9 +247,9 @@ function modifIntervenantUE(mail, line) {
             'heureTP':htp,'nbGroupeEI':nbei,'heureEI':hei},
         success: function (element) {
             if (element != undefined) {
-                if (element == true) {
+                if (element[0] == 'true') {
                     $('#messageTitre').text('Succès');
-                    $('#message').text('Les modifications ont bien été pris en compte.');
+                    $('#message').text('Les modifications ont bien été prise en compte.');
                     $('#modalDemandeEffectuee').modal({
                         backdrop: 'static',
                         keyboard: false
@@ -279,7 +279,7 @@ function boutonSuppressionEnseignant(mail) {
         data: {'id': id_UE, 'mail': mail},
         success: function (element) {
             if (element != undefined) {
-                if (element == true) {
+                if (element[0] == 'true') {
                     $('#messageTitre').text('Succès');
                     $('#message').text('Les modifications ont bien été pris en compte.');
                     $('#modalDemandeEffectuee').modal({

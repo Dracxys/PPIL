@@ -24,6 +24,7 @@ class VueUe extends AbstractView
         $html  = self::headHTML($scripts_and_css);
         $html .= self::navHTML("UE");
         $select = self::selectUE($u);
+        $mes = self::message();
         $lienInfoUE = Slim::getInstance()->urlFor('compoUE');
         $html .= <<< END
         <div class="container">
@@ -55,6 +56,7 @@ class VueUe extends AbstractView
 
 			</div>
 			</div>
+			$mes
 			<div class="panel-body ">
 			  <form class="form-horizontal">
 				<div id="select" class="form-group">
@@ -74,7 +76,6 @@ END;
 
         $html .= self::compositionUE();
         $html .= self::listeIntervenants();
-        $html .= self::message();
 
 
         $html .= <<< END
