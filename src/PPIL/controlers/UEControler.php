@@ -322,6 +322,8 @@ class UEControler
             if(!empty($resp)){
                 $resp->delete();
             }
+            $e = Enseignant::find($mail);
+            Enseignant::conversionHeuresTD($e);
             UE::recalculer($ue);
             $c = new MailControler();
             $c->sendMail($mail, "Intervention supprimée", "Votre intervention dans l'UE " . $ue->nom_UE . " a été supprimée par un responsable.");
