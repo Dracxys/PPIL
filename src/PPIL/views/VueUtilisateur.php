@@ -127,7 +127,6 @@ END;
                                                //                                               ->where('id_UE', '=', $intervention->id_UE)
                                                ->get();
 
-
                     foreach($notification_intervention as $n){
                         if(!empty($n)){
                             if($n->id_UE == $intervention->id_UE){
@@ -229,6 +228,7 @@ END;
 
         $ues = UE::whereNotIn('id_UE', $id_ues)
              ->whereNotIn('id_UE', $id_ues_notification)
+             ->whereNotIn('fst', [false])
              ->get();
         foreach($notifications as $notification){
             $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)

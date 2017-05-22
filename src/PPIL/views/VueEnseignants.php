@@ -80,7 +80,7 @@ END;
                     "<th class=\"text-center\">" . $user->volumeMin . "</th>" .
                     "<th class=\"text-center\">" . $volumeCourant . "</th>" .
                     "<th class=\"text-center\">" . $volFST . "</th>" .
-                    "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='".Slim::getInstance()->urlFor('supprimerEnseignant',array('id' => $user->rand))."'>Supprimer</button> ". "</th>" .
+                    "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='".Slim::getInstance()->urlFor('profilEnseignant',array('id' => $user->rand))."'>Voir</button> ". "</th>" .
 
                     "</tr>";
                 $i++;
@@ -193,6 +193,43 @@ END;
 
         return $html;
 	}
+    
+    public function profilEnseignant($enseignant) {
+        $annuler = Slim::getInstance()->urlFor("enseignantsUtilisateur");
+        $scripts_and_css = "";
+        $html = self::headHTML($scripts_and_css);
+        $html .= self::navHTML("Enseignants");
+        $html .= <<<END
+        
+        <div class="container">
+		  <div class="panel panel-default">
+			<div class="panel-heading nav navbar-default">
+			  <div class="container-fluid">
+
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_panel">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <h4 class="navbar-text">
+					Profil
+				  </h4>
+				</div>
+				<form class="form-signin form-horizontal" method="post">
+				<div class="collapse navbar-collapse" id="navbar_panel">
+				  <div class="navbar-right">
+END;
+        $html .= "<button type='button' class='btn btn-danger' onclick=location.href='".Slim::getInstance()->urlFor('supprimerEnseignant',array('id' => $enseignant->rand))."'>Supprimer</button> " .
+                    "<button type='submit' class='btn btn-default navbar-btn' formaction='$annuler' id='retourProfil'>Retour</button>" .
+                  "</div>".
+				"</div>".
+				"</form>".
+			  "</div>".
+			"</div>";
+
+        return $html;
+    }
 
     public function getVolumeFST($user)
     {

@@ -331,6 +331,11 @@ $app->get('/home/enseignants/supprimer/:id',function ($id){
     $c->supprimer($id);
 })->name('supprimerEnseignant');
 
+$app->get('/home/enseignants/profilEnseignant/:id', function ($id){
+    $c = new EnseignantsControler();
+    $c->profilEnseignant($id);
+})->name('profilEnseignant');
+
 /* ===================== liens dans enseignants ==================*/
 
 $app->run();
