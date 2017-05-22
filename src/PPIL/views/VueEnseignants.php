@@ -12,6 +12,7 @@ use Slim\App;
 use Slim\Slim;
 use PPIL\models\Enseignant;
 use PPIL\models\Formation;
+use PPIL\models\UE;
 use PPIL\models\Responsabilite;
 
 class VueEnseignants extends AbstractView{
@@ -227,6 +228,93 @@ END;
 				"</form>".
 			  "</div>".
 			"</div>";
+
+        $html .= <<<END
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-7 text-center">
+                    <form class="form-signin form-horizontal">
+                      <div class="form-group">
+                        <label class="control-label col-sm-4" for="nom">Nom </label>
+                        <div class="col-sm-7">
+                          <input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" disabled="true" value=$enseignant->nom />
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="control-label col-sm-4" for="prenom">Prénom </label>
+                        <div class="col-sm-7">
+                          <input type="text" id="prenom" name="prenom" class="form-control" placeholder="Prénom" disabled="true" value=$enseignant->prenom />
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="control-label col-sm-4" for="mail">Mail </label>
+                        <div class="col-sm-7">
+                          <input type="text" id="mail" name="mail" class="form-control" placeholder="Mail" disabled="true" value=$enseignant->mail />
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="control-label col-sm-4" for="statut">Statut </label>
+                        <div class="col-sm-7">
+                          <input type="text" id="statut" name="statut" class="form-control" placeholder="Statut" disabled="true" value=$enseignant->statut />
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="control-label col-sm-4" for="resp">Responsabilité(s) : </label>
+                        <div class="col-sm-7">
+                        
+
+END;
+
+        $responsabilites = Responsabilite::where('enseignant', '=', $enseignant->mail)->get();
+        $respIntitule = "";
+
+        if($responsabilites != null) {
+            foreach ($responsabilites as $resp) {
+                if($resp->id_formation != null) {
+                    $formation = Formation::where('id_formation', '=', $resp->id_formation)->first();
+                    $respIntitule .= $resp->intituleResp . " pour " . $formation->nomFormation;
+                } else {
+                    if($resp->id_UE != null) {
+                        $ue = UE::where('id_UE', '=', $resp->id_UE)->first();
+                        $respIntitule .= $resp->intituleResp . " pour " . $ue->nom_UE;
+                    }
+                }
+            }
+        } else {
+            $respIntitule = "Pas de responsabilité";
+        }
+
+
+                        $html .= <<<END
+                          <input type="text" id="statut" name="statut" class="form-control" placeholder="Statut" disabled="true" value=$respIntitule />
+                        </div>
+                      </div>
+                    </form>
+                </div>
+                
+                <div class="col-md-5 text-center">
+                    <div class="text-center svg-container">                    
+
+END;
+
+                        if($enseignant->photo == null) {
+                            $default = "/PPIL/assets/images/profil_pictures/default.jpg";
+                            $html .= '<img src=' . $default  .' class="img-thumbnail" alt="Photo de profil" width="296" height="220">';
+                        } else {
+                            $html .= '<img src=' . "/PPIL/" . $enseignant->photo  .' class="img-thumbnail" alt="Photo de profil" width="296" height="220">';
+                        }
+                        $html .= <<< END
+                    </div>
+                </div>
+            </div>
+        </div>
+END;
+
 
         return $html;
     }
