@@ -226,7 +226,7 @@ function modifUE() {
                 if (res != undefined) {
                     if (res[0] == 'true') {
                         $('#messageTitre').text('Succès');
-                        $('#message').text('Les modifications ont bien été prise en compte.');
+                        $('#message').text('Les modifications ont bien été prises en compte.');
                         $('#modalDemandeEffectuee').modal({
                             backdrop: 'static',
                             keyboard: false
@@ -235,7 +235,7 @@ function modifUE() {
                         totalLicence(value);
                     } else {
                         $('#messageTitre').text('Erreur');
-                        $('#message').text('Les modifications n\'ont pas pu être sauvegardé.');
+                        $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
                         $('#modalDemandeEffectuee').modal({
                             backdrop: 'static',
                             keyboard: false
@@ -388,7 +388,7 @@ function supprimer(ue) {
                             });
                             $('#selectForm').html(html);
                             $('#messageTitre').text('Succès');
-                            $('#message').text('Cette UE a bien été supprimé.');
+                            $('#message').text('Cette UE a bien été supprimée.');
                             $('#modalDemandeEffectuee').modal({
                                 backdrop: 'static',
                                 keyboard: false
