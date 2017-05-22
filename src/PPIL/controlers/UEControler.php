@@ -161,12 +161,16 @@ class UEControler
                 } elseif ($privi == 1 || $privi == 0) {
                     foreach ($respon as $value) {
                         if ($value->id_UE == $id) {
-                            echo json_encode(true);
+                            echo json_encode(1);
                             break;
                         }
                     }
-                } else echo json_encode(false);
+                } else echo json_encode(0);
+            }else{
+                echo json_encode(0);
             }
+        }else{
+            echo json_encode(0);
         }
 
     }
