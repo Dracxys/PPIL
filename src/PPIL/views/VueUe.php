@@ -231,6 +231,7 @@ END;
                                 <th class="text-center">Heures TP</th>
                                 <th class="text-center">Nombres groupes EI</th>
                                 <th class="text-center">Heures EI</th>
+                                <th class="text-center">Actions</th>
                               </tr>
                               </thead>
                               <tbody id="tableau">

@@ -263,6 +263,16 @@ $app->post('/home/ue/compoUE/boutonModif', function (){
     $c->boutonModif();
 });
 
+$app->post('/home/ue/compoUE/modifHeureEnseignant', function (){
+    $c = new UEControler();
+    $c->modifierHeureEnseignant();
+});
+
+$app->post('/home/ue/compoUE/suppressionEnseignant', function (){
+    $c = new UEControler();
+    $c->supprimerEnseignant();
+});
+
 $app->get('/home/formation', function (){
     $c = new FormationControler();
     $c->home();

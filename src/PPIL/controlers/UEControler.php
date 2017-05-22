@@ -136,6 +136,7 @@ class UEControler
                     $res[] = $value->heuresTP;
                     $res[] = $value->groupeEI;
                     $res[] = $value->heuresEI;
+                    $res[] = $user->mail;
             }
             echo json_encode($res);
         }

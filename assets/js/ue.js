@@ -156,16 +156,20 @@ function choixUE() {
                 $('#tab').remove();
                 if (tab != undefined){
                     var html;
-                    for (var i = 0; i < tab.length; i = i + 9){
+                    for (var i = 0; i < tab.length; i = i + 10){
                         html += "<tr id='tab'>"
                             +"<th class='text-center'>" + tab[0+i] + " " + tab[1 + i] + "</th>"
-                            +"<th class='text-center'>" + tab[2+i] + "</th>"
-                            +"<th class='text-center'>" + tab[3+i] + "</th>"
-                            +"<th class='text-center'>" + tab[4+i] + "</th>"
-                            +"<th class='text-center'>" + tab[5+i] + "</th>"
-                            +"<th class='text-center'>" + tab[6+i] + "</th>"
-                            +"<th class='text-center'>" + tab[7+i] + "</th>"
-                            +"<th class='text-center'>" + tab[8+i] + "</th>"
+                            +"<th class='text-center'>" + "<input type='number' id='hcm' class='form-control' value=" + tab[2+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='nbtd' class='form-control' value=" + tab[3+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='htd' class='form-control' value=" + tab[4+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='nbtp' class='form-control' value=" + tab[5+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='htp' class='form-control' value=" + tab[6+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='nbei' class='form-control' value=" + tab[7+i] + " min='0'/></th>"
+                            +"<th class='text-center'>" + "<input type='number' id='hei' class='form-control' value=" + tab[8+i] + " min='0'/></th>"
+                            +"<th class='text-center'>"
+                            +"<button type='button' class='btn btn-default pull-left' onclick='boutonValidationModifIntervenantUE(tab[9+i],tab[2+i],tab[3+i],tab[4+i],tab[5+i],tab[6+i],tab[7+i],tab[8+i])' id='validerHeuresIntervenantUE'>Valider</button>"
+                            +"<button type='button' class='btn btn-default pull-right' onclick='boutonSuppressionEnseignant(tab[9 + i])' id='supprimerInternantUE'>Supprimer</button>"
+                            +"</th>"
                             +"</tr>";
                     }
                     $('#tableau').html(html);
@@ -185,18 +189,38 @@ function choixUE() {
             type: 'post',
             data: {'id': id_UE},
             success: function (element) {
-                if(element == true){
-                    $("#nbGroupeAttenduTD").prop('disabled', false);
-                    $("#nbGroupeAffecteTD").prop('disabled', false);
-                    $("#heureAttenduTD").prop('disabled', false);
-                    $("#heureAffecteTD").prop('disabled', false);
-                    var html = "<button type='button' class='btn btn-default center-block' onclick='modifUE()' id='valider'>Valider</button>";
-                    $('#boutton_validation').html(html);
-                }else {
-                    $("#nbGroupeAttenduTD").prop('disabled', true);
-                    $("#nbGroupeAffecteTD").prop('disabled', true);
-                    $("#heureAttenduTD").prop('disabled', true);
-                    $("#heureAffecteTD").prop('disabled', true);
+                if (res != undefined) {
+                    if (element == true) {
+                        $("#nbGroupeAttenduTD").prop('disabled', false);
+                        $("#nbGroupeAffecteTD").prop('disabled', false);
+                        $("#heureAttenduTD").prop('disabled', false);
+                        $("#heureAffecteTD").prop('disabled', false);
+                        $("#hcm").prop('disabled', false);
+                        $("#nbtd").prop('disabled', false);
+                        $("#htd").prop('disabled', false);
+                        $("#nbtp").prop('disabled', false);
+                        $("#htp").prop('disabled', false);
+                        $("#nbei").prop('disabled', false);
+                        $("#hei").prop('disabled', false);
+                        $("#validerHeuresIntervenantUE").prop('disabled', false);
+                        $("#supprimerInternantUE").prop('disabled', false);
+                        var html = "<button type='button' class='btn btn-default center-block' onclick='modifUE()' id='valider'>Valider</button>";
+                        $('#boutton_validation').html(html);
+                    } else {
+                        $("#nbGroupeAttenduTD").prop('disabled', true);
+                        $("#nbGroupeAffecteTD").prop('disabled', true);
+                        $("#heureAttenduTD").prop('disabled', true);
+                        $("#heureAffecteTD").prop('disabled', true);
+                        $("#hcm").prop('disabled', true);
+                        $("#nbtd").prop('disabled', true);
+                        $("#htd").prop('disabled', true);
+                        $("#nbtp").prop('disabled', true);
+                        $("#htp").prop('disabled', true);
+                        $("#nbei").prop('disabled', true);
+                        $("#hei").prop('disabled', true);
+                        $("#validerHeuresIntervenantUE").prop('disabled', true);
+                        $("#supprimerInternantUE").prop('disabled', true);
+                    }
                 }
             }, xhrFields: {
                 withCredentials: true
@@ -204,3 +228,68 @@ function choixUE() {
             crossDomain: true
         });
     }
+
+function boutonValidationModifIntervenantUE(mail, hcm, nbtd, htd, nbtp,htp,nbei,hei) {
+    id_UE = $('#selectUE option:selected').val();
+    $.ajax({
+        url: ppil + '/modifHeureEnseignant',
+        type: 'post',
+        data: {'id': id_UE, 'mail': mail, 'heureCM': hcm, 'nbGroupeTD':nbtd,'':,'heureTD':htd,'nbGroupeTP':nbtp,
+            'heureTP':htp,'nbGroupeEI':nbei,'heureEI':hei},
+        success: function (element) {
+            if (res != undefined) {
+                if (res[0] == true) {
+                    $('#messageTitre').text('Succès');
+                    $('#message').text('Les modifications ont bien été pris en compte.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    listIntervenant();
+                } else {
+                    $('#messageTitre').text('Erreur');
+                    $('#message').text('Les modifications n\'ont pas pu être sauvegardé.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                }
+            }
+        }, xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    });
+}
+
+function boutonSuppressionEnseignant(mail) {
+    id_UE = $('#selectUE option:selected').val();
+    $.ajax({
+        url: ppil + '/suppressionEnseignant',
+        type: 'post',
+        data: {'id': id_UE, 'mail': mail},
+        success: function (element) {
+            if (res != undefined) {
+                if (res[0] == true) {
+                    $('#messageTitre').text('Succès');
+                    $('#message').text('Les modifications ont bien été pris en compte.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    listIntervenant();
+                } else {
+                    $('#messageTitre').text('Erreur');
+                    $('#message').text('Les modifications n\'ont pas pu être sauvegardé.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                }
+            }
+        }, xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    });
+}
