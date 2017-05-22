@@ -189,7 +189,7 @@ function choixUE() {
             type: 'post',
             data: {'id': id_UE},
             success: function (element) {
-                if (res != undefined) {
+                if (element != undefined) {
                     if (element == true) {
                         $("#nbGroupeAttenduTD").prop('disabled', false);
                         $("#nbGroupeAffecteTD").prop('disabled', false);
