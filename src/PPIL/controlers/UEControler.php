@@ -318,6 +318,10 @@ class UEControler
         if (!empty($inter)) {
             $ue = UE::find($idUE);
             $inter->delete();
+            $resp = Responsabilite::where('enseignant','like',$mail)->where('id_UE','=',$idUE)->first();
+            if(!empty($resp)){
+                $resp->delete();
+            }
             UE::recalculer($ue);
             $c = new MailControler();
             $c->sendMail($mail, "Intervention supprimée", "Votre intervention dans l'UE " . $ue->nom_UE . " a été supprimée par un responsable.");

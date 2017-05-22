@@ -247,9 +247,9 @@ function modifIntervenantUE(mail, line) {
             'heureTP':htp,'nbGroupeEI':nbei,'heureEI':hei},
         success: function (element) {
             if (element != undefined) {
-                if (element == true) {
+                if (element[0] == 'true') {
                     $('#messageTitre').text('Succès');
-                    $('#message').text('Les modifications ont bien été pris en compte.');
+                    $('#message').text('Les modifications ont bien été prise en compte.');
                     $('#modalDemandeEffectuee').modal({
                         backdrop: 'static',
                         keyboard: false
@@ -279,7 +279,7 @@ function boutonSuppressionEnseignant(mail) {
         data: {'id': id_UE, 'mail': mail},
         success: function (element) {
             if (element != undefined) {
-                if (element == true) {
+                if (element[0] == 'true') {
                     $('#messageTitre').text('Succès');
                     $('#message').text('Les modifications ont bien été pris en compte.');
                     $('#modalDemandeEffectuee').modal({

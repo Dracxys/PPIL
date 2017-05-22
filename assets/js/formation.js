@@ -226,7 +226,7 @@ function modifUE() {
                 if (res != undefined) {
                     if (res[0] == 'true') {
                         $('#messageTitre').text('Succès');
-                        $('#message').text('Les modifications ont bien été pris en compte.');
+                        $('#message').text('Les modifications ont bien été prise en compte.');
                         $('#modalDemandeEffectuee').modal({
                             backdrop: 'static',
                             keyboard: false
@@ -513,7 +513,7 @@ function supprimerForm() {
             $('#delete').modal('toggle');
             if (res != undefined && res[0] == 'true') {
                 $('#messageTitre').text('Succès');
-                $('#message').text('Cette formation a bien été supprimé.');
+                $('#message').text('Cette formation a bien été supprimée.');
                 $('#modalDemandeEffectuee').modal({
                     backdrop: 'static',
                     keyboard: false
