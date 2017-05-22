@@ -17,7 +17,7 @@ function recupererUE(lien) {
                 for (var i = 0; i < tab.length; i++) {
                     j = i + 1;
                     html = html + "<tr><td><a id='" + tab[i] + "' onclick='choixUE(this)'>" + tab[j] + "</a></td>"+
-                        "<td><button type='button' class='btn btn-default pull-right' onclick='supprimer("+tab[i]+")' " +
+                        "<td><button type='button' class='btn btn-danger pull-right' onclick='supprimer("+tab[i]+")' " +
                         ">Supprimer</button></td></tr>";
                     i = j;
                 }

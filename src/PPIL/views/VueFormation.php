@@ -46,10 +46,10 @@ class VueFormation extends AbstractView
 				   <div class=" navbar-right">
 					 <div class="btn-group pull-right">
                        <form class="navbar-form navbar-left">
-					  <button type="button" class="btn btn-default "  id="creerForm">Créer une formation</button>
+					  <button type="button" class="btn btn-primary "  id="creerForm">Créer une formation</button>
 					  <button type="button" class="btn btn-default "  id="ajouterUE">Ajouter un UE</button>
 					  <button type="button" class="btn btn-default "  id="modifierForm">Modifier la formation</button>
-					  <button type="button" class="btn btn-default "  id="suppForm">Supprimer la formation</button>
+					  <button type="button" class="btn btn-danger "  id="suppForm">Supprimer la formation</button>
 					 </form>
 					 </div>
 				   </div>
@@ -307,7 +307,7 @@ END;
                         <h4 id="messageTitre" class="modal-title">Succès</h4>
                     </div>
                     <div class="modal-body">
-                        <p id="message">Les modifications ont bien été pris en compte.</p>
+                        <p id="message">Les modifications ont bien été prises en compte.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" onclick="" data-dismiss="modal">Ok</button>
