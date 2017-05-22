@@ -190,11 +190,12 @@ function choixUE() {
         $.ajax({
             url: ppil + '/boutonModif',
             type: 'post',
+            dataType: 'json',
             data: {'id': id_UE},
             success: function (element) {
                 console.log("element");
                 if (element != undefined) {
-                    if (element == 1) {
+                    if (element[0] = 'true') {
                         console.log("true")
                         $("#nbGroupeAttenduTD").prop('disabled', false);
                         $("#nbGroupeAffecteTD").prop('disabled', false);
