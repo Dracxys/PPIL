@@ -237,8 +237,8 @@ function boutonValidationModifIntervenantUE(mail, hcm, nbtd, htd, nbtp,htp,nbei,
         data: {'id': id_UE, 'mail': mail, 'heureCM': hcm, 'nbGroupeTD':nbtd,'heureTD':htd,'nbGroupeTP':nbtp,
             'heureTP':htp,'nbGroupeEI':nbei,'heureEI':hei},
         success: function (element) {
-            if (res != undefined) {
-                if (res[0] == true) {
+            if (element != undefined) {
+                if (element == true) {
                     $('#messageTitre').text('Succès');
                     $('#message').text('Les modifications ont bien été pris en compte.');
                     $('#modalDemandeEffectuee').modal({
@@ -269,8 +269,8 @@ function boutonSuppressionEnseignant(mail) {
         type: 'post',
         data: {'id': id_UE, 'mail': mail},
         success: function (element) {
-            if (res != undefined) {
-                if (res[0] == true) {
+            if (element != undefined) {
+                if (element == true) {
                     $('#messageTitre').text('Succès');
                     $('#message').text('Les modifications ont bien été pris en compte.');
                     $('#modalDemandeEffectuee').modal({
