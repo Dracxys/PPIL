@@ -9,14 +9,14 @@ class Intervention extends AbstractModel{
 
 	public static function modifierIntervention($inter,$heureCM,$heureTD,$heureTP,$heureEI,$groupeTD,$groupeTP,$groupeEI){
 	    $ue = UE::find($inter->id_UE);
-	    $inter->heuresCM = $heureCM;
-	    $inter->heuresTD = $heureTD;
-	    $inter->heuresTP = $heureTP;
-	    $inter->heuresEI = $heureEI;
-	    $inter->groupeTD = $groupeTD;
-	    $inter->groupeTP = $groupeTP;
-	    $inter->groupeEI = $groupeEI;
-	    $inter->save();
+        $inter->heuresCM = $heureCM;
+        $inter->heuresTD = $heureTD;
+        $inter->heuresTP = $heureTP;
+        $inter->heuresEI = $heureEI;
+        $inter->groupeTD = $groupeTD;
+        $inter->groupeTP = $groupeTP;
+        $inter->groupeEI = $groupeEI;
+        $inter->save();
 	    UE::recalculer($ue);
         $e = Enseignant::find($inter->mail_enseignant);
 	    Enseignant::conversionHeuresTD($e);

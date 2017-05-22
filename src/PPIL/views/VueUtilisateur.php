@@ -40,8 +40,11 @@ class VueUtilisateur extends AbstractView
       $scripts_and_css = "";
       $html  = self::headHTML($scripts_and_css);
       $html = $html . self::navHTML("Enseignement");
-      $notification_exist = false;
-$html .= <<< END
+      $notification_exist = 0;
+      $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+      $depasse = $e->volumeCourant - $e->volumeMax;
+
+      $html .= <<< END
 			 <div class="container">
 
 		  <div class="panel panel-default">
@@ -68,9 +71,7 @@ $html .= <<< END
 					  <button type="button" class="btn btn-default navbar-btn">Exporter</button>
 					  <button type="button" class="btn btn-default navbar-btn">Remise à zéro</button>
 					  <button type="button" class="btn btn-primary navbar-btn"  id="appliquer">Appliquer</button>
-
 					</div>
-<!-- </ul> -->
 				</div>
 
 			  </div>
@@ -79,9 +80,19 @@ $html .= <<< END
       <div class="alert alert-danger hidden" role="alert" id="erreur">
       <strong>Echec!</strong>Certaines informations sont invalides, vérifiez que vos données ne contiennent pas de nombres négatifs ou de caractères spéciaux
       </div>
+      <div class="alert alert-danger hidden" role="alert" id="depassement_prevision">
+      <strong>Attention !</strong> Vos modifications feraient dépasser les prévisions en heures et en groupe pour une ou plusieurs UE.
+      </div>
       <div class="alert alert-warning hidden" role="alert" id="notification_exist">
       <strong>Attention !</strong> Certaines interventions attendent la validation de leur modification, aucun changement ne sera pris en compte entre temps.
       </div>
+      <div class="alert alert-warning hidden" role="alert" id="depassement_max">
+      <strong>Attention !</strong> Vous dépassez actuellement vos horaires maximaux.
+      </div>
+      <div class="alert alert-success hidden" role="alert" id="succes">
+        <strong>Succès!</strong> Vos demandes ont été envoyées.
+      </div>
+
                   <div class="table-responsive ">
 
                   <table class="table table-bordered ">
@@ -131,7 +142,7 @@ END;
                         if(!empty($n)){
                             if($n->id_UE == $intervention->id_UE){
                                 $notification_en_attente = "warning";
-                                $notification_exist = true;
+                                $notification_exist = 1;
                             }
                             $id_ues_notification[] = $n->id_UE ;
                         }
@@ -236,7 +247,7 @@ END;
                                        ->first();
             if(!empty($notification_intervention)){
                 $notification_en_attente = "warning";
-                $notification_exist = true;
+                $notification_exist = 1;
             }
         }
 
@@ -295,7 +306,7 @@ END;
         <script type="text/javascript">
           $(function(){
 		  ajouter("$lien_ajouter", "$lien_ajouter_autre");
-          valider("$lien", $notification_exist);
+          valider("$lien", $notification_exist, $depasse);
 			});
         </script>
 

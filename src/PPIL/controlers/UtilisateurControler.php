@@ -47,6 +47,17 @@ class UtilisateurControler
 
     public function enseignement_action(){
         if(isset($_SESSION['mail'])){
+            $previsions = array(
+                'heuresCM' => false,
+                'heuresTP' => false,
+                'heuresTD' => false,
+                'heuresEI' => false,
+                'groupeTP' => false,
+                'groupeTD' => false,
+                'groupeEI' => false
+            );
+            $depassement = 0;
+
             $val = Slim::getInstance()->request->post();
             $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
             $id_UE = filter_var($val['id_UE'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
@@ -86,11 +97,12 @@ class UtilisateurControler
                 }
             }
 
-
             if(!$error){
+                # Pas de notification en attente
                 $i = Intervention::where('id_intervention', '=', $id)
                    ->first();
                 if(!empty($i)){
+                    # L'intervention existe
                     if($i->id_intervention == $id
                        && $i->heuresCM == $infos['heuresCM']
                        && $i->heuresTP == $infos['heuresTP']
@@ -101,19 +113,66 @@ class UtilisateurControler
                        && $i->groupeEI == $infos['groupeEI']
                        && $i->mail_enseignant == $_SESSION['mail']
                        && $i->id_UE == $id_UE){
+                        #Pas de changements à faire, faut il la supprimer ?
                         if($supprime){
+                            # Supprime l'intervention
                             $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
                             Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
                         }
                     } else {
-                        $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
-                        Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
+                        $ue = UE::find($i->id_UE);
+                        if($infos['heuresCM'] > $ue->prevision_heuresCM && $ue->prevision_heuresCM > 0){
+                            $previsions['heuresCM'] = true;
+                            $error = true;
+                        }
+                        if($infos['heuresTP'] > $ue->prevision_heuresTP && $ue->prevision_heuresTP > 0){
+                            $error = true;
+                            $previsions['heuresTP'] = true;
+                        }
+                        if($infos['heuresTD'] > $ue->prevision_heuresTD  && $ue->prevision_heuresTD > 0){
+                            $previsions['heuresTD'] = true;
+                            $error = true;
+                        }
+                        if($infos['heuresEI'] > $ue->prevision_heuresEI  && $ue->prevision_heuresEI > 0){
+                            $previsions['heuresEI'] = true;
+                            $error = true;
+                        }
+                        if($infos['groupeTP'] > $ue->prevision_groupeTP  && $ue->prevision_groupeTP > 0){
+                            $previsions['groupeTP'] = true;
+                            $error = true;
+                        }
+                        if($infos['groupeTD'] > $ue->prevision_groupeTD  && $ue->prevision_groupeTD > 0){
+                            $previsions['groupeTD'] = true;
+                            $error = true;
+                        }
+                        if($infos['groupeEI'] > $ue->prevision_groupeEI  && $ue->prevision_groupeEI > 0){
+                            $previsions['groupeEI'] = true;
+                            $error = true;
+                        }
+                        if(!$error){
+                            # ne dépasse pas les horaires prévus
+                            # On crée une intervention temporaire
+                            $i_tmp = new Intervention();
+                            $i_tmp->id_UE = $i->id_UE;
+                            $i_tmp->mail_enseignant = $i->mail_enseignant;
+                            $i_tmp->save();
+                            Intervention::modifierIntervention($i_tmp, $infos['heuresCM'], $infos['heuresTD'], $infos['heuresTP'], $infos['heuresEI'], $infos['groupeTD'], $infos['groupeTP'], $infos['groupeEI']);
+                            # dépasse ses horaires max ?
+                            $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+                            $depassement = $e->volumeCourant - $e->volumeMax;
+
+                            $i_tmp->delete();
+
+                            Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
+                        }
                     }
                 }
             }
             echo json_encode([
                 'error' => $error,
-                'notification_exist' => $notification_exist
+                'notification_exist' => $notification_exist,
+                'depassement' => $depassement,
+                'previsions' => $previsions
             ]);
         }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
