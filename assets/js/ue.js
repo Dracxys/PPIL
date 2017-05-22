@@ -169,7 +169,7 @@ function choixUE() {
                             +"<th class='col-md-1'>" + "<input type='number' id='hei"+ line +"' class='form-control' value=" + tab[8+i] + " min='0'/></th>"
                             +"<th class='col-md-3 text-center'>"
                             +"<button type='button' class='btn btn-default' onclick='modifIntervenantUE(\"" + tab[9+i] + '\",' + line +")' id='validerHeuresIntervenantUE'>Valider</button>"
-                            +"<button type='button' class='btn btn-default' onclick='boutonSuppressionEnseignant(\"" + tab[9+i] +"\")' id='supprimerInternantUE'>Supprimer</button>"
+                            +"<button type='button' class='btn btn-default' onclick='boutonSuppressionEnseignant(\"" + tab[9+i] +"\")' id='supprimerIntervenantUE'>Supprimer</button>"
                             +"</th>"
                             +"</tr>";
                         line++;
@@ -186,13 +186,16 @@ function choixUE() {
 
     function boutonValidationModif() {
         id_UE = $('#selectUE option:selected').val();
+        console.log("test");
         $.ajax({
             url: ppil + '/boutonModif',
             type: 'post',
             data: {'id': id_UE},
             success: function (element) {
+                console.log("element");
                 if (element != undefined) {
-                    if (element == true) {
+                    if (element == 1) {
+                        console.log("true")
                         $("#nbGroupeAttenduTD").prop('disabled', false);
                         $("#nbGroupeAffecteTD").prop('disabled', false);
                         $("#heureAttenduTD").prop('disabled', false);
@@ -205,10 +208,11 @@ function choixUE() {
                         $("#nbei").prop('disabled', false);
                         $("#hei").prop('disabled', false);
                         $("#validerHeuresIntervenantUE").prop('disabled', false);
-                        $("#supprimerInternantUE").prop('disabled', false);
+                        $("#supprimerIntervenantUE").prop('disabled', false);
                         var html = "<button type='button' class='btn btn-default center-block' onclick='modifUE()' id='valider'>Valider</button>";
                         $('#boutton_validation').html(html);
                     } else {
+                        console.log("false");
                         $("#nbGroupeAttenduTD").prop('disabled', true);
                         $("#nbGroupeAffecteTD").prop('disabled', true);
                         $("#heureAttenduTD").prop('disabled', true);
@@ -221,7 +225,7 @@ function choixUE() {
                         $("#nbei").prop('disabled', true);
                         $("#hei").prop('disabled', true);
                         $("#validerHeuresIntervenantUE").prop('disabled', true);
-                        $("#supprimerInternantUE").prop('disabled', true);
+                        $("#supprimerIntervenantUE").prop('disabled', true);
                     }
                 }
             }, xhrFields: {
