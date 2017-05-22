@@ -40,7 +40,7 @@ class VueEnseignants extends AbstractView{
 				<form class="form-signin form-horizontal" method="post">
 				<div class="collapse navbar-collapse" id="navbar_panel">
 				  <div class="navbar-right">
-                    <button type="sumbit" class="btn btn-default navbar-btn" formaction="$ajouter"  formnovalidate="false" id="ajouterEnseignants">Ajouter</button>
+                    <button type="sumbit" class="btn btn-primary navbar-btn" formaction="$ajouter"  formnovalidate="false" id="ajouterEnseignants">Ajouter</button>
                     <button type="button" class="btn btn-default navbar-btn" id="exporterEnseignants">Exporter</button>
                   </div>
 				</div>

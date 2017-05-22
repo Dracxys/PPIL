@@ -66,7 +66,7 @@ $html .= <<< END
 					<div class="navbar-right">
 					  <button type="button" class="btn btn-default navbar-btn" id="ajouter">Ajouter</button>
 					  <button type="button" class="btn btn-default navbar-btn">Exporter</button>
-					  <button type="button" class="btn btn-default navbar-btn">Remise à zéro</button>
+					  <button type="button" class="btn btn-danger navbar-btn">Remise à zéro</button>
 					  <button type="button" class="btn btn-primary navbar-btn"  id="appliquer">Appliquer</button>
 
 					</div>
@@ -169,7 +169,7 @@ END;
 						<form class="form-inline" method="post" action="" id="form_interventions">
 						  <div class="form-group">
 							<button  name="annuler" class="btn btn-primary hidden" id="annuler" value="true" type="submit">Annuler</button>
-							<button  name="supprimer" class="btn btn-default" id="supprimer" value="false" type="submit">Supprimer</button>
+							<button  name="supprimer" class="btn btn-danger" id="supprimer" value="false" type="submit">Supprimer</button>
 							<input type="hidden" id="id" name="id" value="$intervention->id_intervention" />
 							<input type="hidden" id="id_UE" name="id_UE" value="$intervention->id_UE" />
 						  </div>
