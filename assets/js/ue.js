@@ -234,7 +234,7 @@ function boutonValidationModifIntervenantUE(mail, hcm, nbtd, htd, nbtp,htp,nbei,
     $.ajax({
         url: ppil + '/modifHeureEnseignant',
         type: 'post',
-        data: {'id': id_UE, 'mail': mail, 'heureCM': hcm, 'nbGroupeTD':nbtd,'':,'heureTD':htd,'nbGroupeTP':nbtp,
+        data: {'id': id_UE, 'mail': mail, 'heureCM': hcm, 'nbGroupeTD':nbtd,'heureTD':htd,'nbGroupeTP':nbtp,
             'heureTP':htp,'nbGroupeEI':nbei,'heureEI':hei},
         success: function (element) {
             if (res != undefined) {
