@@ -12,7 +12,7 @@ function recupererUE(lien) {
         dataType: 'json',
         success: function (tab) {
             if (tab.length > 0) {
-                var html = "<table class='table'><tbody>";
+                var html = "<table class='table-bordered'><tbody>";
                 var j = 0;
                 for (var i = 0; i < tab.length; i++) {
                     j = i + 1;

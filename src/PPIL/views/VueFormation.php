@@ -59,13 +59,13 @@ class VueFormation extends AbstractView
             </div>
             <div class="panel-body">
             <div class="form-horizontal container-fluid col-sm-6 ">
-                <div id="selectFormDiv" class="container-fluid col-sm-10">
+                <div id="selectFormDiv" class=" container-fluid col-sm-10">
                     <label class="control-label col-sm-6" for="formation">Sélectionner Formation</label>
                     <div class="container col-sm-6">
                         $select
                     </div>
                 </div>
-                <div id="tableUE" class="container-fluid col-sm-10">
+                <div id="tableUE" class="table-responsive container-fluid col-sm-10">
 
 			    </div>
             </div>
@@ -81,7 +81,7 @@ class VueFormation extends AbstractView
                         <li><a href="#tab4" data-toggle="tab">EI</a></li>
 
                     </ul>
-                    <div class="tab-content">
+                    <div class="tab-content table-responsive">
                         <div class="tab-pane active" id="tab1">
                             <table class="table table-bordered">
                                 <thead>
