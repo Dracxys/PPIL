@@ -408,7 +408,7 @@ function addEnseignants() {
             if (res != undefined) {
                 if (res == true) {
                     $('#messageTitre').text('Succès');
-                    $('#message').text('Les modifications ont bien été pris en compte.');
+                    $('#message').text('Les modifications ont bien été prises en compte.');
                     $('#modalDemandeEffectuee').modal({
                         backdrop: 'static',
                         keyboard: false
@@ -417,7 +417,7 @@ function addEnseignants() {
                     listeAjoutEnseignant();
                 } else {
                     $('#messageTitre').text('Erreur');
-                    $('#message').text('Les modifications n\'ont pas pu être sauvegardé.');
+                    $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
                     $('#modalDemandeEffectuee').modal({
                         backdrop: 'static',
                         keyboard: false
