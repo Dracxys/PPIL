@@ -20,15 +20,27 @@ class VueUe extends AbstractView
 {
 
     public function home($u){
-        $scripts_and_css = "";
-        $html  = self::headHTML($scripts_and_css);
-        $html .= self::navHTML("UE");
-        $select = self::selectUE($u);
-        $mes = self::message();
-        $lienInfoUE = Slim::getInstance()->urlFor('compoUE');
-        $lien_exporter = Slim::getInstance()->urlFor('ue.exporter');
-        $lien_importer = Slim::getInstance()->urlFor('ue.importer');
-        $html .= <<< END
+        if(isset($_SESSION['mail'])){
+            $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
+            $responsabilite = Enseignant::get_privilege($e);
+            $class_responsable_autorise = "hidden disabled";
+            if(isset($responsabilite)){
+                        $class_responsable_autorise = "";
+            }
+
+            $scripts_and_css = "";
+            $html  = self::headHTML($scripts_and_css);
+            $html .= self::navHTML("UE");
+            $select = self::selectUE($u);
+            $mes = self::message();
+            $lienInfoUE = Slim::getInstance()->urlFor('compoUE');
+            $lien_exporter = Slim::getInstance()->urlFor('ue.exporter');
+            $lien_importer = Slim::getInstance()->urlFor('ue.importer');
+            $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
+            $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
+            $responsabilite = Enseignant::get_privilege($e);
+
+            $html .= <<< END
         <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading nav navbar-default">
@@ -47,10 +59,9 @@ class VueUe extends AbstractView
 
 				 <div class="collapse navbar-collapse" id="navbar_panel">
                     <div class=" navbar-right">
-                    <button type='button' class='btn btn-primary hidden' data-toggle="modal" data-target="#modal_ajoutEnseignant" id='ajoutEnseignant'>Ajouter enseignant</button>
-
-					<button type="submit" class="btn btn-default navbar-btn" id="importer">Importer</button>
-                    <button type="submit" class="btn btn-default navbar-btn" id="exporter">Exporter</button>
+					<button type="submit" class="btn btn-default navbar-btn $class_responsable_autorise" id="importer">Importer</button>
+                    <button type="submit" class="btn btn-default navbar-btn " id="exporter">Exporter</button>
+                    <button type='button' class='btn btn-primary $class_responsable_autorise' data-toggle="modal" data-target="#modal_ajoutEnseignant" id='ajoutEnseignant'>Ajouter enseignant</button>
                     <form method="post" action="$lien_importer" enctype="multipart/form-data" id="form_input_csv">
                         <input id="input_csv" type="file" class="hidden" />
                     </form>
@@ -77,7 +88,7 @@ class VueUe extends AbstractView
 END;
         // finir les fonctions avant de les décommenter
 
-        $html .= self::compositionUE();
+        $html .= self::compositionUE($class_responsable_autorise);
         $html .= self::listeIntervenants();
         $html .= self::ajoutEnseignant();
 
@@ -94,23 +105,15 @@ END;
                exporter("$lien_exporter");
                importer("$lien_importer");
                setLien("$lienInfoUE");
-               choixUE();
-               boutonValidationModif();
-               listIntervenant();
-               $('#selectUE').change(function() {
-               choixUE();
-               boutonValidationModif();
-               listIntervenant();
-               });
-               $('#erreur').hide();
+		       setup();
 			});
         </script>
 END;
-        return $html;
-
+return $html;
+        }
     }
 
-    private function compositionUE() {
+    private function compositionUE($class_responsable_autorise) {
         $mes = self::message();
         $html = <<<END
             <div id="compoUE">
@@ -133,8 +136,8 @@ END;
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th class="text-center"> <input type="number" class="form-control" id="heureAttenduCM"  value="0" min="0"/> </th>
-                                        <th class="text-center"> <input type="number" class="form-control" id="heureAffecteCM"  value="0" min="0" readonly/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control $class_responsable_autorise" id="heureAttenduCM"  value="0" min="0"/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control $class_responsable_autorise" id="heureAffecteCM"  value="0" min="0" readonly/> </th>
                                     </tr>
                                 </tbody>
                             </table>
