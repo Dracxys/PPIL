@@ -273,6 +273,17 @@ $app->post('/home/ue/compoUE/listIntervenant', function (){
     $c->intervenantsUE();
 });
 
+$app->post('/home/ue/compoUE/ajoutEnseignant', function (){
+    $c = new UEControler();
+    $c->listeAjoutEnseignant();
+});
+
+$app->post('/home/ue/compoUE/addInterventions', function (){
+    $c = new UEControler();
+    $c->addInterventions();
+});
+
+
 $app->post('/home/ue/compoUE/boutonModif', function (){
     $c = new UEControler();
     $c->boutonModif();
