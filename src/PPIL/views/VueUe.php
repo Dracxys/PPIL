@@ -60,8 +60,8 @@ class VueUe extends AbstractView
 			<div class="panel-body ">
 			  <form class="form-horizontal">
 				<div id="select" class="form-group">
-                  <label class="control-label col-sm-3" for="selectUE">Sélectionner UE :</label>
-				  <div class="col-sm-9">
+                  <label class="control-label col-sm-3" for="selectUE">Sélectionner UE</label>
+				  <div class="col-sm-3">
 					$select
 					</div>
 				</div>
