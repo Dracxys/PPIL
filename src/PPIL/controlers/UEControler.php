@@ -125,7 +125,7 @@ class UEControler
                     $csv_ues->insertOne($ue->toArray());
                 }
                 foreach($csv_array as $interv){
-                    $csv_ues->insertOne(null);
+                    $csv_ues->insertOne([]);
                     $csv_ues->insertOne($headers_intervenants);
                     foreach($interv as $i){
                         $csv_ues->insertOne($i->toArray());
@@ -138,6 +138,133 @@ class UEControler
         }
     }
 
+    public function importer(){
+        if(isset($_SESSION['mail'])){
+            $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
+
+            $app = Slim::getInstance();
+            $app->response->headers->set('Content-Type', 'application/json');
+
+            $erreur = true;
+            $message = array(
+                'error' => false,
+                'size' => false,
+                'extension' => false,
+                'parse' => false
+            );
+
+            if ($_FILES['file']['size'] > 0) {
+                $chemin = "imports/";
+                $root = Slim::getInstance()->root();
+                $extensions_valides = array('csv');
+                $maxsize = 20971520;
+                $extension_upload = strtolower(substr(strrchr($_FILES['file']['name'], '.'), 1));
+                $nameFile = md5(uniqid(rand(), true));
+                if ($_FILES['file']['error'] > 0) {
+                    $message['error'] = true;
+                } else if ($_FILES['file']['size'] > $maxsize) {
+                    $message['size'] = true;
+                } else if (!in_array($extension_upload, $extensions_valides)) {
+                    $message['extension'] = true;
+                } else {
+                    move_uploaded_file($_FILES['file']['tmp_name'],  $root . $chemin . $nameFile . "." . $extension_upload);
+
+                    # this is where the magic happens
+                    $csv = Reader::createFromPath($root . $chemin . $nameFile . "." . $extension_upload);
+
+                    $last_offset = 1;
+                    $csv->setOffset($last_offset);
+                    $skip = 0;
+                    $stop = false;
+                    $csv->setOffset($last_offset);
+                    $nb_insert = $csv->each(function ($row, $rowOffset){
+                        $result = true;
+                        if($row[0] == ""){
+                            $result = false;
+                        }
+
+                        $ue = UE::find($row[0]);
+                        if(is_null($ue)){
+                            $ue = new UE();
+                            $ue->id_UE = $row[0];
+                        }
+
+                        $ue->nom_UE = $row[1];
+                        $ue->fst = $row[2];
+
+                        $f = Formation::find($row[3]);
+                        if(is_null($f)){
+                            $message['parse'] = true;
+                            $result = false;
+                        }else {
+                            $ue->id_formation = $row[3];
+                        }
+
+                        $ue->heuresTD = $row[4];
+                        $ue->heuresTP = $row[5];
+                        $ue->heuresCM = $row[6];
+                        $ue->heuresEI = $row[7];
+                        $ue->prevision_heuresTD = $row[8];
+                        $ue->prevision_heuresTP = $row[9];
+                        $ue->prevision_heuresCM = $row[10];
+                        $ue->prevision_heuresEI = $row[11];
+                        $ue->groupeTD = $row[12];
+                        $ue->groupeTP = $row[13];
+                        $ue->groupeEI = $row[14];
+                        $ue->prevision_groupeTD = $row[15];
+                        $ue->prevision_groupeTP = $row[16];
+                        $ue->prevision_groupeEI = $row[17];
+
+                        $ue->save();
+
+                        return $result;
+                    });
+                    $nb = $nb_insert;
+                    $insert = 0;
+                    for($i=0; $i<$nb_insert; $i++){
+                        $nb += $insert + 3;
+                        $csv->setOffset($nb);
+                        $insert = $csv->each(function ($row, $rowOffset){
+                            $result = true;
+                            //echo json_encode($row);
+                            if($row[0] == ""){
+                                $result = false;
+                            } else {
+                                # On y est !
+                                #vérifions que les interventions existent, sinon on les crée
+                                $intervention = Intervention::find($row[1]);
+                                if(is_null($intervention)){
+                                    $intervention = new intervention();
+                                    $intervention->id_intervention = $row[1];
+                                }
+                                $intervention->id_UE = $row[0];
+                                $intervention->fst = $row[2];
+                                $intervention->heuresCM = $row[3];
+                                $intervention->heuresTP = $row[4];
+                                $intervention->heuresTD = $row[5];
+                                $intervention->heuresEI = $row[6];
+                                $intervention->groupeTP = $row[7];
+                                $intervention->groupeTD = $row[8];
+                                $intervention->groupeEI = $row[9];
+                                $intervention->mail_enseignant = $row[10];
+                                $intervention->save();
+                            }
+                            return $result;
+                        });
+                        $insert -= 1;
+                    }
+
+                    $erreur = false;
+                }
+            }
+            echo json_encode([
+                "error" => $erreur,
+                "messages" => $message
+            ]);
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
 
     public function infoUE()
     {

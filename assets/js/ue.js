@@ -33,10 +33,40 @@ function exporter(lien_exporter){
 
 function importer(lien_importer){
 	$("#input_csv").change(function() {
-		var fileName = $(this).val();
-		console.log(fileName);
-		$('#form_input_csv').submit();
+		$("#form_input_csv").submit();
 	});
+
+	$("#form_input_csv").submit(function(e){
+		e.preventDefault();
+		$.ajax({
+            url: lien_importer,
+            type: 'post',
+            data: new FormData(this),
+			processData: false,
+			contentType: false,
+            success: function (json) {
+				if(json.error == true){
+					$("#import_succes").addClass('hidden');
+					if(json.messages.error){
+						$("#import_erreur_autre").removeClass('hidden');
+					}
+					if(json.messages.size){
+						$("#import_erreur_taille").removeClass('hidden');
+					}
+					if(json.messages.extension){
+						$("#import_erreur_extension").removeClass('hidden');
+					}
+				} else {
+					$("#import_succes").removeClass('hidden');
+					$("#import_erreur_autre").addClass('hidden');
+					$("#import_erreur_taille").addClass('hidden');
+					$("#import_erreur_extension").addClass('hidden');
+				}
+            }
+		});
+
+	});
+
 
 	$('#importer').click(function(){
 		$('#input_csv').click();

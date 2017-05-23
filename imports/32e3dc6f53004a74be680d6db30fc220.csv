@@ -1,0 +1,8 @@
+id_UE,id_intervention,fst,heuresCM,heuresTP,heuresTD,heuresEI,groupeTP,groupeTD,groupeEI,mail_enseignant
+3,1,1,100,0,0,0,0,0,0,root@root
+,,,,,,,,,,
+id_UE,id_intervention,fst,heuresCM,heuresTP,heuresTD,heuresEI,groupeTP,groupeTD,groupeEI,mail_enseignant
+4,2,1,0,0,0,0,1,1,1,root@root
+,,,,,,,,,,
+id_UE,id_intervention,fst,heuresCM,heuresTP,heuresTD,heuresEI,groupeTP,groupeTD,groupeEI,mail_enseignant
+5,13,1,0,0,0,0,0,0,0,root@root

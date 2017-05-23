@@ -62,8 +62,8 @@ class VueUe extends AbstractView
 					<button type="submit" class="btn btn-default navbar-btn $class_responsable_autorise" id="importer">Importer</button>
                     <button type="submit" class="btn btn-default navbar-btn " id="exporter">Exporter</button>
                     <button type='button' class='btn btn-primary $class_responsable_autorise' data-toggle="modal" data-target="#modal_ajoutEnseignant" id='ajoutEnseignant'>Ajouter enseignant</button>
-                    <form method="post" action="$lien_importer" enctype="multipart/form-data" id="form_input_csv">
-                        <input id="input_csv" type="file" class="hidden" />
+                    <form method="post" enctype="multipart/form-data" id="form_input_csv">
+                        <input id="input_csv" name="file" type="file" class="hidden" />
                     </form>
 				   </div>
 				 </div>
@@ -71,10 +71,23 @@ class VueUe extends AbstractView
 			</div>
 			</div>
 			$mes
+			<div class="alert alert-success hidden" role="alert" id="import_succes">
+			  <strong>Succes!</strong> Votre fichier a bien été importé.
+			</div>
+			  <div class="alert alert-danger hidden" role="alert" id="import_erreur_extension">
+				<strong>Echec!</strong> Votre fichier n'est pas de type csv.
+			  </div>
+			  <div class="alert alert-danger hidden" role="alert" id="import_erreur_taille">
+				<strong>Echec!</strong> Votre fichier est trop volumineux.
+			  </div>
+			  <div class="alert alert-danger hidden" role="alert" id="import_erreur_autre">
+				<strong>Echec!</strong> Une erreur non identifiée est survenue.
+			  </div>
+
 			<div class="panel-body ">
 			  <form class="form-horizontal">
 				<div id="select" class="form-group">
-                  <label class="control-label col-sm-3" for="selectUE">Sélectionner UE</label>
+                  <label class="control-label col-sm-5" for="selectUE">Sélectionner UE</label>
 				  <div class="col-sm-3">
 					$select
 					</div>
