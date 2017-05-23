@@ -217,5 +217,10 @@ class Enseignant extends AbstractModel{
 			$ens->delete();
 		}
 	}
+	
+	public static function desinscription($mail){
+		$req = Enseignant::where('mail', 'like', $mail)->first();
+		$req->delete();
+	}
 
 }

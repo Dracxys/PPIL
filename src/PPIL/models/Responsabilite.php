@@ -46,4 +46,11 @@ class Responsabilite extends AbstractModel{
 		}
 	}
 
+	public static function desinscription($mail){
+		$req = Responsabilite::where('enseignant', 'like', $mail)->get();
+		foreach($req as $r){
+			$r->delete();
+		}
+	}
+	
 }

@@ -28,4 +28,11 @@ class Intervention extends AbstractModel{
 			$i->delete();
 		}
 	}
+	
+	public static function desinscription($mail){
+		$req = Intervention::where('mail_enseignant', 'like', $mail)->get();
+		foreach($req as $r){
+			$r->delete();
+		}
+	}
 }
