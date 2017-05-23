@@ -503,7 +503,7 @@ END;
 				      <div class="collapse navbar-collapse" id="navbar_panel">
 				        <div class="navbar-form navbar-right">
                   <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Recherche">
+                    <input type="text" class="form-control" id="rechercheEnseignant" placeholder="Recherche">
 					             <div class="input-group-btn">
                         <button class="btn btn-default" id="boutonRecherche" >
                           <i class="glyphicon glyphicon-search"></i>
