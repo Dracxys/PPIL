@@ -47,8 +47,9 @@ class VueUe extends AbstractView
 				   <div class=" navbar-right">
 					 <div class="btn-group pull-right">
                        <form class="navbar-form navbar-left">
-                         <button type="submit" class="btn btn-default">Importer</button>
-                         <button type="submit" class="btn btn-default">Exporter</button>
+                         <button type='button' class='btn btn-primary hidden' data-toggle="modal" data-target="#modal_ajoutEnseignant" id='ajoutEnseignant'>Ajouter enseignant</button>
+                         <button type="submit" class="btn btn-info">Importer</button>
+                         <button type="submit" class="btn btn-info">Exporter</button>
                        </form>
 					 </div>
 				   </div>
@@ -76,7 +77,7 @@ END;
 
         $html .= self::compositionUE();
         $html .= self::listeIntervenants();
-
+        $html .= self::ajoutEnseignant();
 
         $html .= <<< END
 					 </div>
@@ -284,6 +285,44 @@ END;
         </div>
 END;
         return $html;
+    }
+
+    public function ajoutEnseignant(){
+        $html = <<<END
+        <div class="container">
+        <div class="modal fade" id="modal_ajoutEnseignant" role="dialog">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Ajouter un enseignant</h4>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+            <table class="table table-bordered ">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Nom</th>
+                        <th class="text-center">Prénom</th>
+                        <th class="text-center">Mail</th>
+						<th class="text-center">Sélectionner</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tableUEAjoutEnseignant">
+                    </tbody>
+                    </table>
+                    </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="addEnseignants()" data-dismiss="modal">Appliquer</button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+END;
+    return $html;
     }
 
 }
