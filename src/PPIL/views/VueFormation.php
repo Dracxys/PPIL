@@ -47,7 +47,7 @@ class VueFormation extends AbstractView
 					 <div class="btn-group pull-right">
                        <form class="navbar-form navbar-left">
 					  <button type="button" class="btn btn-primary "  id="creerForm">Créer une formation</button>
-					  <button type="button" class="btn btn-info "  id="exporter">Exporter</button>
+					  <button type="button" class="btn btn-default "  id="exporter">Exporter</button>
 					  <button type="button" class="btn btn-default "  id="ajouterUE">Ajouter un UE</button>
 					  <button type="button" class="btn btn-default "  id="modifierForm">Modifier la formation</button>
 					  <button type="button" class="btn btn-danger "  id="suppForm">Supprimer la formation</button>
