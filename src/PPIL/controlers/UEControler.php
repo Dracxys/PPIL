@@ -298,7 +298,42 @@ class UEControler
                 $groupeTD = filter_var($val['nbGroupeTD'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
                 $groupeTP = filter_var($val['nbGroupeTP'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
                 $groupeEI = filter_var($val['nbGroupeEI'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
+                $tmpHeuresCM = $inter->heuresCM;
+                $tmpHeuresTP = $inter->heuresTP;
+                $tmpHeuresTD = $inter->heuresTD;
+                $tmpHeuresEI = $inter->heuresEI;
+                $tmpGroupeTP = $inter->groupeTP;
+                $tmpGroupeTD = $inter->groupeTD;
+                $tmpGroupeEI = $inter->groupeEI;
                 Intervention::modifierIntervention($inter, $heuresCM, $heuresTD, $heuresTP, $heuresEI, $groupeTD, $groupeTP, $groupeEI);
+                $ue = UE::find($inter->id_UE);
+                if($ue->heuresCM > $ue->prevision_heuresCM && $ue->prevision_heuresCM > 0 ){
+                    $error = true;
+                }
+                if($ue->heuresTP > $ue->prevision_heuresTP && $ue->prevision_heuresTP > 0){
+                    $error = true;
+                }
+                if($ue->heuresTD > $ue->prevision_heuresTD  && $ue->prevision_heuresTD > 0){
+                    $error = true;
+                }
+                if($ue->heuresEI > $ue->prevision_heuresEI  && $ue->prevision_heuresEI > 0){
+                    $error = true;
+                }
+                if($ue->groupeTP > $ue->prevision_groupeTP  && $ue->prevision_groupeTP > 0){
+                    $error = true;
+                }
+                if($ue->groupeTD > $ue->prevision_groupeTD  && $ue->prevision_groupeTD > 0){
+                    $error = true;
+                }
+                if($ue->groupeEI > $ue->prevision_groupeEI  && $ue->prevision_groupeEI > 0){
+                    $error = true;
+                }
+
+
+
+
+
+
                 $c = new MailControler();
                 $c->sendMail($mail, "Modification intervention", "Votre intervention dans l'UE " . $ue->nom_UE . " a été modifiée par un responsable.");
                 $app->response->headers->set('Content-Type', 'application/json');
