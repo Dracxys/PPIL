@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Dim 21 Mai 2017 à 12:59
+-- Généré le :  Mar 23 Mai 2017 à 19:58
 -- Version du serveur :  10.1.21-MariaDB
 -- Version de PHP :  7.0.18
 
@@ -82,6 +82,7 @@ INSERT INTO `Formation` (`id_formation`, `nomFormation`, `fst`) VALUES
 --
 
 CREATE TABLE `Intervention` (
+  `id_UE` int(11) NOT NULL,
   `id_intervention` int(4) NOT NULL,
   `fst` tinyint(1) NOT NULL,
   `heuresCM` int(4) DEFAULT '0',
@@ -91,19 +92,18 @@ CREATE TABLE `Intervention` (
   `groupeTP` int(4) DEFAULT '1',
   `groupeTD` int(4) DEFAULT '1',
   `groupeEI` int(4) DEFAULT '1',
-  `mail_enseignant` varchar(128) NOT NULL,
-  `id_UE` int(11) NOT NULL
+  `mail_enseignant` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Intervention`
 --
 
-INSERT INTO `Intervention` (`id_intervention`, `fst`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeTP`, `groupeTD`, `groupeEI`, `mail_enseignant`, `id_UE`) VALUES
-(1, 1, 30, 4, 0, 0, 4, 0, 1, 'root@root', 3),
-(2, 1, 0, 0, 0, 0, 1, 1, 1, 'root@root', 4),
-(9, 1, 0, 0, 0, 0, 0, 0, 0, 'root@root', 5),
-(10, 0, 0, 2, 0, 0, 0, 0, 17, 'root@root', 15);
+INSERT INTO `Intervention` (`id_UE`, `id_intervention`, `fst`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeTP`, `groupeTD`, `groupeEI`, `mail_enseignant`) VALUES
+(3, 1, 1, 30, 4, 0, 0, 4, 0, 1, 'root@root'),
+(4, 2, 1, 0, 0, 0, 0, 1, 1, 1, 'root@root'),
+(5, 9, 1, 0, 0, 0, 0, 0, 0, 0, 'root@root'),
+(15, 10, 0, 0, 2, 0, 0, 0, 0, 17, 'root@root');
 
 -- --------------------------------------------------------
 
