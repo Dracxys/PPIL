@@ -197,6 +197,7 @@ END;
     
     public function profilEnseignant($enseignant) {
         $annuler = Slim::getInstance()->urlFor("enseignantsUtilisateur");
+        $resp = self::recupResponsabilites($enseignant);
         $scripts_and_css = "";
         $html = self::headHTML($scripts_and_css);
         $html .= self::navHTML("Enseignants");
@@ -238,60 +239,35 @@ END;
                       <div class="form-group">
                         <label class="control-label col-sm-4" for="nom">Nom </label>
                         <div class="col-sm-7">
-                          <input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" disabled="true" value=$enseignant->nom />
+                          <input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" disabled="true" value="$enseignant->nom" />
                         </div>
                       </div>
                       
                       <div class="form-group">
                         <label class="control-label col-sm-4" for="prenom">Prénom </label>
                         <div class="col-sm-7">
-                          <input type="text" id="prenom" name="prenom" class="form-control" placeholder="Prénom" disabled="true" value=$enseignant->prenom />
+                          <input type="text" id="prenom" name="prenom" class="form-control" placeholder="Prénom" disabled="true" value="$enseignant->prenom" />
                         </div>
                       </div>
                       
                       <div class="form-group">
                         <label class="control-label col-sm-4" for="mail">Mail </label>
                         <div class="col-sm-7">
-                          <input type="text" id="mail" name="mail" class="form-control" placeholder="Mail" disabled="true" value=$enseignant->mail />
+                          <input type="text" id="mail" name="mail" class="form-control" placeholder="Mail" disabled="true" value="$enseignant->mail" />
                         </div>
                       </div>
                       
                       <div class="form-group">
                         <label class="control-label col-sm-4" for="statut">Statut </label>
                         <div class="col-sm-7">
-                          <input type="text" id="statut" name="statut" class="form-control" placeholder="Statut" disabled="true" value=$enseignant->statut />
+                          <input type="text" id="statut" name="statut" class="form-control" placeholder="Statut" disabled="true" value="$enseignant->statut" />
                         </div>
                       </div>
                       
                       <div class="form-group">
                         <label class="control-label col-sm-4" for="resp">Responsabilité(s) : </label>
                         <div class="col-sm-7">
-                        
-
-END;
-
-        $responsabilites = Responsabilite::where('enseignant', '=', $enseignant->mail)->get();
-        $respIntitule = "";
-
-        if($responsabilites != null) {
-            foreach ($responsabilites as $resp) {
-                if($resp->id_formation != null) {
-                    $formation = Formation::where('id_formation', '=', $resp->id_formation)->first();
-                    $respIntitule .= $resp->intituleResp . " pour " . $formation->nomFormation;
-                } else {
-                    if($resp->id_UE != null) {
-                        $ue = UE::where('id_UE', '=', $resp->id_UE)->first();
-                        $respIntitule .= $resp->intituleResp . " pour " . $ue->nom_UE;
-                    }
-                }
-            }
-        } else {
-            $respIntitule = "Pas de responsabilité";
-        }
-
-
-                        $html .= <<<END
-                          <input type="text" id="statut" name="statut" class="form-control" placeholder="Statut" disabled="true" value=$respIntitule />
+                            $resp
                         </div>
                       </div>
                     </form>
@@ -308,6 +284,7 @@ END;
                         } else {
                             $html .= '<img src=' . "/PPIL/" . $enseignant->photo  .' class="img-thumbnail" alt="Photo de profil" width="296" height="220">';
                         }
+
                         $html .= <<< END
                     </div>
                 </div>
@@ -316,6 +293,33 @@ END;
 END;
 
 
+        return $html;
+    }
+
+
+    public function recupResponsabilites($enseignant) {
+        $responsabilites = Responsabilite::where('enseignant', '=', $enseignant->mail)->get();
+
+        $html = '<select class="form-control" id="selectForm" name="selectForm">';
+
+        if(isset($responsabilites)) {
+            foreach ($responsabilites as $resp) {
+                if($resp->id_formation != null) {
+                    $formation = Formation::where('id_formation', '=', $resp->id_formation)->first();
+                    $respIntitule = $resp->intituleResp . " pour " . $formation->nomFormation;
+                    $html .= '<option value=' . '"' . $respIntitule . '"' . '>' . $respIntitule . '</option>';
+                } else {
+                    if ($resp->id_UE != null) {
+                        $ue = UE::where('id_UE', '=', $resp->id_UE)->first();
+                        $respIntitule = $resp->intituleResp . " pour " . $ue->nom_UE;
+                        $html .= '<option value=' . '"' . $respIntitule . '"' . '>' . $respIntitule . '</option>';
+                    }
+                }
+            }
+        }
+
+        $html .= "</select>";
+        
         return $html;
     }
 
