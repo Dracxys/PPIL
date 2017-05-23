@@ -1,5 +1,0 @@
-id_intervention,fst,heuresCM,heuresTP,heuresTD,heuresEI,groupeTP,groupeTD,groupeEI,mail_enseignant,id_UE
-1,1,30,4,0,0,4,0,1,root@root,3
-2,1,0,0,0,0,1,1,1,root@root,4
-9,1,0,0,0,0,0,0,0,root@root,5
-10,0,0,2,0,0,0,0,17,root@root,15
