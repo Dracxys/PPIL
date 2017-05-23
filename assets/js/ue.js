@@ -31,6 +31,19 @@ function exporter(lien_exporter){
 	});
 }
 
+function importer(lien_importer){
+	$("#input_csv").change(function() {
+		var fileName = $(this).val();
+		console.log(fileName);
+		$('#form_input_csv').submit();
+	});
+
+	$('#importer').click(function(){
+		$('#input_csv').click();
+		//window.location = lien_importer;
+	});
+}
+
 
 function choixUE() {
     id_UE = $('#selectUE option:selected').val();

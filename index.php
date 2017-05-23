@@ -253,6 +253,11 @@ $app->get('/home/ue/exporter', function (){
     $c->exporter();
 })->name('ue.exporter');
 
+$app->get('/home/ue/importer', function (){
+    $c = new UEControler();
+    $c->importer();
+})->name('ue.importer');
+
 $app->post('/home/ue/compoUE', function (){
     $c = new UEControler();
     $c->infoUE();
