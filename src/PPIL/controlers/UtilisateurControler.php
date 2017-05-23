@@ -147,31 +147,31 @@ class UtilisateurControler
                         $tmpGroupeEI = $i->groupeEI;
                         Intervention::modifierIntervention($i,$infos['heuresCM'],$infos['heuresTD'],$infos['heuresTP'],$infos['heuresEI'],$infos['groupeTD'],$infos['groupeTP'],$infos['groupeEI']);
                         $ue = UE::find($i->id_UE);
-                        if($ue->heuresCM > $ue->prevision_heuresCM && $ue->prevision_heuresCM > 0 ){
+                        if($ue->heuresCM > $ue->prevision_heuresCM){
                             $previsions['heuresCM'] = true;
                             $error = true;
                         }
-                        if($ue->heuresTP > $ue->prevision_heuresTP && $ue->prevision_heuresTP > 0){
+                        if($ue->heuresTP > $ue->prevision_heuresTP){
                             $error = true;
                             $previsions['heuresTP'] = true;
                         }
-                        if($ue->heuresTD > $ue->prevision_heuresTD  && $ue->prevision_heuresTD > 0){
+                        if($ue->heuresTD > $ue->prevision_heuresTD){
                             $previsions['heuresTD'] = true;
                             $error = true;
                         }
-                        if($ue->heuresEI > $ue->prevision_heuresEI  && $ue->prevision_heuresEI > 0){
+                        if($ue->heuresEI > $ue->prevision_heuresEI){
                             $previsions['heuresEI'] = true;
                             $error = true;
                         }
-                        if($ue->groupeTP > $ue->prevision_groupeTP  && $ue->prevision_groupeTP > 0){
+                        if($ue->groupeTP > $ue->prevision_groupeTP){
                             $previsions['groupeTP'] = true;
                             $error = true;
                         }
-                        if($ue->groupeTD > $ue->prevision_groupeTD  && $ue->prevision_groupeTD > 0){
+                        if($ue->groupeTD > $ue->prevision_groupeTD){
                             $previsions['groupeTD'] = true;
                             $error = true;
                         }
-                        if($ue->groupeEI > $ue->prevision_groupeEI  && $ue->prevision_groupeEI > 0){
+                        if($ue->groupeEI > $ue->prevision_groupeEI){
                             $previsions['groupeEI'] = true;
                             $error = true;
                         }
