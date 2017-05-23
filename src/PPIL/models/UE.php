@@ -114,7 +114,7 @@ class UE extends AbstractModel{
 
 	public static function reinitialiserBDD(){
 		$req = UE::all();
-		foreach($i as $req){
+		foreach($req as $i){
 			$i->delete();
 		}
 	}

@@ -37,7 +37,7 @@ class NotificationResponsabilite extends Notification
 	
 	public static function reinitialiserBDD(){
 		$req = NotificationResponsabilite::all();
-		foreach($i as $req){
+		foreach($req as $i){
 			$i->delete();
 		}
 	}

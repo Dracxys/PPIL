@@ -24,8 +24,15 @@ class Intervention extends AbstractModel{
 	
 	public static function reinitialiserBDD(){
 		$req = Intervention::all();
-		foreach($i as $req){
+		foreach($req as $i){
 			$i->delete();
+		}
+	}
+	
+	public static function desinscription($mail){
+		$req = Intervention::where('mail_enseignant', 'like', $mail)->get();
+		foreach($req as $r){
+			$r->delete();
 		}
 	}
 }

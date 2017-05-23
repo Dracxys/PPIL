@@ -85,9 +85,9 @@ END;
                     $html .= "<tr name=\"ligne\" id=\"" . $i . "\" onclick=\"select(" . $i . ")\">" .
                         "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
                         "<th class=\"text-center\">" . $user->statut . "</th>" .
-                        "<th class=\"text-center\" id=\"volMin\">" . $user->volumeMin . "</th>" .
-                        "<th class=\"text-center\" id=\"volCourant\">" . $volumeCourant . "</th>" .
-                        "<th class=\"text-center\" id=\"volFST\">" . $volFST . "</th>" .
+                        "<th class=\"text-center\" name=\"volMin\" id=\"volMin" . $i . "\">" . $user->volumeMin . "</th>" .
+                        "<th class=\"text-center\" name=\"volCourant\" id=\"volCourant" . $i . "\">" . $volumeCourant . "</th>" .
+                        "<th class=\"text-center\" name=\"volFST\" id=\"volFST" . $i . "\">" . $volFST . "</th>" .
                         "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='" . Slim::getInstance()->urlFor('profilEnseignant', array('id' => $user->rand)) . "'>Voir</button> " . "</th>" .
 
                         "</tr>";
@@ -113,8 +113,11 @@ END;
         $(function(){
             exporter("$lien_exporter");
         });
-
-
+              </script>
+              <script type="text/javascript">
+        $(function(){
+            calculHeures();
+        });
               </script>
 END;
         return $html;

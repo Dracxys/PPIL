@@ -294,7 +294,7 @@ END;
                         <h4 id="messageTitre" class="modal-title">Succès</h4>
                     </div>
                     <div class="modal-body">
-                        <p id="message">Les modifications ont bien été pris en compte.</p>
+                        <p id="message">Les modifications ont bien été prises en compte.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="" data-dismiss="modal">Ok</button>

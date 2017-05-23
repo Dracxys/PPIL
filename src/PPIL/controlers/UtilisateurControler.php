@@ -10,7 +10,9 @@ namespace PPIL\controlers;
 
 
 use PPIL\models\Enseignant;
+use PPIL\models\Formation;
 use PPIL\models\NotificationResponsabilite;
+use PPIL\models\Responsabilite;
 use PPIL\views\VueHome;
 use PPIL\views\VueModifProfil;
 use PPIL\views\VueUtilisateur;
@@ -575,6 +577,21 @@ class UtilisateurControler
 		}
 	}
 
+	
+	public function desinscription(){
+		if(isset($_SESSION['mail'])) {
+			
+			Intervention::desinscription($_SESSION['mail']);
+			//NotificationInscription:desinscription($_SESSION['mail']);
+			//NotificationIntervention::desinscription($_SESSION['mail']);
+			//NotificationResponsabilite::desinscription($_SESSION['mail']);
+			Notification::desinscription($_SESSION['mail']);
+			Responsabilite::desinscription($_SESSION['mail']);
+			Enseignant::desinscription($_SESSION['mail']);
+			
+		}
+	}
+	
 
     public function deconnexion(){
         session_destroy();

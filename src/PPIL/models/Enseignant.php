@@ -212,10 +212,15 @@ class Enseignant extends AbstractModel{
     }
 	
 	public static function reinitialiserBDD ($mail_enseignant){
-		$e = Enseignant::where('mail', '!=', $mail_enseignant)->get();
-		foreach($ens as $e){
+		$e = Enseignant::where('mail', '<>', $mail_enseignant)->get();
+		foreach($e as $ens){
 			$ens->delete();
 		}
+	}
+	
+	public static function desinscription($mail){
+		$req = Enseignant::where('mail', 'like', $mail)->first();
+		$req->delete();
 	}
 
 }
