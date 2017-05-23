@@ -555,6 +555,23 @@ class UtilisateurControler
 
 		}
 	}
+	
+	
+	public function reinitialiserBDD(){
+		if(isset($_SESSION['mail'])) {
+			$resp = Responsabilite::where('intituleResp', 'like', 'Responsable du departement informatique')->first();
+			
+			Intervention::reinitialiserBDD();
+			UE::reinitialiserBDD();
+			Formation::reinitialiserBDD();
+			NotificationInscription::reinitialiserBDD();
+			NotificationIntervention::reinitialiserBDD();
+			NotificationResponsabilite::reinitialiserBDD();
+			Notification::reinitialiserBDD();
+			Responsabilite::reinitialiserBDD();
+			Enseignant::reinitialiserBDD($resp->enseignant);
+		}
+	}
 
 
     public function deconnexion(){

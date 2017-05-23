@@ -38,5 +38,12 @@ class Responsabilite extends AbstractModel{
 			$responsabilite->delete();
 		}
 	}
+	
+	public static function reinitialiserBDD(){
+		$req = Responsabilite::where('intituleResp', '!=', 'Responsable du departement informatique')->get();
+		foreach($i as $req){
+			$i->delete();
+		}
+	}
 
 }

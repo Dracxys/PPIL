@@ -21,4 +21,11 @@ class Intervention extends AbstractModel{
         $e = Enseignant::find($inter->mail_enseignant);
 	    Enseignant::conversionHeuresTD($e);
     }
+	
+	public static function reinitialiserBDD(){
+		$req = Intervention::all();
+		foreach($i as $req){
+			$i->delete();
+		}
+	}
 }
