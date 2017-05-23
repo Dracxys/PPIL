@@ -120,51 +120,55 @@ class UtilisateurControler
                             Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
                         }
                     } else {
+                        $tmpHeuresCM = $i->heuresCM;
+                        $tmpHeuresTP = $i->heuresTP;
+                        $tmpHeuresTD = $i->heuresTD;
+                        $tmpHeuresEI = $i->heuresEI;
+                        $tmpGroupeTP = $i->groupeTP;
+                        $tmpGroupeTD = $i->groupeTD;
+                        $tmpGroupeEI = $i->groupeEI;
+                        Intervention::modifierIntervention($i,$infos['heuresCM'],$infos['heuresTD'],$infos['heuresTP'],$infos['heuresEI'],$infos['groupeTD'],$infos['groupeTP'],$infos['groupeEI']);
                         $ue = UE::find($i->id_UE);
-                        if($infos['heuresCM'] + $ue->heuresCM > $ue->prevision_heuresCM && $ue->prevision_heuresCM > 0 ){
+                        if($ue->heuresCM > $ue->prevision_heuresCM && $ue->prevision_heuresCM > 0 ){
                             $previsions['heuresCM'] = true;
                             $error = true;
                         }
-                        if($infos['heuresTP'] + $ue->heuresTP > $ue->prevision_heuresTP && $ue->prevision_heuresTP > 0){
+                        if($ue->heuresTP > $ue->prevision_heuresTP && $ue->prevision_heuresTP > 0){
                             $error = true;
                             $previsions['heuresTP'] = true;
                         }
-                        if($infos['heuresTD'] + $ue->heuresTD > $ue->prevision_heuresTD  && $ue->prevision_heuresTD > 0){
+                        if($ue->heuresTD > $ue->prevision_heuresTD  && $ue->prevision_heuresTD > 0){
                             $previsions['heuresTD'] = true;
                             $error = true;
                         }
-                        if($infos['heuresEI'] + $ue->heuresEI > $ue->prevision_heuresEI  && $ue->prevision_heuresEI > 0){
+                        if($ue->heuresEI > $ue->prevision_heuresEI  && $ue->prevision_heuresEI > 0){
                             $previsions['heuresEI'] = true;
                             $error = true;
                         }
-                        if($infos['groupeTP'] + $ue->groupeTP > $ue->prevision_groupeTP  && $ue->prevision_groupeTP > 0){
+                        if($ue->groupeTP > $ue->prevision_groupeTP  && $ue->prevision_groupeTP > 0){
                             $previsions['groupeTP'] = true;
                             $error = true;
                         }
-                        if($infos['groupeTD'] + $ue->groupeTD > $ue->prevision_groupeTD  && $ue->prevision_groupeTD > 0){
+                        if($ue->groupeTD > $ue->prevision_groupeTD  && $ue->prevision_groupeTD > 0){
                             $previsions['groupeTD'] = true;
                             $error = true;
                         }
-                        if($infos['groupeEI'] + $ue->groupeEI > $ue->prevision_groupeEI  && $ue->prevision_groupeEI > 0){
+                        if($ue->groupeEI > $ue->prevision_groupeEI  && $ue->prevision_groupeEI > 0){
                             $previsions['groupeEI'] = true;
                             $error = true;
                         }
                         if(!$error){
                             # ne dépasse pas les horaires prévus
-                            # On crée une intervention temporaire
-                            $i_tmp = new Intervention();
-                            $i_tmp->id_UE = $i->id_UE;
-                            $i_tmp->mail_enseignant = $i->mail_enseignant;
-                            $i_tmp->save();
-                            Intervention::modifierIntervention($i_tmp, $infos['heuresCM'], $infos['heuresTD'], $infos['heuresTP'], $infos['heuresEI'], $infos['groupeTD'], $infos['groupeTP'], $infos['groupeEI']);
                             # dépasse ses horaires max ?
                             $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
                             $depassement = $e->volumeCourant - $e->volumeMax;
-                            $ue = UE::find($i_tmp->id_UE);
-                            $i_tmp->delete();
-                            UE::recalculer($ue);
+
+                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpHeuresEI);
+                            
 
                             Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
+                        }else{
+                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpHeuresEI);
                         }
                     }
                 }
