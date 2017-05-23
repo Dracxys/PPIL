@@ -247,7 +247,7 @@ function boutonValidationModif() {
 						$("#hei").prop('disabled', false);
 						$("#validerHeuresIntervenantUE").prop('disabled', false);
 						$("#supprimerIntervenantUE").prop('disabled', false);
-						var html =  "<button type='button' class='btn btn-default center-block' onclick='modifUE()' id='valider'>Valider</button>";
+						var html =  "<button type='button' class='btn btn-primary center-block' onclick='modifUE()' id='valider'>Valider</button>";
 						$('#ajoutEnseignant').removeClass("hidden");
 						$('#boutton_validation').html(html);
 					} else {
