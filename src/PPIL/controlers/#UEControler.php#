@@ -102,7 +102,6 @@ class UEControler
         return $res;
     }
 
-
     public function exporter(){
         if(isset($_SESSION['mail'])){
             $ues = self::get_ues();
@@ -138,6 +137,40 @@ class UEControler
         }
     }
 
+    public function importer(){
+        if(isset($_SESSION['mail'])){
+            $ues = self::get_ues();
+            $csv_ues = Writer::createFromFileObject(new \SplTempFileObject());
+            $csv_array = array();
+            $headers_intervenants = null;
+            if(!empty($ues)){
+                $headers_ues = $ues[0]->getTableColumns();
+                $csv_ues->insertOne($headers_ues);
+                foreach($ues as $ue){
+                    $interventions = Intervention::where('id_UE', '=', $ue->id_UE)->get();
+                    if(!$interventions->isEmpty()){
+                        $csv_intervenants = array();
+                        $headers_intervenants = $interventions->first()->getTableColumns();
+                        foreach($interventions as $i){
+                            $csv_intervenants[] = $i;
+                        }
+                        $csv_array[] = $csv_intervenants;
+                    }
+                    $csv_ues->insertOne($ue->toArray());
+                }
+                foreach($csv_array as $interv){
+                    $csv_ues->insertOne(null);
+                    $csv_ues->insertOne($headers_intervenants);
+                    foreach($interv as $i){
+                        $csv_ues->insertOne($i->toArray());
+                    }
+                }
+                $csv_ues->output('ues.csv');
+            }
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
 
     public function infoUE()
     {
@@ -191,33 +224,35 @@ class UEControler
         $val = $app->request->post();
         $app->response->headers->set('Content-Type', 'application/json');
         $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
-        $return = false;
+        $res = array();
         if (isset($_SESSION['mail'])) {
             $user = Enseignant::where('mail', 'like', $_SESSION['mail'])->first();
             $respon = Responsabilite::where('enseignant', 'like', $user->mail)->get();
             if (!empty($respon)) {
                 $privi = Enseignant::get_privilege($user);
                 if ($privi == 2) {
-                    $return = true;
-                } elseif ($privi == 0) {
+                    $res[] = 'true';
+                    echo json_encode($res);
+                } elseif ($privi == 1 || $privi == 0) {
                     foreach ($respon as $value) {
                         if ($value->id_UE == $id) {
-                            $return = true;
+                            $res[] = 'true';
+                            echo json_encode($res);
                             break;
                         }
                     }
-                }elseif ($privi == 1){
-                    $ue = UE::find($id);
-                    foreach ($respon as $value){
-                        if($value->id_formation == $ue->id_formation){
-                            $return = true;
-                            break;
-                        }
-                    }
-                }
+                } else {
+                    $res[] = 'false';
+                    echo json_encode($res);}
+            }else{
+                $res[] = 'false';
+                echo json_encode($res);
             }
+        }else{
+            $res[] = 'false';
+            echo json_encode($res);
         }
-        echo json_encode($return);
+
     }
 
     public function creerUE()
@@ -369,6 +404,8 @@ class UEControler
                 }
                 if($error){
                     Intervention::modifierIntervention($inter,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
+                    $c = new MailControler();
+                    $c->sendMail($mail, "Modification intervention", "Votre intervention dans l'UE " . $ue->nom_UE . " a été modifiée par un responsable.");
                     $app->response->headers->set('Content-Type', 'application/json');
                     $res = array();
                     $res[] = 'Depassement';
@@ -416,71 +453,14 @@ class UEControler
             $c->sendMail($mail, "Intervention supprimée", "Votre intervention dans l'UE " . $ue->nom_UE . " a été supprimée par un responsable.");
             $app->response->headers->set('Content-Type', 'application/json');
             $res = array();
-            $res = true;
+            $res[] = 'true';
             echo json_encode($res);
         } else {
             $app->response->headers->set('Content-Type', 'application/json');
             $res = array();
-            $res = false;
+            $res[] = 'false';
             echo json_encode($res);
         }
     }
 
-    public function listeAjoutEnseignant(){
-        $app = Slim::getInstance();
-        $val = $app->request->post();
-        $app->response->headers->set('Content-Type', 'application/json');
-        $idUE = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
-        $users = Enseignant::where("mail", '<>', $_SESSION['mail'])->get();
-        $intervention = Intervention::where('id_UE', '=', $idUE)->get();
-        $trouve = false;
-        $res = array();
-        foreach ($users as $u){
-            foreach ($intervention as $inter){
-                if($u->mail == $inter->mail_enseignant){
-                    $trouve = true;
-                }
-            }
-            if($trouve){
-                $trouve = false;
-            }else {
-                $res[] = $u->nom;
-                $res[] = $u->prenom;
-                $res[] = $u->mail;
-            }
-        }
-        echo json_encode($res);
-    }
-
-    public function addInterventions(){
-        $app = Slim::getInstance();
-        $val = $app->request->post();
-        $app->response->headers->set('Content-Type', 'application/json');
-        $idUE = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
-        $res = true;
-        $ue = UE::find($idUE);
-        foreach ($val['mail'] as $value) {
-            $mail = filter_var($value, FILTER_SANITIZE_EMAIL, FILTER_NULL_ON_FAILURE);
-            if (empty($mail)) {
-                echo "mail \n";
-                $res = false;
-            } elseif ($res) {
-                $tmp = Enseignant::find($mail);
-                if (empty($tmp)) {
-                    $res = false;
-                    echo "enseignant \n";
-                } elseif ($res) {
-                    $message = $tmp->prenom . " " . $tmp->nom . ',' . "\n";
-                    $message .= "vous avez été convié à participer à l'UE : " . $ue->nom_UE;
-                    $newIntervention = new Intervention();
-                    $newIntervention->mail_enseignant = $mail;
-                    $newIntervention->id_UE = $idUE;
-                    $newIntervention->save();
-                    $mail = new MailControler();
-                    $mail->sendMail($value, "Ajout à un UE.", $message);
-                }
-            }
-        }
-        echo json_encode($res);
-    }
 }

@@ -253,6 +253,11 @@ $app->get('/home/ue/exporter', function (){
     $c->exporter();
 })->name('ue.exporter');
 
+$app->get('/home/ue/importer', function (){
+    $c = new UEControler();
+    $c->importer();
+})->name('ue.importer');
+
 $app->post('/home/ue/compoUE', function (){
     $c = new UEControler();
     $c->infoUE();
@@ -267,6 +272,17 @@ $app->post('/home/ue/compoUE/listIntervenant', function (){
     $c = new UEControler();
     $c->intervenantsUE();
 });
+
+$app->post('/home/ue/compoUE/ajoutEnseignant', function (){
+    $c = new UEControler();
+    $c->listeAjoutEnseignant();
+});
+
+$app->post('/home/ue/compoUE/addInterventions', function (){
+    $c = new UEControler();
+    $c->addInterventions();
+});
+
 
 $app->post('/home/ue/compoUE/boutonModif', function (){
     $c = new UEControler();

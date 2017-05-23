@@ -27,6 +27,7 @@ class VueUe extends AbstractView
         $mes = self::message();
         $lienInfoUE = Slim::getInstance()->urlFor('compoUE');
         $lien_exporter = Slim::getInstance()->urlFor('ue.exporter');
+        $lien_importer = Slim::getInstance()->urlFor('ue.importer');
         $html .= <<< END
         <div class="container">
         <div class="panel panel-default">
@@ -45,10 +46,14 @@ class VueUe extends AbstractView
 				 </div>
 
 				 <div class="collapse navbar-collapse" id="navbar_panel">
-				   <div class=" navbar-right">
-					<button type="submit" class="btn btn-default navbar-btn">Importer</button>
+                    <div class=" navbar-right">
+                    <button type='button' class='btn btn-primary hidden' data-toggle="modal" data-target="#modal_ajoutEnseignant" id='ajoutEnseignant'>Ajouter enseignant</button>
+
+					<button type="submit" class="btn btn-default navbar-btn" id="importer">Importer</button>
                     <button type="submit" class="btn btn-default navbar-btn" id="exporter">Exporter</button>
-					 </div>
+                    <form method="post" action="$lien_importer" enctype="multipart/form-data" id="form_input_csv">
+                        <input id="input_csv" type="file" class="hidden" />
+                    </form>
 				   </div>
 				 </div>
 
@@ -74,7 +79,7 @@ END;
 
         $html .= self::compositionUE();
         $html .= self::listeIntervenants();
-
+        $html .= self::ajoutEnseignant();
 
         $html .= <<< END
 					 </div>
@@ -87,6 +92,7 @@ END;
         <script type="text/javascript">
            $(function(){
                exporter("$lien_exporter");
+               importer("$lien_importer");
                setLien("$lienInfoUE");
                choixUE();
                boutonValidationModif();
@@ -282,6 +288,44 @@ END;
         </div>
 END;
         return $html;
+    }
+
+    public function ajoutEnseignant(){
+        $html = <<<END
+        <div class="container">
+        <div class="modal fade" id="modal_ajoutEnseignant" role="dialog">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Ajouter un enseignant</h4>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+            <table class="table table-bordered ">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Nom</th>
+                        <th class="text-center">Prénom</th>
+                        <th class="text-center">Mail</th>
+						<th class="text-center">Sélectionner</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tableUEAjoutEnseignant">
+                    </tbody>
+                    </table>
+                    </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="addEnseignants()" data-dismiss="modal">Appliquer</button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+END;
+    return $html;
     }
 
 }

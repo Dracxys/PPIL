@@ -454,12 +454,14 @@ class UtilisateurControler
             $res = array();
             $i = 0;
             foreach ($users as $e) {
-                $res[$i][] = $e->prenom;
-                $res[$i][] = $e->nom;
-                $res[$i][] = $e->statut;
-                $res[$i][] = $e->mail;
-                $res[$i][] = $e->photo;
-                $i++;
+	    	    if($e->mail != $_SESSION['mail']){
+                    		$res[$i][] = $e->prenom;
+                		$res[$i][] = $e->nom;
+                		$res[$i][] = $e->statut;
+                		$res[$i][] = $e->mail;
+                		$res[$i][] = $e->photo;
+               			 $i++;
+		}		
             }
             
             $app->response->headers->set('Content-Type', 'application/json');

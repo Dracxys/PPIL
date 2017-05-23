@@ -31,6 +31,19 @@ function exporter(lien_exporter){
 	});
 }
 
+function importer(lien_importer){
+	$("#input_csv").change(function() {
+		var fileName = $(this).val();
+		console.log(fileName);
+		$('#form_input_csv').submit();
+	});
+
+	$('#importer').click(function(){
+		$('#input_csv').click();
+		//window.location = lien_importer;
+	});
+}
+
 
 function choixUE() {
     id_UE = $('#selectUE option:selected').val();
@@ -160,7 +173,7 @@ function choixUE() {
             type: 'post',
             data: {'id': id_UE},
             success: function (tab) {
-                $('#tab').remove();
+                $('#tab').empty();
                 if (tab != undefined){
                     var html;
                     var line = 0;
@@ -193,17 +206,15 @@ function choixUE() {
 
     function boutonValidationModif() {
         id_UE = $('#selectUE option:selected').val();
-        console.log("test");
         $.ajax({
             url: ppil + '/boutonModif',
             type: 'post',
             dataType: 'json',
             data: {'id': id_UE},
             success: function (element) {
-                console.log("element");
                 if (element != undefined) {
-                    if (element[0] = 'true') {
-                        console.log("true")
+                    if (element == true) {
+                        listeAjoutEnseignant();
                         $("#nbGroupeAttenduTD").prop('disabled', false);
                         $("#nbGroupeAffecteTD").prop('disabled', false);
                         $("#heureAttenduTD").prop('disabled', false);
@@ -217,10 +228,10 @@ function choixUE() {
                         $("#hei").prop('disabled', false);
                         $("#validerHeuresIntervenantUE").prop('disabled', false);
                         $("#supprimerIntervenantUE").prop('disabled', false);
-                        var html = "<button type='button' class='btn btn-primary center-block' onclick='modifUE()' id='valider'>Valider</button>";
+                        var html =  "<button type='button' class='btn btn-default center-block' onclick='modifUE()' id='valider'>Valider</button>";
+                        $('#ajoutEnseignant').removeClass("hidden");
                         $('#boutton_validation').html(html);
                     } else {
-                        console.log("false");
                         $("#nbGroupeAttenduTD").prop('disabled', true);
                         $("#nbGroupeAffecteTD").prop('disabled', true);
                         $("#heureAttenduTD").prop('disabled', true);
@@ -234,6 +245,7 @@ function choixUE() {
                         $("#hei").prop('disabled', true);
                         $("#validerHeuresIntervenantUE").prop('disabled', true);
                         $("#supprimerIntervenantUE").prop('disabled', true);
+                        $('#ajoutEnseignant').addClass("hidden");
                     }
                 }
             }, xhrFields: {
@@ -299,7 +311,7 @@ function boutonSuppressionEnseignant(mail) {
         data: {'id': id_UE, 'mail': mail},
         success: function (element) {
             if (element != undefined) {
-                if (element[0] == 'true') {
+                if (element == true) {
                     $('#messageTitre').text('Succès');
                     $('#message').text('Les modifications ont bien été prises en compte.');
                     $('#modalDemandeEffectuee').modal({
@@ -308,6 +320,101 @@ function boutonSuppressionEnseignant(mail) {
                     });
                     choixUE();
                     listIntervenant();
+                    listeAjoutEnseignant();
+                } else {
+                    $('#messageTitre').text('Erreur');
+                    $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                }
+            }
+        }, xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    });
+}
+
+function listeAjoutEnseignant() {
+    id_UE = $('#selectUE option:selected').val();
+    $.ajax({
+        url: ppil + '/ajoutEnseignant',
+        type: 'post',
+        data: {'id': id_UE, },
+        success: function (element) {
+            if(element != undefined){
+                $('#tableUEAjoutEnseignant').empty();
+                var html;
+                for (var i = 0; i < element.length; i = i + 3){
+                    html += "<tr >"
+                            +"<th id='nom'  class='text-center'>" + element[i] +"</th>"
+                            +"<th id='prenom' class='text-center'>" + element[i + 1] +"</th>"
+                            +"<th id='mail' class='text-center'>" + element[i + 2] +"</th>"
+                            +"<th>"
+                            +"<form class='form-inline text-center ' method='post' action='' id='form_ajout_enseignant'>"
+                            +"<div class='form-group '>"
+                            +"<button  name='selectionner' class='btn btn-primary ' id='selectionner' value='false' type='submit'>Sélectionner</button>"
+                            +"<button  name='annuler' class='btn btn-primary hidden' id='annuler' value='false' type='submit'>Annuler</button>"
+                            +"<input type='hidden' id='EnseignantSelected' value='false' />"
+                            +"</div>"
+                            +"</form>"
+                            +"</th>"
+                            +"</tr>";
+                }
+                $('#tableUEAjoutEnseignant').html(html);
+
+                $("form#form_ajout_enseignant").each(function() {
+                   $(this).submit(function(e){
+                        e.preventDefault();
+                    });
+
+                    $(this).find('button#selectionner').click(function(){
+                        $(this).parent().find('input#EnseignantSelected').val(true);
+                        $(this).toggleClass('hidden');
+                        $(this).parent().find('button#annuler').toggleClass('hidden');
+                        $('button#modal_demande').prop('disabled', false);
+                        $('button#modal_demande').addClass('btn-primary')
+                    });
+
+                    $(this).find('button#annuler').click(function(){
+                        $(this).parent().find('input#EnseignantSelected').val(false);
+                        $(this).toggleClass('hidden');
+                        $(this).parent().find('button#selectionner').toggleClass('hidden');
+                    });
+                });
+            }
+        }, xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    });
+}
+
+function addEnseignants() {
+    id_UE = $('#selectUE option:selected').val();
+    var tab = [];
+    $('#tableUEAjoutEnseignant tr').each(function() {
+        if($(this).find('input#EnseignantSelected').val() == "true"){
+            tab.push($(this).find('th#mail').text());
+        }
+    });
+    $.ajax({
+        url: ppil + '/addInterventions',
+        type: 'post',
+        data: {'id': id_UE, 'mail': tab},
+        success: function (res) {
+            if (res != undefined) {
+                if (res == true) {
+                    $('#messageTitre').text('Succès');
+                    $('#message').text('Les modifications ont bien été prises en compte.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    listIntervenant();
+                    listeAjoutEnseignant();
                 } else {
                     $('#messageTitre').text('Erreur');
                     $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
