@@ -121,31 +121,31 @@ class UtilisateurControler
                         }
                     } else {
                         $ue = UE::find($i->id_UE);
-                        if($infos['heuresCM'] > $ue->prevision_heuresCM && $ue->prevision_heuresCM > 0){
+                        if($infos['heuresCM'] + $ue->heuresCM > $ue->prevision_heuresCM && $ue->prevision_heuresCM > 0 ){
                             $previsions['heuresCM'] = true;
                             $error = true;
                         }
-                        if($infos['heuresTP'] > $ue->prevision_heuresTP && $ue->prevision_heuresTP > 0){
+                        if($infos['heuresTP'] + $ue->heuresTP > $ue->prevision_heuresTP && $ue->prevision_heuresTP > 0){
                             $error = true;
                             $previsions['heuresTP'] = true;
                         }
-                        if($infos['heuresTD'] > $ue->prevision_heuresTD  && $ue->prevision_heuresTD > 0){
+                        if($infos['heuresTD'] + $ue->heuresTD > $ue->prevision_heuresTD  && $ue->prevision_heuresTD > 0){
                             $previsions['heuresTD'] = true;
                             $error = true;
                         }
-                        if($infos['heuresEI'] > $ue->prevision_heuresEI  && $ue->prevision_heuresEI > 0){
+                        if($infos['heuresEI'] + $ue->heuresEI > $ue->prevision_heuresEI  && $ue->prevision_heuresEI > 0){
                             $previsions['heuresEI'] = true;
                             $error = true;
                         }
-                        if($infos['groupeTP'] > $ue->prevision_groupeTP  && $ue->prevision_groupeTP > 0){
+                        if($infos['groupeTP'] + $ue->groupeTP > $ue->prevision_groupeTP  && $ue->prevision_groupeTP > 0){
                             $previsions['groupeTP'] = true;
                             $error = true;
                         }
-                        if($infos['groupeTD'] > $ue->prevision_groupeTD  && $ue->prevision_groupeTD > 0){
+                        if($infos['groupeTD'] + $ue->groupeTD > $ue->prevision_groupeTD  && $ue->prevision_groupeTD > 0){
                             $previsions['groupeTD'] = true;
                             $error = true;
                         }
-                        if($infos['groupeEI'] > $ue->prevision_groupeEI  && $ue->prevision_groupeEI > 0){
+                        if($infos['groupeEI'] + $ue->groupeEI > $ue->prevision_groupeEI  && $ue->prevision_groupeEI > 0){
                             $previsions['groupeEI'] = true;
                             $error = true;
                         }
@@ -160,8 +160,9 @@ class UtilisateurControler
                             # dépasse ses horaires max ?
                             $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
                             $depassement = $e->volumeCourant - $e->volumeMax;
-
+                            $ue = UE::find($i_tmp->id_UE);
                             $i_tmp->delete();
+                            UE::recalculer($ue);
 
                             Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
                         }
