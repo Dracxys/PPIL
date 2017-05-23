@@ -448,6 +448,7 @@ class UtilisateurControler
 
     public function annulerRecherche() {
         if(isset($_SESSION['mail'])) {
+            $app = Slim::getInstance();
             $users = Enseignant::distinct()->get();
 
             $res = array();
