@@ -19,6 +19,10 @@ use PPIL\models\NotificationInscription;
 use PPIL\models\NotificationIntervention;
 use PPIL\models\Intervention;
 use PPIL\models\UE;
+
+use League\Csv\Writer;
+use League\Csv\Reader;
+
 use Slim\Slim;
 
 
@@ -44,6 +48,20 @@ class UtilisateurControler
         }
     }
 
+    public function enseignement_exporter(){
+        if(isset($_SESSION['mail'])){
+            $intervention = Intervention::all();
+            $csv = Writer::createFromFileObject(new \SplTempFileObject());
+            //$csv->setDelimiter(';');
+            $csv->insertOne($intervention->first()->getTableColumns());
+            foreach($intervention as $i){
+                $csv->insertOne($i->toArray());
+            }
+            $csv->output('interventions.csv');
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
 
     public function enseignement_action(){
         if(isset($_SESSION['mail'])){
@@ -164,7 +182,7 @@ class UtilisateurControler
                             $depassement = $e->volumeCourant - $e->volumeMax;
 
                             Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpHeuresEI);
-                            
+
 
                             Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
                         }else{

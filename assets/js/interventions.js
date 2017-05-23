@@ -202,3 +202,11 @@ function ajouter(lien, lien_autre){
 		$('#modalAjouter').modal('hide');
 	});
 }
+
+
+function exporter(lien_exporter){
+	$('#exporter').click(function(){
+		window.location = lien_exporter;
+
+	});
+}

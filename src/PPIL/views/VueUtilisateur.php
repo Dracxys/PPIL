@@ -33,6 +33,7 @@ class VueUtilisateur extends AbstractView
 
   public function enseignement(){
       $lien = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignement");
+      $lien_exporter = Slim::getInstance()->urlFor("enseignementUtilisateur.exporter");
       $lien_ajouter = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouter");
       $lien_ajouter_autre = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouterAutre");
       $home = Slim::getInstance()->urlFor("home");
@@ -68,7 +69,7 @@ class VueUtilisateur extends AbstractView
 				<div class="collapse navbar-collapse" id="navbar_panel">
 					<div class="navbar-right">
 					  <button type="button" class="btn btn-default navbar-btn" id="ajouter">Ajouter</button>
-					  <button type="button" class="btn btn-default navbar-btn">Exporter</button>
+					  <button type="button" class="btn btn-default navbar-btn" id="exporter">Exporter</button>
 					  <button type="button" class="btn btn-danger navbar-btn">Remise à zéro</button>
 					  <button type="button" class="btn btn-primary navbar-btn"  id="appliquer">Appliquer</button>
 					</div>
@@ -307,7 +308,8 @@ END;
           $(function(){
 		  ajouter("$lien_ajouter", "$lien_ajouter_autre");
           valider("$lien", $notification_exist, $depasse);
-			});
+          exporter("$lien_exporter");
+          });
         </script>
 
 

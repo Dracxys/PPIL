@@ -5,7 +5,7 @@ session_start();
 require 'vendor/autoload.php';
 
 
-use \PPIL\controlers\HomeControler as HomeControler;
+use PPIL\controlers\HomeControler as HomeControler;
 use PPIL\controlers\UtilisateurControler;
 use PPIL\controlers\ModifProfilControler;
 use PPIL\controlers\FormationControler;
@@ -227,6 +227,11 @@ $app->post('/home/enseignement/actionEnseignement', function (){
     $c = new UtilisateurControler();
     $c->enseignement_action();
 })->name('enseignementUtilisateur.actionEnseignement');
+
+$app->get('/home/enseignement/exporter', function (){
+    $c = new UtilisateurControler();
+    $c->enseignement_exporter();
+})->name('enseignementUtilisateur.exporter');
 
 $app->post('/home/enseignement/actionEnseignementAjouter', function (){
     $c = new UtilisateurControler();
