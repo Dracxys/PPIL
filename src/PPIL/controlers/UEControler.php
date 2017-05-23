@@ -369,8 +369,6 @@ class UEControler
                 }
                 if($error){
                     Intervention::modifierIntervention($inter,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
-                    $c = new MailControler();
-                    $c->sendMail($mail, "Modification intervention", "Votre intervention dans l'UE " . $ue->nom_UE . " a été modifiée par un responsable.");
                     $app->response->headers->set('Content-Type', 'application/json');
                     $res = array();
                     $res[] = 'Depassement';
