@@ -259,6 +259,7 @@ function modifIntervenantUE(mail, line) {
                         backdrop: 'static',
                         keyboard: false
                     });
+                    choixUE();
                     listIntervenant();
                 }else if(element[0] == 'Depassement'){
                     $('#messageTitre').text('Erreur');
