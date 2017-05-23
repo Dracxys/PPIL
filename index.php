@@ -248,6 +248,11 @@ $app->get('/home/ue', function (){
     $c->home();
 })->name('ueUtilisateur');
 
+$app->get('/home/ue/exporter', function (){
+    $c = new UEControler();
+    $c->exporter();
+})->name('ue.exporter');
+
 $app->post('/home/ue/compoUE', function (){
     $c = new UEControler();
     $c->infoUE();

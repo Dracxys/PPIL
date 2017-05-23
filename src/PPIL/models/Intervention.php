@@ -21,8 +21,4 @@ class Intervention extends AbstractModel{
         $e = Enseignant::find($inter->mail_enseignant);
 	    Enseignant::conversionHeuresTD($e);
     }
-
-
-
-
 }
