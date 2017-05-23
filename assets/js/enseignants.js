@@ -1,6 +1,4 @@
 function select(num) {
-    //alert("coucou "+ligne);
-
     var lignes = document.getElementsByName("ligne");
     var iter = 0;
 
@@ -15,3 +13,9 @@ function select(num) {
 
 }
 
+function exporter(lien_exporter){
+	$('#exporter').click(function(){
+		window.location = lien_exporter;
+
+	});
+}

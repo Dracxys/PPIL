@@ -9,15 +9,20 @@
 namespace PPIL\controlers;
 
 
+use PPIL\views\VueEnseignants;
+
 use PPIL\models\Enseignant;
 use PPIL\models\Intervention;
 use PPIL\models\Notification;
 use PPIL\models\NotificationIntervention;
 use PPIL\models\NotificationResponsabilite;
 use PPIL\models\Responsabilite;
-use PPIL\views\VueEnseignants;
 use PPIL\models\UE;
 use PPIL\models\NotificationInscription;
+
+use League\Csv\Writer;
+use League\Csv\Reader;
+
 use Slim\Slim;
 
 class EnseignantsControler {
@@ -38,12 +43,12 @@ class EnseignantsControler {
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
-	
+
 	public function lancerVueInscriptionParDI(){
 		$v = new VueEnseignants();
 		echo $v->inscriptionParDI(0);
 	}
-	
+
 	public function inscriptionParDI(){
 		$val = Slim::getInstance()->request->post();
 
@@ -71,6 +76,35 @@ class EnseignantsControler {
 			echo $v->inscriptionParDI(2);
 		}
 	}
+
+    public function profilEnseignant($id) {
+        $id = filter_var($id,FILTER_SANITIZE_NUMBER_INT);
+        $e = Enseignant::where('rand','=',$id)->first();
+        if(!empty($e)){
+            $v = new VueEnseignants();
+            echo $v->profilEnseignant($e);
+        }
+    }
+
+    public function exporter(){
+        if(isset($_SESSION['mail'])){
+            $enseignants = Enseignant::all();
+            $csv = Writer::createFromFileObject(new \SplTempFileObject());
+            $headers = $enseignants->first()->getTableColumns();
+            if(($key = array_search("mdp", $headers)) !== false) {
+                unset($headers[$key]);
+            }
+            $csv->insertOne($headers);
+            foreach($enseignants as $e){
+                unset($e["mdp"]);
+                $csv->insertOne($e->toArray());
+            }
+            $csv->output('enseignants.csv');
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
 
 	public function supprimer($id){
 	    $id = filter_var($id,FILTER_SANITIZE_NUMBER_INT);

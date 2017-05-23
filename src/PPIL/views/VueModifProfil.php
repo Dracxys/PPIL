@@ -167,13 +167,13 @@ END;
 			  <div class="form-group">
 				<label class="control-label col-sm-4" for="nom">Nom </label>
 				<div class="col-sm-4">
-				  <input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" required="true" value=$user->nom />
+				  <input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" required="true" value="$user->nom" />
 				</div>
 			  </div>
 			  <div class="form-group">
 				<label class="control-label col-sm-4" for="prenom">Prénom </label>
 				<div class="col-sm-4">
-				  <input type="text" id="prenom" name="prenom" class="form-control" placeholder="Prénom" required="true" value=$user->prenom />
+				  <input type="text" id="prenom" name="prenom" class="form-control" placeholder="Prénom" required="true" value="$user->prenom" />
 				</div>
 			  </div>
               <div class="form-group">
@@ -205,6 +205,7 @@ END;
         $modifresp = Slim::getInstance()->urlFor("modificationResponsabilite");
         $u = UE::where('fst','=',1)->get();
         $f = Formation::where('fst','=',1)->get();
+
         $html = <<<END
                  <div class="container">
 				   <div id="responsabilite" style="display: none;" class="">
@@ -274,6 +275,7 @@ END;
 END;
         return $html;
     }
+    
 
     public function photo($user)
     {

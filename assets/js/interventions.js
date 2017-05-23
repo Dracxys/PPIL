@@ -1,6 +1,10 @@
-function valider(lien, notification_exist){
+function valider(lien, notification_exist, depasse){
 	if(notification_exist){
 		$("div#notification_exist").removeClass('hidden');
+	}
+
+	if(depasse > 0){
+		$("div#depassement_max").removeClass('hidden');
 	}
 
 	$("form#form_interventions").each(function() {
@@ -25,6 +29,7 @@ function valider(lien, notification_exist){
 	//$("div#erreur").removeClass('hidden');
 
 	$('#appliquer').click(function(){
+		$("div#succes").addClass('hidden');
 		var danger = false;
 		$("form#form_interventions").each(function(){
 			var supprime = $(this).find('button#supprimer').val();
@@ -60,23 +65,40 @@ function valider(lien, notification_exist){
 					data: { 'id': id, 'id_UE' : id_UE, 'heuresCM': infos[0], 'heuresTD': infos[1], 'heuresTP': infos[2], 'heuresEI': infos[3], 'groupeTD': infos[4], 'groupeTP': infos[5], 'groupeEI' : infos[6], 'supprime' : supprime},
 					dataType: 'json',
 					success: function(json){
-/*						if(json.error && !json.notification_exist){
-							//$("div#erreur").removeClass('hidden');
-							//tr.addClass("danger");
+						if(json.error){
+							danger = true;
+							if(json.notification_exist){
+								$("div#notification_exist").removeClass('hidden');
+								tr.addClass("warning");
+							} else {
+								$("div#succes").addClass('hidden');
+								tr.addClass("danger");
+								$("div#depassement_prevision").removeClass('hidden');
+							}
 						} else {
-							//tr.removeClass("danger");
-						}*/
+							if(!danger){
+									$("div#succes").removeClass('hidden');
+									$("div#depassement_prevision").addClass('hidden');
+							}
+							if(json.depassement > 0){
+								$("div#depassement_max").removeClass('hidden');
+							}
+						}
+						//console.log(json);
+						//$("div#erreur").removeClass('hidden');
+						//tr.addClass("danger");
 					}
 				});
 			}
 
 		});
-		if(!danger){
-			$('#modalDemandeEffectuee').modal({
-				backdrop: 'static',
-				keyboard: false
-			});
-		}
+//		if(!danger){
+//			$("div#succes").removeClass('hidden');
+//			$('#modalDemandeEffectuee').modal({
+//				backdrop: 'static',
+//				keyboard: false
+//			});
+//		}
 	});
 }
 
@@ -178,5 +200,13 @@ function ajouter(lien, lien_autre){
 			}
 		});
 		$('#modalAjouter').modal('hide');
+	});
+}
+
+
+function exporter(lien_exporter){
+	$('#exporter').click(function(){
+		window.location = lien_exporter;
+
 	});
 }

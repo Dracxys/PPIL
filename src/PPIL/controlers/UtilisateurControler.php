@@ -19,6 +19,10 @@ use PPIL\models\NotificationInscription;
 use PPIL\models\NotificationIntervention;
 use PPIL\models\Intervention;
 use PPIL\models\UE;
+
+use League\Csv\Writer;
+use League\Csv\Reader;
+
 use Slim\Slim;
 
 
@@ -44,9 +48,34 @@ class UtilisateurControler
         }
     }
 
+    public function enseignement_exporter(){
+        if(isset($_SESSION['mail'])){
+            $intervention = Intervention::all();
+            $csv = Writer::createFromFileObject(new \SplTempFileObject());
+            //$csv->setDelimiter(';');
+            $csv->insertOne($intervention->first()->getTableColumns());
+            foreach($intervention as $i){
+                $csv->insertOne($i->toArray());
+            }
+            $csv->output('interventions.csv');
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
 
     public function enseignement_action(){
         if(isset($_SESSION['mail'])){
+            $previsions = array(
+                'heuresCM' => false,
+                'heuresTP' => false,
+                'heuresTD' => false,
+                'heuresEI' => false,
+                'groupeTP' => false,
+                'groupeTD' => false,
+                'groupeEI' => false
+            );
+            $depassement = 0;
+
             $val = Slim::getInstance()->request->post();
             $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
             $id_UE = filter_var($val['id_UE'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
@@ -86,11 +115,12 @@ class UtilisateurControler
                 }
             }
 
-
             if(!$error){
+                # Pas de notification en attente
                 $i = Intervention::where('id_intervention', '=', $id)
                    ->first();
                 if(!empty($i)){
+                    # L'intervention existe
                     if($i->id_intervention == $id
                        && $i->heuresCM == $infos['heuresCM']
                        && $i->heuresTP == $infos['heuresTP']
@@ -101,19 +131,71 @@ class UtilisateurControler
                        && $i->groupeEI == $infos['groupeEI']
                        && $i->mail_enseignant == $_SESSION['mail']
                        && $i->id_UE == $id_UE){
+                        #Pas de changements à faire, faut il la supprimer ?
                         if($supprime){
+                            # Supprime l'intervention
                             $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
                             Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
                         }
                     } else {
-                        $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
-                        Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
+                        $tmpHeuresCM = $i->heuresCM;
+                        $tmpHeuresTP = $i->heuresTP;
+                        $tmpHeuresTD = $i->heuresTD;
+                        $tmpHeuresEI = $i->heuresEI;
+                        $tmpGroupeTP = $i->groupeTP;
+                        $tmpGroupeTD = $i->groupeTD;
+                        $tmpGroupeEI = $i->groupeEI;
+                        Intervention::modifierIntervention($i,$infos['heuresCM'],$infos['heuresTD'],$infos['heuresTP'],$infos['heuresEI'],$infos['groupeTD'],$infos['groupeTP'],$infos['groupeEI']);
+                        $ue = UE::find($i->id_UE);
+                        if($ue->heuresCM > $ue->prevision_heuresCM){
+                            $previsions['heuresCM'] = true;
+                            $error = true;
+                        }
+                        if($ue->heuresTP > $ue->prevision_heuresTP){
+                            $error = true;
+                            $previsions['heuresTP'] = true;
+                        }
+                        if($ue->heuresTD > $ue->prevision_heuresTD){
+                            $previsions['heuresTD'] = true;
+                            $error = true;
+                        }
+                        if($ue->heuresEI > $ue->prevision_heuresEI){
+                            $previsions['heuresEI'] = true;
+                            $error = true;
+                        }
+                        if($ue->groupeTP > $ue->prevision_groupeTP){
+                            $previsions['groupeTP'] = true;
+                            $error = true;
+                        }
+                        if($ue->groupeTD > $ue->prevision_groupeTD){
+                            $previsions['groupeTD'] = true;
+                            $error = true;
+                        }
+                        if($ue->groupeEI > $ue->prevision_groupeEI){
+                            $previsions['groupeEI'] = true;
+                            $error = true;
+                        }
+                        if(!$error){
+                            # ne dépasse pas les horaires prévus
+                            # dépasse ses horaires max ?
+                            $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+                            $depassement = $e->volumeCourant - $e->volumeMax;
+
+                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
+
+
+                            Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
+                        }else{
+                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
+                        }
                     }
                 }
             }
             echo json_encode([
                 'error' => $error,
-                'notification_exist' => $notification_exist
+                'notification_exist' => $notification_exist,
+                'depassement' => $depassement,
+                'previsions' => $previsions
             ]);
         }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
@@ -321,6 +403,7 @@ class UtilisateurControler
         }
     }
 
+    /////// Fonctions pour l'annuaire //////////
 
     public function annuaire(){
         if(isset($_SESSION['mail'])) {
@@ -332,6 +415,62 @@ class UtilisateurControler
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
+
+    public function rechercheAnnuaire() {
+        if (isset($_SESSION['mail'])) {
+            $app = Slim::getInstance();
+            $val = $app->request->post();
+
+            $chaine = filter_var($val['chaine'], FILTER_SANITIZE_STRING);
+
+            $enseignants = \PPIL\models\Enseignant::distinct()->get();
+
+            $res = array();
+
+            $i = 0;
+            foreach ($enseignants as $e) {
+                if ((strpos(strtolower('' . $e->prenom . ' ' . $e->nom), strtolower($chaine)) !== FALSE || strpos(strtolower('' . $e->nom . ' ' . $e->prenom), strtolower($chaine)) !== FALSE) && $e->mail != ($_SESSION['mail'])) {
+                    $res[$i][] = $e->prenom;
+                    $res[$i][] = $e->nom;
+                    $res[$i][] = $e->statut;
+                    $res[$i][] = $e->mail;
+                    $res[$i][] = $e->photo;
+                    $i++;
+                }   
+            }
+
+            $app->response->headers->set('Content-Type', 'application/json');
+            echo json_encode($res);
+        } else {
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+    public function annulerRecherche() {
+        if(isset($_SESSION['mail'])) {
+            $app = Slim::getInstance();
+            $users = Enseignant::distinct()->get();
+
+            $res = array();
+            $i = 0;
+            foreach ($users as $e) {
+                $res[$i][] = $e->prenom;
+                $res[$i][] = $e->nom;
+                $res[$i][] = $e->statut;
+                $res[$i][] = $e->mail;
+                $res[$i][] = $e->photo;
+                $i++;
+            }
+            
+            $app->response->headers->set('Content-Type', 'application/json');
+            echo json_encode($res);
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+    ///////////////////////////////////////////
+
 
     public function inscription(){
         $val = Slim::getInstance()->request->post();

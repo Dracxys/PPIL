@@ -5,7 +5,7 @@ session_start();
 require 'vendor/autoload.php';
 
 
-use \PPIL\controlers\HomeControler as HomeControler;
+use PPIL\controlers\HomeControler as HomeControler;
 use PPIL\controlers\UtilisateurControler;
 use PPIL\controlers\ModifProfilControler;
 use PPIL\controlers\FormationControler;
@@ -228,6 +228,11 @@ $app->post('/home/enseignement/actionEnseignement', function (){
     $c->enseignement_action();
 })->name('enseignementUtilisateur.actionEnseignement');
 
+$app->get('/home/enseignement/exporter', function (){
+    $c = new UtilisateurControler();
+    $c->enseignement_exporter();
+})->name('enseignementUtilisateur.exporter');
+
 $app->post('/home/enseignement/actionEnseignementAjouter', function (){
     $c = new UtilisateurControler();
     $c->enseignement_action_ajouter();
@@ -242,6 +247,11 @@ $app->get('/home/ue', function (){
     $c = new UEControler();
     $c->home();
 })->name('ueUtilisateur');
+
+$app->get('/home/ue/exporter', function (){
+    $c = new UEControler();
+    $c->exporter();
+})->name('ue.exporter');
 
 $app->post('/home/ue/compoUE', function (){
     $c = new UEControler();
@@ -337,11 +347,33 @@ $app->post('/home/enseignants', function (){
     $c->home();
 });
 
+$app->get('/home/enseignants/exporter', function (){
+    $c = new EnseignantsControler();
+    $c->exporter();
+})->name('enseignants.exporter');
+
 $app->get('/home/enseignants/supprimer/:id',function ($id){
     $c = new EnseignantsControler();
     $c->supprimer($id);
 })->name('supprimerEnseignant');
 
+$app->get('/home/enseignants/profilEnseignant/:id', function ($id){
+    $c = new EnseignantsControler();
+    $c->profilEnseignant($id);
+})->name('profilEnseignant');
+
 /* ===================== liens dans enseignants ==================*/
+
+
+/* ===================== liens dans annuaire ==================*/
+$app->post('/home/annuaire/recherche', function (){
+    $c = new UtilisateurControler();
+    $c->rechercheAnnuaire();
+})->name('rechercheAnnuaireUtilisateur');
+
+$app->post('/home/annuaire/annulerRecherche', function (){
+    $c = new UtilisateurControler();
+    $c->annulerRecherche();
+})->name('annulerRechercheAnnuaire');
 
 $app->run();

@@ -25,6 +25,13 @@ function setLien(lien){
     ppil = lien;
 }
 
+function exporter(lien_exporter){
+	$('#exporter').click(function(){
+		window.location = lien_exporter;
+	});
+}
+
+
 function choixUE() {
     id_UE = $('#selectUE option:selected').val();
     $.ajax({
@@ -120,7 +127,7 @@ function choixUE() {
                     if (res != undefined) {
                         if (res[0] == 'true') {
                             $('#messageTitre').text('Succès');
-                            $('#message').text('Les modifications ont bien été pris en compte.');
+                            $('#message').text('Les modifications ont bien été prises en compte.');
                             $('#modalDemandeEffectuee').modal({
                                 backdrop: 'static',
                                 keyboard: false
@@ -128,7 +135,7 @@ function choixUE() {
                             choixUE();
                         } else {
                             $('#messageTitre').text('Erreur');
-                            $('#message').text('Les modifications n\'ont pas pu être sauvegardé.');
+                            $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
                             $('#modalDemandeEffectuee').modal({
                                 backdrop: 'static',
                                 keyboard: false
@@ -168,8 +175,8 @@ function choixUE() {
                             +"<th class='col-md-1'>" + "<input type='number' id='nbei"+ line +"' class='form-control' value=" + tab[7+i] + " min='0'/></th>"
                             +"<th class='col-md-1'>" + "<input type='number' id='hei"+ line +"' class='form-control' value=" + tab[8+i] + " min='0'/></th>"
                             +"<th class='col-md-3 text-center'>"
-                            +"<button type='button' class='btn btn-default' onclick='modifIntervenantUE(\"" + tab[9+i] + '\",' + line +")' id='validerHeuresIntervenantUE'>Valider</button>"
-                            +"<button type='button' class='btn btn-default' onclick='boutonSuppressionEnseignant(\"" + tab[9+i] +"\")' id='supprimerIntervenantUE'>Supprimer</button>"
+                            +"<button type='button' class='btn btn-primary' onclick='modifIntervenantUE(\"" + tab[9+i] + '\",' + line +")' id='validerHeuresIntervenantUE'>Valider</button>"
+                            +"<button type='button' class='btn btn-danger' onclick='boutonSuppressionEnseignant(\"" + tab[9+i] +"\")' id='supprimerIntervenantUE'>Supprimer</button>"
                             +"</th>"
                             +"</tr>";
                         line++;
@@ -189,6 +196,7 @@ function choixUE() {
         $.ajax({
             url: ppil + '/boutonModif',
             type: 'post',
+            dataType: 'json',
             data: {'id': id_UE},
             success: function (element) {
                 if (element != undefined) {
@@ -252,15 +260,23 @@ function modifIntervenantUE(mail, line) {
             if (element != undefined) {
                 if (element[0] == 'true') {
                     $('#messageTitre').text('Succès');
-                    $('#message').text('Les modifications ont bien été prise en compte.');
+                    $('#message').text('Les modifications ont bien été prises en compte.');
                     $('#modalDemandeEffectuee').modal({
                         backdrop: 'static',
                         keyboard: false
                     });
+                    choixUE();
                     listIntervenant();
+                }else if(element[0] == 'Depassement'){
+                    $('#messageTitre').text('Erreur');
+                    $('#message').text('Les modifications n\'ont pas pu être sauvegardées, vos modifications feraient dépasser les prévisions en heures et en groupe pour cet UE.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
                 } else {
                     $('#messageTitre').text('Erreur');
-                    $('#message').text('Les modifications n\'ont pas pu être sauvegardé.');
+                    $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
                     $('#modalDemandeEffectuee').modal({
                         backdrop: 'static',
                         keyboard: false
@@ -284,16 +300,17 @@ function boutonSuppressionEnseignant(mail) {
             if (element != undefined) {
                 if (element == true) {
                     $('#messageTitre').text('Succès');
-                    $('#message').text('Les modifications ont bien été pris en compte.');
+                    $('#message').text('Les modifications ont bien été prises en compte.');
                     $('#modalDemandeEffectuee').modal({
                         backdrop: 'static',
                         keyboard: false
                     });
+                    choixUE();
                     listIntervenant();
                     listeAjoutEnseignant();
                 } else {
                     $('#messageTitre').text('Erreur');
-                    $('#message').text('Les modifications n\'ont pas pu être sauvegardé.');
+                    $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
                     $('#modalDemandeEffectuee').modal({
                         backdrop: 'static',
                         keyboard: false

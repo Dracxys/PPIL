@@ -26,6 +26,7 @@ class VueUe extends AbstractView
         $select = self::selectUE($u);
         $mes = self::message();
         $lienInfoUE = Slim::getInstance()->urlFor('compoUE');
+        $lien_exporter = Slim::getInstance()->urlFor('ue.exporter');
         $html .= <<< END
         <div class="container">
         <div class="panel panel-default">
@@ -61,8 +62,8 @@ class VueUe extends AbstractView
 			<div class="panel-body ">
 			  <form class="form-horizontal">
 				<div id="select" class="form-group">
-                  <label class="control-label col-sm-3" for="selectUE">Sélectionner UE :</label>
-				  <div class="col-sm-9">
+                  <label class="control-label col-sm-3" for="selectUE">Sélectionner UE</label>
+				  <div class="col-sm-3">
 					$select
 					</div>
 				</div>
@@ -82,7 +83,6 @@ END;
         $html .= <<< END
 					 </div>
 		</div>
-		</div>
 
 END;
         $html .= self::footerHTML();
@@ -90,7 +90,8 @@ END;
         <script type="text/javascript" src="/PPIL/assets/js/ue.js"></script>
         <script type="text/javascript">
            $(function(){
-               setLien("$lienInfoUE")
+               exporter("$lien_exporter");
+               setLien("$lienInfoUE");
                choixUE();
                boutonValidationModif();
                listIntervenant();
@@ -278,7 +279,7 @@ END;
                         <p id="message">Les modifications ont bien été pris en compte.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" onclick="" data-dismiss="modal">Ok</button>
+                        <button type="button" class="btn btn-primary" onclick="" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
             </div>
