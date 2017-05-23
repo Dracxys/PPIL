@@ -20,6 +20,10 @@ use PPIL\views\VueUtilisateur;
 use PPIL\models\UE;
 use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
+
+use League\Csv\Writer;
+use League\Csv\Reader;
+
 use Slim\Slim;
 
 
@@ -28,63 +32,55 @@ class UEControler
     public function home()
     {
         if (isset($_SESSION['mail'])) {
-            $e = Enseignant::find($_SESSION['mail']);
-            $respon = Responsabilite::where('enseignant', 'like', $e->mail)->first();
-            if (!empty($respon)) {
-                $privi = Enseignant::get_privilege($e);
-                if ($privi == 2) {
-                    $ue = UE::where('fst', '=', 1)->get();
-                    $res = array();
-                    foreach ($ue as $value) {
-                        if (!in_array($value, $res)) {
-                            $res[] = $value;
-                        }
+            $res = self::get_ues();
+            $v = new VueUe();
+            echo $v->home($res);
+        }else {
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+
+    }
+
+    private function get_ues(){
+        $e = Enseignant::find($_SESSION['mail']);
+        $respon = Responsabilite::where('enseignant', 'like', $e->mail)->first();
+        $res = array();
+        if (!empty($respon)) {
+            $privi = Enseignant::get_privilege($e);
+            if ($privi == 2) {
+                $ue = UE::where('fst', '=', 1)->get();
+                foreach ($ue as $value) {
+                    if (!in_array($value, $res)) {
+                        $res[] = $value;
                     }
-                    $v = new VueUe();
-                    echo $v->home($res);
-                } elseif ($privi == 1) {
-                    $resp = Responsabilite::where('enseignant', 'like', $e->mail)->get();
-                    $res = array();
-                    foreach ($resp as $value) {
-                        $ue = UE::where('id_formation', '=', $value->id_formation)->first();
-                        if (!in_array($ue, $res)) {
-                            $res[] = $ue;
-                        }
-                        $ue = UE::where('id_UE', '=', $value->id_UE)->first();
-                        if (!in_array($ue, $res)) {
-                            $res[] = $ue;
-                        }
+                }
+            } elseif ($privi == 1) {
+                $resp = Responsabilite::where('enseignant', 'like', $e->mail)->get();
+                foreach ($resp as $value) {
+                    $ue = UE::where('id_formation', '=', $value->id_formation)->first();
+                    if (!in_array($ue, $res)) {
+                        $res[] = $ue;
                     }
-                    $intervention = Intervention::where('mail_enseignant', 'like', $e->mail)->get();
-                    foreach ($intervention as $value) {
-                        $ue = UE::where('id_UE', '=', $value->id_UE)->where('fst', 'like', 1)->first();
-                        if (!in_array($ue, $res)) {
-                            $res[] = $ue;
-                        }
+                    $ue = UE::where('id_UE', '=', $value->id_UE)->first();
+                    if (!in_array($ue, $res)) {
+                        $res[] = $ue;
                     }
-                    $v = new VueUe();
-                    echo $v->home($res);
-                } else {
-                    $resp = Responsabilite::where('enseignant', 'like', $e->mail)->get();
-                    $res = array();
-                    foreach ($resp as $value) {
-                        $ue = UE::where('id_UE', '=', $value->id_UE)->first();
-                        if (!in_array($ue, $res)) {
-                            $res[] = $ue;
-                        }
+                }
+                $intervention = Intervention::where('mail_enseignant', 'like', $e->mail)->get();
+                foreach ($intervention as $value) {
+                    $ue = UE::where('id_UE', '=', $value->id_UE)->where('fst', 'like', 1)->first();
+                    if (!in_array($ue, $res)) {
+                        $res[] = $ue;
                     }
-                    $intervention = Intervention::where('mail_enseignant', 'like', $e->mail)->get();
-                    foreach ($intervention as $value) {
-                        $ue = UE::where('id_UE', '=', $value->id_UE)->where('fst', '=', 1)->first();
-                        if (!in_array($ue, $res)) {
-                            $res[] = $ue;
-                        }
-                    }
-                    $v = new VueUe();
-                    echo $v->home($res);
                 }
             } else {
-                $res = array();
+                $resp = Responsabilite::where('enseignant', 'like', $e->mail)->get();
+                foreach ($resp as $value) {
+                    $ue = UE::where('id_UE', '=', $value->id_UE)->first();
+                    if (!in_array($ue, $res)) {
+                        $res[] = $ue;
+                    }
+                }
                 $intervention = Intervention::where('mail_enseignant', 'like', $e->mail)->get();
                 foreach ($intervention as $value) {
                     $ue = UE::where('id_UE', '=', $value->id_UE)->where('fst', '=', 1)->first();
@@ -92,15 +88,56 @@ class UEControler
                         $res[] = $ue;
                     }
                 }
-                $v = new VueUe();
-                echo $v->home($res);
             }
-
         } else {
+            $res = array();
+            $intervention = Intervention::where('mail_enseignant', 'like', $e->mail)->get();
+            foreach ($intervention as $value) {
+                $ue = UE::where('id_UE', '=', $value->id_UE)->where('fst', '=', 1)->first();
+                if (!in_array($ue, $res)) {
+                    $res[] = $ue;
+                }
+            }
+        }
+        return $res;
+    }
+
+
+    public function exporter(){
+        if(isset($_SESSION['mail'])){
+            $ues = self::get_ues();
+            $csv_ues = Writer::createFromFileObject(new \SplTempFileObject());
+            $csv_array = array();
+            $headers_intervenants = null;
+            if(!empty($ues)){
+                $headers_ues = $ues[0]->getTableColumns();
+                $csv_ues->insertOne($headers_ues);
+                foreach($ues as $ue){
+                    $interventions = Intervention::where('id_UE', '=', $ue->id_UE)->get();
+                    if(!$interventions->isEmpty()){
+                        $csv_intervenants = array();
+                        $headers_intervenants = $interventions->first()->getTableColumns();
+                        foreach($interventions as $i){
+                            $csv_intervenants[] = $i;
+                        }
+                        $csv_array[] = $csv_intervenants;
+                    }
+                    $csv_ues->insertOne($ue->toArray());
+                }
+                foreach($csv_array as $interv){
+                    $csv_ues->insertOne(null);
+                    $csv_ues->insertOne($headers_intervenants);
+                    foreach($interv as $i){
+                        $csv_ues->insertOne($i->toArray());
+                    }
+                }
+                $csv_ues->output('ues.csv');
+            }
+        }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
-
     }
+
 
     public function infoUE()
     {
@@ -123,26 +160,29 @@ class UEControler
         $val = $app->request->post();
         $app->response->headers->set('Content-Type', 'application/json');
         $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
+        echo json_encode(self::get_intervantsUE($id));
+    }
+
+    private function get_intervantsUE($id)
+    {
         $interventions = Intervention::where('id_UE', 'like', $id)->get();
         $res = array();
-        if (empty($interventions)) {
-            echo json_encode($res);
-        } else {
+        if (!empty($interventions)) {
             foreach ($interventions as $value) {
                 $user = Enseignant::where('mail', 'like', $value->mail_enseignant)->first();
-                    $res[] = $user->nom;
-                    $res[] = $user->prenom;
-                    $res[] = $value->heuresCM;
-                    $res[] = $value->groupeTD;
-                    $res[] = $value->heuresTD;
-                    $res[] = $value->groupeTP;
-                    $res[] = $value->heuresTP;
-                    $res[] = $value->groupeEI;
-                    $res[] = $value->heuresEI;
-                    $res[] = $user->mail;
+                $res[] = $user->nom;
+                $res[] = $user->prenom;
+                $res[] = $value->heuresCM;
+                $res[] = $value->groupeTD;
+                $res[] = $value->heuresTD;
+                $res[] = $value->groupeTP;
+                $res[] = $value->heuresTP;
+                $res[] = $value->groupeEI;
+                $res[] = $value->heuresEI;
+                $res[] = $user->mail;
             }
-            echo json_encode($res);
         }
+        return $res;
     }
 
     public function boutonModif()

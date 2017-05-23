@@ -26,6 +26,7 @@ class VueUe extends AbstractView
         $select = self::selectUE($u);
         $mes = self::message();
         $lienInfoUE = Slim::getInstance()->urlFor('compoUE');
+        $lien_exporter = Slim::getInstance()->urlFor('ue.exporter');
         $html .= <<< END
         <div class="container">
         <div class="panel panel-default">
@@ -45,11 +46,8 @@ class VueUe extends AbstractView
 
 				 <div class="collapse navbar-collapse" id="navbar_panel">
 				   <div class=" navbar-right">
-					 <div class="btn-group pull-right">
-                       <form class="navbar-form navbar-left">
-                         <button type="submit" class="btn btn-default">Importer</button>
-                         <button type="submit" class="btn btn-default">Exporter</button>
-                       </form>
+					<button type="submit" class="btn btn-default navbar-btn">Importer</button>
+                    <button type="submit" class="btn btn-default navbar-btn" id="exporter">Exporter</button>
 					 </div>
 				   </div>
 				 </div>
@@ -81,7 +79,6 @@ END;
         $html .= <<< END
 					 </div>
 		</div>
-		</div>
 
 END;
         $html .= self::footerHTML();
@@ -89,7 +86,8 @@ END;
         <script type="text/javascript" src="/PPIL/assets/js/ue.js"></script>
         <script type="text/javascript">
            $(function(){
-               setLien("$lienInfoUE")
+               exporter("$lien_exporter");
+               setLien("$lienInfoUE");
                choixUE();
                boutonValidationModif();
                listIntervenant();

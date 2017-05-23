@@ -25,6 +25,13 @@ function setLien(lien){
     ppil = lien;
 }
 
+function exporter(lien_exporter){
+	$('#exporter').click(function(){
+		window.location = lien_exporter;
+	});
+}
+
+
 function choixUE() {
     id_UE = $('#selectUE option:selected').val();
     $.ajax({

@@ -248,6 +248,11 @@ $app->get('/home/ue', function (){
     $c->home();
 })->name('ueUtilisateur');
 
+$app->get('/home/ue/exporter', function (){
+    $c = new UEControler();
+    $c->exporter();
+})->name('ue.exporter');
+
 $app->post('/home/ue/compoUE', function (){
     $c = new UEControler();
     $c->infoUE();
@@ -330,6 +335,11 @@ $app->post('/home/enseignants', function (){
     $c = new EnseignantsControler();
     $c->home();
 });
+
+$app->get('/home/enseignants/exporter', function (){
+    $c = new EnseignantsControler();
+    $c->exporter();
+})->name('enseignants.exporter');
 
 $app->get('/home/enseignants/supprimer/:id',function ($id){
     $c = new EnseignantsControler();
