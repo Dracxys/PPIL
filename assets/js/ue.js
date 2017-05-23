@@ -277,53 +277,56 @@ function boutonValidationModif() {
 
 function modifIntervenantUE(mail, line) {
     id_UE = $('#selectUE option:selected').val();
-	if(id_UE != undefined){
+    if (id_UE != undefined) {
 
-		var hcm = $('#hcm'+line).val();
-		var nbtd = $('#nbtd'+line).val();
-		var htd = $('#htd'+line).val();
-		var nbtp = $('#nbtp'+line).val();
-		var htp = $('#htp'+line).val();
-		var nbei = $('#nbei'+line).val();
-		var hei = $('#hei'+line).val();
-		$.ajax({
-			url: ppil + '/modifHeureEnseignant',
-			type: 'post',
-			data: {'id': id_UE, 'mail': mail, 'heureCM': hcm, 'nbGroupeTD':nbtd,'heureTD':htd,'nbGroupeTP':nbtp,
-				   'heureTP':htp,'nbGroupeEI':nbei,'heureEI':hei},
-			success: function (element) {
-				if (element != undefined) {
-					if (element[0] == 'true') {
-						$('#messageTitre').text('Succès');
-						$('#message').text('Les modifications ont bien été prises en compte.');
-						$('#modalDemandeEffectuee').modal({
-							backdrop: 'static',
-							keyboard: false
-						});
-						choixUE();
-						listIntervenant();
-					}else if(element[0] == 'Depassement'){
-						$('#messageTitre').text('Erreur');
-						$('#message').text('Les modifications n\'ont pas pu être sauvegardées, vos modifications feraient dépasser les prévisions en heures et en groupe pour cet UE.');
-						$('#modalDemandeEffectuee').modal({
-							backdrop: 'static',
-							keyboard: false
-						});
-					} else {
-						$('#messageTitre').text('Erreur');
-						$('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
-						$('#modalDemandeEffectuee').modal({
-							backdrop: 'static',
-							keyboard: false
-						});
-					}
-				}
-			}, xhrFields: {
-				withCredentials: true
-			},
-			crossDomain: true
-		});
-	}
+        var hcm = $('#hcm' + line).val();
+        var nbtd = $('#nbtd' + line).val();
+        var htd = $('#htd' + line).val();
+        var nbtp = $('#nbtp' + line).val();
+        var htp = $('#htp' + line).val();
+        var nbei = $('#nbei' + line).val();
+        var hei = $('#hei' + line).val();
+        $.ajax({
+            url: ppil + '/modifHeureEnseignant',
+            type: 'post',
+            data: {
+                'id': id_UE, 'mail': mail, 'heureCM': hcm, 'nbGroupeTD': nbtd, 'heureTD': htd, 'nbGroupeTP': nbtp,
+                'heureTP': htp, 'nbGroupeEI': nbei, 'heureEI': hei
+            },
+            success: function (element) {
+                if (element != undefined) {
+                    if (element[0] == 'true') {
+                        $('#messageTitre').text('Succès');
+                        $('#message').text('Les modifications ont bien été prises en compte.');
+                        $('#modalDemandeEffectuee').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                        choixUE();
+                        listIntervenant();
+                    } else if (element[0] == 'Depassement') {
+                        $('#messageTitre').text('Erreur');
+                        $('#message').text('Les modifications n\'ont pas pu être sauvegardées, vos modifications feraient dépasser les prévisions en heures et en groupe pour cet UE.');
+                        $('#modalDemandeEffectuee').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                    } else {
+                        $('#messageTitre').text('Erreur');
+                        $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
+                        $('#modalDemandeEffectuee').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                    }
+                }
+            }, xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true
+        });
+    }
+}
 
 	function boutonSuppressionEnseignant(mail) {
 		id_UE = $('#selectUE option:selected').val();
@@ -357,7 +360,7 @@ function modifIntervenantUE(mail, line) {
 			},
 			crossDomain: true
 		});
-	}
+	
 }
 
 function listeAjoutEnseignant() {
