@@ -403,6 +403,7 @@ class UtilisateurControler
         }
     }
 
+    /////// Fonctions pour l'annuaire //////////
 
     public function annuaire(){
         if(isset($_SESSION['mail'])) {
@@ -414,6 +415,61 @@ class UtilisateurControler
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
+
+    public function rechercheAnnuaire() {
+        if (isset($_SESSION['mail'])) {
+            $app = Slim::getInstance();
+            $val = $app->request->post();
+
+            $chaine = filter_var($val['chaine'], FILTER_SANITIZE_STRING);
+
+            $enseignants = \PPIL\models\Enseignant::distinct()->get();
+
+            $res = array();
+
+            $i = 0;
+            foreach ($enseignants as $e) {
+                if ((strpos(strtolower('' . $e->prenom . ' ' . $e->nom), strtolower($chaine)) !== FALSE) && $e->mail != ($_SESSION['mail'])) {
+                    $res[$i][] = $e->prenom;
+                    $res[$i][] = $e->nom;
+                    $res[$i][] = $e->statut;
+                    $res[$i][] = $e->mail;
+                    $res[$i][] = $e->photo;
+                    $i++;
+                }   
+            }
+
+            $app->response->headers->set('Content-Type', 'application/json');
+            echo json_encode($res);
+        } else {
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+    public function annulerRecherche() {
+        if(isset($_SESSION['mail'])) {
+            $users = Enseignant::distinct()->get();
+
+            $res = array();
+            $i = 0;
+            foreach ($users as $e) {
+                $res[$i][] = $e->prenom;
+                $res[$i][] = $e->nom;
+                $res[$i][] = $e->statut;
+                $res[$i][] = $e->mail;
+                $res[$i][] = $e->photo;
+                $i++;
+            }
+            
+            $app->response->headers->set('Content-Type', 'application/json');
+            echo json_encode($res);
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+    ///////////////////////////////////////////
+
 
     public function inscription(){
         $val = Slim::getInstance()->request->post();
