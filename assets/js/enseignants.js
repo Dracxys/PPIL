@@ -1,6 +1,4 @@
 function select(num) {
-    //alert("coucou "+ligne);
-
     var lignes = document.getElementsByName("ligne");
     var iter = 0;
 

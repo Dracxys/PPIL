@@ -78,9 +78,9 @@ END;
                 $html .= "<tr name=\"ligne\" id=\"".$i."\" onclick=\"select(".$i.")\">" .
                     "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
                     "<th class=\"text-center\">" . $user->statut . "</th>" .
-                    "<th class=\"text-center\">" . $user->volumeMin . "</th>" .
-                    "<th class=\"text-center\">" . $volumeCourant . "</th>" .
-                    "<th class=\"text-center\">" . $volFST . "</th>" .
+                    "<th class=\"text-center\" id=\"volMin\">" . $user->volumeMin . "</th>" .
+                    "<th class=\"text-center\" id=\"volCourant\">" . $volumeCourant . "</th>" .
+                    "<th class=\"text-center\" id=\"volFST\">" . $volFST . "</th>" .
                     "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='".Slim::getInstance()->urlFor('profilEnseignant',array('id' => $user->rand))."'>Voir</button> ". "</th>" .
 
                     "</tr>";
