@@ -266,7 +266,15 @@ function modifIntervenantUE(mail, line) {
                         backdrop: 'static',
                         keyboard: false
                     });
+                    choixUE();
                     listIntervenant();
+                }else if(element[0] == 'Depassement'){
+                    $('#messageTitre').text('Erreur');
+                    $('#message').text('Les modifications n\'ont pas pu être sauvegardées, vos modifications feraient dépasser les prévisions en heures et en groupe pour cet UE.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
                 } else {
                     $('#messageTitre').text('Erreur');
                     $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
@@ -298,6 +306,7 @@ function boutonSuppressionEnseignant(mail) {
                         backdrop: 'static',
                         keyboard: false
                     });
+                    choixUE();
                     listIntervenant();
                 } else {
                     $('#messageTitre').text('Erreur');

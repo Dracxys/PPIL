@@ -147,31 +147,31 @@ class UtilisateurControler
                         $tmpGroupeEI = $i->groupeEI;
                         Intervention::modifierIntervention($i,$infos['heuresCM'],$infos['heuresTD'],$infos['heuresTP'],$infos['heuresEI'],$infos['groupeTD'],$infos['groupeTP'],$infos['groupeEI']);
                         $ue = UE::find($i->id_UE);
-                        if($ue->heuresCM > $ue->prevision_heuresCM && $ue->prevision_heuresCM > 0 ){
+                        if($ue->heuresCM > $ue->prevision_heuresCM){
                             $previsions['heuresCM'] = true;
                             $error = true;
                         }
-                        if($ue->heuresTP > $ue->prevision_heuresTP && $ue->prevision_heuresTP > 0){
+                        if($ue->heuresTP > $ue->prevision_heuresTP){
                             $error = true;
                             $previsions['heuresTP'] = true;
                         }
-                        if($ue->heuresTD > $ue->prevision_heuresTD  && $ue->prevision_heuresTD > 0){
+                        if($ue->heuresTD > $ue->prevision_heuresTD){
                             $previsions['heuresTD'] = true;
                             $error = true;
                         }
-                        if($ue->heuresEI > $ue->prevision_heuresEI  && $ue->prevision_heuresEI > 0){
+                        if($ue->heuresEI > $ue->prevision_heuresEI){
                             $previsions['heuresEI'] = true;
                             $error = true;
                         }
-                        if($ue->groupeTP > $ue->prevision_groupeTP  && $ue->prevision_groupeTP > 0){
+                        if($ue->groupeTP > $ue->prevision_groupeTP){
                             $previsions['groupeTP'] = true;
                             $error = true;
                         }
-                        if($ue->groupeTD > $ue->prevision_groupeTD  && $ue->prevision_groupeTD > 0){
+                        if($ue->groupeTD > $ue->prevision_groupeTD){
                             $previsions['groupeTD'] = true;
                             $error = true;
                         }
-                        if($ue->groupeEI > $ue->prevision_groupeEI  && $ue->prevision_groupeEI > 0){
+                        if($ue->groupeEI > $ue->prevision_groupeEI){
                             $previsions['groupeEI'] = true;
                             $error = true;
                         }
@@ -181,12 +181,12 @@ class UtilisateurControler
                             $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
                             $depassement = $e->volumeCourant - $e->volumeMax;
 
-                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpHeuresEI);
+                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
 
 
                             Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
                         }else{
-                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpHeuresEI);
+                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
                         }
                     }
                 }
@@ -403,6 +403,7 @@ class UtilisateurControler
         }
     }
 
+    /////// Fonctions pour l'annuaire //////////
 
     public function annuaire(){
         if(isset($_SESSION['mail'])) {
@@ -414,6 +415,62 @@ class UtilisateurControler
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
+
+    public function rechercheAnnuaire() {
+        if (isset($_SESSION['mail'])) {
+            $app = Slim::getInstance();
+            $val = $app->request->post();
+
+            $chaine = filter_var($val['chaine'], FILTER_SANITIZE_STRING);
+
+            $enseignants = \PPIL\models\Enseignant::distinct()->get();
+
+            $res = array();
+
+            $i = 0;
+            foreach ($enseignants as $e) {
+                if ((strpos(strtolower('' . $e->prenom . ' ' . $e->nom), strtolower($chaine)) !== FALSE || strpos(strtolower('' . $e->nom . ' ' . $e->prenom), strtolower($chaine)) !== FALSE) && $e->mail != ($_SESSION['mail'])) {
+                    $res[$i][] = $e->prenom;
+                    $res[$i][] = $e->nom;
+                    $res[$i][] = $e->statut;
+                    $res[$i][] = $e->mail;
+                    $res[$i][] = $e->photo;
+                    $i++;
+                }   
+            }
+
+            $app->response->headers->set('Content-Type', 'application/json');
+            echo json_encode($res);
+        } else {
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+    public function annulerRecherche() {
+        if(isset($_SESSION['mail'])) {
+            $app = Slim::getInstance();
+            $users = Enseignant::distinct()->get();
+
+            $res = array();
+            $i = 0;
+            foreach ($users as $e) {
+                $res[$i][] = $e->prenom;
+                $res[$i][] = $e->nom;
+                $res[$i][] = $e->statut;
+                $res[$i][] = $e->mail;
+                $res[$i][] = $e->photo;
+                $i++;
+            }
+            
+            $app->response->headers->set('Content-Type', 'application/json');
+            echo json_encode($res);
+        }else{
+            Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+        }
+    }
+
+    ///////////////////////////////////////////
+
 
     public function inscription(){
         $val = Slim::getInstance()->request->post();

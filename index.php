@@ -353,4 +353,16 @@ $app->get('/home/enseignants/profilEnseignant/:id', function ($id){
 
 /* ===================== liens dans enseignants ==================*/
 
+
+/* ===================== liens dans annuaire ==================*/
+$app->post('/home/annuaire/recherche', function (){
+    $c = new UtilisateurControler();
+    $c->rechercheAnnuaire();
+})->name('rechercheAnnuaireUtilisateur');
+
+$app->post('/home/annuaire/annulerRecherche', function (){
+    $c = new UtilisateurControler();
+    $c->annulerRecherche();
+})->name('annulerRechercheAnnuaire');
+
 $app->run();
