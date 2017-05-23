@@ -15,3 +15,9 @@ function select(num) {
 
 }
 
+function exporter(lien_exporter){
+	$('#exporter').click(function(){
+		window.location = lien_exporter;
+
+	});
+}

@@ -331,6 +331,11 @@ $app->post('/home/enseignants', function (){
     $c->home();
 });
 
+$app->get('/home/enseignants/exporter', function (){
+    $c = new EnseignantsControler();
+    $c->exporter();
+})->name('enseignants.exporter');
+
 $app->get('/home/enseignants/supprimer/:id',function ($id){
     $c = new EnseignantsControler();
     $c->supprimer($id);

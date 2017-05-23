@@ -21,6 +21,7 @@ class VueEnseignants extends AbstractView{
         $html  = self::headHTML($scripts_and_css);
         $html .= self::navHTML("Enseignants");
 		$ajouter = Slim::getInstance()->urlFor("vueinscriptionDI");
+		$lien_exporter = Slim::getInstance()->urlFor("enseignants.exporter");
         $html .= <<< END
 
         <div class="container">
@@ -42,7 +43,7 @@ class VueEnseignants extends AbstractView{
 				<div class="collapse navbar-collapse" id="navbar_panel">
 				  <div class="navbar-right">
                     <button type="sumbit" class="btn btn-primary navbar-btn" formaction="$ajouter"  formnovalidate="false" id="ajouterEnseignants">Ajouter</button>
-                    <button type="button" class="btn btn-default navbar-btn" id="exporterEnseignants">Exporter</button>
+                    <button type="button" class="btn btn-default navbar-btn" id="exporter">Exporter</button>
                   </div>
 				</div>
 				</form>
@@ -89,7 +90,7 @@ END;
         }
         $html .= <<< END
 
-				
+
 			    </tbody>
           </table>
         </div>
@@ -101,7 +102,16 @@ END;
 
 END;
         $html .= self::footerHTML();
-        $html .= "<script type=\"text/javascript\" src=\"/PPIL/assets/js/enseignants.js\">     </script>";
+        $html .=<<< END
+              <script type="text/javascript" src="/PPIL/assets/js/enseignants.js"></script>
+              <script type="text/javascript">
+        $(function(){
+            exporter("$lien_exporter");
+        });
+
+
+              </script>
+END;
         return $html;
     }
 
@@ -194,7 +204,7 @@ END;
 
         return $html;
 	}
-    
+
     public function profilEnseignant($enseignant) {
         $annuler = Slim::getInstance()->urlFor("enseignantsUtilisateur");
         $resp = self::recupResponsabilites($enseignant);
@@ -202,7 +212,7 @@ END;
         $html = self::headHTML($scripts_and_css);
         $html .= self::navHTML("Enseignants");
         $html .= <<<END
-        
+
         <div class="container">
 		  <div class="panel panel-default">
 			<div class="panel-heading nav navbar-default">
@@ -242,28 +252,28 @@ END;
                           <input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" disabled="true" value="$enseignant->nom" />
                         </div>
                       </div>
-                      
+
                       <div class="form-group">
                         <label class="control-label col-sm-4" for="prenom">Prénom </label>
                         <div class="col-sm-7">
                           <input type="text" id="prenom" name="prenom" class="form-control" placeholder="Prénom" disabled="true" value="$enseignant->prenom" />
                         </div>
                       </div>
-                      
+
                       <div class="form-group">
                         <label class="control-label col-sm-4" for="mail">Mail </label>
                         <div class="col-sm-7">
                           <input type="text" id="mail" name="mail" class="form-control" placeholder="Mail" disabled="true" value="$enseignant->mail" />
                         </div>
                       </div>
-                      
+
                       <div class="form-group">
                         <label class="control-label col-sm-4" for="statut">Statut </label>
                         <div class="col-sm-7">
                           <input type="text" id="statut" name="statut" class="form-control" placeholder="Statut" disabled="true" value="$enseignant->statut" />
                         </div>
                       </div>
-                      
+
                       <div class="form-group">
                         <label class="control-label col-sm-4" for="resp">Responsabilité(s) : </label>
                         <div class="col-sm-7">
@@ -272,9 +282,9 @@ END;
                       </div>
                     </form>
                 </div>
-                
+
                 <div class="col-md-5 text-center">
-                    <div class="text-center svg-container">                    
+                    <div class="text-center svg-container">
 
 END;
 
@@ -319,7 +329,7 @@ END;
         }
 
         $html .= "</select>";
-        
+
         return $html;
     }
 
