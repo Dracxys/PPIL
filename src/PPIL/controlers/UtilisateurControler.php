@@ -10,7 +10,9 @@ namespace PPIL\controlers;
 
 
 use PPIL\models\Enseignant;
+use PPIL\models\Formation;
 use PPIL\models\NotificationResponsabilite;
+use PPIL\models\Responsabilite;
 use PPIL\views\VueHome;
 use PPIL\views\VueModifProfil;
 use PPIL\views\VueUtilisateur;

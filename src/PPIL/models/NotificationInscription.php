@@ -63,7 +63,7 @@ class NotificationInscription extends Notification{
 
 	public static function reinitialiserBDD(){
 		$req = NotificationInscription::all();
-		foreach($i as $req){
+		foreach($req as $i){
 			$i->delete();
 		}
 	}

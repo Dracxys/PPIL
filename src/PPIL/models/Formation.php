@@ -17,7 +17,7 @@ class Formation extends AbstractModel{
 	
 	public static function reinitialiserBDD(){
 		$f = Formation::all();
-		foreach($formations as $f){
+		foreach($f as $formations){
 			$formations->delete();
 		}
 	}

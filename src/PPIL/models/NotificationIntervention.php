@@ -95,7 +95,7 @@ class NotificationIntervention extends Notification{
 	
 	public static function reinitialiserBDD(){
 		$req = NotificationIntervention::all();
-		foreach($i as $req){
+		foreach($req as $i){
 			$i->delete();
 		}
 	}

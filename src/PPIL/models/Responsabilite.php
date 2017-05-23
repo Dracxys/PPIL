@@ -40,8 +40,8 @@ class Responsabilite extends AbstractModel{
 	}
 	
 	public static function reinitialiserBDD(){
-		$req = Responsabilite::where('intituleResp', '!=', 'Responsable du departement informatique')->get();
-		foreach($i as $req){
+		$req = Responsabilite::where('intituleResp', '<>', 'Responsable du departement informatique')->get();
+		foreach($req as $i){
 			$i->delete();
 		}
 	}

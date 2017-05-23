@@ -24,7 +24,7 @@ class Intervention extends AbstractModel{
 	
 	public static function reinitialiserBDD(){
 		$req = Intervention::all();
-		foreach($i as $req){
+		foreach($req as $i){
 			$i->delete();
 		}
 	}
