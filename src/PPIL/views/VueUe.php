@@ -46,11 +46,8 @@ class VueUe extends AbstractView
 
 				 <div class="collapse navbar-collapse" id="navbar_panel">
 				   <div class=" navbar-right">
-					 <div class="btn-group pull-right">
-                       <form class="navbar-form navbar-left">
-                         <button type="submit" class="btn btn-default">Importer</button>
-                         <button type="submit" class="btn btn-default" id="exporter">Exporter</button>
-                       </form>
+					<button type="submit" class="btn btn-default navbar-btn">Importer</button>
+                    <button type="submit" class="btn btn-default navbar-btn" id="exporter">Exporter</button>
 					 </div>
 				   </div>
 				 </div>
@@ -81,7 +78,6 @@ END;
 
         $html .= <<< END
 					 </div>
-		</div>
 		</div>
 
 END;
