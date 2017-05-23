@@ -74,36 +74,24 @@ END;
             $i=0;
             foreach ($u as $user) {
                 if ($_SESSION['mail']!=$user->mail) {
-                    if($user->volumeCourant==NULL) {
-                        $volumeCourant=0;
+                    if ($user->volumeCourant == NULL) {
+                        $volumeCourant = 0;
                     } else {
-                        $volumeCourant=$user->volumeCourant;
+                        $volumeCourant = $user->volumeCourant;
                     }
                     $volFST = self::getVolumeFST($user);
                     //$html .= "<tr id=\"ligne".$i."\" onclick=\"select(this)\">" .
-                    $html .= "<tr name=\"ligne\" id=\"".$i."\" onclick=\"select(".$i.")\">" .
+                    $html .= "<tr name=\"ligne\" id=\"" . $i . "\" onclick=\"select(" . $i . ")\">" .
                         "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
                         "<th class=\"text-center\">" . $user->statut . "</th>" .
-                        "<th class=\"text-center\">" . $user->volumeMin . "</th>" .
-                        "<th class=\"text-center\">" . $volumeCourant . "</th>" .
-                        "<th class=\"text-center\">" . $volFST . "</th>" .
-                        "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='".Slim::getInstance()->urlFor('supprimerEnseignant',array('id' => $user->rand))."'>Supprimer</button> ". "</th>" .
+                        "<th class=\"text-center\" id=\"volMin\">" . $user->volumeMin . "</th>" .
+                        "<th class=\"text-center\" id=\"volCourant\">" . $volumeCourant . "</th>" .
+                        "<th class=\"text-center\" id=\"volFST\">" . $volFST . "</th>" .
+                        "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='" . Slim::getInstance()->urlFor('profilEnseignant', array('id' => $user->rand)) . "'>Voir</button> " . "</th>" .
 
                         "</tr>";
                     $i++;
                 }
-                $volFST = self::getVolumeFST($user);
-                //$html .= "<tr id=\"ligne".$i."\" onclick=\"select(this)\">" .
-                $html .= "<tr name=\"ligne\" id=\"".$i."\" onclick=\"select(".$i.")\">" .
-                    "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
-                    "<th class=\"text-center\">" . $user->statut . "</th>" .
-                    "<th class=\"text-center\" id=\"volMin\">" . $user->volumeMin . "</th>" .
-                    "<th class=\"text-center\" id=\"volCourant\">" . $volumeCourant . "</th>" .
-                    "<th class=\"text-center\" id=\"volFST\">" . $volFST . "</th>" .
-                    "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='".Slim::getInstance()->urlFor('profilEnseignant',array('id' => $user->rand))."'>Voir</button> ". "</th>" .
-
-                    "</tr>";
-                $i++;
             }
             $html .= "</tbody></table>";
 
