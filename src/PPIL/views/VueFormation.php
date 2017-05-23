@@ -71,7 +71,7 @@ class VueFormation extends AbstractView
             </div>
             <div class=" panel-default container col-sm-6 ">
                  <div class="">
-                    <label id="nomUE" class="control-label">Sélectionner un UE</label>
+                    <label id="nomUE" class="control-label">Sélectionner une UE</label>
                  </div>
                  <div class="panel-default">
                     <ul class="nav nav-pills">
