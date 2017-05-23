@@ -55,4 +55,11 @@ class Notification extends AbstractModel{
 		}
 		$n->save();
 	}
+	
+	public static function reinitialiserBDD(){
+		$req = Notification::all();
+		foreach($i as $req){
+			$i->delete();
+		}
+	}
 }

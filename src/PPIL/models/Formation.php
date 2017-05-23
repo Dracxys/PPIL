@@ -14,5 +14,12 @@ class Formation extends AbstractModel{
         return $form->id_formation;
 
     }
+	
+	public static function reinitialiserBDD(){
+		$f = Formation::all();
+		foreach($formations as $f){
+			$formations->delete();
+		}
+	}
 
 }

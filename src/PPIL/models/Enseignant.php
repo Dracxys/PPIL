@@ -210,5 +210,12 @@ class Enseignant extends AbstractModel{
         }
         return $pourcentage;
     }
+	
+	public static function reinitialiserBDD ($mail_enseignant){
+		$e = Enseignant::where('mail', '!=', $mail_enseignant)->get();
+		foreach($ens as $e){
+			$ens->delete();
+		}
+	}
 
 }
