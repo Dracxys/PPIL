@@ -92,6 +92,21 @@ END;
                         "</tr>";
                     $i++;
                 }
+<<<<<<< HEAD
+=======
+                $volFST = self::getVolumeFST($user);
+                //$html .= "<tr id=\"ligne".$i."\" onclick=\"select(this)\">" .
+                $html .= "<tr name=\"ligne\" id=\"".$i."\" onclick=\"select(".$i.")\">" .
+                    "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
+                    "<th class=\"text-center\">" . $user->statut . "</th>" .
+                    "<th class=\"text-center\" id=\"volMin\">" . $user->volumeMin . "</th>" .
+                    "<th class=\"text-center\" id=\"volCourant\">" . $volumeCourant . "</th>" .
+                    "<th class=\"text-center\" id=\"volFST\">" . $volFST . "</th>" .
+                    "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='".Slim::getInstance()->urlFor('profilEnseignant',array('id' => $user->rand))."'>Voir</button> ". "</th>" .
+
+                    "</tr>";
+                $i++;
+>>>>>>> 493ef08f62ef7a9ebe50ae228d06e2d8139595b8
             }
             $html .= "</tbody></table>";
 
