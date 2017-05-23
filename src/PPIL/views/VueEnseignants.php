@@ -92,8 +92,6 @@ END;
                         "</tr>";
                     $i++;
                 }
-<<<<<<< HEAD
-=======
                 $volFST = self::getVolumeFST($user);
                 //$html .= "<tr id=\"ligne".$i."\" onclick=\"select(this)\">" .
                 $html .= "<tr name=\"ligne\" id=\"".$i."\" onclick=\"select(".$i.")\">" .
@@ -106,7 +104,6 @@ END;
 
                     "</tr>";
                 $i++;
->>>>>>> 493ef08f62ef7a9ebe50ae228d06e2d8139595b8
             }
             $html .= "</tbody></table>";
 
