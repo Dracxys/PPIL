@@ -181,12 +181,12 @@ class UtilisateurControler
                             $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
                             $depassement = $e->volumeCourant - $e->volumeMax;
 
-                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpHeuresEI);
+                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
 
 
                             Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
                         }else{
-                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpHeuresEI);
+                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
                         }
                     }
                 }
