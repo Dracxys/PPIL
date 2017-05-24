@@ -111,28 +111,44 @@ class UEControler
             $csv_ues = Writer::createFromFileObject(new \SplTempFileObject());
             $csv_array = array();
             $headers_intervenants = null;
-            if (!empty($ues)) {
-                $headers_ues = $ues[0]->getTableColumns();
-                $csv_ues->insertOne($headers_ues);
-                foreach ($ues as $ue) {
+            if(!empty($ues)){
+                //                $headers_ues = $ues[0]->getTableColumns();
+                $csv_ues->insertOne(['nom UE', 'nom formation', 'mail Enseignant', 'heuresCM', 'heuresTP', 'heuresTD', 'heuresEI', 'groupeTP', 'groupeTD', 'groupeEI']);
+                foreach($ues as $ue){
                     $interventions = Intervention::where('id_UE', '=', $ue->id_UE)->get();
-                    if (!$interventions->isEmpty()) {
+                    $formation = Formation::where('id_formation', '=', $ue->id_formation)->first();
+
+                    if(!$interventions->isEmpty() && !empty($formation)){
                         $csv_intervenants = array();
                         $headers_intervenants = $interventions->first()->getTableColumns();
-                        foreach ($interventions as $i) {
-                            $csv_intervenants[] = $i;
+                        foreach($interventions as $i){
+                            //$csv_intervenants[] = $i;
+                            $ligne = array(
+                                $ue->nom_UE,
+                                $formation->nomFormation,
+                                $i->mail_enseignant,
+                                $i->heuresCM,
+                                $i->heuresTP,
+                                $i->heuresTD,
+                                $i->heuresEI,
+                                $i->groupeTP,
+                                $i->groupeTD,
+                                $i->groupeEI
+                            );
+                            $csv_ues->insertOne($ligne);
                         }
-                        $csv_array[] = $csv_intervenants;
+                        //  $csv_array[] = $csv_intervenants;
                     }
-                    $csv_ues->insertOne($ue->toArray());
+                    //                    $csv_ues->insertOne($ue->toArray());
                 }
-                foreach ($csv_array as $interv) {
+                /*
+                foreach($csv_array as $interv){
                     $csv_ues->insertOne([]);
                     $csv_ues->insertOne($headers_intervenants);
                     foreach ($interv as $i) {
                         $csv_ues->insertOne($i->toArray());
                     }
-                }
+                    }*/
                 $csv_ues->output('ues.csv');
             }
         } else {
@@ -175,96 +191,61 @@ class UEControler
                     # this is where the magic happens
                     $csv = Reader::createFromPath($root . $chemin . $nameFile . "." . $extension_upload);
 
-                    $last_offset = 1;
-                    $csv->setOffset($last_offset);
-                    $skip = 0;
-                    $stop = false;
-                    $csv->setOffset($last_offset);
-                    $nb_insert = $csv->each(function ($row, $rowOffset) {
+                    $csv->setOffset(1);
+                    $nb_insert = $csv->each(function ($row, $rowOffset){
                         $result = true;
-                        if ($row[0] == "") {
-                            $result = false;
-                        }
-
-                        $ue = UE::find($row[0]);
-                        if (is_null($ue)) {
+                        $ue = UE::where('nom_UE', "=", $row[0])->first();
+                        if(is_null($ue)){
                             $ue = new UE();
-                            $ue->id_UE = $row[0];
+                            $ue->nom_UE = $row[0];
                         }
 
-                        $ue->nom_UE = $row[1];
-                        $ue->fst = $row[2];
+                        $f = Formation::where('nomFormation', '=', $row[1])->first();
+                        if(is_null($f)){
+                            $f = new Formation();
+                            $f->nomFormation = $row[1];
+                        }
 
-                        $f = Formation::find($row[3]);
-                        if (is_null($f)) {
+                        $e = Enseignant::where('mail', '=', $row[2])->first();
+                        if(is_null($e)){
                             $message['parse'] = true;
                             $result = false;
-                        } else {
-                            $ue->id_formation = $row[3];
                         }
 
-                        $ue->heuresTD = $row[4];
-                        $ue->heuresTP = $row[5];
-                        $ue->heuresCM = $row[6];
-                        $ue->heuresEI = $row[7];
-                        $ue->prevision_heuresTD = $row[8];
-                        $ue->prevision_heuresTP = $row[9];
-                        $ue->prevision_heuresCM = $row[10];
-                        $ue->prevision_heuresEI = $row[11];
-                        $ue->groupeTD = $row[12];
-                        $ue->groupeTP = $row[13];
-                        $ue->groupeEI = $row[14];
-                        $ue->prevision_groupeTD = $row[15];
-                        $ue->prevision_groupeTP = $row[16];
-                        $ue->prevision_groupeEI = $row[17];
+                        if($result){
+                            $i = Intervention::where('mail_enseignant', '=', $row[2])
+                               ->where('id_UE', '=', $ue->id_UE)
+                               ->first();
+                            if(is_null($i)){
+                                $i = new Intervention();
+                                $i->mail_enseignant = $row[2];
+                                $i->id_UE = $ue->id_UE;
+                            } else {
+                                $i->heuresTD = $row[3];
+                                $i->heuresTP = $row[4];
+                                $i->heuresCM = $row[5];
+                                $i->heuresEI = $row[6];
+                                $i->groupeTD = $row[7];
+                                $i->groupeTP = $row[8];
+                                $i->groupeEI = $row[9];
 
-                        $ue->save();
+                                $result = true;
 
+                                $f->save();
+                                $ue->save();
+                                $i->save();
+                            }
+                        }
                         return $result;
                     });
-                    $nb = $nb_insert;
-                    $insert = 0;
-                    for ($i = 0; $i < $nb_insert; $i++) {
-                        $nb += $insert + 3;
-                        $csv->setOffset($nb);
-                        $insert = $csv->each(function ($row, $rowOffset) {
-                            $result = true;
-                            //echo json_encode($row);
-                            if ($row[0] == "") {
-                                $result = false;
-                            } else {
-                                # On y est !
-                                #vérifions que les interventions existent, sinon on les crée
-                                $intervention = Intervention::find($row[1]);
-                                if (is_null($intervention)) {
-                                    $intervention = new intervention();
-                                    $intervention->id_intervention = $row[1];
-                                }
-                                $intervention->id_UE = $row[0];
-                                $intervention->fst = $row[2];
-                                $intervention->heuresCM = $row[3];
-                                $intervention->heuresTP = $row[4];
-                                $intervention->heuresTD = $row[5];
-                                $intervention->heuresEI = $row[6];
-                                $intervention->groupeTP = $row[7];
-                                $intervention->groupeTD = $row[8];
-                                $intervention->groupeEI = $row[9];
-                                $intervention->mail_enseignant = $row[10];
-                                $intervention->save();
-                            }
-                            return $result;
-                        });
-                        $insert -= 1;
-                    }
-
                     $erreur = false;
                 }
             }
             echo json_encode([
                 "error" => $erreur,
                 "messages" => $message
-            ]);
-        } else {
+                ]);
+        }else{
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
@@ -607,6 +588,7 @@ class UEControler
                     $newIntervention = new Intervention();
                     $newIntervention->mail_enseignant = $mail;
                     $newIntervention->id_UE = $idUE;
+                    $newIntervention->fst = 1;
                     $newIntervention->save();
                     $mail = new MailControler();
                     $mail->sendMail($value, "Ajout à un UE.", $message);

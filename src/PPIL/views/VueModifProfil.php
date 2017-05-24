@@ -193,12 +193,12 @@ END;
         $html .= <<< END
 				</div>
 			  </div>
-
 			  <div class="form-group">
 				<button type="submit" class="btn btn-primary">Valider</button>
               </div>
 			</form>
             </div>
+           
 END;
         return $html;
     }
