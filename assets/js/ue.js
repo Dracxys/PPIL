@@ -76,12 +76,12 @@ function importer(lien_importer){
 
 function setup(){
 	choixUE();
-    boutonValidationModif();
     listIntervenant();
+    boutonValidationModif();
     $('#selectUE').change(function() {
         choixUE();
-        boutonValidationModif();
         listIntervenant();
+        boutonValidationModif();
     });
     $('#erreur').hide();
 }
@@ -279,8 +279,8 @@ function boutonValidationModif() {
 						$("#htp").prop('disabled', false);
 						$("#nbei").prop('disabled', false);
 						$("#hei").prop('disabled', false);
-						$("#validerHeuresIntervenantUE").prop('disabled', false);
-						$("#supprimerIntervenantUE").prop('disabled', false);
+                        $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", false);
+                        $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", false);
 						var html =  "<button type='button' class='btn btn-primary center-block' onclick='modifUE()' id='valider'>Valider</button>";
 						$('#ajoutEnseignant').removeClass("hidden");
 						$('#boutton_validation').html(html);
@@ -296,8 +296,8 @@ function boutonValidationModif() {
 						$("#htp").prop('disabled', true);
 						$("#nbei").prop('disabled', true);
 						$("#hei").prop('disabled', true);
-						$("#validerHeuresIntervenantUE").prop('disabled', true);
-						$("#supprimerIntervenantUE").prop('disabled', true);
+                        $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", true);
+                        $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", true);
 						$('#ajoutEnseignant').addClass("hidden");
 					}
 				}
