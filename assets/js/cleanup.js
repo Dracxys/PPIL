@@ -1,4 +1,5 @@
 $(function(){
+
 	$("form#form_actions").each(function() {
 		$(this).submit(function(e){
 			e.preventDefault();
@@ -48,15 +49,17 @@ $(function(){
 					url : "journal/actionNotification",
 					type: 'post',
 					data: { 'valider': valide, 'refuser': refuse, 'id': id},
-					success: function(){
+					success: function(tab){
 						$('tr#'+id).remove();
 						var notifications_count = $("form").length;
 						var text = $('a#notifications_count');
+						//affichage();
 						if(notifications_count > 0){
 							text.text('Journal');
 							$('font#notifications_count_font').text('(' + notifications_count + ')' );
 						} else {
 							text.text('Journal');
+							$('#tableNotifs').html("<label>Aucune Notification</label>");
 						}
 					}
 				});

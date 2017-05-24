@@ -75,6 +75,7 @@ class UE extends AbstractModel{
             $groupeEI += $intervention->groupeEI;
         }
 
+        /*
         $groupeTP = count(Intervention::distinct()
                           ->select('groupeTP')
                           ->where('id_UE', '=', $e->id_UE)
@@ -92,6 +93,7 @@ class UE extends AbstractModel{
                           ->where('id_UE', '=', $e->id_UE)
                           ->groupBy('groupeEI')
                           ->get());
+        */
 
         $e->heuresCM = $heuresCM;
         $e->heuresTP = $heuresTP;
@@ -110,5 +112,11 @@ class UE extends AbstractModel{
         return $res;
     }
 
+	public static function reinitialiserBDD(){
+		$req = UE::all();
+		foreach($req as $i){
+			$i->delete();
+		}
+	}
 
 }

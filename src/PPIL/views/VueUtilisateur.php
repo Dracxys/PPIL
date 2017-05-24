@@ -33,6 +33,7 @@ class VueUtilisateur extends AbstractView
 
   public function enseignement(){
       $lien = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignement");
+      $lien_exporter = Slim::getInstance()->urlFor("enseignementUtilisateur.exporter");
       $lien_ajouter = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouter");
       $lien_ajouter_autre = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouterAutre");
       $home = Slim::getInstance()->urlFor("home");
@@ -40,8 +41,11 @@ class VueUtilisateur extends AbstractView
       $scripts_and_css = "";
       $html  = self::headHTML($scripts_and_css);
       $html = $html . self::navHTML("Enseignement");
-      $notification_exist = false;
-$html .= <<< END
+      $notification_exist = 0;
+      $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+      $depasse = $e->volumeCourant - $e->volumeMax;
+
+      $html .= <<< END
 			 <div class="container">
 
 		  <div class="panel panel-default">
@@ -65,12 +69,10 @@ $html .= <<< END
 				<div class="collapse navbar-collapse" id="navbar_panel">
 					<div class="navbar-right">
 					  <button type="button" class="btn btn-default navbar-btn" id="ajouter">Ajouter</button>
-					  <button type="button" class="btn btn-default navbar-btn">Exporter</button>
-					  <button type="button" class="btn btn-default navbar-btn">Remise à zéro</button>
+					  <button type="button" class="btn btn-default navbar-btn" id="exporter">Exporter</button>
+					  <button type="button" class="btn btn-danger navbar-btn">Remise à zéro</button>
 					  <button type="button" class="btn btn-primary navbar-btn"  id="appliquer">Appliquer</button>
-
 					</div>
-<!-- </ul> -->
 				</div>
 
 			  </div>
@@ -79,9 +81,19 @@ $html .= <<< END
       <div class="alert alert-danger hidden" role="alert" id="erreur">
       <strong>Echec!</strong>Certaines informations sont invalides, vérifiez que vos données ne contiennent pas de nombres négatifs ou de caractères spéciaux
       </div>
+      <div class="alert alert-danger hidden" role="alert" id="depassement_prevision">
+      <strong>Attention !</strong> Vos modifications feraient dépasser les prévisions en heures et en groupe pour une ou plusieurs UE.
+      </div>
       <div class="alert alert-warning hidden" role="alert" id="notification_exist">
       <strong>Attention !</strong> Certaines interventions attendent la validation de leur modification, aucun changement ne sera pris en compte entre temps.
       </div>
+      <div class="alert alert-warning hidden" role="alert" id="depassement_max">
+      <strong>Attention !</strong> Vous dépassez actuellement vos horaires maximaux.
+      </div>
+      <div class="alert alert-success hidden" role="alert" id="succes">
+        <strong>Succès!</strong> Vos demandes ont été envoyées.
+      </div>
+
                   <div class="table-responsive ">
 
                   <table class="table table-bordered ">
@@ -127,12 +139,11 @@ END;
                                                //                                               ->where('id_UE', '=', $intervention->id_UE)
                                                ->get();
 
-
                     foreach($notification_intervention as $n){
                         if(!empty($n)){
                             if($n->id_UE == $intervention->id_UE){
                                 $notification_en_attente = "warning";
-                                $notification_exist = true;
+                                $notification_exist = 1;
                             }
                             $id_ues_notification[] = $n->id_UE ;
                         }
@@ -170,7 +181,7 @@ END;
 						<form class="form-inline" method="post" action="" id="form_interventions">
 						  <div class="form-group">
 							<button  name="annuler" class="btn btn-primary hidden" id="annuler" value="true" type="submit">Annuler</button>
-							<button  name="supprimer" class="btn btn-default" id="supprimer" value="false" type="submit">Supprimer</button>
+							<button  name="supprimer" class="btn btn-danger" id="supprimer" value="false" type="submit">Supprimer</button>
 							<input type="hidden" id="id" name="id" value="$intervention->id_intervention" />
 							<input type="hidden" id="id_UE" name="id_UE" value="$intervention->id_UE" />
 						  </div>
@@ -229,6 +240,7 @@ END;
 
         $ues = UE::whereNotIn('id_UE', $id_ues)
              ->whereNotIn('id_UE', $id_ues_notification)
+             ->whereNotIn('fst', [false])
              ->get();
         foreach($notifications as $notification){
             $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
@@ -236,7 +248,7 @@ END;
                                        ->first();
             if(!empty($notification_intervention)){
                 $notification_en_attente = "warning";
-                $notification_exist = true;
+                $notification_exist = 1;
             }
         }
 
@@ -295,8 +307,9 @@ END;
         <script type="text/javascript">
           $(function(){
 		  ajouter("$lien_ajouter", "$lien_ajouter_autre");
-          valider("$lien", $notification_exist);
-			});
+          valider("$lien", $notification_exist, $depasse);
+          exporter("$lien_exporter");
+          });
         </script>
 
 
@@ -357,92 +370,101 @@ END;
 			</div>
 			<div class="panel-body text-center">
 			<div class="table-responsive">
-			  <table class="table table-bordered">
-				<thead>
-				  <tr>
-					<th class="text-center">Enseignant</th>
-					<th class="text-center">Description</th>
-					<th class="text-center">Date</th>
-					<th class="text-center">Actions</th>
-				  </tr>
-				</thead>
-				<tbody>
 END;
+
         if(isset($_SESSION["mail"])){
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
             $notifications = Notification::where('mail_destinataire', '=', $e->mail)
                            ->get();
 
-            foreach($notifications as $notification){
-                $date = date('d/m/Y', strtotime($notification->created_at));
-                $description = array($notification->message);
-                $nom_source = "";
-                $prenom_source = "";
-                $lien = Slim::getInstance()->urlFor("JournalUtilisateur.actionNotification");
-                switch($notification->type_notification){
-                case "PPIL\models\NotificationInscription":
-                    $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
-                                             ->first();
-                    if(!empty($notificationinscription)){
-                        $nom_source = $notificationinscription->nom;
-                        $prenom_source = $notificationinscription->prenom;
-                    }
-                    break;
-                case "PPIL\models\Notification":
-                    $nom_source = $notification->mail_source;
-                    break;
-                default:
-                    $enseignant_source = Enseignant::where('mail', '=',$notification->mail_source)->first();
-                    if(!empty($enseignant_source)){
-                        $nom_source = $enseignant_source->nom;
-                        $prenom_source = $enseignant_source->prenom;
-                    }
-                    break;
-                }
 
-                $html .= <<< END
-				<tr id="$notification->id_notification">
-				  <td>$nom_source $prenom_source</td>
-				  <td>
+            if (count($notifications) == 0) {
+              $html .= "<label>Aucune notification</label>";
+            } else {
+              $html .= <<<END
+                    <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                      <th class="text-center">Enseignant</th>
+                      <th class="text-center">Description</th>
+                      <th class="text-center">Date</th>
+                      <th class="text-center">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
 END;
-                foreach($description as $item){
-                    $html .= "<p>" . $item ."</p>";
-                }
-                $html .= <<< END
-				  </td>
-				  <td>$date</td>
-                  <td>
+
+              foreach($notifications as $notification){
+                  $date = date('d/m/Y', strtotime($notification->created_at));
+                  $description = array($notification->message);
+                  $nom_source = "";
+                  $prenom_source = "";
+                  $lien = Slim::getInstance()->urlFor("JournalUtilisateur.actionNotification");
+                  switch($notification->type_notification){
+                  case "PPIL\models\NotificationInscription":
+                      $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
+                                               ->first();
+                      if(!empty($notificationinscription)){
+                          $nom_source = $notificationinscription->nom;
+                          $prenom_source = $notificationinscription->prenom;
+                      }
+                      break;
+                  case "PPIL\models\Notification":
+                      $nom_source = $notification->mail_source;
+                      break;
+                  default:
+                      $enseignant_source = Enseignant::where('mail', '=',$notification->mail_source)->first();
+                      if(!empty($enseignant_source)){
+                          $nom_source = $enseignant_source->nom;
+                          $prenom_source = $enseignant_source->prenom;
+                      }
+                      break;
+                  }
+
+                  $html .= <<< END
+          <tr id="$notification->id_notification">
+            <td>$nom_source $prenom_source</td>
+            <td>
 END;
-                $hide_annule = "";
-                $hide_valide = "hidden";
-                if($notification->besoin_validation == true){
-                    $hide_annule = 'hidden';
-                    $hide_valide = "";
-                }
-                $html .= <<< END
-					<form class="form-inline" method="post" action="" id="form_actions">
-					  <div class="form-group">
-						<div id="annulation" class="$hide_annule">
-						  <button  name="annuler" class="btn btn-primary" id="annule" value="true" type="submit">Annuler</button>
-						</div>
-						<div id="validation" class="$hide_valide">
-						  <button  name="valider" class="btn btn-default" id="refuse" value="false" type="submit">Refuser</button>
-						  <button  name="valider" class="btn btn-primary" id="valide" value="false" type="submit">Accepter</button>
-						</div>
+                  foreach($description as $item){
+                      $html .= "<p>" . $item ."</p>";
+                  }
+                  $html .= <<< END
+            </td>
+            <td>$date</td>
+                    <td>
+END;
+                  $hide_annule = "";
+                  $hide_valide = "hidden";
+                  if($notification->besoin_validation == true){
+                      $hide_annule = 'hidden';
+                      $hide_valide = "";
+                  }
+                  $html .= <<< END
+            <form class="form-inline" method="post" action="" id="form_actions">
+              <div class="form-group">
+              <div id="annulation" class="$hide_annule">
+                <button  name="annuler" class="btn btn-primary" id="annule" value="true" type="submit">Annuler</button>
+              </div>
+              <div id="validation" class="$hide_valide">
+                <button  name="valider" class="btn btn-default" id="refuse" value="false" type="submit">Refuser</button>
+                <button  name="valider" class="btn btn-primary" id="valide" value="false" type="submit">Accepter</button>
+              </div>
 
-						<input type="hidden" id="id" name="id" value="$notification->id_notification" />
+              <input type="hidden" id="id" name="id" value="$notification->id_notification" />
 
-					  </div>
-					</form>
-				  </td>
-				</tr>
+              </div>
+            </form>
+            </td>
+          </tr>
 END;
             }
+
+            $html .= "</tbody></table>";
+          }
         }
 
-        $html .= <<< END
-		    </tbody>
-          </table>
+        $html .= <<<END
         </div>
       </div>
   </div>
@@ -460,51 +482,62 @@ END;
         $scripts_and_css = "";
         $html  = self::headHTML($scripts_and_css);
         $html = $html . self::navHTML("Annuaire");
+        $lienAnnuaire = Slim::getInstance()->urlFor("annuaireUtilisateur");
         $html .= <<< END
         <div class="container">
-		  <div class="panel panel-default">
-			<div class="panel-heading nav navbar-default">
-			  <div class="container-fluid">
+		      <div class="panel panel-default">
+			     <div class="panel-heading nav navbar-default">
+			       <div class="container-fluid">
 
-				<div class="navbar-header">
-				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_panel">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				  </button>
-				  <h4 class="navbar-text">
-					Annuaire
-				  </h4>
-				</div>
+				      <div class="navbar-header">
+      				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_panel">
+      					 <span class="icon-bar"></span>
+      					 <span class="icon-bar"></span>
+      					 <span class="icon-bar"></span>
+      				  </button>
+      				  <h4 class="navbar-text">
+      					Annuaire
+      				  </h4>
+      				</div>
 
-				<div class="collapse navbar-collapse" id="navbar_panel">
-				  <form class="navbar-form navbar-right">
-                    <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Recherche">
-					  <div class="input-group-btn">
-						<button class="btn btn-default" type="submit">
-						  <i class="glyphicon glyphicon-search"></i>
-						</button>
-					  </div>
-                    </div>
-				  </form>
-				</div>
+				      <div class="collapse navbar-collapse" id="navbar_panel">
+				        <div class="navbar-form navbar-right">
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="rechercheEnseignant" placeholder="Recherche">
+					             <div class="input-group-btn">
+                        <button class="btn btn-default" id="boutonRecherche" >
+                          <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                        <button class="btn btn-default disabled" id="boutonAnnulerRecherche">
+                          <i class="glyphicon glyphicon-remove" ></i>
+                        </button>
+					             </div>
+                  </div>
+				        </div>
+				      </div>
 
-			  </div>
-			</div>
-			<div class="panel-body text-center">
-			<div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th class="text-center">Enseignant</th>
-                        <th class="text-center">Statut</th>
-                        <th class="text-center">Adresse Mail</th>
-                        <th class="text-center">Photo</th>
-                      </tr>
+			       </div>
+			     </div>
+			     
+            <div class="panel-body text-center">
+			       <div class="table-responsive" id="tableEnseignants">
+END;
+        if (count($users) == 1) {
+          $html .= "<label>Aucun enseignant</label>";
+        } else {
+          $html .= <<<END
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th class="text-center">Enseignant</th>
+                          <th class="text-center">Statut</th>
+                          <th class="text-center">Adresse Mail</th>
+                          <th class="text-center">Photo</th>
+                        </tr>
+                      </thead><tbody>
 
 END;
-        foreach ($users as $user) {
+          foreach ($users as $user) {
             if ($user->prenom!="admin" && $user->nom!="admin" && $_SESSION['mail']!=$user->mail) {
                 $html .= "<tr>" .
                         "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
@@ -519,14 +552,23 @@ END;
 
                 $html .= "</tr>";
             }
+          }
+
+          $html .= "</tbody></table>";
         }
 
         $html .= <<<END
-                    </thead>
-                    </table>
-			  </div>
+			           </div>
             </div>
+          </div>
         </div>
+
+        <script type="text/javascript" src="/PPIL/assets/js/annuaire.js"></script>
+         <script type="text/javascript">
+           $(function(){
+             rechercheEnseignants("$lienAnnuaire");
+           });
+         </script>
 
 END;
 

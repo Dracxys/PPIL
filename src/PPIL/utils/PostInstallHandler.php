@@ -2,12 +2,13 @@
 namespace PPIL\utils;
 use Composer\Script\Event;
 
-class BootstrapHandler
+class PostInstallHandler
 {
 
     static public function postInstall(Event $event)
     {
         self::installBootstrap($event);
+        self::makeImportDir($event);
     }
 
     static private function installBootstrap(Event $event)
@@ -58,6 +59,18 @@ class BootstrapHandler
         $options = $event->getComposer()->getPackage()->getExtra();
 
         return $options;
+    }
+
+    static private function makeImportDir(Event $event)
+    {
+        $event->getIO()->write('<info>Create empty import directory</info>');
+
+        $webDir = "imports" ;
+
+        if (!is_dir($webDir)) {
+            self::createDirectory("$webDir");
+        }
+
     }
 
 }

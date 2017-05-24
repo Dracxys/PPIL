@@ -55,4 +55,19 @@ class Notification extends AbstractModel{
 		}
 		$n->save();
 	}
+	
+	public static function reinitialiserBDD(){
+		$req = Notification::all();
+		foreach($req as $i){
+			$i->delete();
+		}
+	}
+	
+	public static function desinscription($mail){
+		$req = Notification::where('mail_destinataire', 'like', $mail)->get();
+		foreach($req as $r){
+			$r->delete();
+		}
+	}
+	
 }

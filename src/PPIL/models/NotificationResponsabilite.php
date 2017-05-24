@@ -34,4 +34,11 @@ class NotificationResponsabilite extends Notification
         $notification->delete();
 
     }
+	
+	public static function reinitialiserBDD(){
+		$req = NotificationResponsabilite::all();
+		foreach($req as $i){
+			$i->delete();
+		}
+	}
 }

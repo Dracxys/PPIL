@@ -13,7 +13,7 @@
 		}
 	},
 	"scripts": {
-		"post-install-cmd": "PPIL\\utils\\BootstrapHandler::postInstall"
+		"post-install-cmd": "PPIL\\utils\\PostInstallHandler::postInstall"
 	},
 	"extra": {
 		"assets_dir": "assets"

@@ -20,13 +20,31 @@ class VueUe extends AbstractView
 {
 
     public function home($u){
-        $scripts_and_css = "";
-        $html  = self::headHTML($scripts_and_css);
-        $html .= self::navHTML("UE");
-        $select = self::selectUE($u);
-        $mes = self::message();
-        $lienInfoUE = Slim::getInstance()->urlFor('compoUE');
-        $html .= <<< END
+        if(isset($_SESSION['mail'])){
+            $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
+            $responsabilite = Enseignant::get_privilege($e);
+            $class_responsable_autorise = "hidden disabled";
+            $responForm = "hidden disabled";
+            if(isset($responsabilite)){
+                        $class_responsable_autorise = "";
+            }
+            if(isset($responsabilite) && $responsabilite > 0){
+                $responForm = "";
+            }
+            $scripts_and_css = "";
+            $html  = self::headHTML($scripts_and_css);
+            $html .= self::navHTML("UE");
+            $select = self::selectUE($u);
+            $mes = self::message();
+            $modifierUE = self::modifierUE();
+            $lienInfoUE = Slim::getInstance()->urlFor('compoUE');
+            $lien_exporter = Slim::getInstance()->urlFor('ue.exporter');
+            $lien_importer = Slim::getInstance()->urlFor('ue.importer');
+            $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
+            $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
+            $responsabilite = Enseignant::get_privilege($e);
+
+            $html .= <<< END
         <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading nav navbar-default">
@@ -44,24 +62,39 @@ class VueUe extends AbstractView
 				 </div>
 
 				 <div class="collapse navbar-collapse" id="navbar_panel">
-				   <div class=" navbar-right">
-					 <div class="btn-group pull-right">
-                       <form class="navbar-form navbar-left">
-                         <button type="submit" class="btn btn-default">Importer</button>
-                         <button type="submit" class="btn btn-default">Exporter</button>
-                       </form>
-					 </div>
+                    <div class=" navbar-right">
+					<button type="submit" class="btn btn-default navbar-btn $class_responsable_autorise" id="importer">Importer</button>
+                    <button type="submit" class="btn btn-default navbar-btn " id="exporter">Exporter</button>
+                    <button type='button' class='btn btn-primary $class_responsable_autorise' data-toggle="modal" data-target="#modal_ajoutEnseignant" id='ajoutEnseignant'>Ajouter enseignant</button>
+                    <button type='button' class='btn btn-primary $responForm' id='modifierUE'>Modifier UE</button>
+                    <form method="post" enctype="multipart/form-data" id="form_input_csv">
+                        <input id="input_csv" name="file" type="file" class="hidden" />
+                    </form>
 				   </div>
 				 </div>
 
 			</div>
 			</div>
 			$mes
+			$modifierUE
+			<div class="alert alert-success hidden" role="alert" id="import_succes">
+			  <strong>Succes!</strong> Votre fichier a bien été importé.
+			</div>
+			  <div class="alert alert-danger hidden" role="alert" id="import_erreur_extension">
+				<strong>Echec!</strong> Votre fichier n'est pas de type csv.
+			  </div>
+			  <div class="alert alert-danger hidden" role="alert" id="import_erreur_taille">
+				<strong>Echec!</strong> Votre fichier est trop volumineux.
+			  </div>
+			  <div class="alert alert-danger hidden" role="alert" id="import_erreur_autre">
+				<strong>Echec!</strong> Une erreur non identifiée est survenue.
+			  </div>
+
 			<div class="panel-body ">
 			  <form class="form-horizontal">
 				<div id="select" class="form-group">
-                  <label class="control-label col-sm-3" for="selectUE">Sélectionner UE :</label>
-				  <div class="col-sm-9">
+                  <label class="control-label col-sm-5" for="selectUE">Sélectionner UE</label>
+				  <div class="col-sm-3">
 					$select
 					</div>
 				</div>
@@ -74,13 +107,12 @@ class VueUe extends AbstractView
 END;
         // finir les fonctions avant de les décommenter
 
-        $html .= self::compositionUE();
+        $html .= self::compositionUE($class_responsable_autorise);
         $html .= self::listeIntervenants();
-
+        $html .= self::ajoutEnseignant();
 
         $html .= <<< END
 					 </div>
-		</div>
 		</div>
 
 END;
@@ -89,24 +121,24 @@ END;
         <script type="text/javascript" src="/PPIL/assets/js/ue.js"></script>
         <script type="text/javascript">
            $(function(){
-               setLien("$lienInfoUE")
-               choixUE();
-               boutonValidationModif();
-               listIntervenant();
-               $('#selectUE').change(function() {
-               choixUE();
-               boutonValidationModif();
-               listIntervenant();
+               exporter("$lien_exporter");
+               importer("$lien_importer");
+               setLien("$lienInfoUE");
+		       setup();
+		       $('#modalAnnuleModifUE').click(function() {
+                    $('#modalModifierUE').modal('toggle');
                });
-               $('#erreur').hide();
+               $('#modifierUE').click(function() {
+                    modifierUE();
+               });
 			});
         </script>
 END;
-        return $html;
-
+return $html;
+        }
     }
 
-    private function compositionUE() {
+    private function compositionUE($class_responsable_autorise) {
         $mes = self::message();
         $html = <<<END
             <div id="compoUE">
@@ -129,8 +161,8 @@ END;
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th class="text-center"> <input type="number" class="form-control" id="heureAttenduCM"  value="0" min="0"/> </th>
-                                        <th class="text-center"> <input type="number" class="form-control" id="heureAffecteCM"  value="0" min="0" readonly/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control $class_responsable_autorise" id="heureAttenduCM"  value="0" min="0"/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control $class_responsable_autorise" id="heureAffecteCM"  value="0" min="0" readonly/> </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -274,14 +306,88 @@ END;
                         <h4 id="messageTitre" class="modal-title">Succès</h4>
                     </div>
                     <div class="modal-body">
-                        <p id="message">Les modifications ont bien été pris en compte.</p>
+                        <p id="message">Les modifications ont bien été prises en compte.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" onclick="" data-dismiss="modal">Ok</button>
+                        <button type="button" class="btn btn-primary" onclick="" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
             </div>
         </div>
+END;
+        return $html;
+    }
+
+    public function ajoutEnseignant(){
+        $html = <<<END
+        <div class="container">
+        <div class="modal fade" id="modal_ajoutEnseignant" role="dialog">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Ajouter un enseignant</h4>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+            <table class="table table-bordered ">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Nom</th>
+                        <th class="text-center">Prénom</th>
+                        <th class="text-center">Mail</th>
+						<th class="text-center">Sélectionner</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tableUEAjoutEnseignant">
+                    </tbody>
+                    </table>
+                    </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="addEnseignants()" data-dismiss="modal">Appliquer</button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+END;
+    return $html;
+    }
+
+    public function modifierUE()
+    {
+        $html = <<< END
+        <div class="modal fade text-center" id="modalModifierUE" role="dialog">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h4 class="modal-title">Modifier UE</h4>
+			  </div>
+			  <div class="modal-body form-signin form-horizontal">
+                <div class="form-group">
+				    <label class="control-label col-sm-5" for="nomUE">Nom UE :</label>
+				    <div class="col-sm-4">
+				        <input type="text" id="nomUE" name="nomUE" class="form-control" placeholder="Nom UE" required="true"/>
+				    </div>
+			    </div>
+			    <div class="form-group">
+				        <label class="control-label col-sm-5" for="resp">Responsable : </label>
+				        <div class="col-sm-4">
+				            <select id="respForm1" class="form-control" name="respForm1">
+				             
+				            </select>
+				        </div>
+			    </div>
+			  </div>
+			  <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  id="modalValideMoifUE">Valider</button>
+                <button type="button" class="btn btn-default"  id="modalAnnuleModifUE">Annuler</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
 END;
         return $html;
     }
