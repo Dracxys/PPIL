@@ -218,6 +218,11 @@ $app->get('/home/profil', function (){
     $c->home();
 })->name('profilUtilisateur');
 
+$app->get('/home/desinscription', function (){
+    $c = new UtilisateurControler();
+    $c->desinscription();
+})->name('desinscription');
+
 $app->get('/home/enseignement', function (){
     $c = new UtilisateurControler();
     $c->enseignement();
@@ -287,6 +292,12 @@ $app->post('/home/ue/compoUE/infoRespUE', function (){
     $c = new UEControler();
     $c->infoRespUE();
 });
+
+$app->post('/home/ue/compoUE/modifUE', function (){
+    $c = new UEControler();
+    $c->modifUE();
+});
+
 
 $app->post('/home/ue/compoUE/boutonModif', function (){
     $c = new UEControler();
@@ -370,6 +381,7 @@ $app->get('/home/enseignants/profilEnseignant/:id', function ($id){
     $c = new EnseignantsControler();
     $c->profilEnseignant($id);
 })->name('profilEnseignant');
+
 
 /* ===================== liens dans enseignants ==================*/
 

@@ -161,8 +161,8 @@ return $html;
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th class="text-center"> <input type="number" class="form-control $class_responsable_autorise" id="heureAttenduCM"  value="0" min="0"/> </th>
-                                        <th class="text-center"> <input type="number" class="form-control $class_responsable_autorise" id="heureAffecteCM"  value="0" min="0" readonly/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control " id="heureAttenduCM"  value="0" min="0"/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control " id="heureAffecteCM"  value="0" min="0" readonly/> </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -250,7 +250,7 @@ END;
         $html = <<< END
                 <div id="intervenantsUE" style="display: none;">
                 <form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
-			        <h2 class="form-signin-heading ">Intervenants de l'UE</h2>
+			        <h2 class="form-signin-heading text-center">Intervenants de l'UE</h2>
 			        </form>
 
                     <div class="table-responsive">
@@ -342,12 +342,13 @@ END;
                     <tbody id="tableUEAjoutEnseignant">
                     </tbody>
                     </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="addEnseignants()" data-dismiss="modal">Appliquer</button>
+                    </div>
                     </div>
             </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="addEnseignants()" data-dismiss="modal">Appliquer</button>
-        </div>
+        
       </div>
       </div>
     </div>
@@ -382,7 +383,7 @@ END;
 			    </div>
 			  </div>
 			  <div class="modal-footer">
-                <button type="button" class="btn btn-primary"  id="modalValideMoifUE">Valider</button>
+                <button type="button" class="btn btn-primary" onclick="validerModifierUE()" id="modalValideMoifUE">Valider</button>
                 <button type="button" class="btn btn-default"  id="modalAnnuleModifUE">Annuler</button>
 			  </div>
 			</div>
