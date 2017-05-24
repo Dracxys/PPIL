@@ -53,7 +53,7 @@ $(function(){
 						$('tr#'+id).remove();
 						var notifications_count = $("form").length;
 						var text = $('a#notifications_count');
-						affichage();
+						//affichage();
 						if(notifications_count > 0){
 							text.text('Journal');
 							$('font#notifications_count_font').text('(' + notifications_count + ')' );

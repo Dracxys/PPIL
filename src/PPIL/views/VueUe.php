@@ -24,15 +24,19 @@ class VueUe extends AbstractView
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
             $responsabilite = Enseignant::get_privilege($e);
             $class_responsable_autorise = "hidden disabled";
+            $responForm = "hidden disabled";
             if(isset($responsabilite)){
                         $class_responsable_autorise = "";
             }
-
+            if(isset($responsabilite) && $responsabilite > 0){
+                $responForm = "";
+            }
             $scripts_and_css = "";
             $html  = self::headHTML($scripts_and_css);
             $html .= self::navHTML("UE");
             $select = self::selectUE($u);
             $mes = self::message();
+            $modifierUE = self::modifierUE();
             $lienInfoUE = Slim::getInstance()->urlFor('compoUE');
             $lien_exporter = Slim::getInstance()->urlFor('ue.exporter');
             $lien_importer = Slim::getInstance()->urlFor('ue.importer');
@@ -62,6 +66,7 @@ class VueUe extends AbstractView
 					<button type="submit" class="btn btn-default navbar-btn $class_responsable_autorise" id="importer">Importer</button>
                     <button type="submit" class="btn btn-default navbar-btn " id="exporter">Exporter</button>
                     <button type='button' class='btn btn-primary $class_responsable_autorise' data-toggle="modal" data-target="#modal_ajoutEnseignant" id='ajoutEnseignant'>Ajouter enseignant</button>
+                    <button type='button' class='btn btn-primary $responForm' id='modifierUE'>Modifier UE</button>
                     <form method="post" enctype="multipart/form-data" id="form_input_csv">
                         <input id="input_csv" name="file" type="file" class="hidden" />
                     </form>
@@ -71,6 +76,7 @@ class VueUe extends AbstractView
 			</div>
 			</div>
 			$mes
+			$modifierUE
 			<div class="alert alert-success hidden" role="alert" id="import_succes">
 			  <strong>Succes!</strong> Votre fichier a bien été importé.
 			</div>
@@ -119,6 +125,12 @@ END;
                importer("$lien_importer");
                setLien("$lienInfoUE");
 		       setup();
+		       $('#modalAnnuleModifUE').click(function() {
+                    $('#modalModifierUE').modal('toggle');
+               });
+               $('#modifierUE').click(function() {
+                    modifierUE();
+               });
 			});
         </script>
 END;
@@ -342,6 +354,42 @@ END;
   </div>
 END;
     return $html;
+    }
+
+    public function modifierUE()
+    {
+        $html = <<< END
+        <div class="modal fade text-center" id="modalModifierUE" role="dialog">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h4 class="modal-title">Modifier UE</h4>
+			  </div>
+			  <div class="modal-body form-signin form-horizontal">
+                <div class="form-group">
+				    <label class="control-label col-sm-5" for="nomUE">Nom UE :</label>
+				    <div class="col-sm-4">
+				        <input type="text" id="nomUE" name="nomUE" class="form-control" placeholder="Nom UE" required="true"/>
+				    </div>
+			    </div>
+			    <div class="form-group">
+				        <label class="control-label col-sm-5" for="resp">Responsable : </label>
+				        <div class="col-sm-4">
+				            <select id="respForm1" class="form-control" name="respForm1">
+				             
+				            </select>
+				        </div>
+			    </div>
+			  </div>
+			  <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  id="modalValideMoifUE">Valider</button>
+                <button type="button" class="btn btn-default"  id="modalAnnuleModifUE">Annuler</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+END;
+        return $html;
     }
 
 }

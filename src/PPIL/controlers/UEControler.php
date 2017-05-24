@@ -610,4 +610,30 @@ class UEControler
         }
         echo json_encode($res);
     }
+
+    public function infoRespUE(){
+        $app = Slim::getInstance();
+        $val = $app->request->post();
+        $app->response->headers->set('Content-Type', 'application/json');
+        $idUE = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
+        $resp = Responsabilite::where('id_UE','=',$idUE)->first();
+        $res = array();
+        if(empty($resp)){
+            $res[] = 0;
+            $res[] = "aucun";
+        }else{
+            $ens = Enseignant::find($resp->enseignant);
+            $res[] = $ens->mail;
+            $res[] = $ens->nom . " " . $ens->prenom;
+        }
+        $allEns = Enseignant::all();
+        foreach ($allEns as $value){
+            $tmp = $value->nom . " " . $value->prenom;
+            if(!in_array($value->mail,$res)){
+                $res[] = $value->mail;
+                $res[] = $tmp;
+            }
+        }
+        echo json_encode($res);
+    }
 }

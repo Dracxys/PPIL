@@ -490,3 +490,44 @@ function addEnseignants() {
 		});
 	}
 }
+
+function modifierUE(){
+    $.ajax({
+        url: ppil + '/infoRespUE',
+        type: 'post',
+        data: {'id': id_UE},
+        success: function (tab) {
+            if (tab != undefined){
+            	console.log(tab);
+            	var i = 0;
+            	var html = "";
+                var j = 0
+            	for(j; j < tab.length ; j++){
+					if(i == 0){
+						if(tab[j] == '0'){
+							html += "<option selected value='0'>aucun</option>";
+						}else{
+                            html += "<option value='0'>aucun</option>";
+							html += "<option selected value='" + tab[j] + "'>" + tab[++j] + "</option>";
+						}
+						i++;
+					}else{
+                        html += "<option value='" + tab[j] + "'>" + tab[++j] + "</option>";
+					}
+                }
+            	$('#respForm1').html(html);
+				$('#nomUE').val($('#selectUE option:selected').text());
+                $('#modalModifierUE').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }
+
+        }, xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    });
+
+
+}

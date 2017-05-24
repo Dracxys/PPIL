@@ -283,6 +283,10 @@ $app->post('/home/ue/compoUE/addInterventions', function (){
     $c->addInterventions();
 });
 
+$app->post('/home/ue/compoUE/infoRespUE', function (){
+    $c = new UEControler();
+    $c->infoRespUE();
+});
 
 $app->post('/home/ue/compoUE/boutonModif', function (){
     $c = new UEControler();
