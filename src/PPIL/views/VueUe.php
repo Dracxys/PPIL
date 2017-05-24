@@ -161,8 +161,8 @@ return $html;
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th class="text-center"> <input type="number" class="form-control $class_responsable_autorise" id="heureAttenduCM"  value="0" min="0"/> </th>
-                                        <th class="text-center"> <input type="number" class="form-control $class_responsable_autorise" id="heureAffecteCM"  value="0" min="0" readonly/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control " id="heureAttenduCM"  value="0" min="0"/> </th>
+                                        <th class="text-center"> <input type="number" class="form-control " id="heureAffecteCM"  value="0" min="0" readonly/> </th>
                                     </tr>
                                 </tbody>
                             </table>

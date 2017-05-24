@@ -585,7 +585,7 @@ class UtilisateurControler
 			
 			Intervention::desinscription($_SESSION['mail']);
 			$n = Notification::getNotification($_SESSION['mail']);
-			foreach ($notif as $n){
+			foreach ($n as $notif){
 				$n1 = NotificationInscription::where('id_notification', '=', $notif->id_notification)->first();
 				if (!empty($n1)){
 					$n1->delete();
@@ -604,6 +604,8 @@ class UtilisateurControler
 			Responsabilite::desinscription($_SESSION['mail']);
 			Enseignant::desinscription($_SESSION['mail']);
 			
+			session_unset();
+			Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
 		}
 	}
 	
