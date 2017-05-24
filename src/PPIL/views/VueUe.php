@@ -250,7 +250,7 @@ END;
         $html = <<< END
                 <div id="intervenantsUE" style="display: none;">
                 <form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
-			        <h2 class="form-signin-heading ">Intervenants de l'UE</h2>
+			        <h2 class="form-signin-heading text-center">Intervenants de l'UE</h2>
 			        </form>
 
                     <div class="table-responsive">
@@ -342,12 +342,13 @@ END;
                     <tbody id="tableUEAjoutEnseignant">
                     </tbody>
                     </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="addEnseignants()" data-dismiss="modal">Appliquer</button>
+                    </div>
                     </div>
             </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="addEnseignants()" data-dismiss="modal">Appliquer</button>
-        </div>
+        
       </div>
       </div>
     </div>
