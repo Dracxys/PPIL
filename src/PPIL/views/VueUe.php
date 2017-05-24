@@ -383,7 +383,7 @@ END;
 			    </div>
 			  </div>
 			  <div class="modal-footer">
-                <button type="button" class="btn btn-primary"  id="modalValideMoifUE">Valider</button>
+                <button type="button" class="btn btn-primary" onclick="validerModifierUE()" id="modalValideMoifUE">Valider</button>
                 <button type="button" class="btn btn-default"  id="modalAnnuleModifUE">Annuler</button>
 			  </div>
 			</div>

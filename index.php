@@ -293,6 +293,12 @@ $app->post('/home/ue/compoUE/infoRespUE', function (){
     $c->infoRespUE();
 });
 
+$app->post('/home/ue/compoUE/modifUE', function (){
+    $c = new UEControler();
+    $c->modifUE();
+});
+
+
 $app->post('/home/ue/compoUE/boutonModif', function (){
     $c = new UEControler();
     $c->boutonModif();

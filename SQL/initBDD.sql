@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.4
 -- https://www.phpmyadmin.net/
 --
--- Client :  localhost
--- Généré le :  Mar 23 Mai 2017 à 19:58
--- Version du serveur :  10.1.21-MariaDB
--- Version de PHP :  7.0.18
+-- Client :  localhost:8889
+-- Généré le :  Mer 24 Mai 2017 à 15:02
+-- Version du serveur :  5.6.33
+-- Version de PHP :  7.0.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -44,9 +44,9 @@ CREATE TABLE `Enseignant` (
 --
 
 INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `rand`) VALUES
-('g@h', 'g', 'g', '$2y$10$PNVCJAVJF5vr6NzBwJiAhuzqqwmNoitrmBawLwvcKUIZ34RgJXsTW', 'Professeur des universités', NULL, 192, 384, NULL, 696792579),
-('m@m', 'm', 'm', '$2y$10$xD73oDHJeJ1L8WbyBbb9de6jvIaSZjWfLYkuVxFR0/4KE7Tp9BHVq', 'Professeur des universités', NULL, NULL, NULL, NULL, 589272245),
-('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', 51, 192, 384, NULL, 589347120),
+('g@h', 'g', 'g', '$2y$10$PNVCJAVJF5vr6NzBwJiAhuzqqwmNoitrmBawLwvcKUIZ34RgJXsTW', 'Professeur des universités', 192, 192, 384, NULL, 696792579),
+('m@m', 'm', 'm', '$2y$10$xD73oDHJeJ1L8WbyBbb9de6jvIaSZjWfLYkuVxFR0/4KE7Tp9BHVq', 'Professeur des universités', NULL, 192, NULL, NULL, 589272245),
+('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', 2, 192, 384, NULL, 589347120),
 ('x@x', 'x', 'x', '$2y$10$wRYAumkhaZjoqxJtnKjMGesgC4NhTbY0X4FbabN.p.vB48FyW6ldO', 'Professeur des universités', NULL, 192, 384, NULL, 598661578),
 ('z@z', 'z', 'z', '$2y$10$DkJg/HxwWYn3do3LGq2aVuKy90VAMAI12E9Ke4RkqrqlL8R4l1D8a', 'Professeur des universités', NULL, 192, 384, NULL, 813424858);
 
@@ -100,7 +100,6 @@ CREATE TABLE `Intervention` (
 --
 
 INSERT INTO `Intervention` (`id_UE`, `id_intervention`, `fst`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeTP`, `groupeTD`, `groupeEI`, `mail_enseignant`) VALUES
-(3, 1, 1, 30, 4, 0, 0, 4, 0, 1, 'root@root'),
 (4, 2, 1, 0, 0, 0, 0, 1, 1, 1, 'root@root'),
 (5, 9, 1, 0, 0, 0, 0, 0, 0, 0, 'root@root'),
 (15, 10, 0, 0, 2, 0, 0, 0, 0, 17, 'root@root');
@@ -215,7 +214,6 @@ CREATE TABLE `Responsabilite` (
 
 INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_formation`, `id_UE`, `privilege`) VALUES
 (4, 'root@root', 'Responsable du departement informatique', NULL, NULL, 2),
-(5, 'root@root', 'Responsable UE', NULL, 3, 0),
 (6, 'root@root', 'Responsable UE', NULL, 4, 0),
 (7, 'root@root', 'Responsable UE', NULL, 5, 0),
 (8, 'root@root', 'Responsable UE', NULL, 6, 0),
@@ -255,7 +253,7 @@ CREATE TABLE `UE` (
 --
 
 INSERT INTO `UE` (`id_UE`, `nom_UE`, `fst`, `id_formation`, `heuresTD`, `heuresTP`, `heuresCM`, `heuresEI`, `prevision_heuresTD`, `prevision_heuresTP`, `prevision_heuresCM`, `prevision_heuresEI`, `groupeTD`, `groupeTP`, `groupeEI`, `prevision_groupeTD`, `prevision_groupeTP`, `prevision_groupeEI`) VALUES
-(3, 'Modélisation', 1, 1, 0, 4, 30, 0, 10, 12, 16, 0, 1, 1, 1, 2, 3, 1),
+(3, 'Modélisation', 1, 1, 0, 4, 30, 0, 10, 12, 30, 0, 1, 1, 1, 2, 3, 1),
 (4, 'bdd', 1, 1, 0, 0, 0, 0, 10, 12, 16, 0, 0, 0, 0, 2, 3, 1),
 (5, 'UE de Master - 1', 1, 2, 0, 0, 0, 0, 10, 10, 79, 3, 1, 1, 1, 0, 8, 1),
 (6, 'UE de Master - 2', 1, 2, 0, 0, 0, 0, 3, 5, 10, 51, 1, 1, 1, 1, 42, 42),
