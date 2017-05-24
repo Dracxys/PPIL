@@ -429,9 +429,11 @@ class UtilisateurControler
 
             $res = array();
 
+            $chaine = trim($chaine);
+
             $i = 0;
             foreach ($enseignants as $e) {
-                if ((strpos(strtolower('' . $e->prenom . ' ' . $e->nom), strtolower($chaine)) !== FALSE || strpos(strtolower('' . $e->nom . ' ' . $e->prenom), strtolower($chaine)) !== FALSE) && $e->mail != ($_SESSION['mail'])) {
+                if ((strpos(strtolower('' . $e->prenom . ' ' . $e->nom), strtolower($chaine)) !== FALSE || strpos(strtolower('' . $e->nom . ' ' . $e->prenom), strtolower($chaine)) !== FALSE || strpos(strtolower('' . $e->mail), strtolower($chaine)) !== FALSE) && $e->mail != ($_SESSION['mail'])) {
                     $res[$i][] = $e->prenom;
                     $res[$i][] = $e->nom;
                     $res[$i][] = $e->statut;
