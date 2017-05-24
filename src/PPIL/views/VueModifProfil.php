@@ -197,11 +197,7 @@ END;
               </div>
 			</form>
             </div>
-            <script type="text/javascript">
-        $(function(){
-            theme();
-        });
-              </script>
+           
 END;
         return $html;
     }
