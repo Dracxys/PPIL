@@ -47,9 +47,17 @@ END;
 					   <a  id="boutonInfo" class="list-group-item active">Informations personnelles</a>
 					   <a  id="boutonResp" class="list-group-item">Responsabilités</a>
 					   <a  id="boutonPhoto" class="list-group-item">Photo</a>
+                
+                
 					   <a  id="boutonPassword" class="list-group-item">Mot de passe</a>
-					   <a  id="boutonDesinscription" class='btn btn-danger' onclick=location.href='$lienDesinscription' >Se désinscrire</a>
-					 </div>
+                
+END;
+        if(Enseignant::get_privilege($user)==2){
+					   $html.='<a  id="boutonReinitialiser" class="list-group-item">Réinitialiser BDD</a>';
+        }               
+                                        $html.=<<<END
+                                           <a  id="boutonDesinscription" class='btn btn-danger' onclick=location.href='$lienDesinscription' >Se désinscrire</a>
+                                        </div>
 				   </div>
 				</div>
 
@@ -137,7 +145,7 @@ END;
         $html .= self::responsabilite($user);
         $html .= self::photo($user);
         $html .= self::password($user);
-
+        $html .= self::reinitialiser($user);
 
         $html .= <<< END
            </div>
@@ -192,12 +200,12 @@ END;
         $html .= <<< END
 				</div>
 			  </div>
-
 			  <div class="form-group">
 				<button type="submit" class="btn btn-primary">Valider</button>
               </div>
 			</form>
             </div>
+           
 END;
         return $html;
     }
@@ -337,7 +345,7 @@ END;
 					  </div>
 					</div>
 					<div class="form-group">
-					  <label class="control-label col-sm-6" for="conf">Confirmer du nouveau mot de passe</label>
+					  <label class="control-label col-sm-6" for="conf">Confirmation du nouveau mot de passe</label>
 					  <div class="col-sm-3">
 						<input type="password" id="conf" name="conf" class="form-control" placeholder="Confirmer nouveau mot de passe" required="true"/>
 					  </div>
@@ -351,6 +359,22 @@ END;
 
 END;
         return $html;
+    }
+    
+    public function reinitialiser($user){
+		$lienReinitialisation = Slim::getInstance()->urlFor('reinitialiser');
+        $html=<<< END
+                <div class="container">
+                    <div id="reinitialiser" style="display: none;" class="text-center">
+                    <label>L'appuie sur ce bouton entrainera la suppression de la base de données<br/>(UE, Enseignants, Formations)</label>
+                    <br/>
+                    <a  id="boutonValiderReinitialisation" class='btn btn-danger' onclick=location.href='$lienReinitialisation' >Reinitialisation</a>
+   </div>
+                </div>
+                
+END;
+                
+                return $html;
     }
 
     public function selectStatut($user)
