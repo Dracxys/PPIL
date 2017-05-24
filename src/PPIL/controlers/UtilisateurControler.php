@@ -582,10 +582,23 @@ class UtilisateurControler
 		if(isset($_SESSION['mail'])) {
 			
 			Intervention::desinscription($_SESSION['mail']);
-			//NotificationInscription:desinscription($_SESSION['mail']);
-			//NotificationIntervention::desinscription($_SESSION['mail']);
-			//NotificationResponsabilite::desinscription($_SESSION['mail']);
-			Notification::desinscription($_SESSION['mail']);
+			$n = Notification::getNotification($_SESSION['mail']);
+			foreach ($notif as $n){
+				$n1 = NotificationInscription::where('id_notification', '=', $notif->id_notification)->first();
+				if (!empty($n1)){
+					$n1->delete();
+				}
+				$n2 = NotificationIntervention::where('id_notification', '=', $notif->id_notification)->first();
+				if (!empty($n2)){
+					$n2->delete();
+				}
+				$n3 = NotificationResponsabilite::where('id_notification', '=', $notif->id_notification)->first();
+				if (!empty($n3)){
+					$n3->delete();
+				}
+				$notif->delete();
+			}
+			
 			Responsabilite::desinscription($_SESSION['mail']);
 			Enseignant::desinscription($_SESSION['mail']);
 			
