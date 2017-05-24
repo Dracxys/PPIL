@@ -254,6 +254,11 @@ $app->post('/home/enseignement/actionEnseignementAjouterAutre', function (){
     $c->enseignement_action_ajouter_autre();
 })->name('enseignementUtilisateur.actionEnseignementAjouterAutre');
 
+$app->post('/home/enseignement/actionEnseignementRemiseAZero', function (){
+    $c = new UtilisateurControler();
+    $c->remiseAZeroEnseignements();
+})->name('enseignementUtilisateur.actionEnseignementRemiseAZero');
+
 $app->get('/home/ue', function (){
     $c = new UEControler();
     $c->home();

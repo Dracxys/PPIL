@@ -104,6 +104,7 @@ function valider(lien, notification_exist, depasse){
 //			});
 //		}
 	});
+
 }
 
 function ajouter(lien, lien_autre){
@@ -211,6 +212,42 @@ function ajouter(lien, lien_autre){
 function exporter(lien_exporter){
 	$('#exporter').click(function(){
 		window.location = lien_exporter;
+
+	});
+}
+
+function remiseAZero(lien) {
+	$('#remiseZero').click(function() {
+		$.ajax({
+			url: lien,
+			type: 'post',
+			dataType: 'json',
+			success: function(result) {
+				if (result == true) {
+					var arrayHeuresEtGroupes = new Array();
+
+					arrayHeuresEtGroupes.push(document.getElementsByName("heuresCM"));
+					arrayHeuresEtGroupes.push(document.getElementsByName("heuresTD"));
+					arrayHeuresEtGroupes.push(document.getElementsByName("groupeTD"));
+					arrayHeuresEtGroupes.push(document.getElementsByName("heuresTP"));
+					arrayHeuresEtGroupes.push(document.getElementsByName("groupeTP"));
+					arrayHeuresEtGroupes.push(document.getElementsByName("heuresEI"));
+					arrayHeuresEtGroupes.push(document.getElementsByName("groupeEI"));
+
+					for (var i=0; i<arrayHeuresEtGroupes.length; i++) {
+						for (var j=0; j<arrayHeuresEtGroupes[i].length; j++) {
+							arrayHeuresEtGroupes[i][j].value = 0;
+						}
+					}
+
+					$('#succesRemiseAZero').removeClass('hidden');
+				}
+			},
+			xhrFields: {
+			    withCredentials: true
+			},
+			crossDomain: true
+		});
 
 	});
 }
