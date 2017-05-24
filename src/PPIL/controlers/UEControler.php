@@ -607,6 +607,7 @@ class UEControler
                     $newIntervention = new Intervention();
                     $newIntervention->mail_enseignant = $mail;
                     $newIntervention->id_UE = $idUE;
+                    $newIntervention->fst = 1;
                     $newIntervention->save();
                     $mail = new MailControler();
                     $mail->sendMail($value, "Ajout à un UE.", $message);
