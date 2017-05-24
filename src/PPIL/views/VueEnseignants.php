@@ -81,14 +81,27 @@ END;
                         $volumeCourant = $user->volumeCourant;
                     }
                     $volFST = self::getVolumeFST($user);
-                    //$html .= "<tr id=\"ligne".$i."\" onclick=\"select(this)\">" .
+                    
+                    
                     $html .= "<tr name=\"ligne\" id=\"" . $i . "\" onclick=\"select(" . $i . ")\">" .
                         "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
                         "<th class=\"text-center\">" . $user->statut . "</th>" .
-                        "<th class=\"text-center\" name=\"volMin\" id=\"volMin" . $i . "\">" . $user->volumeMin . "</th>" .
-                        "<th class=\"text-center\" name=\"volCourant\" id=\"volCourant" . $i . "\">" . $volumeCourant . "</th>" .
-                        "<th class=\"text-center\" name=\"volFST\" id=\"volFST" . $i . "\">" . $volFST . "</th>" .
-                        "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='" . Slim::getInstance()->urlFor('profilEnseignant', array('id' => $user->rand)) . "'>Voir</button> " . "</th>" .
+                        "<th class=\"text-center\" name=\"volMin\" id=\"volMin" . $i . "\">" . $user->volumeMin . "</th>";
+                        
+                        if($volumeCourant >= $user->volumeMin) {
+                            $html.= "<th class=\"text-center\" name=\"volCourant\" id=\"volCourant" . $i . "\"><font color=\"green\">" . $volumeCourant . "</font></th>";
+                        } else {
+                            $html.= "<th class=\"text-center\" name=\"volCourant\" id=\"volCourant" . $i . "\"><font color=\"red\">" . $volumeCourant . "</font></th>";
+                        }
+
+                        if($volFST >= $user->volumeMin) {
+                            $html.= "<th class=\"text-center\" name=\"volFST\" id=\"volFST" . $i . "\"><font color=\"green\">" . $volFST . "</font></th>";
+                        } else {
+                            $html.= "<th class=\"text-center\" name=\"volFST\" id=\"volFST" . $i . "\"><font color=\"red\">" . $volFST . "</font></th>";
+                        }
+
+
+                        $html .= "<th class=\"text-center\">" . "<button type='button' class='btn btn-default' onclick=location.href='" . Slim::getInstance()->urlFor('profilEnseignant', array('id' => $user->rand)) . "'>Voir</button> " . "</th>" .
 
                         "</tr>";
                     $i++;
@@ -112,11 +125,6 @@ END;
               <script type="text/javascript">
         $(function(){
             exporter("$lien_exporter");
-        });
-              </script>
-              <script type="text/javascript">
-        $(function(){
-            calculHeures();
         });
               </script>
 END;
