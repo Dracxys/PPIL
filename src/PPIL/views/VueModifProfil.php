@@ -40,29 +40,31 @@ END;
 					Profil
 				  </h4>
 				 </div>
+				 <div class="collapse navbar-collapse " id="navbar_panel">
+				   <form class="navbar-form navbar-right" >
+				   	 <button  id="boutonDesinscription" class='btn btn-danger' onclick=location.href='$lienDesinscription' >Se désinscrire</button>
+				   </form>
 
-				 <div class="collapse navbar-collapse" id="navbar_panel">
-				   <div class=" navbar-right">
-					 <div class="list-group list-group-horizontal" id="liste_groupe">
-					   <a  id="boutonInfo" class="list-group-item active">Informations personnelles</a>
-					   <a  id="boutonResp" class="list-group-item">Responsabilités</a>
-					   <a  id="boutonPhoto" class="list-group-item">Photo</a>
-                
-                
-					   <a  id="boutonPassword" class="list-group-item">Mot de passe</a>
-                
+				   <div class="nav navbar-nav navbar-right">
+					   <div class="list-group list-group-horizontal " id="liste_groupe">
+						 <a  id="boutonInfo" class="list-group-item active">Informations personnelles</a>
+						 <a  id="boutonResp" class="list-group-item">Responsabilités</a>
+						 <a  id="boutonPhoto" class="list-group-item">Photo</a>
+
+
+						 <a  id="boutonPassword" class="list-group-item">Mot de passe</a>
+
 END;
         if(Enseignant::get_privilege($user)==2){
-					   $html.='<a  id="boutonReinitialiser" class="list-group-item">Réinitialiser BDD</a>';
-        }               
-                                        $html.=<<<END
-                                           <a  id="boutonDesinscription" class='btn btn-danger' onclick=location.href='$lienDesinscription' >Se désinscrire</a>
-                                        </div>
+						 $html.='<a  id="boutonReinitialiser" class="list-group-item">Réinitialiser BDD</a>';
+        }
+                       $html.=<<<END
+						</div>
 				   </div>
+				 </div>
 				</div>
 
 		  </div>
-		</div>
 
         <div class="panel-body">
 END;
@@ -205,7 +207,7 @@ END;
               </div>
 			</form>
             </div>
-           
+
 END;
         return $html;
     }
@@ -246,7 +248,7 @@ END;
 					 </div>
 					 </div>
                      <div class='col-md-5'>
-               
+
                      </div>
 					 </div>
 					 <div class="form-group">
@@ -285,7 +287,7 @@ END;
 END;
         return $html;
     }
-    
+
 
     public function photo($user)
     {
@@ -360,7 +362,7 @@ END;
 END;
         return $html;
     }
-    
+
     public function reinitialiser($user){
 		$lienReinitialisation = Slim::getInstance()->urlFor('reinitialiser');
         $html=<<< END
@@ -371,9 +373,9 @@ END;
                     <a  id="boutonValiderReinitialisation" class='btn btn-danger' onclick=location.href='$lienReinitialisation' >Reinitialisation</a>
    </div>
                 </div>
-                
+
 END;
-                
+
                 return $html;
     }
 

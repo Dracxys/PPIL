@@ -42,7 +42,7 @@ class VueEnseignants extends AbstractView{
 				<form class="form-signin form-horizontal" method="post">
 				<div class="collapse navbar-collapse" id="navbar_panel">
 				  <div class="navbar-right">
-                    <button type="sumbit" class="btn btn-primary navbar-btn" formaction="$ajouter"  formnovalidate="false" id="ajouterEnseignants">Ajouter</button>
+                    <button type="submit" class="btn btn-primary navbar-btn" formaction="$ajouter"  formnovalidate="false" id="ajouterEnseignants">Ajouter</button>
                     <button type="button" class="btn btn-default navbar-btn" id="exporter">Exporter</button>
                   </div>
 				</div>
@@ -81,13 +81,13 @@ END;
                         $volumeCourant = $user->volumeCourant;
                     }
                     $volFST = self::getVolumeFST($user);
-                    
-                    
+
+
                     $html .= "<tr name=\"ligne\" id=\"" . $i . "\" onclick=\"select(" . $i . ")\">" .
                         "<th class=\"text-center\">" . $user->prenom . " " . $user->nom . "</th>" .
                         "<th class=\"text-center\">" . $user->statut . "</th>" .
                         "<th class=\"text-center\" name=\"volMin\" id=\"volMin" . $i . "\">" . $user->volumeMin . "</th>";
-                        
+
                         if($volumeCourant >= $user->volumeMin) {
                             $html.= "<th class=\"text-center\" name=\"volCourant\" id=\"volCourant" . $i . "\"><font color=\"green\">" . $volumeCourant . "</font></th>";
                         } else {
