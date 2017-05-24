@@ -569,13 +569,15 @@ class UtilisateurControler
 			$resp = Responsabilite::where('intituleResp', 'like', 'Responsable du departement informatique')->first();
 
 			Intervention::reinitialiserBDD();
-			UE::reinitialiserBDD();
-			Formation::reinitialiserBDD();
+			
+			
 			NotificationInscription::reinitialiserBDD();
 			NotificationIntervention::reinitialiserBDD();
 			NotificationResponsabilite::reinitialiserBDD();
 			Notification::reinitialiserBDD();
 			Responsabilite::reinitialiserBDD();
+			UE::reinitialiserBDD();
+			Formation::reinitialiserBDD();
 			Enseignant::reinitialiserBDD($resp->enseignant);
 			Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
 		}
