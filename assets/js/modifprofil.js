@@ -15,6 +15,7 @@ function setup(modifprofil){
 	var boutonResp = document.getElementById("boutonResp");
 	var boutonPhoto = document.getElementById("boutonPhoto");
 	var boutonPassword = document.getElementById("boutonPassword");
+        var boutonReinitialiser = document.getElementById("boutonReinitialiser");
 
 	$('#navbar_panel').on('hidden.bs.collapse', function () {
 		$('#liste_groupe').toggleClass("list-group-horizontal");
@@ -29,11 +30,13 @@ function setup(modifprofil){
 		boutonPassword.classList.remove("active");
 		boutonPhoto.classList.remove("active");
 		boutonResp.classList.remove("active");
+                boutonReinitialiser.classList.remove("active");
 
 		$( "#infoperso" ).show();
 		$("#motdepasse").hide();
 		$("#photo").hide();
 		$("#responsabilite").hide();
+                $("#reinitialiser").hide();
 	});
 
 	$( "#boutonResp" ).click(function() {
@@ -41,11 +44,13 @@ function setup(modifprofil){
 		boutonPassword.classList.remove("active");
 		boutonPhoto.classList.remove("active");
 		boutonInfo.classList.remove("active");
+                boutonReinitialiser.classList.remove("active");
 
 		$( "#responsabilite" ).show();
 		$("#motdepasse").hide();
 		$("#photo").hide();
 		$("#infoperso").hide();
+                $("#reinitialiser").hide();
 	});
 
 	$( "#boutonPhoto" ).click(function() {
@@ -53,11 +58,13 @@ function setup(modifprofil){
 		boutonPassword.classList.remove("active");
 		boutonInfo.classList.remove("active");
 		boutonResp.classList.remove("active");
+                boutonReinitialiser.classList.remove("active");
 
 		$( "#photo" ).show();
 		$("#motdepasse").hide();
 		$("#responsabilite").hide();
 		$("#infoperso").hide();
+                $("#reinitialiser").hide();
 	});
 
 	$( "#boutonPassword" ).click(function() {
@@ -65,11 +72,29 @@ function setup(modifprofil){
 		boutonInfo.classList.remove("active");
 		boutonPhoto.classList.remove("active");
 		boutonResp.classList.remove("active");
+                boutonReinitialiser.classList.remove("active");
 
 		$( "#motdepasse" ).show();
 		$("#responsabilite").hide();
 		$("#photo").hide();
 		$("#infoperso").hide();
+                $("#reinitialiser").hide();
+	});
+        
+        $( "#boutonReinitialiser" ).click(function() {
+                boutonReinitialiser.classList.add("active");
+		boutonInfo.classList.remove("active");
+		boutonPassword.classList.remove("active");
+		boutonPhoto.classList.remove("active");
+		boutonResp.classList.remove("active");
+                
+                console.log("coucou");
+
+		$( "#infoperso" ).hide();
+		$("#motdepasse").hide();
+		$("#photo").hide();
+		$("#responsabilite").hide();
+                $("#reinitialiser").show();
 	});
 
 	$("#respUE").click(function(){
