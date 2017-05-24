@@ -223,7 +223,7 @@ class VueFormation extends AbstractView
                     $('#modalAjouterForm').modal('toggle');
                     $('#modalValideModif').addClass('hidden');
                     $('#modalValide').removeClass('hidden');
-               });  
+               });
                $('#modalValide').click(function(){
                     ajouterForm();
                });
@@ -244,9 +244,16 @@ class VueFormation extends AbstractView
                     $('#modalAjouterUE').modal('toggle');
                });
                $('#suppForm').click(function() {
-                    $('#deleteMess').text("Etes vous sûr de vouloir supprimer cette formation : " + $('#o
+                   $('#deleteMess').text("Etes vous sûr de vouloir supprimer cette formation : " + $('#selectForm option:selected').val() + ".");
+                   $('#delete').modal({
+                       backdrop: 'static',
+                       keyboard: false
+                   });
                });
-               $('#deleteForm').click(function() {
+               $('#deleteAnnule').click(function() {
+                   $('#delete').modal('toggle');
+               });
+			   $('#deleteForm').click(function() {
                     supprimerForm();
                });
                $('#modifierForm').click(function(){
@@ -333,7 +340,7 @@ END;
 				        <label class="control-label col-sm-5" for="resp">Responsable 1 : </label>
 				        <div class="col-sm-4">
 				            <select id="respForm1" class="form-control" name="respForm1">
-				             
+
 				            </select>
 				        </div>
 			    </div>
@@ -341,7 +348,7 @@ END;
 				        <label class="control-label col-sm-5" for="resp">Responsable 2 : </label>
 				        <div class="col-sm-4">
 				            <select id="respForm2" class="form-control" name="respForm2">
-				             
+
 				            </select>
 				        </div>
 			    </div>
@@ -349,7 +356,7 @@ END;
 				        <label class="control-label col-sm-5" for="resp">Responsable  3: </label>
 				        <div class="col-sm-4">
 				            <select id="respForm3" class="form-control" name="respForm3">
-				             
+
 				            </select>
 				        </div>
 			    </div>
@@ -357,7 +364,7 @@ END;
 				        <label class="control-label col-sm-5" for="resp">Responsable 4 : </label>
 				        <div class="col-sm-4">
 				            <select id="respForm4" class="form-control" name="respForm4">
-				             
+
 				            </select>
 				        </div>
 			    </div>
