@@ -289,6 +289,27 @@ class UtilisateurControler
         }
     }
 
+    public function remiseAZeroEnseignements() {
+        if (isset($_SESSION['mail'])) {
+            $interventions = Intervention::where('mail_enseignant', 'like', $_SESSION['mail'])->get();
+
+            foreach ($interventions as $intervention) {
+                $intervention->heuresCM = 0;
+                $intervention->heuresTD = 0;
+                $intervention->heuresTP = 0;
+                $intervention->heuresEI = 0;
+                $intervention->groupeTD = 0;
+                $intervention->groupeTP = 0;
+                $intervention->groupeEI = 0;
+                $intervention->save();
+            }
+
+            echo json_encode(true);
+        } else {
+            echo json_encode(false);
+        }
+    }
+
     public function ue(){
         if(isset($_SESSION['mail'])){
             $v = new VueUtilisateur();
