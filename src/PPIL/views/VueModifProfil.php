@@ -362,12 +362,13 @@ END;
     }
     
     public function reinitialiser($user){
+		$lienReinitialisation = Slim::getInstance()->urlFor('reinitialiser');
         $html=<<< END
                 <div class="container">
                     <div id="reinitialiser" style="display: none;" class="text-center">
                     <label>L'appuie sur ce bouton entrainera la suppression de la base de données<br/>(UE, Enseignants, Formations)</label>
                     <br/>
-                    <a  id="boutonValiderReinitialisation" class='btn btn-danger' onclick=location.href='' >Reinitialisation</a>
+                    <a  id="boutonValiderReinitialisation" class='btn btn-danger' onclick=location.href='$lienReinitialisation' >Reinitialisation</a>
    </div>
                 </div>
                 

@@ -142,11 +142,17 @@ $app->post("/home/modificationPhoto", function (){
     $c->modifPhoto();
 })->name('modificationPhoto');
 
-
 $app->post("/home/modifResponsabilite",function(){
     $c = new ModifProfilControler();
     $c->modifRespo();
 })->name('modificationResponsabilite');
+
+$app->get("/home/reinitialiser",function(){
+    $c = new UtilisateurControler();
+    $c->reinitialiserBDD();
+})->name('reinitialiser');
+
+
 
 /* ===================== liens dans formation ==================*/
 

@@ -576,6 +576,7 @@ class UtilisateurControler
 			Notification::reinitialiserBDD();
 			Responsabilite::reinitialiserBDD();
 			Enseignant::reinitialiserBDD($resp->enseignant);
+			Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
 		}
 	}
 
