@@ -244,7 +244,14 @@ class VueFormation extends AbstractView
                     $('#modalAjouterUE').modal('toggle');
                });
                $('#suppForm').click(function() {
-                    $('#deleteMess').text("Etes vous sûr de vouloir supprimer cette formation : " + $('#o
+				   $('#deleteMess').text("Etes vous sûr de vouloir supprimer cette formation : " + $('#selectForm option:selected').val() + ".");
+ -                    $('#delete').modal({
+ -                         backdrop: 'static',
+ -                         keyboard: false
+ -                    });
+ -             });
+ -             $('#deleteAnnule').click(function() {
+ -                    $('#delete').modal('toggle');
                });
                $('#deleteForm').click(function() {
                     supprimerForm();
