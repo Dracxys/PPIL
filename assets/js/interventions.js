@@ -77,8 +77,12 @@ function valider(lien, notification_exist, depasse){
 							}
 						} else {
 							if(!danger){
+								if(supprime){
+									$("div#succes_sans_demande").removeClass('hidden');
+								}else{
 									$("div#succes").removeClass('hidden');
-									$("div#depassement_prevision").addClass('hidden');
+								}
+								$("div#depassement_prevision").addClass('hidden');
 							}
 							if(json.depassement > 0){
 								$("div#depassement_max").removeClass('hidden');

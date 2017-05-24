@@ -93,6 +93,9 @@ class VueUtilisateur extends AbstractView
       <div class="alert alert-success hidden" role="alert" id="succes">
         <strong>Succès!</strong> Vos demandes ont été envoyées.
       </div>
+      <div class="alert alert-success hidden" role="alert" id="succes_sans_demande">
+        <strong>Succès!</strong> Vos changements ont été appliqués.
+      </div>
 
                   <div class="table-responsive ">
 
@@ -124,9 +127,11 @@ END;
 
             $id_ues = array();
             $id_ues_notification = array();
+            $id_interventions = array();
 
             foreach($interventions as $intervention){
                 $id_ues[] = $intervention->id_UE;
+                $id_interventions[] =  $intervention->id_intervention;
                 $ue = UE::where("id_UE", "=", $intervention->id_UE)
                     ->first();
                 $composante = $ue->fst==true ? 'FST' : 'Hors FST';
@@ -242,13 +247,15 @@ END;
              ->whereNotIn('id_UE', $id_ues_notification)
              ->whereNotIn('fst', [false])
              ->get();
-        foreach($notifications as $notification){
-            $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
-                                       ->where('id_UE', '=', $intervention->id_UE)
-                                       ->first();
-            if(!empty($notification_intervention)){
-                $notification_en_attente = "warning";
-                $notification_exist = 1;
+        if(!empty($id_intervention)){
+            foreach($notifications as $notification){
+                $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
+                                           ->whereIn('id_UE', '=', $id_interventions)
+                                           ->first();
+                if(!empty($notification_intervention)){
+                    $notification_en_attente = "warning";
+                    $notification_exist = 1;
+                }
             }
         }
 
@@ -518,7 +525,7 @@ END;
 
 			       </div>
 			     </div>
-			     
+
             <div class="panel-body text-center">
 			       <div class="table-responsive" id="tableEnseignants">
 END;

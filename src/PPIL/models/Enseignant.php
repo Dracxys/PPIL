@@ -72,10 +72,11 @@ class Enseignant extends AbstractModel{
 		$new_enseignant->save();
 	}
 
-	public static function modifie_intervention($enseignant, $id_intervention, $id_UE, $datas, $supprimer, $nom_UE, $nom_formation) {
+	public static function modifie_intervention($enseignant, $id_intervention, $id_UE, $datas, $supprimer, $nom_UE, $nom_formation, $ajout) {
 
         if($id_intervention == null && $id_UE == null
         && $nom_UE != null && $nom_formation != null){
+            # ajout d'une intervention hors fst
             # Pas besoin de validation, on crée et applique la notification
             $n = new Notification();
             $n->type_notification = 'PPIL\models\NotificationIntervention';
@@ -108,6 +109,7 @@ class Enseignant extends AbstractModel{
             $ue = UE::where('id_UE', '=', $id_UE)
                 ->first();
             if(isset($ue)){
+                # ajout d'une intervention dans la fst, ou modification d'une UE
                 $n = new Notification();
                 if($id_intervention == null){
                     $n->message = "Ajout intervention";
@@ -144,15 +146,30 @@ class Enseignant extends AbstractModel{
                     //$new_notification_intervention->delete();
                     //$n->delete();
                 } else {
+
                     $resp = Responsabilite::where('intituleResp', '=', 'Responsable UE')
                           ->where('id_UE', '=', $id_UE)
                           ->first();
+                    if(empty($resp)){
+                        $resp = Responsabilite::where('intituleResp', '=', 'Responsable Formation')
+                              ->where('id_UE', '=', $id_UE)
+                              ->first();
+                        if(empty($resp)){
+                            $resp = Responsabilite::where('intituleResp', '=', 'Responsable du departement informatique')
+                                  ->where('id_UE', '=', $id_UE)
+                                  ->first();
+                        }
+                    }
+
                     $n->mail_destinataire = Enseignant::where('mail', '=', $resp->enseignant)
                                           ->first()
                                           ->mail;
 
                     $n->mail_source = $enseignant->mail;
                     $n->save();
+                    if(!$supprimer && !$ajout){
+                        NotificationIntervention::appliquer($new_notification_intervention, $n);
+                    }
                 }
             }
         }
@@ -205,19 +222,19 @@ class Enseignant extends AbstractModel{
 
     public static function getPourcentageVolumeHoraire($user){
         $pourcentage=0;
-        if(!is_null($user->volumeCourant) || $user->volumeCourant != 0){
+        if(!is_null($user->volumeCourant) && $user->volumeCourant != 0 && $user->volumeMin != 0 ){
             $pourcentage = ($user->volumeCourant / $user->volumeMin)*100;
         }
         return $pourcentage;
     }
-	
+
 	public static function reinitialiserBDD ($mail_enseignant){
 		$e = Enseignant::where('mail', '<>', $mail_enseignant)->get();
 		foreach($e as $ens){
 			$ens->delete();
 		}
 	}
-	
+
 	public static function desinscription($mail){
 		$req = Enseignant::where('mail', 'like', $mail)->first();
 		$req->delete();

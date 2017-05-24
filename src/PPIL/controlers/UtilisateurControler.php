@@ -137,7 +137,7 @@ class UtilisateurControler
                         if($supprime){
                             # Supprime l'intervention
                             $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
-                            Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
+                            Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null, false);
                         }
                     } else {
                         $tmpHeuresCM = $i->heuresCM;
@@ -186,7 +186,7 @@ class UtilisateurControler
                             Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
 
 
-                            Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
+                            Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null, false);
                         }else{
                             Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
                         }
@@ -233,6 +233,7 @@ class UtilisateurControler
             }
             if(!$error){
                 $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+                $ajout = true;
                 $id = null;
                 $supprime = false;
                 $infos = array(
@@ -244,7 +245,7 @@ class UtilisateurControler
                     'groupeTP' => 0,
                     'groupeEI' => 0
                 );
-                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null);
+                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null, $ajout);
             }
             echo json_encode([
                 'error' => $error,
@@ -278,7 +279,7 @@ class UtilisateurControler
                     'groupeTP' => 0,
                     'groupeEI' => 0
                 );
-                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, $nom_UE, $nom_formation);
+                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, $nom_UE, $nom_formation, true);
             }
             echo json_encode([
                 'error' => $error,
@@ -440,7 +441,7 @@ class UtilisateurControler
                     $res[$i][] = $e->mail;
                     $res[$i][] = $e->photo;
                     $i++;
-                }   
+                }
             }
 
             $app->response->headers->set('Content-Type', 'application/json');
@@ -465,9 +466,9 @@ class UtilisateurControler
                 		$res[$i][] = $e->mail;
                 		$res[$i][] = $e->photo;
                			 $i++;
-		}		
+		}
             }
-            
+
             $app->response->headers->set('Content-Type', 'application/json');
             echo json_encode($res);
         }else{
@@ -561,12 +562,12 @@ class UtilisateurControler
 
 		}
 	}
-	
-	
+
+
 	public function reinitialiserBDD(){
 		if(isset($_SESSION['mail'])) {
 			$resp = Responsabilite::where('intituleResp', 'like', 'Responsable du departement informatique')->first();
-			
+
 			Intervention::reinitialiserBDD();
 			UE::reinitialiserBDD();
 			Formation::reinitialiserBDD();
@@ -579,10 +580,10 @@ class UtilisateurControler
 		}
 	}
 
-	
+
 	public function desinscription(){
 		if(isset($_SESSION['mail'])) {
-			
+
 			Intervention::desinscription($_SESSION['mail']);
 			$n = Notification::getNotification($_SESSION['mail']);
 			foreach ($n as $notif){
@@ -600,15 +601,15 @@ class UtilisateurControler
 				}
 				$notif->delete();
 			}
-			
+
 			Responsabilite::desinscription($_SESSION['mail']);
 			Enseignant::desinscription($_SESSION['mail']);
-			
+
 			session_unset();
 			Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
 		}
 	}
-	
+
 
     public function deconnexion(){
         session_destroy();
