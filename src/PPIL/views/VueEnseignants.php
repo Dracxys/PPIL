@@ -318,11 +318,10 @@ END;
     public function recupResponsabilites($enseignant) {
         $responsabilites = Responsabilite::where('enseignant', '=', $enseignant->mail)->get();
 
-        $html = '<select class="form-control" id="selectForm" name="selectForm">';
-
-        if(isset($responsabilites)) {
+        if(sizeof($responsabilites) > 0) {
+            $html = '<select class="form-control" id="selectForm" name="selectForm">';
             foreach ($responsabilites as $resp) {
-                if($resp->id_formation != null) {
+                if ($resp->id_formation != null) {
                     $formation = Formation::where('id_formation', '=', $resp->id_formation)->first();
                     $respIntitule = $resp->intituleResp . " pour " . $formation->nomFormation;
                     $html .= '<option value=' . '"' . $respIntitule . '"' . '>' . $respIntitule . '</option>';
@@ -334,7 +333,10 @@ END;
                     }
                 }
             }
+        } else {
+            $html = '<input type="text" id="statut" name="statut" class="form-control" placeholder="Responsabilite" disabled="true" value="Pas de responsabilité" />';
         }
+
 
         $html .= "</select>";
 
