@@ -636,4 +636,68 @@ class UEControler
         }
         echo json_encode($res);
     }
+
+    public function modifUE(){
+        $app = Slim::getInstance();
+        $val = $app->request->post();
+        $app->response->headers->set('Content-Type', 'application/json');
+        $idUE = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT, FILTER_NULL_ON_FAILURE);
+        $nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
+        $resp = filter_var($val['nom'], FILTER_SANITIZE_EMAIL);
+        $respon = Responsabilite::where('id_UE','=',$idUE)->first();
+        $ue = UE::find($idUE);
+        $mail = new MailControler();
+        if(!empty($ue)){
+            $ue->nom = $nom;
+            if(empty($respon)){
+                if($resp != '0'){
+                    $ens = Enseignant::find($resp);
+                    if(!empty($ens)){
+                        $respon = new Responsabilite();
+                        $respon->enseignant = $resp;
+                        $respon->id_UE = $idUE;
+                        $respon->intituleResp = "Responsable UE";
+                        $respon->privilege = 0;
+                        $respon->save();
+                        $ue->save();
+                        $mail->sendMail($resp,"Responsable UE","Vous êtes devenu responsable UE : " . $ue->nom .".");
+                        $res = array();
+                        $res[] = 'true';
+                        echo json_encode($res);
+                    }else{
+                        $res = array();
+                        $res[] = 'false';
+                        echo json_encode($res);
+                    }
+                }else{
+                    $ue->save();
+                    $res = array();
+                    $res[] = 'true';
+                    echo json_encode($res);
+                }
+            }else{
+                if($resp == '0'){
+                    $mail->sendMail($respon->enseignant,"Responsable UE","Vous n'êtes pu responsable UE : " . $ue->nom .".");
+                    $respon->delete();
+                    $res = array();
+                    $res[] = 'true';
+                    echo json_encode($res);
+                }else{
+                    $ens = Enseignant::find($resp);
+                    if(!empty($ens)){
+                        $res = array();
+                        $res[] = 'false';
+                        echo json_encode($res);
+                    }else{
+                        $respon->enseignant = $resp;
+                        $mail->sendMail($resp,"Responsable UE","Vous êtes devenu responsable UE : " . $ue->nom .".");
+                        $res = array();
+                        $res[] = 'true';
+                        echo json_encode($res);
+                    }
+                }
+            }
+
+        }
+    }
 }

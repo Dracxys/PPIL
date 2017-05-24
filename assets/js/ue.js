@@ -528,6 +528,47 @@ function modifierUE(){
         },
         crossDomain: true
     });
+}
 
+function validerModifierUE() {
+    $('#modalValideMoifUE').addClass('disabled');
+    var nom = $('#nomUE').val();
+	var respon = $('#respForm1 option:selected').val();
+    $.ajax({
+        url: ppil + '/modifUE',
+        type: 'post',
+        data: {'id': id_UE, 'nom' : nom, 'resp' : respon},
+        success: function (tab) {
+            if (tab != undefined){
+				if(tab[0] == 'true'){
+                    $('#messageTitre').text('Succès');
+                    $('#message').text('Les modifications ont bien été prises en compte.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    $('#modalValideMoifUE').removeClass('disabled');
+                    $('#modalModifierUE').modal('toggle');
+                    listIntervenant();
+                    listeAjoutEnseignant();
+				}else{
+                    $('#modalValideMoifUE').removeClass('disabled');
+                    $('#messageTitre').text('Erreur');
+                    $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
+                    $('#modalDemandeEffectuee').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    $('#modalModifierUE').modal('toggle');
+                    listIntervenant();
+                    listeAjoutEnseignant();
+				}
+            }
+
+        }, xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    });
 
 }
