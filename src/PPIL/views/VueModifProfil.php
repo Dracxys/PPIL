@@ -48,8 +48,9 @@ END;
 					   <a  id="boutonResp" class="list-group-item">Responsabilités</a>
 					   <a  id="boutonPhoto" class="list-group-item">Photo</a>
 					   <a  id="boutonPassword" class="list-group-item">Mot de passe</a>
-					   <a  id="boutonDesinscription" class='btn btn-danger' onclick=location.href='$lienDesinscription' >Se désinscrire</a>
-					 </div>
+					   <a  id="boutonReinitialisation" class="list-group-item">Réinitialiser BDD</a>
+                                           <a  id="boutonDesinscription" class='btn btn-danger' onclick=location.href='$lienDesinscription' >Se désinscrire</a>
+                                        </div>
 				   </div>
 				</div>
 
