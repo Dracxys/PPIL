@@ -63,11 +63,9 @@ class Notification extends AbstractModel{
 		}
 	}
 	
-	public static function desinscription($mail){
+	public static function getNotification($mail){
 		$req = Notification::where('mail_destinataire', 'like', $mail)->get();
-		foreach($req as $r){
-			$r->delete();
-		}
+		return $req;
 	}
 	
 }
