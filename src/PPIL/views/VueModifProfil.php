@@ -19,7 +19,7 @@ class VueModifProfil extends AbstractView
             <script type="text/javascript" src="/PPIL/assets/js/jquery.circliful.min.js"></script>
             <script type="text/javascript" src="/PPIL/assets/js/modifprofil.js"></script>
 			<link href="/PPIL/assets/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
-			<link href="/PPIL/assets/css/profil.css" rel="stylesheet">
+			<link href="/PPIL/assets/css/list_horizontal.css" rel="stylesheet">
 END;
 		$lienDesinscription = Slim::getInstance()->urlFor('desinscription');
         $html  = self::headHTML($scripts_and_css);

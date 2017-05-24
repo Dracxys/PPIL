@@ -31,7 +31,9 @@ class VueUe extends AbstractView
             if(isset($responsabilite) && $responsabilite > 0){
                 $responForm = "";
             }
-            $scripts_and_css = "";
+            $scripts_and_css = <<< END
+			<link href="/PPIL/assets/css/list_horizontal.css" rel="stylesheet">
+END;
             $html  = self::headHTML($scripts_and_css);
             $html .= self::navHTML("UE");
             $select = self::selectUE($u);
@@ -90,20 +92,25 @@ class VueUe extends AbstractView
 				<strong>Echec!</strong> Une erreur non identifiée est survenue.
 			  </div>
 
-			<div class="panel-body ">
-			  <form class="form-horizontal">
-				<div id="select" class="form-group">
-                  <label class="control-label col-sm-5" for="selectUE">Sélectionner UE</label>
-				  <div class="col-sm-3">
-					$select
+			  <div class="panel-body ">
+				<div class="container">
+				  <div class="col-md-6">
+					<form class="form-horizontal">
+					  <div id="select" class="form-group">
+						<label class="control-label col-sm-5" for="selectUE">Sélectionner UE</label>
+						<div class="col-sm-5">
+						  $select
+						</div>
+					  </div>
+					</form>
+				  </div>
+				  <div class="col-md-6">
+					<div class="list-group list-group-horizontal text-center">
+					  <a href="#" id="boutonCompo" class="list-group-item active">Composition de l'UE</a>
+					  <a href="#" id="boutonInterv" class="list-group-item">Liste des intervenants</a>
 					</div>
+				  </div>
 				</div>
-			  </form>
-
-              <div class="list-group list-group-horizontal text-center">
-                <a href="#" id="boutonCompo" class="list-group-item active">Composition de l'UE</a>
-                <a href="#" id="boutonInterv" class="list-group-item">Liste des intervenants</a>
-                </div>
 END;
         // finir les fonctions avant de les décommenter
 
@@ -348,7 +355,7 @@ END;
                     </div>
             </div>
         </div>
-        
+
       </div>
       </div>
     </div>
@@ -377,7 +384,7 @@ END;
 				        <label class="control-label col-sm-5" for="resp">Responsable : </label>
 				        <div class="col-sm-4">
 				            <select id="respForm1" class="form-control" name="respForm1">
-				             
+
 				            </select>
 				        </div>
 			    </div>
