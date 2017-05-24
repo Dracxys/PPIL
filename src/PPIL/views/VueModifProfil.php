@@ -21,6 +21,7 @@ class VueModifProfil extends AbstractView
 			<link href="/PPIL/assets/css/jquery.circliful.css" rel="stylesheet" type="text/css" />
 			<link href="/PPIL/assets/css/profil.css" rel="stylesheet">
 END;
+		$lienDesinscription = Slim::getInstance()->urlFor('desinscription');
         $html  = self::headHTML($scripts_and_css);
         $html = $html . self::navHTML("Profil");
         $html = $html . <<< END
@@ -47,6 +48,7 @@ END;
 					   <a  id="boutonResp" class="list-group-item">Responsabilités</a>
 					   <a  id="boutonPhoto" class="list-group-item">Photo</a>
 					   <a  id="boutonPassword" class="list-group-item">Mot de passe</a>
+					   <a  id="boutonDesinscription" class='btn btn-danger' onclick=location.href='$lienDesinscription' >Se désinscrire</a>
 					 </div>
 				   </div>
 				</div>

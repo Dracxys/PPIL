@@ -17,4 +17,6 @@ db.ppil.conf.ini
 assets/bootstrap/
 assets/images/
 nbproject
+import/
+imports/
 /db.ppil.conf.ini
