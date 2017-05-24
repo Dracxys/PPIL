@@ -498,7 +498,6 @@ function modifierUE(){
         data: {'id': id_UE},
         success: function (tab) {
             if (tab != undefined){
-            	console.log(tab);
             	var i = 0;
             	var html = "";
                 var j = 0
@@ -506,6 +505,7 @@ function modifierUE(){
 					if(i == 0){
 						if(tab[j] == '0'){
 							html += "<option selected value='0'>aucun</option>";
+							j++;
 						}else{
                             html += "<option value='0'>aucun</option>";
 							html += "<option selected value='" + tab[j] + "'>" + tab[++j] + "</option>";
