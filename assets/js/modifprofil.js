@@ -23,6 +23,28 @@ function setup(modifprofil){
 	var pagePassword = $("#motdepasse");
     var pageReinitialiser = $("#reinitialiser");
 
+	var confirmerDesinscription = $("#modal_desinscription_confirmer");
+	var formDesinscription = $("#modal_desinscription_form");
+	formDesinscription.submit(function(e){
+		e.preventDefault();
+		$.ajax({
+			url : formDesinscription.attr('action'),
+			type: 'post',
+			data: { password : $("#modal_desinscription_form_password").val() },
+			dataType: 'json',
+			success: function(json){
+				if(json.error){
+					$("#modal_desinscription_erreur").removeClass("hidden");
+				}
+			}
+		});
+	});
+
+	confirmerDesinscription.click(function(e){
+		e.preventDefault();
+		formDesinscription.submit();
+	});
+
 	$('#navbar_panel').on('hidden.bs.collapse', function () {
 		$('#liste_groupe').toggleClass("list-group-horizontal");
 	});

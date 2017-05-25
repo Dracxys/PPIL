@@ -196,7 +196,6 @@ END;
                         }
                     }
                 }
-
                 $html .= <<< END
 					<tr id="$intervention->id_intervention" class="$notification_en_attente">
 

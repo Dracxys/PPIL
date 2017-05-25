@@ -136,15 +136,15 @@ class UtilisateurControler
                     }
 
                     if(!($i->id_intervention == $id
-                       && $i->heuresCM == $infos['heuresCM']
-                       && $i->heuresTP == $infos['heuresTP']
-                       && $i->heuresTD == $infos['heuresTD']
-                       && $i->heuresEI == $infos['heuresEI']
-                       && $i->groupeTP == $infos['groupeTP']
-                       && $i->groupeTD == $infos['groupeTD']
-                       && $i->groupeEI == $infos['groupeEI']
-                       && $i->mail_enseignant == $_SESSION['mail']
-                       && $i->id_UE == $id_UE)){
+                         && $i->heuresCM == $infos['heuresCM']
+                         && $i->heuresTP == $infos['heuresTP']
+                         && $i->heuresTD == $infos['heuresTD']
+                         && $i->heuresEI == $infos['heuresEI']
+                         && $i->groupeTP == $infos['groupeTP']
+                         && $i->groupeTD == $infos['groupeTD']
+                         && $i->groupeEI == $infos['groupeEI']
+                         && $i->mail_enseignant == $_SESSION['mail']
+                         && $i->id_UE == $id_UE)){
                         # il y a des changements
                         $tmpHeuresCM = $i->heuresCM;
                         $tmpHeuresTP = $i->heuresTP;
@@ -355,7 +355,7 @@ class UtilisateurControler
         }
     }
 
-     public function journal(){
+    public function journal(){
         if(isset($_SESSION['mail'])) {
             $v = new VueUtilisateur();
             echo $v->journal();
@@ -394,7 +394,7 @@ class UtilisateurControler
                     switch($notification->type_notification){
                     case "PPIL\models\NotificationInscription":
                         $notification_inscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
-                                                 ->first();
+                                                  ->first();
 
                         if(!empty($notification_inscription)){
                             NotificationInscription::appliquer($notification_inscription, $notification);
@@ -403,7 +403,7 @@ class UtilisateurControler
 
                     case "PPIL\models\NotificationIntervention":
                         $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
-                            ->first();
+                                                   ->first();
                         if(!empty($notification_intervention)){
                             NotificationIntervention::appliquer($notification_intervention, $notification);
                         }
@@ -411,7 +411,7 @@ class UtilisateurControler
 
                     case "PPIL\models\NotificationResponsabilite":
                         $notification_responsabilite = NotificationResponsabilite::where('id_notification', '=', $notification->id_notification)
-                            ->first();
+                                                     ->first();
                         if(!empty($notification_responsabilite)){
                             NotificationResponsabilite::appliquer($notification_responsabilite, $notification);
                         }
@@ -422,17 +422,17 @@ class UtilisateurControler
                     }
                 }else{
                     switch($notification->type_notification){
-                        case "PPIL\models\NotificationInscription":
-                            $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
-                                ->first();
+                    case "PPIL\models\NotificationInscription":
+                        $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
+                                                 ->first();
 
-                            if(!empty($notificationinscription)){
-                                $mail = new MailControler();
-                                $mail->sendMail($notificationinscription->mail,'Inscription','Votre inscription a été refusée par le responsable du département informatique.');
-                            }
-                            break;
-                        default:
-                            break;
+                        if(!empty($notificationinscription)){
+                            $mail = new MailControler();
+                            $mail->sendMail($notificationinscription->mail,'Inscription','Votre inscription a été refusée par le responsable du département informatique.');
+                        }
+                        break;
+                    default:
+                        break;
                     }
                     if($notification->besoin_validation == false){
                         $notification_spe = $notification->type_notification::where('id_notification', '=', $notification->id_notification)
@@ -499,13 +499,13 @@ class UtilisateurControler
             $i = 0;
             foreach ($users as $e) {
 	    	    if($e->mail != $_SESSION['mail']){
-                    		$res[$i][] = $e->prenom;
-                		$res[$i][] = $e->nom;
-                		$res[$i][] = $e->statut;
-                		$res[$i][] = $e->mail;
-                		$res[$i][] = $e->photo;
-               			 $i++;
-		}
+                    $res[$i][] = $e->prenom;
+                    $res[$i][] = $e->nom;
+                    $res[$i][] = $e->statut;
+                    $res[$i][] = $e->mail;
+                    $res[$i][] = $e->photo;
+                    $i++;
+                }
             }
 
             $app->response->headers->set('Content-Type', 'application/json');
@@ -625,30 +625,37 @@ class UtilisateurControler
 
 	public function desinscription(){
 		if(isset($_SESSION['mail'])) {
+            $error = true;
+            $app = Slim::getInstance();
+            $val = Slim::getInstance()->request->post();
+            $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
+            if (password_verify($val['password'], $user->mdp)) {
+                Intervention::desinscription($_SESSION['mail']);
+                $n = Notification::getNotification($_SESSION['mail']);
+                foreach ($n as $notif){
+                    $n1 = NotificationInscription::where('id_notification', '=', $notif->id_notification)->first();
+                    if (!empty($n1)){
+                        $n1->delete();
+                    }
+                    $n2 = NotificationIntervention::where('id_notification', '=', $notif->id_notification)->first();
+                    if (!empty($n2)){
+                        $n2->delete();
+                    }
+                    $n3 = NotificationResponsabilite::where('id_notification', '=', $notif->id_notification)->first();
+                    if (!empty($n3)){
+                        $n3->delete();
+                    }
+                    $notif->delete();
+                }
 
-			Intervention::desinscription($_SESSION['mail']);
-			$n = Notification::getNotification($_SESSION['mail']);
-			foreach ($n as $notif){
-				$n1 = NotificationInscription::where('id_notification', '=', $notif->id_notification)->first();
-				if (!empty($n1)){
-					$n1->delete();
-				}
-				$n2 = NotificationIntervention::where('id_notification', '=', $notif->id_notification)->first();
-				if (!empty($n2)){
-					$n2->delete();
-				}
-				$n3 = NotificationResponsabilite::where('id_notification', '=', $notif->id_notification)->first();
-				if (!empty($n3)){
-					$n3->delete();
-				}
-				$notif->delete();
-			}
-
-			Responsabilite::desinscription($_SESSION['mail']);
-			Enseignant::desinscription($_SESSION['mail']);
-
-			session_unset();
-			Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+                Responsabilite::desinscription($_SESSION['mail']);
+                Enseignant::desinscription($_SESSION['mail']);
+                session_destroy();
+                $error = false;
+                Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+            }
+            $app->response->headers->set('Content-Type', 'application/json');
+            echo json_encode(["error" => $error]);
 		}
 	}
 
