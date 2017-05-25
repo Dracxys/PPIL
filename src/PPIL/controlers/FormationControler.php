@@ -520,37 +520,53 @@ class FormationControler
         $c = new MailControler();
         if (!empty($f)) {
             if ($nom != "") {
-                $f->nomFormation = $nom;
-                $f->save();
-                $resp[] = filter_var($val['resp1'], FILTER_SANITIZE_STRING);
-                $resp[] = filter_var($val['resp2'], FILTER_SANITIZE_STRING);
-                $resp[] = filter_var($val['resp3'], FILTER_SANITIZE_STRING);
-                $resp[] = filter_var($val['resp4'], FILTER_SANITIZE_STRING);
-                $respons = Responsabilite::where('id_formation', '=', $f->id_formation)->get();
-                foreach ($respons as $value) {
-                    if (!in_array($value->enseignant, $resp)) {
-                        $c->sendMail($value->enseignant, 'Formation', "Vous n'êtes plus responsable de cette formation : " . $f->nomFormation . ".");
-                        $value->delete();
-                    } else {
-                        unset($resp[array_search($value->enseignant, $resp)]);
+                $f1 = Formation::where('nomFormation','like',$nom)->first();
+                $bon = true;
+                if(!empty($f1)){
+                    if($f1->id_formation != $f->id_formation){
+                        $bon = false;
                     }
                 }
-                foreach ($resp as $value) {
-                    if ($value != '0') {
-                        $respon = new Responsabilite();
-                        $respon->enseignant = $value;
-                        $respon->intituleResp = "Responsable formation";
-                        $respon->id_formation = $f->id_formation;
-                        $respon->privilege = 1;
-                        $respon->save();
-                        $c->sendMail($value, 'Formation', 'Vous avez été choisi comme responsable de cette formation : ' . $nom . ".");
+                if($bon){
+                    $f->nomFormation = $nom;
+                    $f->save();
+                    $resp[] = filter_var($val['resp1'], FILTER_SANITIZE_STRING);
+                    $resp[] = filter_var($val['resp2'], FILTER_SANITIZE_STRING);
+                    $resp[] = filter_var($val['resp3'], FILTER_SANITIZE_STRING);
+                    $resp[] = filter_var($val['resp4'], FILTER_SANITIZE_STRING);
+                    $respons = Responsabilite::where('id_formation', '=', $f->id_formation)->get();
+                    foreach ($respons as $value) {
+                        if (!in_array($value->enseignant, $resp)) {
+                            $c->sendMail($value->enseignant, 'Formation', "Vous n'êtes plus responsable de cette formation : " . $f->nomFormation . ".");
+                            $value->delete();
+                        } else {
+                            unset($resp[array_search($value->enseignant, $resp)]);
+                        }
                     }
+                    foreach ($resp as $value) {
+                        if ($value != '0') {
+                            $respon = new Responsabilite();
+                            $respon->enseignant = $value;
+                            $respon->intituleResp = "Responsable formation";
+                            $respon->id_formation = $f->id_formation;
+                            $respon->privilege = 1;
+                            $respon->save();
+                            $c->sendMail($value, 'Formation', 'Vous avez été choisi comme responsable de cette formation : ' . $nom . ".");
+                        }
+                    }
+                    $app->response->headers->set('Content-Type', 'application/json');
+                    $res = array();
+                    $res[] = 'true';
+                    echo json_encode($res);
+                    return true;
+                }else{
+                    $app->response->headers->set('Content-Type', 'application/json');
+                    $res = array();
+                    $res[] = 'false';
+                    echo json_encode($res);
+                    return false;
                 }
-                $app->response->headers->set('Content-Type', 'application/json');
-                $res = array();
-                $res[] = 'true';
-                echo json_encode($res);
-                return true;
+
             } else {
                 $app->response->headers->set('Content-Type', 'application/json');
                 $res = array();

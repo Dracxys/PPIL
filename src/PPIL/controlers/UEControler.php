@@ -706,7 +706,13 @@ class UEControler
         $mail = new MailControler();
         if (!empty($ue)) {
             $ue2 = UE::where('nom_UE', 'like', $nom)->first();
-            if ($ue->id_UE == $ue2->id_UE) {
+            $bon = true;
+            if(!empty($existe)){
+                if ($ue->id_UE != $ue2->id_UE) {
+                    $bon = false;
+                }
+            }
+            if ($bon && $nom != '') {
                 $ue->nom_UE = $nom;
                 if (empty($respon)) {
                     if ($resp != '0') {

@@ -44,6 +44,7 @@ function recupererUE(lien) {
 
 function choixUE(element) {
     if(element != undefined){
+        $('#valider').removeClass('disabled');
         $('#nomUE').text($(element).text());
         id_UE = $(element).attr('id');
         $.ajax({
@@ -133,6 +134,7 @@ function choixUE(element) {
         $('#nbGroupeAffecteTP').css("color","black");
         $('#heureAffecteEI').css("color","black");
         $('#nbGroupeAffecteEI').css("color","black");
+        $('#valider').addClass('disabled');
     }
 
 }
