@@ -626,6 +626,7 @@ class UtilisateurControler
                     UE::reinitialiserBDD();
                     Formation::reinitialiserBDD();
                     Enseignant::reinitialiserBDD($resp->enseignant);
+                    $error = false;
                 }
             }
             $app->response->headers->set('Content-Type', 'application/json');
