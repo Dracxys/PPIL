@@ -15,7 +15,7 @@ function setup(modifprofil){
 	var boutonResp = document.getElementById("boutonResp");
 	var boutonPhoto = document.getElementById("boutonPhoto");
 	var boutonPassword = document.getElementById("boutonPassword");
-        var boutonReinitialiser = document.getElementById("boutonReinitialiser");
+    var boutonReinitialiser = document.getElementById("boutonReinitialiser");
 
 	$('#navbar_panel').on('hidden.bs.collapse', function () {
 		$('#liste_groupe').toggleClass("list-group-horizontal");
@@ -30,7 +30,9 @@ function setup(modifprofil){
 		boutonPassword.classList.remove("active");
 		boutonPhoto.classList.remove("active");
 		boutonResp.classList.remove("active");
-                boutonReinitialiser.classList.remove("active");
+		if(boutonReinitialiser != undefined){
+			boutonReinitialiser.classList.remove("active");
+		}
 
 		$( "#infoperso" ).show();
 		$("#motdepasse").hide();
@@ -44,7 +46,9 @@ function setup(modifprofil){
 		boutonPassword.classList.remove("active");
 		boutonPhoto.classList.remove("active");
 		boutonInfo.classList.remove("active");
-                boutonReinitialiser.classList.remove("active");
+		if(boutonReinitialiser != undefined){
+			boutonReinitialiser.classList.remove("active");
+		}
 
 		$( "#responsabilite" ).show();
 		$("#motdepasse").hide();
@@ -58,7 +62,9 @@ function setup(modifprofil){
 		boutonPassword.classList.remove("active");
 		boutonInfo.classList.remove("active");
 		boutonResp.classList.remove("active");
+		if(boutonReinitialiser != undefined){
                 boutonReinitialiser.classList.remove("active");
+		}
 
 		$( "#photo" ).show();
 		$("#motdepasse").hide();
@@ -72,7 +78,9 @@ function setup(modifprofil){
 		boutonInfo.classList.remove("active");
 		boutonPhoto.classList.remove("active");
 		boutonResp.classList.remove("active");
-                boutonReinitialiser.classList.remove("active");
+		if(boutonReinitialiser != undefined){
+            boutonReinitialiser.classList.remove("active");
+		}
 
 		$( "#motdepasse" ).show();
 		$("#responsabilite").hide();
@@ -80,14 +88,14 @@ function setup(modifprofil){
 		$("#infoperso").hide();
                 $("#reinitialiser").hide();
 	});
-        
+
         $( "#boutonReinitialiser" ).click(function() {
                 boutonReinitialiser.classList.add("active");
 		boutonInfo.classList.remove("active");
 		boutonPassword.classList.remove("active");
 		boutonPhoto.classList.remove("active");
 		boutonResp.classList.remove("active");
-                
+
                 console.log("coucou");
 
 		$( "#infoperso" ).hide();
