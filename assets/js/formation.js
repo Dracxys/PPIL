@@ -239,7 +239,7 @@ function modifUE() {
                         totalLicence(value);
                     } else {
                         $('#messageTitre').text('Erreur');
-                        $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
+                        $('#message').text("Les modifications n'ont pas pu être sauvegardées.");
                         $('#modalDemandeEffectuee').modal({
                             backdrop: 'static',
                             keyboard: false
@@ -480,7 +480,7 @@ function ajouterUE() {
                     });
                 }else{
                     $('#messageTitre').text('Erreur');
-                    $('#message').text('Problème lors de l\'ajout.');
+                    $('#message').text("Problème lors de l'ajout.");
                     $('#modalDemandeEffectuee').modal({
                         backdrop: 'static',
                         keyboard: false
@@ -736,8 +736,3 @@ function exporter() {
     });
     */
 }
-
-
-
-
-

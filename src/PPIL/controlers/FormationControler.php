@@ -8,7 +8,6 @@
 
 namespace PPIL\controlers;
 
-
 use League\Csv\Writer;
 use PPIL\models\Enseignant;
 use PPIL\models\Formation;
@@ -350,12 +349,15 @@ class FormationControler
                     $ens = Enseignant::find($resp);
                     if (!empty($ens)) {
                         $idUE = UE::creerUE($nomUE, $heuresCM, $heuresTP, $heuresTD, $heuresEI, $groupeTP, $groupeTD, $groupeEI, $f->id_formation, 1);
-                        $respon = new Responsabilite();
-                        $respon->enseignant = $resp;
-                        $respon->intituleResp = "Responsable UE";
-                        $respon->id_UE = $idUE;
-                        $respon->privilege = 0;
-                        $respon->save();
+                        Responsabilite::ajoutResponsabilite($resp, 'Responsable UE', null, $idUE);
+                        /*
+                          $respon = new Responsabilite();
+                          $respon->enseignant = $resp;
+                          $respon->intituleResp = "Responsable UE";
+                          $respon->id_UE = $idUE;
+                          $respon->privilege = 0;
+                          $respon->save();
+                        */
                         $mail = new MailControler();
                         $mail->sendMail($resp, 'UE', 'Vous avez été choisi comme responsable d\'UE : ' . $nomUE . ".");
                         $app->response->headers->set('Content-Type', 'application/json');

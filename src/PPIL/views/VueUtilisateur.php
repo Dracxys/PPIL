@@ -136,7 +136,6 @@ END;
             $id_interventions = array();
 
             foreach($interventions as $intervention){
-                $id_ues[] = $intervention->id_UE;
                 $id_interventions[] =  $intervention->id_intervention;
 
                 $composante = "";
@@ -145,6 +144,8 @@ END;
                 $suppression = "";
 
                 if($intervention->id_UE != null){
+                    $id_ues[] = $intervention->id_UE;
+
                     $u = UE::where("id_UE", "=", $intervention->id_UE)
                        ->first();
                     $ue = $u->nom_UE;
@@ -299,7 +300,6 @@ END;
                 }
             }
         }
-
         foreach($ues as $ue_ajout){
             $composante = $ue_ajout->fst==true ? 'FST' : 'Hors FST';
             $formation = Formation::where("id_formation", "=", $ue_ajout->id_formation)
