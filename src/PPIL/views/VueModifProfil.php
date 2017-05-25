@@ -91,7 +91,7 @@ END;
 				  </form>
 				</div>
 				<div class="modal-footer">
-				  <button type="button" class="btn btn-default"  id="modal_desinscription_confirmer">Confirmer</button>
+				  <button type="button" class="btn btn-danger"  id="modal_desinscription_confirmer">Confirmer</button>
 				</div>
 			  </div>
 
@@ -435,7 +435,7 @@ END;
 						</form>
 					  </div>
 					  <div class="modal-footer">
-						<button type="button" class="btn btn-default"  id="modal_reinitialisation_bdd_confirmer">Confirmer</button>
+						<button type="button" class="btn btn-danger"  id="modal_reinitialisation_bdd_confirmer">Confirmer</button>
 					  </div>
 					</div>
 
