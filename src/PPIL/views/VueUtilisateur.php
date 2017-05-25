@@ -15,6 +15,7 @@ use PPIL\models\Enseignant;
 use PPIL\models\UE;
 use PPIL\models\Formation;
 use PPIL\models\Intervention;
+use PPIL\models\Responsabilite;
 use PPIL\models\Notification;
 use PPIL\models\NotificationInscription;
 use PPIL\models\NotificationIntervention;
@@ -132,12 +133,48 @@ END;
             foreach($interventions as $intervention){
                 $id_ues[] = $intervention->id_UE;
                 $id_interventions[] =  $intervention->id_intervention;
-                $ue = UE::where("id_UE", "=", $intervention->id_UE)
-                    ->first();
-                $composante = $ue->fst==true ? 'FST' : 'Hors FST';
-                $formation = Formation::where("id_formation", "=", $ue->id_formation)
-                           ->first();
 
+                $composante = "";
+                $formation = "";
+                $ue = "";
+                $suppression = "";
+
+                if($intervention->id_UE != null){
+                    $u = UE::where("id_UE", "=", $intervention->id_UE)
+                       ->first();
+                    $ue = $u->nom_UE;
+                    $composante = $ue->fst==true ? 'FST' : 'Hors FST';
+                    $formation = Formation::where("id_formation", "=", $u->id_formation)
+                               ->first()
+                               ->nomFormation;
+                } else if($intervention->id_responsabilite != null){
+                    $resp = Responsabilite::find($intervention->id_responsabilite);
+                    if($resp != null){
+                        $suppression = "disabled";
+                        $composante = $intervention->fst==true ? 'FST' : 'Hors FST';
+                        if($resp->id_UE != null && $resp->privilege == 0){
+                            $u = UE::where("id_UE", "=", $resp->id_UE)
+                               ->first();
+                            $ue = 'Responsable UE';
+
+                            $formation = Formation::where("id_formation", "=", $u->id_formation)
+                                       ->first()
+                                       ->nomFormation;
+
+                        } else if($resp->id_formation != null && $resp->privilege == 1){
+                            $ue = 'Responsable Formation';
+
+                            $formation = Formation::where("id_formation", "=", $resp->id_formation)
+                                       ->first()
+                                       ->nomFormation;
+
+                        } else if($resp->privilege == 2){
+                            $ue = 'Responsable Département';
+
+                            $formation = "Toutes";
+                        }
+                    }
+                }
                 $notification_en_attente = "";
                 foreach($notifications as $notification){
                     $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
@@ -159,8 +196,8 @@ END;
 					<tr id="$intervention->id_intervention" class="$notification_en_attente">
 
 					  <td>$composante</td>
-   					  <td>$formation->nomFormation</td>
-					  <td>$ue->nom_UE</td>
+   					  <td>$formation</td>
+					  <td>$ue</td>
                       <td >
 						<input type="number" name="heuresCM" id="heuresCM" min="0" value="$intervention->heuresCM" class="form-control"/>
 					  </td>
@@ -186,7 +223,7 @@ END;
 						<form class="form-inline" method="post" action="" id="form_interventions">
 						  <div class="form-group">
 							<button  name="annuler" class="btn btn-primary hidden" id="annuler" value="true" type="submit">Annuler</button>
-							<button  name="supprimer" class="btn btn-danger" id="supprimer" value="false" type="submit">Supprimer</button>
+							<button  name="supprimer" class="btn btn-danger $suppression" id="supprimer" value="false" type="submit">Supprimer</button>
 							<input type="hidden" id="id" name="id" value="$intervention->id_intervention" />
 							<input type="hidden" id="id_UE" name="id_UE" value="$intervention->id_UE" />
 						  </div>

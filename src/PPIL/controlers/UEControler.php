@@ -644,19 +644,22 @@ class UEControler
         if (!empty($ue)) {
             $ue2 = UE::where('nom_UE', 'like', $nom)->first();
             if ($ue->id_UE == $ue2->id_UE) {
-                $ue->nom = $nom;
+                $ue->nom_UE = $nom;
                 if (empty($respon)) {
                     if ($resp != '0') {
                         $ens = Enseignant::find($resp);
                         if (!empty($ens)) {
-                            $respon = new Responsabilite();
-                            $respon->enseignant = $resp;
-                            $respon->id_UE = $idUE;
-                            $respon->intituleResp = "Responsable UE";
-                            $respon->privilege = 0;
-                            $respon->save();
+                            Responsabilite::ajoutResponsabilite($resp, 'Responsable UE', null, $idUE);
+                            /*
+                              $respon = new Responsabilite();
+                              $respon->enseignant = $resp;
+                              $respon->id_UE = $idUE;
+                              $respon->intituleResp = "Responsable UE";
+                              $respon->privilege = 0;
+                              $respon->save();
+                            */
                             $ue->save();
-                            $mail->sendMail($resp, "Responsable UE", "Vous êtes devenu responsable UE : " . $ue->nom . ".");
+                            $mail->sendMail($resp, "Responsable UE", "Vous êtes devenu responsable UE : " . $ue->nom_UE . ".");
                             $res = array();
                             $res[] = 'true';
                             echo json_encode($res);
@@ -673,7 +676,8 @@ class UEControler
                     }
                 } else {
                     if ($resp == '0') {
-                        $mail->sendMail($respon->enseignant, "Responsable UE", "Vous n'êtes pu responsable UE : " . $ue->nom . ".");
+                        $mail->sendMail($respon->enseignant, "Responsable UE", "Vous n'êtes plus responsable UE : " . $ue->nom_UE . ".");
+                        Responsabilite::supprimerResponsabilite($respon->enseignant, $respon->id_formation, $respon->id_UE);
                         $respon->delete();
                         $res = array();
                         $res[] = 'true';
@@ -685,9 +689,10 @@ class UEControler
                             $res[] = 'false';
                             echo json_encode($res);
                         } else {
-                            $respon->enseignant = $resp;
-                            $respon->save();
-                            $mail->sendMail($resp, "Responsable UE", "Vous êtes devenu responsable UE : " . $ue->nom . ".");
+                            Responsabilite::modifResponsabilite($respon->id_resp, $resp, 'Responsable UE', null, $respon->$id_UE);
+                            //                            $respon->enseignant = $resp;
+                            //$respon->save();
+                            $mail->sendMail($resp, "Responsable UE", "Vous êtes devenu responsable UE : " . $ue->nom_UE . ".");
                             $res = array();
                             $res[] = 'true';
                             echo json_encode($res);
