@@ -399,12 +399,45 @@ END;
 		$lienReinitialisation = Slim::getInstance()->urlFor('reinitialiser');
         $html=<<< END
                 <div class="container">
-                    <div id="reinitialiser" style="display: none;" class="text-center">
+                  <div id="reinitialiser" style="display: none;" class="text-center">
                     <label>L'appuie sur ce bouton entrainera la suppression de la base de données<br/>(UE, Enseignants, Formations)</label>
                     <br/>
-                    <a  id="boutonValiderReinitialisation" class='btn btn-danger' onclick=location.href='$lienReinitialisation' >Reinitialisation</a>
-   </div>
+                    <button  id="boutonValiderReinitialisation" class='btn btn-danger' data-toggle="modal" data-target="#modal_reinitialisation_bdd">Reinitialisation</button>
+				  </div>
                 </div>
+
+				<div class="modal fade" id="modal_reinitialisation_bdd" role="dialog">
+				  <div class="modal-dialog">
+
+					<div class="modal-content text-center">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Réinitialisation de la BDD</h4>
+					  </div>
+					  <div class="modal-body">
+						<div class="alert alert-danger" role="alert">
+						  <strong>Attention !</strong> Cela supprimera votre le contenu de la base de données, sauf l'administrateur.
+						</div>
+						<div class="alert alert-danger hidden" role="alert" id="modal_reinitialisation_bdd_erreur">
+						  <strong>Echec !</strong> Votre mot de passe ne correspond pas.
+						</div>
+						Veuillez confirmer la Réinitialisation de la base de données.
+						<form class="form-horizontal" method="post" action="$lienReinitialisation"  id="modal_reinitialisation_bdd_form">
+						  <div class="form-group">
+							<label class="control-label col-sm-5" for="ancien">Mot de passe</label>
+							<div class="col-sm-4">
+							  <input type="password" id="modal_reinitialisation_bdd_form_password" name="modal_reinitialisation_bdd_form_password" class="form-control" placeholder="Ancien mot de passe" required="true"/>
+							</div>
+						  </div>
+						</form>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default"  id="modal_reinitialisation_bdd_confirmer">Confirmer</button>
+					  </div>
+					</div>
+
+				  </div>
+				</div>
 
 END;
 

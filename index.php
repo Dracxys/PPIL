@@ -147,7 +147,7 @@ $app->post("/home/modifResponsabilite",function(){
     $c->modifRespo();
 })->name('modificationResponsabilite');
 
-$app->get("/home/reinitialiser",function(){
+$app->post("/home/reinitialiser",function(){
     $c = new UtilisateurControler();
     $c->reinitialiserBDD();
 })->name('reinitialiser');
