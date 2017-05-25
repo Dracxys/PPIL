@@ -110,7 +110,7 @@ class VueUtilisateur extends AbstractView
                       <tr>
                         <th class="text-center">Composante</th>
                         <th class="text-center">Formation</th>
-                        <th class="text-center">UE</th>
+                        <th class="text-center">Intitulé</th>
                         <th class="text-center">Heures CM</th>
                         <th class="text-center">Heures TD</th>
                         <th class="text-center">Groupe TD</th>
@@ -148,7 +148,7 @@ END;
                     $u = UE::where("id_UE", "=", $intervention->id_UE)
                        ->first();
                     $ue = $u->nom_UE;
-                    $composante = $ue->fst==true ? 'FST' : 'Hors FST';
+                    $composante = $u->fst==true ? 'FST' : 'Hors FST';
                     $formation = Formation::where("id_formation", "=", $u->id_formation)
                                ->first()
                                ->nomFormation;
