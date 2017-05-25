@@ -91,7 +91,7 @@ END;
 				  </form>
 				</div>
 				<div class="modal-footer">
-				  <button type="button" class="btn btn-default"  id="modal_desinscription_confirmer" data-dismiss="modal">Confirmer</button>
+				  <button type="button" class="btn btn-default"  id="modal_desinscription_confirmer">Confirmer</button>
 				</div>
 			  </div>
 
@@ -421,6 +421,9 @@ END;
 						<div class="alert alert-danger hidden" role="alert" id="modal_reinitialisation_bdd_erreur">
 						  <strong>Echec !</strong> Votre mot de passe ne correspond pas.
 						</div>
+						<div class="alert alert-success hidden" role="alert" id="modal_reinitialisation_bdd_succes">
+						  <strong>Succès !</strong> La base de données a été réinitialisée.
+						</div>
 						Veuillez confirmer la Réinitialisation de la base de données.
 						<form class="form-horizontal" method="post" action="$lienReinitialisation"  id="modal_reinitialisation_bdd_form">
 						  <div class="form-group">
@@ -432,7 +435,7 @@ END;
 						</form>
 					  </div>
 					  <div class="modal-footer">
-						<button type="button" class="btn btn-default"  id="modal_reinitialisation_bdd_confirmer" data-dismiss="modal">Confirmer</button>
+						<button type="button" class="btn btn-default"  id="modal_reinitialisation_bdd_confirmer">Confirmer</button>
 					  </div>
 					</div>
 
