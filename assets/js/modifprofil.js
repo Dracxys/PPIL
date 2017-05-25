@@ -11,11 +11,62 @@ function setup(modifprofil){
 		percentages: [10, 20, 30],
 	});
 
-	var boutonInfo = document.getElementById("boutonInfo");
-	var boutonResp = document.getElementById("boutonResp");
-	var boutonPhoto = document.getElementById("boutonPhoto");
-	var boutonPassword = document.getElementById("boutonPassword");
-        var boutonReinitialiser = document.getElementById("boutonReinitialiser");
+	var boutonInfo = $("#boutonInfo");
+	var boutonResp = $("#boutonResp");
+	var boutonPhoto = $("#boutonPhoto");
+	var boutonPassword = $("#boutonPassword");
+    var boutonReinitialiser = $("#boutonReinitialiser");
+
+	var pageInfo =  $("#infoperso");;
+	var pageResp = $("#responsabilite");
+	var pagePhoto = $("#photo");
+	var pagePassword = $("#motdepasse");
+    var pageReinitialiser = $("#reinitialiser");
+
+	var confirmerDesinscription = $("#modal_desinscription_confirmer");
+	var formDesinscription = $("#modal_desinscription_form");
+	formDesinscription.submit(function(e){
+		e.preventDefault();
+		$.ajax({
+			url : formDesinscription.attr('action'),
+			type: 'post',
+			data: { password : $("#modal_desinscription_form_password").val() },
+			dataType: 'json',
+			success: function(json){
+				if(json.error){
+					$("#modal_desinscription_erreur").removeClass("hidden");
+				}
+			}
+		});
+	});
+
+	confirmerDesinscription.click(function(e){
+		e.preventDefault();
+		formDesinscription.submit();
+	});
+
+	var confirmerReinit = $("#modal_reinitialisation_bdd_confirmer");
+	var formReinit = $("#modal_reinitialisation_bdd_form");
+	formReinit.submit(function(e){
+		e.preventDefault();
+		$.ajax({
+			url : formReinit.attr('action'),
+			type: 'post',
+			data: { password : $("#modal_reinitialisation_bdd_form_password").val() },
+			dataType: 'json',
+			success: function(json){
+				if(json.error){
+					$("#modal_reinitialisation_bdd_erreur").removeClass("hidden");
+				}
+			}
+		});
+	});
+
+	confirmerReinit.click(function(e){
+		e.preventDefault();
+		formReinit.submit();
+	});
+
 
 	$('#navbar_panel').on('hidden.bs.collapse', function () {
 		$('#liste_groupe').toggleClass("list-group-horizontal");
@@ -25,106 +76,87 @@ function setup(modifprofil){
 		$('#liste_groupe').toggleClass("list-group-horizontal");
 	});
 
-	$( "#boutonInfo" ).click(function() {
-		boutonInfo.classList.add("active");
-		boutonPassword.classList.remove("active");
-		boutonPhoto.classList.remove("active");
-		boutonResp.classList.remove("active");
-                boutonReinitialiser.classList.remove("active");
+	boutonInfo.click(function() {
+		boutonInfo.addClass("active");
+		boutonPassword.removeClass("active");
+		boutonPhoto.removeClass("active");
+		boutonResp.removeClass("active");
+		boutonReinitialiser.removeClass("active");
 
-		$( "#infoperso" ).show();
-		$("#motdepasse").hide();
-		$("#photo").hide();
-		$("#responsabilite").hide();
-                $("#reinitialiser").hide();
+		pageInfo.show();
+		pagePassword.hide();
+		pagePhoto.hide();
+		pageResp.hide();
+        pageReinitialiser.hide();
 	});
 
-	$( "#boutonResp" ).click(function() {
-		boutonResp.classList.add("active");
-		boutonPassword.classList.remove("active");
-		boutonPhoto.classList.remove("active");
-		boutonInfo.classList.remove("active");
-                boutonReinitialiser.classList.remove("active");
+	boutonResp.click(function() {
+		boutonResp.addClass("active");
+		boutonPassword.removeClass("active");
+		boutonPhoto.removeClass("active");
+		boutonInfo.removeClass("active");
+		boutonReinitialiser.removeClass("active");
 
-		$( "#responsabilite" ).show();
-		$("#motdepasse").hide();
-		$("#photo").hide();
-		$("#infoperso").hide();
-                $("#reinitialiser").hide();
+		pageResp.show();
+		pagePassword.hide();
+		pagePhoto.hide();
+		pageInfo.hide();
+        pageReinitialiser.hide();
 	});
 
-	$( "#boutonPhoto" ).click(function() {
-		boutonPhoto.classList.add("active");
-		boutonPassword.classList.remove("active");
-		boutonInfo.classList.remove("active");
-		boutonResp.classList.remove("active");
-                boutonReinitialiser.classList.remove("active");
+	boutonPhoto.click(function() {
+		boutonPhoto.addClass("active");
+		boutonPassword.removeClass("active");
+		boutonInfo.removeClass("active");
+		boutonResp.removeClass("active");
+        boutonReinitialiser.removeClass("active");
 
-		$( "#photo" ).show();
-		$("#motdepasse").hide();
-		$("#responsabilite").hide();
-		$("#infoperso").hide();
-                $("#reinitialiser").hide();
+		pagePhoto.show();
+		pagePassword.hide();
+		pageResp.hide();
+		pageInfo.hide();
+        pageReinitialiser.hide();
 	});
 
-	$( "#boutonPassword" ).click(function() {
-		boutonPassword.classList.add("active");
-		boutonInfo.classList.remove("active");
-		boutonPhoto.classList.remove("active");
-		boutonResp.classList.remove("active");
-                boutonReinitialiser.classList.remove("active");
+	boutonPassword.click(function() {
+		boutonPassword.addClass("active");
+		boutonInfo.removeClass("active");
+		boutonPhoto.removeClass("active");
+		boutonResp.removeClass("active");
+        boutonReinitialiser.removeClass("active");
 
-		$( "#motdepasse" ).show();
-		$("#responsabilite").hide();
-		$("#photo").hide();
-		$("#infoperso").hide();
-                $("#reinitialiser").hide();
+		pagePassword.show();
+		pageResp.hide();
+		pagePhoto.hide();
+		pageInfo.hide();
+        pageReinitialiser.hide();
 	});
-        
-        $( "#boutonReinitialiser" ).click(function() {
-                boutonReinitialiser.classList.add("active");
-		boutonInfo.classList.remove("active");
-		boutonPassword.classList.remove("active");
-		boutonPhoto.classList.remove("active");
-		boutonResp.classList.remove("active");
-                
-                console.log("coucou");
 
-		$( "#infoperso" ).hide();
-		$("#motdepasse").hide();
-		$("#photo").hide();
-		$("#responsabilite").hide();
-                $("#reinitialiser").show();
+    $( "#boutonReinitialiser" ).click(function() {
+        boutonReinitialiser.addClass("active");
+		boutonInfo.removeClass("active");
+		boutonPassword.removeClass("active");
+		boutonPhoto.removeClass("active");
+		boutonResp.removeClass("active");
+
+		pageInfo.hide();
+		pagePassword.hide();
+		pagePhoto.hide();
+		pageResp.hide();
+        pageReinitialiser.show();
 	});
 
 	$("#respUE").click(function(){
-		document.getElementById("formation").classList.remove("active");
-		document.getElementById("UE").classList.add("active");
+		$("#formation").removeClass("active");
+		$("#UE").addClass("active");
 		$("#UE").show();
 		$("#formation").hide();
 	});
 
 	$("#respForm").click(function(){
-		document.getElementById("formation").classList.add("active");
-		document.getElementById("UE").classList.remove("active");
+		$("#formation").addClass("active");
+		$("#UE").removeClass("active");
 		$("#UE").hide();
 		$("#formation").show();
 	});
-
-	/*
-	$("form#form_resp").submit(function(e){
-		e.preventDefault();
-		$.ajax({
-			url : modifprofil,
-			type: 'post',
-			data: $("form#form_resp").serializeArray(),
-			dataType: 'json',
-			success: function(json){
-				console.log(json);
-				//location.reload();
-			}
-		});
-	});*/
-
-
 }

@@ -100,8 +100,11 @@ class UtilisateurControler
                     $error = true;
                 }
             }
-            if(!($id_UE != null && $id_UE >= 0 && $id != null && $id >= 0)){
+            if($id_UE == null || $id_UE < 0){
                 $error = true;
+                if($id != null && $id >= 0){
+                    $error = false;
+                }
             }
 
             $notifications = Notification::where('mail_destinataire', '=', $_SESSION['mail'])
@@ -123,23 +126,26 @@ class UtilisateurControler
                    ->first();
                 if(!empty($i)){
                     # L'intervention existe
-                    if($i->id_intervention == $id
-                       && $i->heuresCM == $infos['heuresCM']
-                       && $i->heuresTP == $infos['heuresTP']
-                       && $i->heuresTD == $infos['heuresTD']
-                       && $i->heuresEI == $infos['heuresEI']
-                       && $i->groupeTP == $infos['groupeTP']
-                       && $i->groupeTD == $infos['groupeTD']
-                       && $i->groupeEI == $infos['groupeEI']
-                       && $i->mail_enseignant == $_SESSION['mail']
-                       && $i->id_UE == $id_UE){
-                        #Pas de changements à faire, faut il la supprimer ?
-                        if($supprime){
-                            # Supprime l'intervention
+                    if($supprime){
+                        # Supprime l'intervention...
+                        if($i->id_responsabilite == null){
+                            # ... Sauf si elle est liée à une responsabilité
                             $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
                             Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null, false);
                         }
-                    } else {
+                    }
+
+                    if(!($i->id_intervention == $id
+                         && $i->heuresCM == $infos['heuresCM']
+                         && $i->heuresTP == $infos['heuresTP']
+                         && $i->heuresTD == $infos['heuresTD']
+                         && $i->heuresEI == $infos['heuresEI']
+                         && $i->groupeTP == $infos['groupeTP']
+                         && $i->groupeTD == $infos['groupeTD']
+                         && $i->groupeEI == $infos['groupeEI']
+                         && $i->mail_enseignant == $_SESSION['mail']
+                         && $i->id_UE == $id_UE)){
+                        # il y a des changements
                         $tmpHeuresCM = $i->heuresCM;
                         $tmpHeuresTP = $i->heuresTP;
                         $tmpHeuresTD = $i->heuresTD;
@@ -148,49 +154,62 @@ class UtilisateurControler
                         $tmpGroupeTD = $i->groupeTD;
                         $tmpGroupeEI = $i->groupeEI;
                         Intervention::modifierIntervention($i,$infos['heuresCM'],$infos['heuresTD'],$infos['heuresTP'],$infos['heuresEI'],$infos['groupeTD'],$infos['groupeTP'],$infos['groupeEI']);
-                        $ue = UE::find($i->id_UE);
-                        if($ue->heuresCM > $ue->prevision_heuresCM){
-                            $previsions['heuresCM'] = true;
-                            $error = true;
-                        }
-                        if($ue->heuresTP > $ue->prevision_heuresTP){
-                            $error = true;
-                            $previsions['heuresTP'] = true;
-                        }
-                        if($ue->heuresTD > $ue->prevision_heuresTD){
-                            $previsions['heuresTD'] = true;
-                            $error = true;
-                        }
-                        if($ue->heuresEI > $ue->prevision_heuresEI){
-                            $previsions['heuresEI'] = true;
-                            $error = true;
-                        }
-                        if($ue->groupeTP > $ue->prevision_groupeTP){
-                            $previsions['groupeTP'] = true;
-                            $error = true;
-                        }
-                        if($ue->groupeTD > $ue->prevision_groupeTD){
-                            $previsions['groupeTD'] = true;
-                            $error = true;
-                        }
-                        if($ue->groupeEI > $ue->prevision_groupeEI){
-                            $previsions['groupeEI'] = true;
-                            $error = true;
-                        }
-                        if(!$error){
-                            # ne dépasse pas les horaires prévus
-                            # dépasse ses horaires max ?
+
+                        if($i->id_UE != null){
+                            # On intervient sur une UE
+                            $ue = UE::find($i->id_UE);
+                            if($ue->heuresCM > $ue->prevision_heuresCM){
+                                $previsions['heuresCM'] = true;
+                                $error = true;
+                            }
+                            if($ue->heuresTP > $ue->prevision_heuresTP){
+                                $error = true;
+                                $previsions['heuresTP'] = true;
+                            }
+                            if($ue->heuresTD > $ue->prevision_heuresTD){
+                                $previsions['heuresTD'] = true;
+                                $error = true;
+                            }
+                            if($ue->heuresEI > $ue->prevision_heuresEI){
+                                $previsions['heuresEI'] = true;
+                                $error = true;
+                            }
+                            if($ue->groupeTP > $ue->prevision_groupeTP){
+                                $previsions['groupeTP'] = true;
+                                $error = true;
+                            }
+                            if($ue->groupeTD > $ue->prevision_groupeTD){
+                                $previsions['groupeTD'] = true;
+                                $error = true;
+                            }
+                            if($ue->groupeEI > $ue->prevision_groupeEI){
+                                $previsions['groupeEI'] = true;
+                                $error = true;
+                            }
+                            if(!$error){
+                                # ne dépasse pas les horaires prévus
+                                # dépasse ses horaires max ?
+                                $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+                                $depassement = $e->volumeCourant - $e->volumeMax;
+
+                                Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
+                                Enseignant::modifie_intervention($e, $id, $id_UE, $id_responsabilite, $infos, $supprime, null, null, false);
+                            }
+                            else{
+                                # on réetablit l'intervention à son état initial
+                                Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
+                            }
+                        } else if($i->id_responsabilite != null){
                             $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
                             $depassement = $e->volumeCourant - $e->volumeMax;
-
-                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
-
-
-                            Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null, false);
-                        }else{
-                            Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
+                            $error = false;
+                            # On intervient dans sa responsabilite
+                        } else {
+                            $error = true;
                         }
                     }
+                } else {
+                    $error = true;
                 }
             }
             echo json_encode([
@@ -203,7 +222,6 @@ class UtilisateurControler
             Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
         }
     }
-
 
     public function enseignement_action_ajouter(){
         if(isset($_SESSION['mail'])){
@@ -337,7 +355,7 @@ class UtilisateurControler
         }
     }
 
-     public function journal(){
+    public function journal(){
         if(isset($_SESSION['mail'])) {
             $v = new VueUtilisateur();
             echo $v->journal();
@@ -376,7 +394,7 @@ class UtilisateurControler
                     switch($notification->type_notification){
                     case "PPIL\models\NotificationInscription":
                         $notification_inscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
-                                                 ->first();
+                                                  ->first();
 
                         if(!empty($notification_inscription)){
                             NotificationInscription::appliquer($notification_inscription, $notification);
@@ -385,7 +403,7 @@ class UtilisateurControler
 
                     case "PPIL\models\NotificationIntervention":
                         $notification_intervention = NotificationIntervention::where('id_notification', '=', $notification->id_notification)
-                            ->first();
+                                                   ->first();
                         if(!empty($notification_intervention)){
                             NotificationIntervention::appliquer($notification_intervention, $notification);
                         }
@@ -393,7 +411,7 @@ class UtilisateurControler
 
                     case "PPIL\models\NotificationResponsabilite":
                         $notification_responsabilite = NotificationResponsabilite::where('id_notification', '=', $notification->id_notification)
-                            ->first();
+                                                     ->first();
                         if(!empty($notification_responsabilite)){
                             NotificationResponsabilite::appliquer($notification_responsabilite, $notification);
                         }
@@ -404,17 +422,17 @@ class UtilisateurControler
                     }
                 }else{
                     switch($notification->type_notification){
-                        case "PPIL\models\NotificationInscription":
-                            $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
-                                ->first();
+                    case "PPIL\models\NotificationInscription":
+                        $notificationinscription = NotificationInscription::where('id_notification', '=', $notification->id_notification)
+                                                 ->first();
 
-                            if(!empty($notificationinscription)){
-                                $mail = new MailControler();
-                                $mail->sendMail($notificationinscription->mail,'Inscription','Votre inscription a été refusée par le responsable du département informatique.');
-                            }
-                            break;
-                        default:
-                            break;
+                        if(!empty($notificationinscription)){
+                            $mail = new MailControler();
+                            $mail->sendMail($notificationinscription->mail,'Inscription','Votre inscription a été refusée par le responsable du département informatique.');
+                        }
+                        break;
+                    default:
+                        break;
                     }
                     if($notification->besoin_validation == false){
                         $notification_spe = $notification->type_notification::where('id_notification', '=', $notification->id_notification)
@@ -481,13 +499,13 @@ class UtilisateurControler
             $i = 0;
             foreach ($users as $e) {
 	    	    if($e->mail != $_SESSION['mail']){
-                    		$res[$i][] = $e->prenom;
-                		$res[$i][] = $e->nom;
-                		$res[$i][] = $e->statut;
-                		$res[$i][] = $e->mail;
-                		$res[$i][] = $e->photo;
-               			 $i++;
-		}
+                    $res[$i][] = $e->prenom;
+                    $res[$i][] = $e->nom;
+                    $res[$i][] = $e->statut;
+                    $res[$i][] = $e->mail;
+                    $res[$i][] = $e->photo;
+                    $i++;
+                }
             }
 
             $app->response->headers->set('Content-Type', 'application/json');
@@ -587,50 +605,72 @@ class UtilisateurControler
 
 	public function reinitialiserBDD(){
 		if(isset($_SESSION['mail'])) {
-			$resp = Responsabilite::where('intituleResp', 'like', 'Responsable du departement informatique')->first();
+            $error = true;
+            $app = Slim::getInstance();
+            $val = Slim::getInstance()->request->post();
+            $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
+            $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
+            $responsabilite = Enseignant::get_privilege($e);
 
-			Intervention::reinitialiserBDD();
-			
-			
-			NotificationInscription::reinitialiserBDD();
-			NotificationIntervention::reinitialiserBDD();
-			NotificationResponsabilite::reinitialiserBDD();
-			Notification::reinitialiserBDD();
-			Responsabilite::reinitialiserBDD();
-			UE::reinitialiserBDD();
-			Formation::reinitialiserBDD();
-			Enseignant::reinitialiserBDD($resp->enseignant);
-			Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+            if(isset($responsabilite) && $responsabilite == 2){
+                if (password_verify($val['password'], $user->mdp)) {
+                    $resp = Responsabilite::where('intituleResp', 'like', 'Responsable du departement informatique')->first();
+
+                    Intervention::reinitialiserBDD();
+
+
+                    NotificationInscription::reinitialiserBDD();
+                    NotificationIntervention::reinitialiserBDD();
+                    NotificationResponsabilite::reinitialiserBDD();
+                    Notification::reinitialiserBDD();
+                    Responsabilite::reinitialiserBDD();
+                    UE::reinitialiserBDD();
+                    Formation::reinitialiserBDD();
+                    Enseignant::reinitialiserBDD($resp->enseignant);
+                    session_destroy();
+                    $error = false;
+                    Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+                }
+            }
+            $app->response->headers->set('Content-Type', 'application/json');
+            echo json_encode(["error" => $error]);
 		}
 	}
 
 
 	public function desinscription(){
 		if(isset($_SESSION['mail'])) {
+            $error = true;
+            $app = Slim::getInstance();
+            $val = Slim::getInstance()->request->post();
+            $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
+            if (password_verify($val['password'], $user->mdp)) {
+                Intervention::desinscription($_SESSION['mail']);
+                $n = Notification::getNotification($_SESSION['mail']);
+                foreach ($n as $notif){
+                    $n1 = NotificationInscription::where('id_notification', '=', $notif->id_notification)->first();
+                    if (!empty($n1)){
+                        $n1->delete();
+                    }
+                    $n2 = NotificationIntervention::where('id_notification', '=', $notif->id_notification)->first();
+                    if (!empty($n2)){
+                        $n2->delete();
+                    }
+                    $n3 = NotificationResponsabilite::where('id_notification', '=', $notif->id_notification)->first();
+                    if (!empty($n3)){
+                        $n3->delete();
+                    }
+                    $notif->delete();
+                }
 
-			Intervention::desinscription($_SESSION['mail']);
-			$n = Notification::getNotification($_SESSION['mail']);
-			foreach ($n as $notif){
-				$n1 = NotificationInscription::where('id_notification', '=', $notif->id_notification)->first();
-				if (!empty($n1)){
-					$n1->delete();
-				}
-				$n2 = NotificationIntervention::where('id_notification', '=', $notif->id_notification)->first();
-				if (!empty($n2)){
-					$n2->delete();
-				}
-				$n3 = NotificationResponsabilite::where('id_notification', '=', $notif->id_notification)->first();
-				if (!empty($n3)){
-					$n3->delete();
-				}
-				$notif->delete();
-			}
-
-			Responsabilite::desinscription($_SESSION['mail']);
-			Enseignant::desinscription($_SESSION['mail']);
-
-			session_unset();
-			Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+                Responsabilite::desinscription($_SESSION['mail']);
+                Enseignant::desinscription($_SESSION['mail']);
+                session_destroy();
+                $error = false;
+                Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+            }
+            $app->response->headers->set('Content-Type', 'application/json');
+            echo json_encode(["error" => $error]);
 		}
 	}
 

@@ -41,9 +41,9 @@ END;
 				  </h4>
 				 </div>
 				 <div class="collapse navbar-collapse " id="navbar_panel">
-				   <form class="navbar-form navbar-right" >
-				   	 <button  id="boutonDesinscription" class='btn btn-danger' onclick=location.href='$lienDesinscription' >Se désinscrire</button>
-				   </form>
+				   <div class="navbar-form navbar-right" >
+				   	 <button  id="boutonDesinscription" class="btn btn-danger" data-toggle="modal" data-target="#modal_desinscription" >Se désinscrire</button>
+				   </div>
 
 				   <div class="nav navbar-nav navbar-right">
 					   <div class="list-group list-group-horizontal " id="liste_groupe">
@@ -63,7 +63,39 @@ END;
 				   </div>
 				 </div>
 				</div>
+		  </div>
 
+		  <div class="modal fade" id="modal_desinscription" role="dialog">
+			<div class="modal-dialog">
+
+			  <div class="modal-content text-center">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="modal-title">Désinscription</h4>
+				</div>
+				<div class="modal-body">
+				  <div class="alert alert-danger" role="alert">
+					<strong>Attention !</strong> Cela supprimera votre profil entièrement.
+				  </div>
+				  <div class="alert alert-danger hidden" role="alert" id="modal_desinscription_erreur">
+					<strong>Echec !</strong> Votre mot de passe ne correspond pas.
+				  </div>
+				  Veuillez confirmer la suppression de votre compte.
+				  <form class="form-horizontal" method="post" action="$lienDesinscription"  id="modal_desinscription_form">
+					<div class="form-group">
+					  <label class="control-label col-sm-5" for="ancien">Mot de passe</label>
+					  <div class="col-sm-4">
+						<input type="password" id="modal_desinscription_form_password" name="modal_desinscription_form_password" class="form-control" placeholder="Ancien mot de passe" required="true"/>
+					  </div>
+					</div>
+				  </form>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default"  id="modal_desinscription_confirmer">Confirmer</button>
+				</div>
+			  </div>
+
+			</div>
 		  </div>
 
         <div class="panel-body">
@@ -329,26 +361,26 @@ END;
         $modifpassword = Slim::getInstance()->urlFor("modificationPassword");
         $html = <<< END
 			<div class="container">
-				<div id="motdepasse" style="display: none;" class="text-center">
+			  <div id="motdepasse" style="display: none;" class="text-center">
         		<h2>Modification du mot de passe</h2>
 
 				<div class="text-center">
 				  <form class="form-horizontal" method="post" action="$modifpassword"  id="valider">
 					<div class="form-group">
-					  <label class="control-label col-sm-6" for="ancien">Ancien mot de passe</label>
-					  <div class="col-sm-3">
+					  <label class="control-label col-sm-5" for="ancien">Ancien mot de passe</label>
+					  <div class="col-sm-4">
 						<input type="password" id="ancien" name="ancien" class="form-control" placeholder="Ancien mot de passe" required="true"/>
 					  </div>
 					</div>
 					<div class="form-group">
-					  <label class="control-label col-sm-6" for="nouv">Nouveau mot de passe</label>
-					  <div class="col-sm-3">
+					  <label class="control-label col-sm-5" for="nouv">Nouveau mot de passe</label>
+					  <div class="col-sm-4">
 						<input type="password" id="nouv" name="nouv" class="form-control" placeholder="Nouveau mot de passe" required="true" />
 					  </div>
 					</div>
 					<div class="form-group">
-					  <label class="control-label col-sm-6" for="conf">Confirmation du nouveau mot de passe</label>
-					  <div class="col-sm-3">
+					  <label class="control-label col-sm-5" for="conf">Confirmation du nouveau mot de passe</label>
+					  <div class="col-sm-4">
 						<input type="password" id="conf" name="conf" class="form-control" placeholder="Confirmer nouveau mot de passe" required="true"/>
 					  </div>
 					</div>
@@ -357,8 +389,8 @@ END;
 					</div>
 				  </form>
 				</div>
-				</div>
-
+			  </div>
+			</div>
 END;
         return $html;
     }
@@ -367,12 +399,45 @@ END;
 		$lienReinitialisation = Slim::getInstance()->urlFor('reinitialiser');
         $html=<<< END
                 <div class="container">
-                    <div id="reinitialiser" style="display: none;" class="text-center">
+                  <div id="reinitialiser" style="display: none;" class="text-center">
                     <label>L'appuie sur ce bouton entrainera la suppression de la base de données<br/>(UE, Enseignants, Formations)</label>
                     <br/>
-                    <a  id="boutonValiderReinitialisation" class='btn btn-danger' onclick=location.href='$lienReinitialisation' >Reinitialisation</a>
-   </div>
+                    <button  id="boutonValiderReinitialisation" class='btn btn-danger' data-toggle="modal" data-target="#modal_reinitialisation_bdd">Reinitialisation</button>
+				  </div>
                 </div>
+
+				<div class="modal fade" id="modal_reinitialisation_bdd" role="dialog">
+				  <div class="modal-dialog">
+
+					<div class="modal-content text-center">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Réinitialisation de la BDD</h4>
+					  </div>
+					  <div class="modal-body">
+						<div class="alert alert-danger" role="alert">
+						  <strong>Attention !</strong> Cela supprimera votre le contenu de la base de données, sauf l'administrateur.
+						</div>
+						<div class="alert alert-danger hidden" role="alert" id="modal_reinitialisation_bdd_erreur">
+						  <strong>Echec !</strong> Votre mot de passe ne correspond pas.
+						</div>
+						Veuillez confirmer la Réinitialisation de la base de données.
+						<form class="form-horizontal" method="post" action="$lienReinitialisation"  id="modal_reinitialisation_bdd_form">
+						  <div class="form-group">
+							<label class="control-label col-sm-5" for="ancien">Mot de passe</label>
+							<div class="col-sm-4">
+							  <input type="password" id="modal_reinitialisation_bdd_form_password" name="modal_reinitialisation_bdd_form_password" class="form-control" placeholder="Ancien mot de passe" required="true"/>
+							</div>
+						  </div>
+						</form>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default"  id="modal_reinitialisation_bdd_confirmer">Confirmer</button>
+					  </div>
+					</div>
+
+				  </div>
+				</div>
 
 END;
 

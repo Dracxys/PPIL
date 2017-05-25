@@ -147,7 +147,7 @@ $app->post("/home/modifResponsabilite",function(){
     $c->modifRespo();
 })->name('modificationResponsabilite');
 
-$app->get("/home/reinitialiser",function(){
+$app->post("/home/reinitialiser",function(){
     $c = new UtilisateurControler();
     $c->reinitialiserBDD();
 })->name('reinitialiser');
@@ -216,6 +216,12 @@ $app->post('/home/formation/ue/modif/form',function (){
     $c->modifierForm();
 });
 
+$app->get('/home/formation/exporter/',function () use ($app){
+    $nom = $app->request()->get('nom');
+    $c = new FormationControler();
+    $c->exporter($nom);
+});
+
 /* ===================== liens dans formation ==================*/
 
 /* ===================== liens dans la barre de navigation ==================*/
@@ -224,7 +230,7 @@ $app->get('/home/profil', function (){
     $c->home();
 })->name('profilUtilisateur');
 
-$app->get('/home/desinscription', function (){
+$app->post('/home/desinscription', function (){
     $c = new UtilisateurControler();
     $c->desinscription();
 })->name('desinscription');

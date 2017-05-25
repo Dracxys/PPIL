@@ -8,7 +8,6 @@ class Intervention extends AbstractModel{
 
 
 	public static function modifierIntervention($inter,$heureCM,$heureTD,$heureTP,$heureEI,$groupeTD,$groupeTP,$groupeEI){
-	    $ue = UE::find($inter->id_UE);
         $inter->heuresCM = $heureCM;
         $inter->heuresTD = $heureTD;
         $inter->heuresTP = $heureTP;
@@ -17,18 +16,21 @@ class Intervention extends AbstractModel{
         $inter->groupeTP = $groupeTP;
         $inter->groupeEI = $groupeEI;
         $inter->save();
-	    UE::recalculer($ue);
+        if($inter->id_UE != null && $inter->id_responsabilite == null){
+            $ue = UE::find($inter->id_UE);
+            UE::recalculer($ue);
+        }
         $e = Enseignant::find($inter->mail_enseignant);
 	    Enseignant::conversionHeuresTD($e);
     }
-	
+
 	public static function reinitialiserBDD(){
 		$req = Intervention::all();
 		foreach($req as $i){
 			$i->delete();
 		}
 	}
-	
+
 	public static function desinscription($mail){
 		$req = Intervention::where('mail_enseignant', 'like', $mail)->get();
 		foreach($req as $r){

@@ -108,22 +108,22 @@ class ModifProfilControler
             if(isset($val['ueSelect'])){
                 $type = UE::where("nom_UE","like",$val['ueSelect'])->first();
 
-                $intitulé="Responsable UE";
+                $intitule="Responsable UE";
                 $id_UE = $type->id_UE;
-                $notif->intitule=$intitulé;
+                $notif->intitule=$intitule;
                 $notif->privilege = 0;
                 $notif->id_UE = $id_UE;
-                $n->message = "Demande de responsabilité : UE";
+                $n->message = "Demande de responsabilité : UE " + $val['ueSelect'];
                 $error = false;
             }
             if(isset($val['formSelect'])) {
                 $type = Formation::where("nomFormation", "like", $val['formSelect'])->first();
-                $intitulé = "Responsable Formation";
+                $intitule = "Responsable Formation";
                 $id_formation = $type->id_formation;
-                $notif->intitule = $intitulé;
+                $notif->intitule = $intitule;
                 $notif->privilege = 1;
                 $notif->id_formation = $id_formation;
-                $n->message = "Demande de responsabilité : formation";
+                $n->message = "Demande de responsabilité : formation " + $val['formSelect'];
                 $error = false;
             }
             $n->besoin_validation = 1;

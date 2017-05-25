@@ -91,6 +91,9 @@ END;
 			  <div class="alert alert-danger hidden" role="alert" id="import_erreur_autre">
 				<strong>Echec!</strong> Une erreur non identifiée est survenue.
 			  </div>
+			  <div class="alert alert-danger hidden" role="alert" id="import_erreur_parse">
+				<strong>Echec!</strong> Une erreur est survenue lors de traitement des données.
+			  </div>
 
 			  <div class="panel-body ">
 				<div class="container">

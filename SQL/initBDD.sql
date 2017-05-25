@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
--- Client :  localhost:8889
--- Généré le :  Mer 24 Mai 2017 à 15:02
--- Version du serveur :  5.6.33
--- Version de PHP :  7.0.12
+-- Client :  localhost
+-- Généré le :  Jeu 25 Mai 2017 à 07:55
+-- Version du serveur :  10.1.21-MariaDB
+-- Version de PHP :  7.0.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -45,8 +45,8 @@ CREATE TABLE `Enseignant` (
 
 INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `rand`) VALUES
 ('g@h', 'g', 'g', '$2y$10$PNVCJAVJF5vr6NzBwJiAhuzqqwmNoitrmBawLwvcKUIZ34RgJXsTW', 'Professeur des universités', 192, 192, 384, NULL, 696792579),
-('m@m', 'm', 'm', '$2y$10$xD73oDHJeJ1L8WbyBbb9de6jvIaSZjWfLYkuVxFR0/4KE7Tp9BHVq', 'Professeur des universités', NULL, 192, NULL, NULL, 589272245),
-('root@root', 'admin', 'admin', '$2y$10$RaRQdLR6ntOKuOD/vxKtDOgWWG/664Gp0A2YcxS9Kf/mlCSoE6pIG', 'Professeur des universités', 2, 192, 384, NULL, 589347120),
+('m@m', 'm', 'm', '$2y$10$2TO9wgmJ5xb.Q0sYOSv62eZu.UpxVC0lbcChwMN4ABNEjWdv4SlMi', 'Professeur des universités', NULL, 192, 384, NULL, 105894822),
+('root@root', 'admin', 'admin', '$2y$10$RTrBskqD0QJKPDjUt.thmuZFfk53urjIft6kxWvkwQLheHmuNWWnm', 'Professeur des universités', NULL, 192, 384, NULL, 496923614),
 ('x@x', 'x', 'x', '$2y$10$wRYAumkhaZjoqxJtnKjMGesgC4NhTbY0X4FbabN.p.vB48FyW6ldO', 'Professeur des universités', NULL, 192, 384, NULL, 598661578),
 ('z@z', 'z', 'z', '$2y$10$DkJg/HxwWYn3do3LGq2aVuKy90VAMAI12E9Ke4RkqrqlL8R4l1D8a', 'Professeur des universités', NULL, 192, 384, NULL, 813424858);
 
@@ -82,16 +82,17 @@ INSERT INTO `Formation` (`id_formation`, `nomFormation`, `fst`) VALUES
 --
 
 CREATE TABLE `Intervention` (
-  `id_UE` int(11) NOT NULL,
   `id_intervention` int(4) NOT NULL,
+  `id_UE` int(11) DEFAULT NULL,
+  `id_responsabilite` int(11) DEFAULT NULL,
   `fst` tinyint(1) NOT NULL,
   `heuresCM` int(4) DEFAULT '0',
   `heuresTP` int(4) DEFAULT '0',
   `heuresTD` int(4) DEFAULT '0',
   `heuresEI` int(4) DEFAULT '0',
-  `groupeTP` int(4) DEFAULT '1',
-  `groupeTD` int(4) DEFAULT '1',
-  `groupeEI` int(4) DEFAULT '1',
+  `groupeTP` int(4) DEFAULT '0',
+  `groupeTD` int(4) DEFAULT '0',
+  `groupeEI` int(4) DEFAULT '0',
   `mail_enseignant` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -99,10 +100,8 @@ CREATE TABLE `Intervention` (
 -- Contenu de la table `Intervention`
 --
 
-INSERT INTO `Intervention` (`id_UE`, `id_intervention`, `fst`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeTP`, `groupeTD`, `groupeEI`, `mail_enseignant`) VALUES
-(4, 2, 1, 0, 0, 0, 0, 1, 1, 1, 'root@root'),
-(5, 9, 1, 0, 0, 0, 0, 0, 0, 0, 'root@root'),
-(15, 10, 0, 0, 2, 0, 0, 0, 0, 17, 'root@root');
+INSERT INTO `Intervention` (`id_intervention`, `id_UE`, `id_responsabilite`, `fst`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeTP`, `groupeTD`, `groupeEI`, `mail_enseignant`) VALUES
+(15, NULL, 11, 1, 0, 0, 0, 0, 0, 0, 0, 'root@root');
 
 -- --------------------------------------------------------
 
@@ -213,13 +212,9 @@ CREATE TABLE `Responsabilite` (
 --
 
 INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_formation`, `id_UE`, `privilege`) VALUES
-(4, 'root@root', 'Responsable du departement informatique', NULL, NULL, 2),
-(6, 'root@root', 'Responsable UE', NULL, 4, 0),
-(7, 'root@root', 'Responsable UE', NULL, 5, 0),
-(8, 'root@root', 'Responsable UE', NULL, 6, 0),
 (9, 'g@h', 'Responsable formation', 12, NULL, 1),
-(10, 'x@x', 'Responsable formation', 12, NULL, 1),
-(11, 'z@z', 'Responsable formation', 2, NULL, 1);
+(10, 'x@x', 'Responsable formation', 0, NULL, 1),
+(11, 'root@root', 'Responsable du departement informatique', NULL, NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -253,7 +248,6 @@ CREATE TABLE `UE` (
 --
 
 INSERT INTO `UE` (`id_UE`, `nom_UE`, `fst`, `id_formation`, `heuresTD`, `heuresTP`, `heuresCM`, `heuresEI`, `prevision_heuresTD`, `prevision_heuresTP`, `prevision_heuresCM`, `prevision_heuresEI`, `groupeTD`, `groupeTP`, `groupeEI`, `prevision_groupeTD`, `prevision_groupeTP`, `prevision_groupeEI`) VALUES
-(3, 'Modélisation', 1, 1, 0, 4, 30, 0, 10, 12, 30, 0, 1, 1, 1, 2, 3, 1),
 (4, 'bdd', 1, 1, 0, 0, 0, 0, 10, 12, 16, 0, 0, 0, 0, 2, 3, 1),
 (5, 'UE de Master - 1', 1, 2, 0, 0, 0, 0, 10, 10, 79, 3, 1, 1, 1, 0, 8, 1),
 (6, 'UE de Master - 2', 1, 2, 0, 0, 0, 0, 3, 5, 10, 51, 1, 1, 1, 1, 42, 42),
@@ -347,17 +341,17 @@ ALTER TABLE `Formation`
 -- AUTO_INCREMENT pour la table `Intervention`
 --
 ALTER TABLE `Intervention`
-  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `Responsabilite`
 --
 ALTER TABLE `Responsabilite`
-  MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT pour la table `UE`
 --
