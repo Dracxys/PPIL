@@ -197,8 +197,8 @@ function modifUE() {
                                 backdrop: 'static',
                                 keyboard: false
                             });
-                            choixUE();
                             $('#valider').removeClass("disabled");
+                            choixUE();
                         } else {
                             $('#messageTitre').text('Erreur');
                             $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
@@ -344,12 +344,13 @@ function modifIntervenantUE(mail, line) {
                             backdrop: 'static',
                             keyboard: false
                         });
-                        choixUE();
-                        listIntervenant();
                         $(function () {
                             $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", false);
                             $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", false);
                         });
+                        choixUE();
+                        listIntervenant();
+
                     } else if (element[0] == 'Depassement') {
                         $('#messageTitre').text('Erreur');
                         $('#message').text('Les modifications n\'ont pas pu être sauvegardées, vos modifications feraient dépasser les prévisions en heures et en groupe pour cet UE.');
@@ -401,13 +402,13 @@ function modifIntervenantUE(mail, line) {
 							backdrop: 'static',
 							keyboard: false
 						});
-						choixUE();
-						listIntervenant();
-						listeAjoutEnseignant();
                         $(function () {
                             $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", false);
                             $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", false);
                         });
+						choixUE();
+						listIntervenant();
+						listeAjoutEnseignant();
 					} else {
                         $("#validerHeuresIntervenantUE").removeClass("disabled");
                         $("#supprimerIntervenantUE").removeClass("disabled");
@@ -516,8 +517,6 @@ function addEnseignants() {
 							backdrop: 'static',
 							keyboard: false
 						});
-						listIntervenant();
-						listeAjoutEnseignant();
                         $("#ajoutEnseignant").removeClass("disabled");
                         $("#valider").removeClass("disabled");
                         $("#importer").removeClass("disabled");
@@ -525,6 +524,8 @@ function addEnseignants() {
                         $("#modifierUE").removeClass("disabled");
                         $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", true);
                         $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", true);
+						listIntervenant();
+						listeAjoutEnseignant();
 					} else {
 						$('#messageTitre').text('Erreur');
 						$('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
