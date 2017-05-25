@@ -26,6 +26,7 @@ function recupererUE(lien) {
                 $('#nomUE').text(tab[1]);
                 choixUE($("#" + tab[0]));
                 totalLicence(value);
+                $('#validerChangementUE').show();
             } else {
                 var html = "<ul class='nav'>";
                 html = html + "</ul>";
@@ -33,6 +34,7 @@ function recupererUE(lien) {
                 choixUE(undefined);
                 $('#nomUE').text("Aucune UE");
                 totalLicence(value);
+                $('#validerChangementUE').hide();
             }
         },
         xhrFields: {
@@ -44,7 +46,7 @@ function recupererUE(lien) {
 
 function choixUE(element) {
     if(element != undefined){
-        $('#valider').removeClass('disabled');
+
         $('#nomUE').text($(element).text());
         id_UE = $(element).attr('id');
         $.ajax({
@@ -134,7 +136,7 @@ function choixUE(element) {
         $('#nbGroupeAffecteTP').css("color","black");
         $('#heureAffecteEI').css("color","black");
         $('#nbGroupeAffecteEI').css("color","black");
-        $('#valider').addClass('disabled');
+
     }
 
 }
@@ -215,7 +217,7 @@ function modifUE() {
         $('#erreur').show();
     } else {
         $('#erreur').hide();
-        $('#valider').addClass( 'disabled' );
+        $('#validerChangementUE').addClass( 'disabled' );
         $.ajax({
             url: ppil + '/ue/modif',
             type: 'post',
@@ -244,7 +246,7 @@ function modifUE() {
                         });
                     }
                 }
-                $('#valider').removeClass( 'disabled' );
+                $('#validerChangementUE').removeClass( 'disabled' );
 
             },
             xhrFields: {
