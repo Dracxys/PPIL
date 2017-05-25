@@ -262,6 +262,9 @@ class VueFormation extends AbstractView
                $('#modalValideModif').click(function(){
                     modifFormBase();
                });
+               $('#exporter').click(function(){
+                    exporter();
+               });
 			});
         </script>
 END;

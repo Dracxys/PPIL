@@ -718,6 +718,21 @@ function modifFormBase() {
 
 }
 
+function exporter() {
+    window.location = ppil + '/exporter/?nom=' + value;
+    /*
+    $.ajax({
+        url: ppil + '/exporter',
+        type: 'post',
+        data: { 'nom' : value},
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    });
+    */
+}
+
 
 
 

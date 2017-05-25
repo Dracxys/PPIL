@@ -216,6 +216,12 @@ $app->post('/home/formation/ue/modif/form',function (){
     $c->modifierForm();
 });
 
+$app->get('/home/formation/exporter/',function () use ($app){
+    $nom = $app->request()->get('nom');
+    $c = new FormationControler();
+    $c->exporter($nom);
+});
+
 /* ===================== liens dans formation ==================*/
 
 /* ===================== liens dans la barre de navigation ==================*/
