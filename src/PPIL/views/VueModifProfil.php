@@ -42,7 +42,7 @@ END;
 				 </div>
 				 <div class="collapse navbar-collapse " id="navbar_panel">
 				   <div class="navbar-form navbar-right" >
-				   	 <button  id="boutonDesinscription" class="btn btn-danger" data-toggle="modal" data-target="#modal_desinscription" >Se désinscrire</button>
+				   	 <button  id="boutonDesinscription" class="btn btn-danger" data-toggle="modal" data-target="#modal_desinscription">Se désinscrire</button>
 				   </div>
 
 				   <div class="nav navbar-nav navbar-right">
@@ -85,13 +85,13 @@ END;
 					<div class="form-group">
 					  <label class="control-label col-sm-5" for="ancien">Mot de passe</label>
 					  <div class="col-sm-4">
-						<input type="password" id="modal_desinscription_form_password" name="modal_desinscription_form_password" class="form-control" placeholder="Ancien mot de passe" required="true"/>
+						<input type="password" id="modal_desinscription_form_password" name="modal_desinscription_form_password" class="form-control" placeholder="Mot de passe" required="true"/>
 					  </div>
 					</div>
 				  </form>
 				</div>
 				<div class="modal-footer">
-				  <button type="button" class="btn btn-default"  id="modal_desinscription_confirmer">Confirmer</button>
+				  <button type="button" class="btn btn-default"  id="modal_desinscription_confirmer" data-dismiss="modal">Confirmer</button>
 				</div>
 			  </div>
 
@@ -416,7 +416,7 @@ END;
 					  </div>
 					  <div class="modal-body">
 						<div class="alert alert-danger" role="alert">
-						  <strong>Attention !</strong> Cela supprimera votre le contenu de la base de données, sauf l'administrateur.
+						  <strong>Attention !</strong> Cela supprimera le contenu de la base de données, sauf l'administrateur.
 						</div>
 						<div class="alert alert-danger hidden" role="alert" id="modal_reinitialisation_bdd_erreur">
 						  <strong>Echec !</strong> Votre mot de passe ne correspond pas.
@@ -426,13 +426,13 @@ END;
 						  <div class="form-group">
 							<label class="control-label col-sm-5" for="ancien">Mot de passe</label>
 							<div class="col-sm-4">
-							  <input type="password" id="modal_reinitialisation_bdd_form_password" name="modal_reinitialisation_bdd_form_password" class="form-control" placeholder="Ancien mot de passe" required="true"/>
+							  <input type="password" id="modal_reinitialisation_bdd_form_password" name="modal_reinitialisation_bdd_form_password" class="form-control" placeholder="Mot de passe" required="true"/>
 							</div>
 						  </div>
 						</form>
 					  </div>
 					  <div class="modal-footer">
-						<button type="button" class="btn btn-default"  id="modal_reinitialisation_bdd_confirmer">Confirmer</button>
+						<button type="button" class="btn btn-default"  id="modal_reinitialisation_bdd_confirmer" data-dismiss="modal">Confirmer</button>
 					  </div>
 					</div>
 

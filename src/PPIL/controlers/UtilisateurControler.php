@@ -627,7 +627,6 @@ class UtilisateurControler
                     UE::reinitialiserBDD();
                     Formation::reinitialiserBDD();
                     Enseignant::reinitialiserBDD($resp->enseignant);
-                    session_destroy();
                     $error = false;
                     Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
                 }
