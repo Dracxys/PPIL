@@ -492,7 +492,14 @@ function addEnseignants() {
 				tab.push($(this).find('th#mail').text());
 			}
 		});
-		$.ajax({
+		$("#ajoutEnseignant").addClass("disabled");
+        $("#valider").addClass("disabled");
+        $("#importer").addClass("disabled");
+        $("#exporter").addClass("disabled");
+        $("#modifierUE").addClass("disabled");
+        $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", false);
+        $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", false);
+        $.ajax({
 			url: ppil + '/addInterventions',
 			type: 'post',
 			data: {'id': id_UE, 'mail': tab},
@@ -507,6 +514,13 @@ function addEnseignants() {
 						});
 						listIntervenant();
 						listeAjoutEnseignant();
+                        $("#ajoutEnseignant").removeClass("disabled");
+                        $("#valider").removeClass("disabled");
+                        $("#importer").removeClass("disabled");
+                        $("#exporter").removeClass("disabled");
+                        $("#modifierUE").removeClass("disabled");
+                        $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", true);
+                        $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", true);
 					} else {
 						$('#messageTitre').text('Erreur');
 						$('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
@@ -514,6 +528,13 @@ function addEnseignants() {
 							backdrop: 'static',
 							keyboard: false
 						});
+                        $("#ajoutEnseignant").removeClass("disabled");
+                        $("#valider").removeClass("disabled");
+                        $("#importer").removeClass("disabled");
+                        $("#exporter").removeClass("disabled");
+                        $("#modifierUE").removeClass("disabled");
+                        $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", true);
+                        $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", true);
 					}
 				}
 			}, xhrFields: {
