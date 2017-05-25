@@ -329,26 +329,26 @@ END;
         $modifpassword = Slim::getInstance()->urlFor("modificationPassword");
         $html = <<< END
 			<div class="container">
-				<div id="motdepasse" style="display: none;" class="text-center">
+			  <div id="motdepasse" style="display: none;" class="text-center">
         		<h2>Modification du mot de passe</h2>
 
 				<div class="text-center">
 				  <form class="form-horizontal" method="post" action="$modifpassword"  id="valider">
 					<div class="form-group">
-					  <label class="control-label col-sm-6" for="ancien">Ancien mot de passe</label>
-					  <div class="col-sm-3">
+					  <label class="control-label col-sm-5" for="ancien">Ancien mot de passe</label>
+					  <div class="col-sm-4">
 						<input type="password" id="ancien" name="ancien" class="form-control" placeholder="Ancien mot de passe" required="true"/>
 					  </div>
 					</div>
 					<div class="form-group">
-					  <label class="control-label col-sm-6" for="nouv">Nouveau mot de passe</label>
-					  <div class="col-sm-3">
+					  <label class="control-label col-sm-5" for="nouv">Nouveau mot de passe</label>
+					  <div class="col-sm-4">
 						<input type="password" id="nouv" name="nouv" class="form-control" placeholder="Nouveau mot de passe" required="true" />
 					  </div>
 					</div>
 					<div class="form-group">
-					  <label class="control-label col-sm-6" for="conf">Confirmation du nouveau mot de passe</label>
-					  <div class="col-sm-3">
+					  <label class="control-label col-sm-5" for="conf">Confirmation du nouveau mot de passe</label>
+					  <div class="col-sm-4">
 						<input type="password" id="conf" name="conf" class="form-control" placeholder="Confirmer nouveau mot de passe" required="true"/>
 					  </div>
 					</div>
@@ -357,8 +357,8 @@ END;
 					</div>
 				  </form>
 				</div>
-				</div>
-
+			  </div>
+			</div>
 END;
         return $html;
     }
