@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
--- Client :  localhost:8889
--- Généré le :  Jeu 25 Mai 2017 à 15:22
--- Version du serveur :  5.6.33
--- Version de PHP :  7.0.12
+-- Client :  localhost
+-- Généré le :  Jeu 25 Mai 2017 à 16:23
+-- Version du serveur :  10.1.21-MariaDB
+-- Version de PHP :  7.0.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -36,20 +36,21 @@ CREATE TABLE `Enseignant` (
   `volumeMin` int(4) DEFAULT NULL,
   `volumeMax` int(4) DEFAULT NULL,
   `photo` varchar(2048) DEFAULT NULL,
-  `rand` int(9) NOT NULL
+  `rand` int(9) NOT NULL,
+  `theme_fixe` tinyint(4) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Enseignant`
 --
 
-INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `rand`) VALUES
-('g@h', 'g', 'g', '$2y$10$PNVCJAVJF5vr6NzBwJiAhuzqqwmNoitrmBawLwvcKUIZ34RgJXsTW', 'Professeur des universités', 192, 192, 384, NULL, 696792579),
-('m@m', 'm', 'm', '$2y$10$2TO9wgmJ5xb.Q0sYOSv62eZu.UpxVC0lbcChwMN4ABNEjWdv4SlMi', 'Professeur des universités', NULL, 192, 384, NULL, 105894822),
-('root@root', 'admin', 'admin', '$2y$10$RTrBskqD0QJKPDjUt.thmuZFfk53urjIft6kxWvkwQLheHmuNWWnm', 'Professeur des universités', NULL, 192, 384, NULL, 496923614),
-('t.crouvezier@hotmail.fr', 'Crouvezier', 'Thibaut', '$2y$10$qEaFs6HyxI89rMW.6A1L5OqrSkHSdfkNo/9gEJ0Nl6zwAWYCiA74u', 'Maître de conférences', NULL, 192, 384, NULL, 623233384),
-('x@x', 'x', 'x', '$2y$10$wRYAumkhaZjoqxJtnKjMGesgC4NhTbY0X4FbabN.p.vB48FyW6ldO', 'Professeur des universités', NULL, 192, 384, NULL, 598661578),
-('z@z', 'z', 'z', '$2y$10$DkJg/HxwWYn3do3LGq2aVuKy90VAMAI12E9Ke4RkqrqlL8R4l1D8a', 'Professeur des universités', NULL, 192, 384, NULL, 813424858);
+INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `rand`, `theme_fixe`) VALUES
+('g@h', 'g', 'g', '$2y$10$PNVCJAVJF5vr6NzBwJiAhuzqqwmNoitrmBawLwvcKUIZ34RgJXsTW', 'Professeur des universités', 192, 192, 384, NULL, 696792579, 1),
+('m@m', 'm', 'm', '$2y$10$2TO9wgmJ5xb.Q0sYOSv62eZu.UpxVC0lbcChwMN4ABNEjWdv4SlMi', 'Professeur des universités', NULL, 192, 384, NULL, 105894822, 1),
+('root@root', 'admin', 'admin', '$2y$10$RTrBskqD0QJKPDjUt.thmuZFfk53urjIft6kxWvkwQLheHmuNWWnm', 'Professeur des universités', NULL, 192, 384, NULL, 496923614, 1),
+('t.crouvezier@hotmail.fr', 'Crouvezier', 'Thibaut', '$2y$10$qEaFs6HyxI89rMW.6A1L5OqrSkHSdfkNo/9gEJ0Nl6zwAWYCiA74u', 'Maître de conférences', NULL, 192, 384, NULL, 623233384, 1),
+('x@x', 'x', 'x', '$2y$10$wRYAumkhaZjoqxJtnKjMGesgC4NhTbY0X4FbabN.p.vB48FyW6ldO', 'Professeur des universités', NULL, 192, 384, NULL, 598661578, 1),
+('z@z', 'z', 'z', '$2y$10$DkJg/HxwWYn3do3LGq2aVuKy90VAMAI12E9Ke4RkqrqlL8R4l1D8a', 'Professeur des universités', NULL, 192, 384, NULL, 813424858, 1);
 
 -- --------------------------------------------------------
 
