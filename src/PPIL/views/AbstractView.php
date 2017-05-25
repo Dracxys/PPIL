@@ -12,7 +12,13 @@ class AbstractView {
     public static function headHTML($scripts_and_css) {
 		$color = dechex(mt_rand(0,16777215));
 		$color = str_pad($color,6,'0');
-		$color_string = "background-color:#" . $color ;
+		$color_string = "background-color:#52869e";
+        if(isset($_SESSION['mail'])){
+            $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
+            if($e->theme_fixe == false){
+                $color_string = "background-color:#" . $color ;
+            }
+        }
 
         $HTML= <<< END
 		<!DOCTYPE html>

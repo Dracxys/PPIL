@@ -193,7 +193,7 @@ class UtilisateurControler
                                 $depassement = $e->volumeCourant - $e->volumeMax;
 
                                 Intervention::modifierIntervention($i,$tmpHeuresCM,$tmpHeuresTD,$tmpHeuresTP,$tmpHeuresEI,$tmpGroupeTD,$tmpGroupeTP,$tmpGroupeEI);
-                                Enseignant::modifie_intervention($e, $id, $id_UE, $id_responsabilite, $infos, $supprime, null, null, false);
+                                Enseignant::modifie_intervention($e, $id, $id_UE, $infos, $supprime, null, null, false);
                             }
                             else{
                                 # on réetablit l'intervention à son état initial

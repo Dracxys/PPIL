@@ -49,6 +49,9 @@ class ModifProfilControler
                     $user->rand = $ancien->rand;
                     $user->photo = $ancien->photo;
                     $user->volumeCourant = $ancien->volumeCourant;
+
+                    $theme = filter_var($val['theme'], FILTER_SANITIZE_STRING)=="fixe" ? true : false;
+                    $user->theme_fixe = $theme;
                     switch (filter_var($val['statut'], FILTER_SANITIZE_STRING)) {
                         case "Professeur des universités" :
                             $user->volumeMin = 192;
@@ -112,6 +115,8 @@ class ModifProfilControler
                 $ancien->nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
                 $ancien->prenom = filter_var($val['prenom'], FILTER_SANITIZE_STRING);
                 $ancien->statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
+                $theme = filter_var($val['theme'], FILTER_SANITIZE_STRING)=="fixe" ? true : false;
+                $ancien->theme_fixe = $theme;
                 switch (filter_var($val['statut'], FILTER_SANITIZE_STRING)) {
                     case "Professeur des universités" :
                         $ancien->volumeMin = 192;

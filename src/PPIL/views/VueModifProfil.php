@@ -202,6 +202,9 @@ END;
 
     public function infoperso($user)
     {
+        $e = Enseignant::where('mail','like',$_SESSION['mail'])->first();
+        $fixe = $e->theme_fixe==true ? "checked" : "";
+        $alea = $fixe=="" ? "checked" : "";
         $modifprofil = Slim::getInstance()->urlFor("modificationProfil");
         $select = self::selectStatut($user);
         $html = <<< END
@@ -235,8 +238,16 @@ END;
 				</div>
 			  </div>
 			  <div class="form-group">
+				<label class="control-label col-sm-4" for="">Thème : </label>
+				<div class="col-sm-4">
+				  <label class="radio-inline"><input type="radio" name="theme" value="fixe" $fixe> fixe</label>
+				  <label class="radio-inline"><input type="radio" name="theme" value="alea" $alea> aléatoire</label>
+				</div>
+			  </div>
+			  <div class="form-group">
 				<button type="submit" class="btn btn-primary">Valider</button>
               </div>
+
 			</form>
             </div>
 
