@@ -616,7 +616,7 @@ class UtilisateurControler
                 if (password_verify($val['password'], $user->mdp)) {
                     $resp = Responsabilite::where('intituleResp', 'like', 'Responsable du departement informatique')->first();
 
-                    Intervention::reinitialiserBDD();
+                    Intervention::reinitialiserBDD($resp->id_resp);
 
 
                     NotificationInscription::reinitialiserBDD();

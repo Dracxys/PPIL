@@ -24,8 +24,8 @@ class Intervention extends AbstractModel{
 	    Enseignant::conversionHeuresTD($e);
     }
 
-	public static function reinitialiserBDD(){
-		$req = Intervention::all();
+	public static function reinitialiserBDD($id_resp){
+		$req = Intervention::where('id_responsabilite', '<>', $id_resp)->get();
 		foreach($req as $i){
 			$i->delete();
 		}
