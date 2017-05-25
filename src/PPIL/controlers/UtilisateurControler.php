@@ -611,7 +611,6 @@ class UtilisateurControler
             $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
             $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
             $responsabilite = Enseignant::get_privilege($e);
-
             if(isset($responsabilite) && $responsabilite == 2){
                 if (password_verify($val['password'], $user->mdp)) {
                     $resp = Responsabilite::where('intituleResp', 'like', 'Responsable du departement informatique')->first();
@@ -627,8 +626,6 @@ class UtilisateurControler
                     UE::reinitialiserBDD();
                     Formation::reinitialiserBDD();
                     Enseignant::reinitialiserBDD($resp->enseignant);
-                    $error = false;
-                    Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
                 }
             }
             $app->response->headers->set('Content-Type', 'application/json');
@@ -640,6 +637,7 @@ class UtilisateurControler
 	public function desinscription(){
 		if(isset($_SESSION['mail'])) {
             $error = true;
+            $redirect = null;
             $app = Slim::getInstance();
             $val = Slim::getInstance()->request->post();
             $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
@@ -666,10 +664,10 @@ class UtilisateurControler
                 Enseignant::desinscription($_SESSION['mail']);
                 session_destroy();
                 $error = false;
-                Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+                $redirect = Slim::getInstance()->urlFor('home');
             }
             $app->response->headers->set('Content-Type', 'application/json');
-            echo json_encode(["error" => $error]);
+            echo json_encode(["error" => $error, "redirect" => $redirect]);
 		}
 	}
 
