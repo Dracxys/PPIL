@@ -400,9 +400,9 @@ END;
         $html=<<< END
                 <div class="container">
                   <div id="reinitialiser" style="display: none;" class="text-center">
-                    <label>L'appui sur ce bouton entrainera une remise ‡ zÈro de la base de donn√©es<br/>(suppressios des UEs, des Enseignants, des Formations)</label>
+                    <label>L'appui sur ce bouton entrainera une remise a z√©ro de la base de donn√©es<br/>(suppression des UEs, des Enseignants, des Formations)</label>
                     <br/>
-                    <button  id="boutonValiderReinitialisation" class='btn btn-danger' data-toggle="modal" data-target="#modal_reinitialisation_bdd">RÈinitialisation</button>
+                    <button  id="boutonValiderReinitialisation" class='btn btn-danger' data-toggle="modal" data-target="#modal_reinitialisation_bdd">R√©initialisation</button>
 				  </div>
                 </div>
 
