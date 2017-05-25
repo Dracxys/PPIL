@@ -113,7 +113,7 @@ class UEControler
             $headers_intervenants = null;
             if(!empty($ues)){
                 //                $headers_ues = $ues[0]->getTableColumns();
-                $csv_ues->insertOne(['nom UE', 'nom formation', 'mail Enseignant', 'heuresCM', 'heuresTP', 'heuresTD', 'heuresEI', 'groupeTP', 'groupeTD', 'groupeEI']);
+                $csv_ues->insertOne(['intitulé', 'nom formation', 'mail Enseignant', 'heuresCM', 'heuresTP', 'heuresTD', 'heuresEI', 'groupeTP', 'groupeTD', 'groupeEI']);
                 foreach($ues as $ue){
                     $interventions = Intervention::where('id_UE', '=', $ue->id_UE)->get();
                     $formation = Formation::where('id_formation', '=', $ue->id_formation)->first();
@@ -127,6 +127,7 @@ class UEControler
                                 $ue->nom_UE,
                                 $formation->nomFormation,
                                 $i->mail_enseignant,
+                                //                                $i->fst==true ? 'FST' : 'Hors FST',
                                 $i->heuresCM,
                                 $i->heuresTP,
                                 $i->heuresTD,
@@ -179,6 +180,7 @@ class UEControler
                 $maxsize = 20971520;
                 $extension_upload = strtolower(substr(strrchr($_FILES['file']['name'], '.'), 1));
                 $nameFile = md5(uniqid(rand(), true));
+                $ues = array();
                 if ($_FILES['file']['error'] > 0) {
                     $message['error'] = true;
                 } else if ($_FILES['file']['size'] > $maxsize) {
@@ -190,37 +192,98 @@ class UEControler
 
                     # this is where the magic happens
                     $csv = Reader::createFromPath($root . $chemin . $nameFile . "." . $extension_upload);
-
                     $csv->setOffset(1);
-                    $nb_insert = $csv->each(function ($row, $rowOffset){
+                    $nb_insert = $csv->each(function ($row, $rowOffset) use (&$message){
                         $result = true;
-                        $ue = UE::where('nom_UE', "=", $row[0])->first();
-                        if(is_null($ue)){
-                            $ue = new UE();
-                            $ue->nom_UE = $row[0];
-                        }
 
-                        $f = Formation::where('nomFormation', '=', $row[1])->first();
-                        if(is_null($f)){
-                            $f = new Formation();
-                            $f->nomFormation = $row[1];
-                        }
-
+                        # L'enseignant existe ? Sinon, on arrete
                         $e = Enseignant::where('mail', '=', $row[2])->first();
                         if(is_null($e)){
                             $message['parse'] = true;
                             $result = false;
                         }
-
                         if($result){
-                            $i = Intervention::where('mail_enseignant', '=', $row[2])
-                               ->where('id_UE', '=', $ue->id_UE)
-                               ->first();
-                            if(is_null($i)){
-                                $i = new Intervention();
-                                $i->mail_enseignant = $row[2];
-                                $i->id_UE = $ue->id_UE;
-                            } else {
+                            # est ce que la formation avec ce nom existe ?
+                            $f = Formation::where('nomFormation', '=', $row[1])->first();
+                            if(is_null($f)){
+                                # non, on la crée
+                                $f = new Formation();
+                                $f->nomFormation = $row[1];
+                                $f->save();
+                            }
+
+                            $i = null;
+
+                            # On cherche l'UE
+                            $ue = UE::where('nom_UE', "=", $row[0])
+                                ->where('id_formation', "=", $f->id_formation)
+                                ->first();
+                            if(is_null($ue)){
+                                # Elle n'existe pas, est ce que c'est une responsabilité ?
+                                switch(strtolower($row[0])){
+                                case "responsable ue":
+                                    $r = Responsabilite::where('enseignant', '=', $row[2])
+                                       ->where('intituleResp', '=', 'responsable ue')
+                                       ->first();
+                                    # On ne crée pas la responsibilité si elle n'existe pas.
+                                    if(!empty($r)){
+                                        $i = Intervention::where('mail_enseignant', '=', $row[2])
+                                           ->where('id_responsabilite', '=', $r->id_resp)
+                                           ->first();
+                                    } else {
+                                        $message['parse'] = true;
+                                    }
+                                    break;
+                                case "responsable formation":
+                                    $r = Responsabilite::where('enseignant', '=', $row[2])
+                                       ->where('intituleResp', '=', 'responsable formation')
+                                       ->first();
+                                    # On ne crée pas la responsibilité si elle n'existe pas.
+                                    if(!empty($r)){
+                                        $i = Intervention::where('mail_enseignant', '=', $row[2])
+                                           ->where('id_responsabilite', '=', $r->id_resp)
+                                           ->first();
+                                    } else {
+                                        $message['parse'] = true;
+                                    }
+                                    break;
+                                case "responsable di":
+                                    $r = Responsabilite::where('enseignant', '=', $row[2])
+                                       ->where('intituleResp', '=', 'responsable du departement informatique')
+                                       ->first();
+                                    # On ne crée pas la responsibilité si elle n'existe pas.
+                                    if(!empty($r)){
+                                        $i = Intervention::where('mail_enseignant', '=', $row[2])
+                                           ->where('id_responsabilite', '=', $r->id_resp)
+                                           ->first();
+                                    } else {
+                                        $message['parse'] = true;
+                                    }
+                                    break;
+                                default:
+                                    # Non, on la crée.
+                                    $ue = new UE();
+                                    $ue->nom_UE = $row[0];
+                                    $ue->fst = true;
+                                    $ue->id_formation = $f->id_formation;
+                                    $ue->save();
+
+                                    # On cherche si l'intervention existe
+                                    $i = Intervention::where('mail_enseignant', '=', $row[2])
+                                       ->where('id_UE', '=', $ue->id_UE)
+                                       ->first();
+                                    if(is_null($i)){
+                                        # Non, on la crée
+                                        $i = new Intervention();
+                                        $i->mail_enseignant = $row[2];
+                                        $i->id_UE = $ue->id_UE;
+                                        $i->fst = true;
+                                    }
+                                    break;
+                                }
+                            }
+
+                            if(!is_null($i)){
                                 $i->heuresTD = $row[3];
                                 $i->heuresTP = $row[4];
                                 $i->heuresCM = $row[5];
@@ -228,17 +291,17 @@ class UEControler
                                 $i->groupeTD = $row[7];
                                 $i->groupeTP = $row[8];
                                 $i->groupeEI = $row[9];
-
-                                $result = true;
-
-                                $f->save();
-                                $ue->save();
                                 $i->save();
+                                $result = true;
                             }
+
+
                         }
                         return $result;
                     });
-                    $erreur = false;
+                    if(!$message['parse']){
+                        $erreur = false;
+                    }
                 }
             }
             echo json_encode([
@@ -643,7 +706,13 @@ class UEControler
         $mail = new MailControler();
         if (!empty($ue)) {
             $ue2 = UE::where('nom_UE', 'like', $nom)->first();
-            if ($ue->id_UE == $ue2->id_UE) {
+            $bon = true;
+            if(!empty($existe)){
+                if ($ue->id_UE != $ue2->id_UE) {
+                    $bon = false;
+                }
+            }
+            if ($bon && $nom != '') {
                 $ue->nom_UE = $nom;
                 if (empty($respon)) {
                     if ($resp != '0') {

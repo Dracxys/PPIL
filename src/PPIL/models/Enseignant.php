@@ -152,11 +152,10 @@ class Enseignant extends AbstractModel{
                           ->first();
                     if(empty($resp)){
                         $resp = Responsabilite::where('intituleResp', '=', 'Responsable Formation')
-                              ->where('id_UE', '=', $id_UE)
+                              ->where('id_formation', '=', $ue->id_formation)
                               ->first();
                         if(empty($resp)){
                             $resp = Responsabilite::where('intituleResp', '=', 'Responsable du departement informatique')
-                                  ->where('id_UE', '=', $id_UE)
                                   ->first();
                         }
                     }
@@ -182,7 +181,7 @@ class Enseignant extends AbstractModel{
 
     public static function get_privilege($utilisateur){
         return $max = DB::table('Responsabilite')
-                      ->where('enseignant', '=', $utilisateur->mail)
+                      ->where('enseignant', 'like', $utilisateur->mail)
                       ->max('privilege');
     }
 

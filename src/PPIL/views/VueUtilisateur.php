@@ -110,7 +110,7 @@ class VueUtilisateur extends AbstractView
                       <tr>
                         <th class="text-center">Composante</th>
                         <th class="text-center">Formation</th>
-                        <th class="text-center">UE</th>
+                        <th class="text-center">Intitulé</th>
                         <th class="text-center">Heures CM</th>
                         <th class="text-center">Heures TD</th>
                         <th class="text-center">Groupe TD</th>
@@ -136,7 +136,6 @@ END;
             $id_interventions = array();
 
             foreach($interventions as $intervention){
-                $id_ues[] = $intervention->id_UE;
                 $id_interventions[] =  $intervention->id_intervention;
 
                 $composante = "";
@@ -145,10 +144,12 @@ END;
                 $suppression = "";
 
                 if($intervention->id_UE != null){
+                    $id_ues[] = $intervention->id_UE;
+
                     $u = UE::where("id_UE", "=", $intervention->id_UE)
                        ->first();
                     $ue = $u->nom_UE;
-                    $composante = $ue->fst==true ? 'FST' : 'Hors FST';
+                    $composante = $u->fst==true ? 'FST' : 'Hors FST';
                     $formation = Formation::where("id_formation", "=", $u->id_formation)
                                ->first()
                                ->nomFormation;
@@ -299,7 +300,6 @@ END;
                 }
             }
         }
-
         foreach($ues as $ue_ajout){
             $composante = $ue_ajout->fst==true ? 'FST' : 'Hors FST';
             $formation = Formation::where("id_formation", "=", $ue_ajout->id_formation)

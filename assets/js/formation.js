@@ -26,6 +26,7 @@ function recupererUE(lien) {
                 $('#nomUE').text(tab[1]);
                 choixUE($("#" + tab[0]));
                 totalLicence(value);
+                $('#validerChangementUE').show();
             } else {
                 var html = "<ul class='nav'>";
                 html = html + "</ul>";
@@ -33,6 +34,7 @@ function recupererUE(lien) {
                 choixUE(undefined);
                 $('#nomUE').text("Aucune UE");
                 totalLicence(value);
+                $('#validerChangementUE').hide();
             }
         },
         xhrFields: {
@@ -44,6 +46,7 @@ function recupererUE(lien) {
 
 function choixUE(element) {
     if(element != undefined){
+
         $('#nomUE').text($(element).text());
         id_UE = $(element).attr('id');
         $.ajax({
@@ -133,6 +136,7 @@ function choixUE(element) {
         $('#nbGroupeAffecteTP').css("color","black");
         $('#heureAffecteEI').css("color","black");
         $('#nbGroupeAffecteEI').css("color","black");
+
     }
 
 }
@@ -213,7 +217,7 @@ function modifUE() {
         $('#erreur').show();
     } else {
         $('#erreur').hide();
-        $('#valider').addClass( 'disabled' );
+        $('#validerChangementUE').addClass( 'disabled' );
         $.ajax({
             url: ppil + '/ue/modif',
             type: 'post',
@@ -235,14 +239,14 @@ function modifUE() {
                         totalLicence(value);
                     } else {
                         $('#messageTitre').text('Erreur');
-                        $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
+                        $('#message').text("Les modifications n'ont pas pu être sauvegardées.");
                         $('#modalDemandeEffectuee').modal({
                             backdrop: 'static',
                             keyboard: false
                         });
                     }
                 }
-                $('#valider').removeClass( 'disabled' );
+                $('#validerChangementUE').removeClass( 'disabled' );
 
             },
             xhrFields: {
@@ -476,7 +480,7 @@ function ajouterUE() {
                     });
                 }else{
                     $('#messageTitre').text('Erreur');
-                    $('#message').text('Problème lors de l\'ajout.');
+                    $('#message').text("Problème lors de l'ajout.");
                     $('#modalDemandeEffectuee').modal({
                         backdrop: 'static',
                         keyboard: false
@@ -718,7 +722,17 @@ function modifFormBase() {
 
 }
 
-
-
-
-
+function exporter() {
+    window.location = ppil + '/exporter/?nom=' + value;
+    /*
+    $.ajax({
+        url: ppil + '/exporter',
+        type: 'post',
+        data: { 'nom' : value},
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true
+    });
+    */
+}

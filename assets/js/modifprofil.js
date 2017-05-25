@@ -33,8 +33,10 @@ function setup(modifprofil){
 			data: { password : $("#modal_desinscription_form_password").val() },
 			dataType: 'json',
 			success: function(json){
-				if(json.error){
+				if(json.error == true){
 					$("#modal_desinscription_erreur").removeClass("hidden");
+				} else {
+					window.location = json.redirect;
 				}
 			}
 		});
@@ -44,6 +46,33 @@ function setup(modifprofil){
 		e.preventDefault();
 		formDesinscription.submit();
 	});
+
+	var confirmerReinit = $("#modal_reinitialisation_bdd_confirmer");
+	var formReinit = $("#modal_reinitialisation_bdd_form");
+	formReinit.submit(function(e){
+		e.preventDefault();
+		$.ajax({
+			url : formReinit.attr('action'),
+			type: 'post',
+			data: { password : $("#modal_reinitialisation_bdd_form_password").val() },
+			dataType: 'json',
+			success: function(json){
+				if(json.error == true){
+					$("#modal_reinitialisation_bdd_erreur").removeClass("hidden");
+					$("#modal_reinitialisation_bdd_succes").addClass("hidden");
+				} else {
+					$("#modal_reinitialisation_bdd_succes").removeClass("hidden");
+					$("#modal_reinitialisation_bdd_erreur").addClass("hidden");
+				}
+			}
+		});
+	});
+
+	confirmerReinit.click(function(e){
+		e.preventDefault();
+		formReinit.submit();
+	});
+
 
 	$('#navbar_panel').on('hidden.bs.collapse', function () {
 		$('#liste_groupe').toggleClass("list-group-horizontal");

@@ -56,11 +56,15 @@ function importer(lien_importer){
 					if(json.messages.extension){
 						$("#import_erreur_extension").removeClass('hidden');
 					}
+					if(json.messages.parse){
+						$("#import_erreur_parse").removeClass('hidden');
+					}
 				} else {
 					$("#import_succes").removeClass('hidden');
 					$("#import_erreur_autre").addClass('hidden');
 					$("#import_erreur_taille").addClass('hidden');
 					$("#import_erreur_extension").addClass('hidden');
+					$("#import_erreur_parse").addClass('hidden');
 				}
             }
 		});
@@ -193,8 +197,8 @@ function modifUE() {
                                 backdrop: 'static',
                                 keyboard: false
                             });
-                            choixUE();
                             $('#valider').removeClass("disabled");
+                            choixUE();
                         } else {
                             $('#messageTitre').text('Erreur');
                             $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
@@ -340,12 +344,13 @@ function modifIntervenantUE(mail, line) {
                             backdrop: 'static',
                             keyboard: false
                         });
-                        choixUE();
-                        listIntervenant();
                         $(function () {
                             $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", false);
                             $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", false);
                         });
+                        choixUE();
+                        listIntervenant();
+
                     } else if (element[0] == 'Depassement') {
                         $('#messageTitre').text('Erreur');
                         $('#message').text('Les modifications n\'ont pas pu être sauvegardées, vos modifications feraient dépasser les prévisions en heures et en groupe pour cet UE.');
@@ -397,13 +402,13 @@ function modifIntervenantUE(mail, line) {
 							backdrop: 'static',
 							keyboard: false
 						});
-						choixUE();
-						listIntervenant();
-						listeAjoutEnseignant();
                         $(function () {
                             $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", false);
                             $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", false);
                         });
+						choixUE();
+						listIntervenant();
+						listeAjoutEnseignant();
 					} else {
                         $("#validerHeuresIntervenantUE").removeClass("disabled");
                         $("#supprimerIntervenantUE").removeClass("disabled");
@@ -492,56 +497,59 @@ function addEnseignants() {
 				tab.push($(this).find('th#mail').text());
 			}
 		});
-		$("#ajoutEnseignant").addClass("disabled");
+        if(tab.length != 0) {
+
+        $("#ajoutEnseignant").addClass("disabled");
         $("#valider").addClass("disabled");
         $("#importer").addClass("disabled");
         $("#exporter").addClass("disabled");
         $("#modifierUE").addClass("disabled");
-        $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", false);
-        $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", false);
-        $.ajax({
-			url: ppil + '/addInterventions',
-			type: 'post',
-			data: {'id': id_UE, 'mail': tab},
-			success: function (res) {
-				if (res != undefined) {
-					if (res == true) {
-						$('#messageTitre').text('Succès');
-						$('#message').text('Les modifications ont bien été prises en compte.');
-						$('#modalDemandeEffectuee').modal({
-							backdrop: 'static',
-							keyboard: false
-						});
-						listIntervenant();
-						listeAjoutEnseignant();
-                        $("#ajoutEnseignant").removeClass("disabled");
-                        $("#valider").removeClass("disabled");
-                        $("#importer").removeClass("disabled");
-                        $("#exporter").removeClass("disabled");
-                        $("#modifierUE").removeClass("disabled");
-                        $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", true);
-                        $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", true);
-					} else {
-						$('#messageTitre').text('Erreur');
-						$('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
-						$('#modalDemandeEffectuee').modal({
-							backdrop: 'static',
-							keyboard: false
-						});
-                        $("#ajoutEnseignant").removeClass("disabled");
-                        $("#valider").removeClass("disabled");
-                        $("#importer").removeClass("disabled");
-                        $("#exporter").removeClass("disabled");
-                        $("#modifierUE").removeClass("disabled");
-                        $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", true);
-                        $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", true);
-					}
-				}
-			}, xhrFields: {
-				withCredentials: true
-			},
-			crossDomain: true
-		});
+        $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", true);
+        $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", true);
+            $.ajax({
+                url: ppil + '/addInterventions',
+                type: 'post',
+                data: {'id': id_UE, 'mail': tab},
+                success: function (res) {
+                    if (res != undefined) {
+                        if (res == true) {
+                            $('#messageTitre').text('Succès');
+                            $('#message').text('Les modifications ont bien été prises en compte.');
+                            $('#modalDemandeEffectuee').modal({
+                                backdrop: 'static',
+                                keyboard: false
+                            });
+                            $("#ajoutEnseignant").removeClass("disabled");
+                            $("#valider").removeClass("disabled");
+                            $("#importer").removeClass("disabled");
+                            $("#exporter").removeClass("disabled");
+                            $("#modifierUE").removeClass("disabled");
+                            $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", false);
+                            $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", false);
+                            listIntervenant();
+                            listeAjoutEnseignant();
+                        } else {
+                            $('#messageTitre').text('Erreur');
+                            $('#message').text('Les modifications n\'ont pas pu être sauvegardées.');
+                            $('#modalDemandeEffectuee').modal({
+                                backdrop: 'static',
+                                keyboard: false
+                            });
+                            $("#ajoutEnseignant").removeClass("disabled");
+                            $("#valider").removeClass("disabled");
+                            $("#importer").removeClass("disabled");
+                            $("#exporter").removeClass("disabled");
+                            $("#modifierUE").removeClass("disabled");
+                            $('[id=supprimerIntervenantUE]').slice(0).prop("disabled", false);
+                            $('[id=validerHeuresIntervenantUE]').slice(0).prop("disabled", false);
+                        }
+                    }
+                }, xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true
+            });
+        }
 	}
 }
 

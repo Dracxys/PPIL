@@ -164,7 +164,7 @@ class VueFormation extends AbstractView
             </div>
             <div class="panel-default container-fluid">
 
-                <button type="button" class="btn  btn-primary pull-right" onclick="modifUE()" id="valider">Valider</button>
+                <button type="button" class="btn  btn-primary pull-right" id="validerChangementUE">Valider</button>
                 <div id="erreur" class="alert alert-danger text-center">
                     <strong>Erreur : </strong> Chiffres négatifs dans un des champs.
                 </div>
@@ -262,6 +262,12 @@ class VueFormation extends AbstractView
                $('#modalValideModif').click(function(){
                     modifFormBase();
                });
+               $('#exporter').click(function(){
+                    exporter();
+               });
+               $('#validerChangementUE').click(function(){
+                    modifUE();
+               });
 			});
         </script>
 END;
@@ -353,7 +359,7 @@ END;
 				        </div>
 			    </div>
 			    <div class="form-group">
-				        <label class="control-label col-sm-5" for="resp">Responsable  3: </label>
+				        <label class="control-label col-sm-5" for="resp">Responsable  3 : </label>
 				        <div class="col-sm-4">
 				            <select id="respForm3" class="form-control" name="respForm3">
 
