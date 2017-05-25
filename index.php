@@ -224,7 +224,7 @@ $app->get('/home/profil', function (){
     $c->home();
 })->name('profilUtilisateur');
 
-$app->get('/home/desinscription', function (){
+$app->post('/home/desinscription', function (){
     $c = new UtilisateurControler();
     $c->desinscription();
 })->name('desinscription');
