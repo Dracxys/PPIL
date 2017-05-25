@@ -181,7 +181,7 @@ class Enseignant extends AbstractModel{
 
     public static function get_privilege($utilisateur){
         return $max = DB::table('Responsabilite')
-                      ->where('enseignant', '=', $utilisateur->mail)
+                      ->where('enseignant', 'like', $utilisateur->mail)
                       ->max('privilege');
     }
 
