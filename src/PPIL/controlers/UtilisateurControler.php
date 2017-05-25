@@ -52,12 +52,44 @@ class UtilisateurControler
 
     public function enseignement_exporter(){
         if(isset($_SESSION['mail'])){
-            $intervention = Intervention::all();
+            $intervention = Intervention::where('mail_enseignant', '=', $_SESSION['mail'])->get();
             $csv = Writer::createFromFileObject(new \SplTempFileObject());
             //$csv->setDelimiter(';');
-            $csv->insertOne($intervention->first()->getTableColumns());
-            foreach($intervention as $i){
-                $csv->insertOne($i->toArray());
+            if(!$intervention->isEmpty()){
+                $csv->insertOne(['Composante', 'formation', 'initule', 'heuresCM', 'heuresTP', 'heuresTD', 'heuresEI', 'groupeTP', 'groupeTD', 'groupeEI']);
+                foreach($intervention as $i){
+                    $insert = array();
+                    $insert[] = $i->fst==true ? 'FST' : 'Hors FST';
+                    if($i->id_UE != null){
+                        $ue = UE::where('id_UE', "=", $i->id_UE)->first();
+                        $f = Formation::where('id_formation', '=', $ue->id_formation)->first();
+                        $insert[] = $f->nomFormation;
+                        $insert[] = $ue->nom_UE;
+                    } else{
+                        $r = Responsabilite::where('id_resp', "=", $i->id_responsabilite)->first();                            if($r->id_UE != null && $r->privilege==0){
+                            $ue = UE::where('id_UE', "=", $r->id_UE)->first();
+                            $f = Formation::where('id_formation', '=', $ue->id_formation)->first();
+                            $insert[] = $f->nomFormation;
+                            $insert[] = 'Responsable UE';
+                        } else if($r->id_formation != null && $r->privilege==1){
+                            $f = Formation::where('id_formation', '=', $r->id_formation)->first();
+                            $insert[] = $f->nomFormation;
+                            $insert[] = 'Responsable formation';
+                        } else if($r->privilege==2){
+                            $insert[] = "toutes";
+                            $insert[] = 'Responsable DI';
+                        }
+                    }
+                    $insert[] = $i->heuresCM;
+                    $insert[] = $i->heuresTP;
+                    $insert[] = $i->heuresTD;
+                    $insert[] = $i->heuresEI;
+                    $insert[] = $i->groupeTP;
+                    $insert[] = $i->groupeTD;
+                    $insert[] = $i->groupeEI;
+
+                    $csv->insertOne($insert);
+                }
             }
             $csv->output('interventions.csv');
         }else{

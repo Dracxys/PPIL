@@ -142,7 +142,6 @@ END;
                 $formation = "";
                 $ue = "";
                 $suppression = "";
-
                 if($intervention->id_UE != null){
                     $id_ues[] = $intervention->id_UE;
 
