@@ -359,7 +359,7 @@ END;
 				        </div>
 			    </div>
 			    <div class="form-group">
-				        <label class="control-label col-sm-5" for="resp">Responsable  3: </label>
+				        <label class="control-label col-sm-5" for="resp">Responsable  3 : </label>
 				        <div class="col-sm-4">
 				            <select id="respForm3" class="form-control" name="respForm3">
 
