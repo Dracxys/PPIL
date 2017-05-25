@@ -3,6 +3,9 @@ var id_UE;
 var value;
 function recupererUE(lien) {
     value = $('#selectForm option:selected').val();
+    if(value == undefined){
+        value = "";
+    }
     $('#nomFormation').text('Volume Horaire ' + value);
     ppil = lien ;
     $.ajax({
