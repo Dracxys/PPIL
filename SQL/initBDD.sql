@@ -1,20 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
--- https://www.phpmyadmin.net/
+-- version 4.4.10
+-- http://www.phpmyadmin.net
 --
--- Client :  localhost
--- Généré le :  Jeu 25 Mai 2017 à 16:23
--- Version du serveur :  10.1.21-MariaDB
--- Version de PHP :  7.0.18
+-- Client :  localhost:8889
+-- Généré le :  Jeu 25 Mai 2017 à 22:03
+-- Version du serveur :  5.5.42
+-- Version de PHP :  7.0.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de données :  `bdd2folie`
@@ -45,9 +39,9 @@ CREATE TABLE `Enseignant` (
 --
 
 INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCourant`, `volumeMin`, `volumeMax`, `photo`, `rand`, `theme_fixe`) VALUES
-('g@h', 'g', 'g', '$2y$10$PNVCJAVJF5vr6NzBwJiAhuzqqwmNoitrmBawLwvcKUIZ34RgJXsTW', 'Professeur des universités', 192, 192, 384, NULL, 696792579, 1),
+('g@h', 'g', 'g', '$2y$10$PNVCJAVJF5vr6NzBwJiAhuzqqwmNoitrmBawLwvcKUIZ34RgJXsTW', 'Professeur des universités', 0, 192, 384, NULL, 696792579, 1),
 ('m@m', 'm', 'm', '$2y$10$2TO9wgmJ5xb.Q0sYOSv62eZu.UpxVC0lbcChwMN4ABNEjWdv4SlMi', 'Professeur des universités', NULL, 192, 384, NULL, 105894822, 1),
-('root@root', 'admin', 'admin', '$2y$10$RTrBskqD0QJKPDjUt.thmuZFfk53urjIft6kxWvkwQLheHmuNWWnm', 'Professeur des universités', NULL, 192, 384, NULL, 496923614, 1),
+('root@root', 'admin', 'admin', '$2y$10$RTrBskqD0QJKPDjUt.thmuZFfk53urjIft6kxWvkwQLheHmuNWWnm', 'Professeur des universités', NULL, 192, 384, NULL, 496923614, 0),
 ('t.crouvezier@hotmail.fr', 'Crouvezier', 'Thibaut', '$2y$10$qEaFs6HyxI89rMW.6A1L5OqrSkHSdfkNo/9gEJ0Nl6zwAWYCiA74u', 'Maître de conférences', NULL, 192, 384, NULL, 623233384, 1),
 ('x@x', 'x', 'x', '$2y$10$wRYAumkhaZjoqxJtnKjMGesgC4NhTbY0X4FbabN.p.vB48FyW6ldO', 'Professeur des universités', NULL, 192, 384, NULL, 598661578, 1),
 ('z@z', 'z', 'z', '$2y$10$DkJg/HxwWYn3do3LGq2aVuKy90VAMAI12E9Ke4RkqrqlL8R4l1D8a', 'Professeur des universités', NULL, 192, 384, NULL, 813424858, 1);
@@ -62,7 +56,7 @@ CREATE TABLE `Formation` (
   `id_formation` int(11) NOT NULL,
   `nomFormation` varchar(32) NOT NULL,
   `fst` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Formation`
@@ -96,14 +90,17 @@ CREATE TABLE `Intervention` (
   `groupeTD` int(4) DEFAULT '0',
   `groupeEI` int(4) DEFAULT '0',
   `mail_enseignant` varchar(128) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Intervention`
 --
 
 INSERT INTO `Intervention` (`id_intervention`, `id_UE`, `id_responsabilite`, `fst`, `heuresCM`, `heuresTP`, `heuresTD`, `heuresEI`, `groupeTP`, `groupeTD`, `groupeEI`, `mail_enseignant`) VALUES
-(15, NULL, 11, 1, 0, 0, 0, 0, 0, 0, 0, 'root@root');
+(15, NULL, 11, 1, 0, 0, 0, 0, 0, 0, 0, 'root@root'),
+(16, NULL, 18, 1, 0, 0, 0, 0, 0, 0, 0, 'g@h'),
+(17, NULL, 19, 1, 0, 0, 0, 0, 0, 0, 0, 'm@m'),
+(18, 17, NULL, 1, 0, 0, 0, 0, 0, 0, 0, 'g@h');
 
 -- --------------------------------------------------------
 
@@ -122,7 +119,7 @@ CREATE TABLE `Notification` (
   `type_notification` enum('PPIL\\models\\NotificationChgtUE','PPIL\\models\\NotificationInscription','PPIL\\models\\Notification','PPIL\\models\\NotificationIntervention','PPIL\\models\\NotificationResponsabilite') NOT NULL DEFAULT 'PPIL\\models\\Notification',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -207,16 +204,16 @@ CREATE TABLE `Responsabilite` (
   `id_formation` int(11) DEFAULT NULL,
   `id_UE` int(11) DEFAULT NULL,
   `privilege` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Responsabilite`
 --
 
 INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_formation`, `id_UE`, `privilege`) VALUES
-(9, 'g@h', 'Responsable formation', 12, NULL, 1),
-(10, 'x@x', 'Responsable formation', 2, NULL, 1),
-(11, 'root@root', 'Responsable du departement informatique', NULL, NULL, 2);
+(11, 'root@root', 'Responsable du departement informatique', NULL, NULL, 2),
+(18, 'g@h', 'Responsable formation', 1, NULL, 1),
+(19, 'm@m', 'Responsable UE', NULL, 17, 0);
 
 -- --------------------------------------------------------
 
@@ -243,7 +240,7 @@ CREATE TABLE `UE` (
   `prevision_groupeTD` int(4) NOT NULL DEFAULT '0',
   `prevision_groupeTP` int(4) NOT NULL DEFAULT '0',
   `prevision_groupeEI` int(4) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `UE`
@@ -256,7 +253,8 @@ INSERT INTO `UE` (`id_UE`, `nom_UE`, `fst`, `id_formation`, `heuresTD`, `heuresT
 (13, 'sdfghjklm', 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 (14, 'qq', 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 (15, 'y', 0, 13, 0, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0),
-(16, 'm', 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+(16, 'm', 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(17, 'Java', 1, 1, 0, 0, 0, 0, 10, 0, 20, 0, 0, 0, 0, 2, 0, 0);
 
 --
 -- Index pour les tables exportées
@@ -338,27 +336,27 @@ ALTER TABLE `UE`
 -- AUTO_INCREMENT pour la table `Formation`
 --
 ALTER TABLE `Formation`
-  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT pour la table `Intervention`
 --
 ALTER TABLE `Intervention`
-  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_intervention` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `Responsabilite`
 --
 ALTER TABLE `Responsabilite`
-  MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_resp` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT pour la table `UE`
 --
 ALTER TABLE `UE`
-  MODIFY `id_UE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_UE` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
 --
 -- Contraintes pour les tables exportées
 --
@@ -401,7 +399,3 @@ ALTER TABLE `Responsabilite`
 --
 ALTER TABLE `UE`
   ADD CONSTRAINT `fk_id_formation` FOREIGN KEY (`id_formation`) REFERENCES `Formation` (`id_formation`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
