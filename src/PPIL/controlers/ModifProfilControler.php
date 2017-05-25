@@ -37,78 +37,115 @@ class ModifProfilControler
         if (isset($_SESSION['mail'])) {
             $val = Slim::getInstance()->request->post();
             $ancien = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
-            if(empty(Enseignant::find(filter_var($val['email'], FILTER_SANITIZE_EMAIL)))){
-                $user = new Enseignant();
-                $user->nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
-                $user->prenom = filter_var($val['prenom'], FILTER_SANITIZE_STRING);
-                $user->mail = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
-                $user->statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
-                $user->mdp = $ancien->mdp;
-                $user->rand = $ancien->rand;
-                $user->photo = $ancien->photo;
-                $user->volumeCourant = $ancien->volumeCourant;
+            if($_SESSION['mail'] != filter_var($val['email'], FILTER_SANITIZE_EMAIL)){
+                $tmp = Enseignant::find(filter_var($val['email'], FILTER_SANITIZE_EMAIL));
+                if(empty($tmp)){
+                    $user = new Enseignant();
+                    $user->nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
+                    $user->prenom = filter_var($val['prenom'], FILTER_SANITIZE_STRING);
+                    $user->mail = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
+                    $user->statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
+                    $user->mdp = $ancien->mdp;
+                    $user->rand = $ancien->rand;
+                    $user->photo = $ancien->photo;
+                    $user->volumeCourant = $ancien->volumeCourant;
+                    switch (filter_var($val['statut'], FILTER_SANITIZE_STRING)) {
+                        case "Professeur des universités" :
+                            $user->volumeMin = 192;
+                            $user->volumeMax = 384;
+                            break;
+                        case "Maître de conférences" :
+                            $user->volumeMin = 192;
+                            $user->volumeMax = 384;
+                            break;
+                        case "PRAG" :
+                            $user->volumeMin = 384;
+                            $user->volumeMax = 768;
+                            break;
+                        case "ATER" :
+                            $user->volumeMin = 192;
+                            $user->volumeMax = 192;
+                            break;
+                        case "1/2 ATER" :
+                            $user->volumeMin = 96;
+                            $user->volumeMax = 96;
+                            break;
+                        case "Doctorant" :
+                            $user->volumeMin = 64;
+                            $user->volumeMax = 64;
+                            break;
+                        case "Vacataire" :
+                            $user->volumeMin = 0;
+                            $user->volumeMax = 96;
+                            break;
+                    }
+                    $user->save();
+                    $inter = Intervention::where('mail_enseignant','like',$_SESSION['mail'])->get();
+                    foreach ($inter as $value){
+                        $value->mail_enseignant = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
+                        $value->save();
+                    }
+                    $resp = Responsabilite::where('enseignant','like',$_SESSION['mail'])->get();
+                    foreach ($resp as $value){
+                        $value->enseignant = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
+                        $value->save();
+                    }
+                    $notif = Notification::where('mail_destinataire','like',$_SESSION['mail'])->get();
+                    foreach ($notif as $value){
+                        $value->mail_destinataire = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
+                        $value->save();
+                    }
+                    $notif = Notification::where('mail_source','like',$_SESSION['mail'])->get();
+                    foreach ($notif as $value){
+                        $value->mail_source = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
+                        $value->save();
+                    }
+                    $ancien->delete();
+                    $_SESSION['mail'] = $user->mail;
+                    $v = new VueModifProfil();
+                    echo $v->home($user, 0);
+                }else{
+                    $v = new VueModifProfil();
+                    echo $v->home($ancien, 0);
+                }
+            }else{
+                $ancien->nom = filter_var($val['nom'], FILTER_SANITIZE_STRING);
+                $ancien->prenom = filter_var($val['prenom'], FILTER_SANITIZE_STRING);
+                $ancien->statut = filter_var($val['statut'], FILTER_SANITIZE_STRING);
                 switch (filter_var($val['statut'], FILTER_SANITIZE_STRING)) {
                     case "Professeur des universités" :
-                        $user->volumeMin = 192;
-                        $user->volumeMax = 384;
+                        $ancien->volumeMin = 192;
+                        $ancien->volumeMax = 384;
                         break;
                     case "Maître de conférences" :
-                        $user->volumeMin = 192;
-                        $user->volumeMax = 384;
+                        $ancien->volumeMin = 192;
+                        $ancien->volumeMax = 384;
                         break;
                     case "PRAG" :
-                        $user->volumeMin = 384;
-                        $user->volumeMax = 768;
+                        $ancien->volumeMin = 384;
+                        $ancien->volumeMax = 768;
                         break;
                     case "ATER" :
-                        $user->volumeMin = 192;
-                        $user->volumeMax = 192;
+                        $ancien->volumeMin = 192;
+                        $ancien->volumeMax = 192;
                         break;
                     case "1/2 ATER" :
-                        $user->volumeMin = 96;
-                        $user->volumeMax = 96;
+                        $ancien->volumeMin = 96;
+                        $ancien->volumeMax = 96;
                         break;
                     case "Doctorant" :
-                        $user->volumeMin = 64;
-                        $user->volumeMax = 64;
+                        $ancien->volumeMin = 64;
+                        $ancien->volumeMax = 64;
                         break;
                     case "Vacataire" :
-                        $user->volumeMin = 0;
-                        $user->volumeMax = 96;
+                        $ancien->volumeMin = 0;
+                        $ancien->volumeMax = 96;
                         break;
                 }
-                $user->save();
-                $inter = Intervention::where('mail_enseignant','like',$_SESSION['mail'])->get();
-                foreach ($inter as $value){
-                    $value->mail_enseignant = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
-                    $value->save();
-                }
-                $resp = Responsabilite::where('enseignant','like',$_SESSION['mail'])->get();
-                foreach ($resp as $value){
-                    $value->enseignant = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
-                    $value->save();
-                }
-                $notif = Notification::where('mail_destinataire','like',$_SESSION['mail'])->get();
-                foreach ($notif as $value){
-                    $value->mail_destinataire = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
-                    $value->save();
-                }
-                $notif = Notification::where('mail_source','like',$_SESSION['mail'])->get();
-                foreach ($notif as $value){
-                    $value->mail_source = filter_var($val['email'], FILTER_SANITIZE_EMAIL);
-                    $value->save();
-                }
-                $ancien->delete();
-                $_SESSION['mail'] = $user->mail;
-                $v = new VueModifProfil();
-                echo $v->home($user, 0);
-            }else{
+                $ancien->save();
                 $v = new VueModifProfil();
                 echo $v->home($ancien, 0);
             }
-
-
-
 
         }
     }
