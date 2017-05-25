@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.4
 -- https://www.phpmyadmin.net/
 --
--- Client :  localhost
--- Généré le :  Jeu 25 Mai 2017 à 07:55
--- Version du serveur :  10.1.21-MariaDB
--- Version de PHP :  7.0.18
+-- Client :  localhost:8889
+-- Généré le :  Jeu 25 Mai 2017 à 15:22
+-- Version du serveur :  5.6.33
+-- Version de PHP :  7.0.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -47,6 +47,7 @@ INSERT INTO `Enseignant` (`mail`, `nom`, `prenom`, `mdp`, `statut`, `volumeCoura
 ('g@h', 'g', 'g', '$2y$10$PNVCJAVJF5vr6NzBwJiAhuzqqwmNoitrmBawLwvcKUIZ34RgJXsTW', 'Professeur des universités', 192, 192, 384, NULL, 696792579),
 ('m@m', 'm', 'm', '$2y$10$2TO9wgmJ5xb.Q0sYOSv62eZu.UpxVC0lbcChwMN4ABNEjWdv4SlMi', 'Professeur des universités', NULL, 192, 384, NULL, 105894822),
 ('root@root', 'admin', 'admin', '$2y$10$RTrBskqD0QJKPDjUt.thmuZFfk53urjIft6kxWvkwQLheHmuNWWnm', 'Professeur des universités', NULL, 192, 384, NULL, 496923614),
+('t.crouvezier@hotmail.fr', 'Crouvezier', 'Thibaut', '$2y$10$qEaFs6HyxI89rMW.6A1L5OqrSkHSdfkNo/9gEJ0Nl6zwAWYCiA74u', 'Maître de conférences', NULL, 192, 384, NULL, 623233384),
 ('x@x', 'x', 'x', '$2y$10$wRYAumkhaZjoqxJtnKjMGesgC4NhTbY0X4FbabN.p.vB48FyW6ldO', 'Professeur des universités', NULL, 192, 384, NULL, 598661578),
 ('z@z', 'z', 'z', '$2y$10$DkJg/HxwWYn3do3LGq2aVuKy90VAMAI12E9Ke4RkqrqlL8R4l1D8a', 'Professeur des universités', NULL, 192, 384, NULL, 813424858);
 
@@ -213,7 +214,7 @@ CREATE TABLE `Responsabilite` (
 
 INSERT INTO `Responsabilite` (`id_resp`, `enseignant`, `intituleResp`, `id_formation`, `id_UE`, `privilege`) VALUES
 (9, 'g@h', 'Responsable formation', 12, NULL, 1),
-(10, 'x@x', 'Responsable formation', 0, NULL, 1),
+(10, 'x@x', 'Responsable formation', 2, NULL, 1),
 (11, 'root@root', 'Responsable du departement informatique', NULL, NULL, 2);
 
 -- --------------------------------------------------------
@@ -346,7 +347,7 @@ ALTER TABLE `Intervention`
 -- AUTO_INCREMENT pour la table `Notification`
 --
 ALTER TABLE `Notification`
-  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_notification` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `Responsabilite`
 --
