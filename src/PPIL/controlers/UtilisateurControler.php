@@ -605,20 +605,35 @@ class UtilisateurControler
 
 	public function reinitialiserBDD(){
 		if(isset($_SESSION['mail'])) {
-			$resp = Responsabilite::where('intituleResp', 'like', 'Responsable du departement informatique')->first();
+            $error = true;
+            $app = Slim::getInstance();
+            $val = Slim::getInstance()->request->post();
+            $user = Enseignant::where("mail", "like", $_SESSION['mail'])->first();
+            $e = Enseignant::where('mail', '=', $_SESSION["mail"])->first();
+            $responsabilite = Enseignant::get_privilege($e);
 
-			Intervention::reinitialiserBDD();
+            if(isset($responsabilite) && $responsabilite == 2){
+                if (password_verify($val['password'], $user->mdp)) {
+                    $resp = Responsabilite::where('intituleResp', 'like', 'Responsable du departement informatique')->first();
+
+                    Intervention::reinitialiserBDD();
 
 
-			NotificationInscription::reinitialiserBDD();
-			NotificationIntervention::reinitialiserBDD();
-			NotificationResponsabilite::reinitialiserBDD();
-			Notification::reinitialiserBDD();
-			Responsabilite::reinitialiserBDD();
-			UE::reinitialiserBDD();
-			Formation::reinitialiserBDD();
-			Enseignant::reinitialiserBDD($resp->enseignant);
-			Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+                    NotificationInscription::reinitialiserBDD();
+                    NotificationIntervention::reinitialiserBDD();
+                    NotificationResponsabilite::reinitialiserBDD();
+                    Notification::reinitialiserBDD();
+                    Responsabilite::reinitialiserBDD();
+                    UE::reinitialiserBDD();
+                    Formation::reinitialiserBDD();
+                    Enseignant::reinitialiserBDD($resp->enseignant);
+                    session_destroy();
+                    $error = false;
+                    Slim::getInstance()->redirect(Slim::getInstance()->urlFor('home'));
+                }
+            }
+            $app->response->headers->set('Content-Type', 'application/json');
+            echo json_encode(["error" => $error]);
 		}
 	}
 

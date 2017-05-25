@@ -56,11 +56,15 @@ function importer(lien_importer){
 					if(json.messages.extension){
 						$("#import_erreur_extension").removeClass('hidden');
 					}
+					if(json.messages.parse){
+						$("#import_erreur_parse").removeClass('hidden');
+					}
 				} else {
 					$("#import_succes").removeClass('hidden');
 					$("#import_erreur_autre").addClass('hidden');
 					$("#import_erreur_taille").addClass('hidden');
 					$("#import_erreur_extension").addClass('hidden');
+					$("#import_erreur_parse").addClass('hidden');
 				}
             }
 		});

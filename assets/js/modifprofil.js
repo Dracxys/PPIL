@@ -45,6 +45,29 @@ function setup(modifprofil){
 		formDesinscription.submit();
 	});
 
+	var confirmerReinit = $("#modal_reinitialisation_bdd_confirmer");
+	var formReinit = $("#modal_reinitialisation_bdd_form");
+	formReinit.submit(function(e){
+		e.preventDefault();
+		$.ajax({
+			url : formReinit.attr('action'),
+			type: 'post',
+			data: { password : $("#modal_reinitialisation_bdd_form_password").val() },
+			dataType: 'json',
+			success: function(json){
+				if(json.error){
+					$("#modal_reinitialisation_bdd_erreur").removeClass("hidden");
+				}
+			}
+		});
+	});
+
+	confirmerReinit.click(function(e){
+		e.preventDefault();
+		formReinit.submit();
+	});
+
+
 	$('#navbar_panel').on('hidden.bs.collapse', function () {
 		$('#liste_groupe').toggleClass("list-group-horizontal");
 	});
