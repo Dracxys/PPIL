@@ -334,10 +334,10 @@ class UEControler
         $val = $app->request->post();
         $app->response->headers->set('Content-Type', 'application/json');
         $id = filter_var($val['id'], FILTER_SANITIZE_NUMBER_INT);
-        echo json_encode(self::get_intervantsUE($id));
+        echo json_encode(self::get_intervenantsUE($id));
     }
 
-    private function get_intervantsUE($id)
+    private function get_intervenantsUE($id)
     {
         $interventions = Intervention::where('id_UE', 'like', $id)->get();
         $res = array();
