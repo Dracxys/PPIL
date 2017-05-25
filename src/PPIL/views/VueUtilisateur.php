@@ -37,6 +37,8 @@ class VueUtilisateur extends AbstractView
       $lien_exporter = Slim::getInstance()->urlFor("enseignementUtilisateur.exporter");
       $lien_ajouter = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouter");
       $lien_ajouter_autre = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementAjouterAutre");
+      $lien_remiseAZero = Slim::getInstance()->urlFor("enseignementUtilisateur.actionEnseignementRemiseAZero");
+      $lien_enseignement = Slim::getInstance()->urlFor("enseignementUtilisateur");
       $home = Slim::getInstance()->urlFor("home");
 
       $scripts_and_css = "";
@@ -71,7 +73,7 @@ class VueUtilisateur extends AbstractView
 					<div class="navbar-right">
 					  <button type="button" class="btn btn-default navbar-btn" id="ajouter">Ajouter</button>
 					  <button type="button" class="btn btn-default navbar-btn" id="exporter">Exporter</button>
-					  <button type="button" class="btn btn-danger navbar-btn">Remise à zéro</button>
+					  <button type="button" class="btn btn-danger navbar-btn" id="remiseZero">Remise à zéro</button>
 					  <button type="button" class="btn btn-primary navbar-btn"  id="appliquer">Appliquer</button>
 					</div>
 				</div>
@@ -93,6 +95,9 @@ class VueUtilisateur extends AbstractView
       </div>
       <div class="alert alert-success hidden" role="alert" id="succes">
         <strong>Succès!</strong> Vos demandes ont été envoyées.
+      </div>
+      <div class="alert alert-success hidden" role="alert" id="succesRemiseAZero">
+        <strong>Succès!</strong> La remise à zéro a bien été effectuée.
       </div>
       <div class="alert alert-success hidden" role="alert" id="succes_sans_demande">
         <strong>Succès!</strong> Vos changements ont été appliqués.
@@ -353,6 +358,7 @@ END;
 		  ajouter("$lien_ajouter", "$lien_ajouter_autre");
           valider("$lien", $notification_exist, $depasse);
           exporter("$lien_exporter");
+          remiseAZero("$lien_remiseAZero");
           });
         </script>
 
